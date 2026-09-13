@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is Modbus? A plain-English explanation | Easy Modbus</title>
+<meta name="description" content="Modbus is a simple, very old industrial protocol for reading numbers out of equipment and writing numbers into it. Here is what it is, what it is not, and why it is confusing.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/what-is-modbus.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What is Modbus?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Modbus is a way for one machine to ask another machine for numbers. It was published in 1979, it is deliberately simple, and it is in an enormous amount of building and industrial equipment: meters, variable-speed drives, chillers, boilers, rooftop units, generators, UPSs, and sensors of every kind. A Modbus request says, in effect, &ldquo;give me the contents of sixteen-bit slot number 7&rdquo;. The equipment answers with sixteen bits. It does not say what those bits mean &mdash; that information lives only in the manufacturer's documentation, and that single fact is the source of almost every difficulty people have with Modbus." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>What is Modbus?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Modbus is a way for one machine to ask another machine for
+    numbers. It was published in 1979, it is deliberately simple, and it is in an
+    enormous amount of building and industrial equipment: meters, variable-speed
+    drives, chillers, boilers, rooftop units, generators, UPSs, and sensors of
+    every kind. A Modbus request says, in effect, &ldquo;give me the contents of
+    sixteen-bit slot number 7&rdquo;. The equipment answers with sixteen bits. It
+    does <em>not</em> say what those bits mean &mdash; that information lives only
+    in the manufacturer's documentation, and that single fact is the source of
+    almost every difficulty people have with Modbus.</p>
+  </div>
+
+
+  <h2>What a Modbus device actually gives you</h2>
+  <p>Picture the equipment as having four numbered lists inside it, and nothing
+  else:</p>
+  <table>
+    <tr><th>List</th><th>What it holds</th><th>Can you change it?</th></tr>
+    <tr><td>Coils</td><td>Single on/off values &mdash; a start command, an enable, a reset</td><td>Yes</td></tr>
+    <tr><td>Discrete inputs</td><td>Single on/off values the equipment reports &mdash; running, alarm</td><td>No</td></tr>
+    <tr><td>Input registers</td><td>Numbers the equipment measures &mdash; temperatures, pressures</td><td>No</td></tr>
+    <tr><td>Holding registers</td><td>Numbers you can read and usually write &mdash; setpoints, modes, and on many devices the readings too</td><td>Usually</td></tr>
+  </table>
+
+  <p>Each list is just numbered slots. Slot 0, slot 1, slot 2, and so on. A
+  register slot holds exactly sixteen bits, which is a whole number from 0 to
+  65535, or &minus;32768 to 32767 if the manufacturer decided it was a signed
+  number. There are no names, no units, and no descriptions anywhere in the
+  protocol.</p>
+
+  <div class="callout">
+  <p>This is the part that surprises people coming from BACnet, or from almost any
+  modern system. A BACnet controller will tell you what it has: you ask for its
+  object list and it replies with names and units. A Modbus device will never do
+  this. It answers exactly the question you asked and volunteers nothing.</p>
+  </div>
+
+  <h2>What that means in practice</h2>
+  <p>To get one useful number out of a Modbus device you need to know four things,
+  and the protocol supplies none of them:</p>
+  <ol>
+    <li><strong>Which list</strong> the value is in.</li>
+    <li><strong>Which slot number</strong> &mdash; and there are several rival ways
+    of writing that number down. See
+    <a href="modbus-address-off-by-one.html">why your Modbus address is off by one</a>.</li>
+    <li><strong>How to interpret the bits</strong> &mdash; is it a whole number, a
+    decimal, a number spread across two slots, one bit of a status word? See
+    <a href="modbus-value-wrong-scaling-byte-order.html">why your Modbus value looks wrong</a>.</li>
+    <li><strong>What it means</strong> &mdash; that slot 7 is the leaving water
+    temperature, in tenths of a degree Fahrenheit.</li>
+  </ol>
+  <p>All four live in a document called a register map, which your equipment
+  vendor has and you probably do not. See
+  <a href="what-is-a-modbus-register-map.html">what a Modbus register map is</a>.</p>
+
+  <h2>The flavours you will run into</h2>
+  <ul>
+    <li><strong>Modbus TCP</strong> &mdash; runs over an ordinary Ethernet network,
+    normally on port 502. If the equipment has an Ethernet socket, this is probably
+    what it speaks.</li>
+    <li><strong>Modbus RTU</strong> &mdash; runs over a two- or three-wire serial
+    cable, usually RS-485, with devices daisy-chained along it. Far more common in
+    the field than Modbus TCP, and much older.</li>
+    <li><strong>Modbus RTU over TCP</strong> &mdash; serial Modbus stuffed inside a
+    network connection by a small box called a gateway. Extremely common, and a
+    frequent source of &ldquo;the device is not responding&rdquo;.</li>
+  </ul>
+  <p><a href="modbus-tcp-vs-rtu-vs-rs485.html">Which kind do I have?</a> covers how
+  to tell them apart.</p>
+
+  <h2>Why it is still everywhere</h2>
+  <p>Because it is simple enough to implement in a few hundred bytes of code, it
+  is not owned by anybody, and it works. A protocol that reads sixteen bits out of
+  a numbered slot has essentially nothing to go wrong or go out of date. The cost
+  of that simplicity is that all the meaning has to be documented somewhere else,
+  by humans, and kept up to date by humans.</p>
+
+  <h2>Is reading from it safe?</h2>
+  <p>Reading is harmless. A read request cannot change anything; the equipment
+  looks up a number and sends it. <strong>Writing is a different matter
+  entirely</strong> &mdash; Modbus has no undo, no timeout, and no concept of
+  priority. A value you write is simply the value now, until something else writes
+  over it. Read
+  <a href="is-it-safe-to-write-to-modbus.html">is it safe to write to a Modbus register?</a>
+  before changing anything on live equipment.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/what-is-a-modbus-register-map.html">What is a Modbus register map?</a></li>
+      <li><a href="../guides/modbus-address-off-by-one.html">Why is my Modbus address off by one?</a></li>
+      <li><a href="../guides/modbus-tcp-vs-rtu-vs-rs485.html">Modbus TCP, RTU or RS-485 &mdash; which do I have?</a></li>
+      <li><a href="../guides/modbus-vs-bacnet.html">What is the difference between Modbus and BACnet?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

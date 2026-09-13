@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modbus TCP, Modbus RTU or RS-485 — which do I have? | Easy Modbus</title>
+<meta name="description" content="How to tell Modbus TCP from Modbus RTU and RTU-over-TCP by looking at the equipment, and why mistaking one for the other looks exactly like a dead device.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-tcp-vs-rtu-vs-rs485.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "Modbus TCP, Modbus RTU or RS-485 — which do I have?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Look at the socket. An Ethernet socket &mdash; the square one a network cable clips into &mdash; usually means Modbus TCP. Two or three screw terminals labelled A, B and sometimes GND or SHLD mean Modbus RTU over RS-485. If the equipment has screw terminals but you are reaching it over the network, there is a gateway in between, and that gateway either translates properly (Modbus TCP) or just pipes bytes through (Modbus RTU over TCP). Telling those last two apart matters, because choosing the wrong one produces total silence, which looks exactly like equipment that is switched off." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>Modbus TCP, Modbus RTU or RS-485 — which do I have?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Look at the socket. An Ethernet socket &mdash; the square one
+    a network cable clips into &mdash; usually means Modbus TCP. Two or three screw
+    terminals labelled A, B and sometimes GND or SHLD mean Modbus RTU over RS-485.
+    If the equipment has screw terminals but you are reaching it over the network,
+    there is a gateway in between, and that gateway either translates properly
+    (Modbus TCP) or just pipes bytes through (Modbus RTU over TCP). Telling those
+    last two apart matters, because choosing the wrong one produces total silence,
+    which looks exactly like equipment that is switched off.</p>
+  </div>
+
+
+  <h2>The three you will meet</h2>
+  <table>
+    <tr><th></th><th>Modbus TCP</th><th>Modbus RTU</th><th>RTU over TCP</th></tr>
+    <tr><td>Physical</td><td>Ethernet</td><td>RS-485 twisted pair</td><td>Ethernet to a gateway, RS-485 beyond it</td></tr>
+    <tr><td>How you address it</td><td>IP address and port 502</td><td>COM port, baud rate, unit ID</td><td>Gateway IP and port, plus unit ID</td></tr>
+    <tr><td>Devices per connection</td><td>Normally one</td><td>Up to 32 on a chain, by unit ID</td><td>Many, by unit ID</td></tr>
+    <tr><td>Speed</td><td>Fast</td><td>Slow: 9600 or 19200 baud is typical</td><td>As slow as the serial side</td></tr>
+    <tr><td>Error checking</td><td>TCP handles it</td><td>A CRC on every message</td><td>A CRC on every message</td></tr>
+  </table>
+
+  <h2>How to tell by looking</h2>
+  <ul>
+    <li><strong>An RJ45 Ethernet socket</strong>, and a network settings menu with
+    an IP address in it: Modbus TCP.</li>
+    <li><strong>Screw terminals labelled A and B</strong> (or D+ and D&minus;, or
+    TX+ and TX&minus;), with a baud-rate setting somewhere in the menus: Modbus RTU
+    over RS-485.</li>
+    <li><strong>Both</strong>: common on newer equipment. Use the Ethernet one.</li>
+    <li><strong>A small separate box</strong> with an Ethernet socket on one side
+    and screw terminals on the other, often on a DIN rail in the panel: a gateway.
+    The equipment is RTU; what the gateway presents to the network is the
+    question.</li>
+  </ul>
+
+  <h2>Telling a translating gateway from a transparent one</h2>
+  <p>A gateway labelled &ldquo;Modbus TCP to Modbus RTU&rdquo; usually translates:
+  you speak Modbus TCP to it and it speaks RTU to the equipment. A box labelled
+  &ldquo;serial device server&rdquo;, &ldquo;serial to Ethernet&rdquo; or
+  &ldquo;TCP transparent mode&rdquo; usually does not: it forwards the bytes you
+  send, so you have to send RTU-framed bytes yourself.</p>
+  <p>The practical answer is to try Modbus TCP, and if there is no reply at all,
+  try Modbus RTU over TCP before concluding anything is broken. It costs one
+  button press and resolves this more often than any other single check.</p>
+
+  <div class="callout">
+  <p><a href="../index.html">Easy Modbus</a> has a <em>Test connection</em> action
+  that tries both framings and tells you which one answered, then offers to switch
+  the device over. This one problem is the reason that feature exists.</p>
+  </div>
+
+  <h2>Things that only matter on the serial side</h2>
+  <p>If the equipment is RS-485, several settings have to match on every device on
+  the chain, and they are not discoverable:</p>
+  <ul>
+    <li><strong>Baud rate</strong> &mdash; 9600 and 19200 are most common.</li>
+    <li><strong>Parity, data bits, stop bits</strong> &mdash; usually written as
+    8N1 or 8E1.</li>
+    <li><strong>Unit IDs</strong> &mdash; every device on the chain needs a
+    different one. Two devices sharing an ID produces garbled replies that come and
+    go.</li>
+    <li><strong>Termination</strong> &mdash; a resistor at each end of a long run.
+    Missing termination shows up as intermittent failures that get worse the longer
+    the cable.</li>
+    <li><strong>A and B not swapped</strong> &mdash; and vendors disagree about
+    which wire is which, so swapping them is a normal troubleshooting step rather
+    than an admission of defeat.</li>
+  </ul>
+  <p>Serial Modbus is also much slower than it looks. At 9600 baud one request and
+  reply takes tens of milliseconds, so reading forty values one at a time can take
+  several seconds. Asking for a block of registers in one request rather than one
+  at a time makes a large difference, and is worth doing.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+      <li><a href="../guides/modbus-unit-id-slave-id.html">What is a Modbus unit ID or slave ID?</a></li>
+      <li><a href="../guides/what-is-modbus.html">What is Modbus?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

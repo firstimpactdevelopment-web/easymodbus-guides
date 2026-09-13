@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is the difference between Modbus and BACnet? | Easy Modbus</title>
+<meta name="description" content="Modbus sends numbered sixteen-bit values and explains nothing. BACnet describes itself: names, units and object lists. Here is what that means for anyone integrating either.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-vs-bacnet.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What is the difference between Modbus and BACnet?",
+    "acceptedAnswer": { "@type": "Answer", "text": "The one difference that matters in practice: BACnet describes itself and Modbus does not. A BACnet controller will tell you what it has &mdash; you ask for its object list and it answers with names, units and types. A Modbus device tells you nothing; it returns the sixteen bits in the slot you named and has no opinion about what they mean. Everything else &mdash; discovery, priorities, alarms, scheduling &mdash; follows from that. Modbus is simpler, older, and in far more equipment; BACnet is purpose-built for buildings and far easier to integrate." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>What is the difference between Modbus and BACnet?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>The one difference that matters in practice:
+    <strong>BACnet describes itself and Modbus does not</strong>. A BACnet
+    controller will tell you what it has &mdash; you ask for its object list and it
+    answers with names, units and types. A Modbus device tells you nothing; it
+    returns the sixteen bits in the slot you named and has no opinion about what
+    they mean. Everything else &mdash; discovery, priorities, alarms, scheduling
+    &mdash; follows from that. Modbus is simpler, older, and in far more
+    equipment; BACnet is purpose-built for buildings and far easier to integrate.</p>
+  </div>
+
+
+  <h2>Side by side</h2>
+  <table>
+    <tr><th></th><th>Modbus</th><th>BACnet</th></tr>
+    <tr><td>Published</td><td>1979</td><td>1995</td></tr>
+    <tr><td>Self-describing</td><td>No. Meaning lives in a PDF</td><td>Yes. Names, units and types come from the device</td></tr>
+    <tr><td>Discovery</td><td>None. You must sweep the network</td><td><em>Who-Is</em> broadcast; devices answer</td></tr>
+    <tr><td>Data types</td><td>16-bit slots. You supply the interpretation</td><td>Typed values: real, boolean, enumerated, string</td></tr>
+    <tr><td>Units</td><td>Not carried at all</td><td>A standard property of each point</td></tr>
+    <tr><td>Writing</td><td>Last writer wins. No undo</td><td>16 priority levels, and a release that hands control back</td></tr>
+    <tr><td>Alarms and trends</td><td>Not in the protocol</td><td>Built in</td></tr>
+    <tr><td>Typical port</td><td>TCP 502</td><td>UDP 47808</td></tr>
+    <tr><td>Found in</td><td>Meters, drives, generators, UPSs, sensors, packaged plant</td><td>Building controllers, chillers, AHUs, BMS head ends</td></tr>
+  </table>
+
+  <h2>What this means when you are integrating something</h2>
+  <p>With BACnet, the work is mostly selection: discover the devices, read their
+  point lists, and pick the points you want. The device has already told you what
+  everything is called.</p>
+  <p>With Modbus, the work is mostly archaeology. You need the register map, you
+  need to resolve which addressing convention it uses, you need the data type and
+  the word order and the multiplier for every value, and none of it can be checked
+  against the device because the device has no opinion. That knowledge exists only
+  in documents and in people's heads, and it is worth writing down properly the
+  first time, because the second time costs just as much as the first.</p>
+
+  <h2>Why anyone still chooses Modbus</h2>
+  <p>It is trivial to implement, which means it can go into a $40 sensor. It is not
+  owned by anybody. It has essentially no version problems. And it is already in
+  an enormous installed base, so supporting it is not optional regardless of what
+  anyone would prefer. A modern building very often has both: BACnet between the
+  controllers, and Modbus out to the meters, drives and packaged plant.</p>
+
+  <h2>Gateways between them</h2>
+  <p>Most building systems can present Modbus equipment as BACnet objects. That
+  gives the head end names and units &mdash; but the names and units were typed in
+  by whoever configured the gateway, from the register map. The archaeology still
+  happened; it just happened once, at commissioning, and the result is now hidden
+  inside a gateway configuration that may or may not be documented anywhere.</p>
+
+  <div class="callout">
+  <p>If you are working on BACnet equipment rather than Modbus, the same author
+  publishes <strong>Easy BACnet</strong>, which discovers BACnet/IP devices, reads
+  their point lists, and exports them the same way.</p>
+  </div>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/what-is-modbus.html">What is Modbus?</a></li>
+      <li><a href="../guides/is-it-safe-to-write-to-modbus.html">Is it safe to write to a Modbus register?</a></li>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

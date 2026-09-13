@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is it safe to write to a Modbus register? | Easy Modbus</title>
+<meta name="description" content="Reading Modbus is harmless. Writing has no undo, no timeout and no priority system — a written value stays written. Here is what to check before changing anything on live equipment.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/is-it-safe-to-write-to-modbus.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "Is it safe to write to a Modbus register?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Reading is completely safe: a read request cannot change anything. Writing is a different matter, and Modbus gives you fewer safety nets than almost any comparable protocol. There is no undo, no automatic release, no timeout, and no priority system. A value you write to a register simply is the value now, until something else writes over it. Closing your laptop does not put it back. Before writing to live equipment, know what the register currently says, know what the value is supposed to be, and know who else is writing to it." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>Is it safe to write to a Modbus register?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Reading is completely safe: a read request cannot change
+    anything. Writing is a different matter, and Modbus gives you fewer safety nets
+    than almost any comparable protocol. There is <strong>no undo, no automatic
+    release, no timeout, and no priority system</strong>. A value you write to a
+    register simply is the value now, until something else writes over it. Closing
+    your laptop does not put it back. Before writing to live equipment, know what
+    the register currently says, know what the value is supposed to be, and know
+    who else is writing to it.</p>
+  </div>
+
+
+  <h2>What Modbus does not give you</h2>
+  <p>Anyone arriving from BACnet will be looking for things that are not there:</p>
+  <ul>
+    <li><strong>No priority array.</strong> In BACnet a commanded value sits at a
+    priority level, and releasing it hands the point back to the control system.
+    Modbus has nothing of the kind. There is one value and whoever wrote it last
+    owns it.</li>
+    <li><strong>No relinquish or release.</strong> There is no &ldquo;put it back to
+    automatic&rdquo; command, because there is nothing to put it back to.</li>
+    <li><strong>No timeout.</strong> An override does not expire. A setpoint written
+    in August is still written in December unless something else changes it.</li>
+    <li><strong>No record of who wrote it.</strong> The device does not know and
+    cannot tell you.</li>
+  </ul>
+
+  <div class="callout">
+  <p>This is how equipment ends up stuck. Someone writes a fan speed to test
+  something, gets called away, and the fan runs at 40% for three months while
+  everybody blames the controller.</p>
+  </div>
+
+  <h2>Before you write anything</h2>
+  <ol>
+    <li><strong>Write down what it says now.</strong> Read the register and record
+    the value before changing it. This is the only undo that exists.</li>
+    <li><strong>Check the register is actually writable.</strong> Input registers
+    and discrete inputs cannot be written at all &mdash; the value belongs to the
+    equipment. Some holding registers are read-only too, and a device may accept
+    the write and ignore it.</li>
+    <li><strong>Check the range and the scaling.</strong> If the register holds
+    tenths, 72 is 7.2 degrees, not 72. Writing a raw 720 where the device expected
+    72 is a real and common accident.</li>
+    <li><strong>Know what else is writing to it.</strong> If a building management
+    system is polling and commanding the same register, your value may last
+    seconds &mdash; or yours may fight its control loop. Both are bad, in different
+    ways.</li>
+    <li><strong>Consider what the equipment does next.</strong> Writing to a mode
+    register can start a compressor. Short-cycling one is expensive.</li>
+    <li><strong>Read it back.</strong> Modbus confirms a write by echoing the
+    address, not the stored value. Devices clamp values to their own limits, round
+    them, or ignore them silently. What it reads back afterwards is the only truth.</li>
+  </ol>
+
+  <h2>Writes that are usually fine, and writes that are not</h2>
+  <table>
+    <tr><th>Usually low risk</th><th>Think first</th></tr>
+    <tr><td>A setpoint, moved a degree or two, during working hours, with someone on site</td><td>Anything that starts or stops a compressor, pump or fan</td></tr>
+    <tr><td>Clearing a filter alarm</td><td>Mode registers &mdash; heating to cooling, auto to hand</td></tr>
+    <tr><td>A test you will undo in the next minute, with the original written down</td><td>Configuration registers: baud rate, unit ID, network settings. Some take effect on reboot and can lock you out of the device entirely</td></tr>
+    <tr><td></td><td>Anything at all on life-safety, fire, or medical equipment</td></tr>
+  </table>
+
+  <h2>The configuration-register trap</h2>
+  <p>Some devices keep their communication settings in ordinary holding registers
+  alongside the data. Writing to the wrong address can change the unit ID or the
+  baud rate, at which point the device stops answering and the only way back may be
+  a physical reset or a serial cable. If a register map has a configuration section,
+  treat those addresses as off limits unless you mean it.</p>
+
+  <h2>How Easy Modbus handles this</h2>
+  <p><a href="../index.html">Easy Modbus</a> is read-only until you deliberately
+  turn write mode on, and it turns itself off again every time the app starts. When
+  it is on:</p>
+  <ul>
+    <li>Every write is confirmed against a summary showing the old value, the new
+    value, and which register on which device.</li>
+    <li>The app remembers what each register said the first time it saw it, and
+    offers a <em>Put It Back</em> action &mdash; the closest honest equivalent to a
+    release that Modbus permits.</li>
+    <li>Each reading can carry a minimum and maximum, so a fat-fingered setpoint is
+    refused before it is sent.</li>
+    <li>Every write is read back, and a value that came back different is reported
+    rather than assumed.</li>
+    <li>Every write and failure is logged for the session.</li>
+  </ul>
+  <p>None of that makes writing safe. It makes it deliberate, which is the most any
+  tool can honestly offer on a protocol with no undo.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-function-codes-explained.html">Modbus function codes in plain English</a></li>
+      <li><a href="../guides/modbus-vs-bacnet.html">What is the difference between Modbus and BACnet?</a></li>
+      <li><a href="../guides/what-is-modbus.html">What is Modbus?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is a Modbus unit ID or slave ID? | Easy Modbus</title>
+<meta name="description" content="A Modbus unit ID says which device on a shared connection you are talking to. Here is what it does, what to do when you don't know it, and why the wrong one looks like a dead device.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-unit-id-slave-id.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What is a Modbus unit ID or slave ID?",
+    "acceptedAnswer": { "@type": "Answer", "text": "A unit ID &mdash; also called a slave ID, station address, or device address &mdash; is a number from 1 to 247 that says which device you mean when several share one connection. On an RS-485 chain with a dozen meters on it, the unit ID is the only thing distinguishing them. Native Ethernet equipment often ignores it entirely and answers on any ID. If you don't know it, try 1 first; it is by far the most common. The wrong unit ID produces either silence or a &ldquo;gateway target device failed to respond&rdquo; error, both of which look like equipment that is switched off." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>What is a Modbus unit ID or slave ID?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>A unit ID &mdash; also called a slave ID, station address, or
+    device address &mdash; is a number from 1 to 247 that says <em>which</em> device
+    you mean when several share one connection. On an RS-485 chain with a dozen
+    meters on it, the unit ID is the only thing distinguishing them. Native Ethernet
+    equipment often ignores it entirely and answers on any ID. If you don't know
+    it, try 1 first; it is by far the most common. The wrong unit ID produces either
+    silence or a &ldquo;gateway target device failed to respond&rdquo; error, both
+    of which look like equipment that is switched off.</p>
+  </div>
+
+
+  <h2>When it matters and when it does not</h2>
+  <ul>
+    <li><strong>Behind a gateway: it matters completely.</strong> One IP address
+    fronts a chain of devices, and the unit ID selects which one. Getting it wrong
+    means talking to nothing, or worse, talking to the wrong meter.</li>
+    <li><strong>Native Ethernet equipment: usually it does not.</strong> A device
+    with its own IP address and no serial segment behind it often answers on any
+    unit ID, because there is nothing for the field to distinguish. Many
+    manufacturers still document a specific value; use it when they do.</li>
+  </ul>
+
+  <h2>Where to find it</h2>
+  <ol>
+    <li><strong>The device's own display or settings menu.</strong> Usually under
+    Communications, Modbus, or Network. This is the authoritative answer.</li>
+    <li><strong>DIP switches.</strong> Older equipment sets the address with a bank
+    of small switches, read as binary &mdash; switches 1 and 3 on means address 5.
+    The legend is normally printed next to them.</li>
+    <li><strong>The commissioning paperwork.</strong> Whoever set the chain up had
+    to assign them, and they are usually written down.</li>
+    <li><strong>Sweep for it.</strong> Ask each ID in turn and see which ones
+    answer. Slow, because every miss costs a timeout, but reliable.</li>
+  </ol>
+
+  <h2>Why a sweep is slow</h2>
+  <p>There is no way to ask &ldquo;which unit IDs are out there?&rdquo; &mdash;
+  Modbus has no discovery of any kind. So finding the occupied IDs means trying
+  each one and waiting for the timeout on every empty one. Sweeping 1 to 32 at a
+  one-second timeout is half a minute of mostly waiting, and a full sweep of 1 to
+  247 is several minutes. Start with 1 to 32, because installers rarely go higher
+  than they need to.</p>
+
+  <p><a href="../index.html">Easy Modbus</a> has a <em>Find unit IDs</em> action
+  that does this with a progress display and a cancel button, then offers to add
+  each one it found as its own device.</p>
+
+  <h2>Special values</h2>
+  <ul>
+    <li><strong>0</strong> is a broadcast address in the specification: every device
+    acts on the command and none replies. Some gateways also use 0 to mean
+    &ldquo;whatever is there&rdquo;. Not something to rely on.</li>
+    <li><strong>255</strong> is used by some Modbus TCP devices to mean &ldquo;this
+    device, no serial side involved&rdquo;. Worth trying if 1 gets nothing.</li>
+    <li><strong>248&ndash;254</strong> are reserved and should not be used.</li>
+  </ul>
+
+  <h2>Two devices with the same unit ID</h2>
+  <p>On a serial chain this produces symptoms that are easy to misdiagnose: both
+  devices answer at once, the replies collide, and what comes back is garbage or
+  nothing. Values appear intermittently or look like they are from the wrong
+  device. If a chain worked until new equipment was added, a duplicated unit ID is
+  the first thing to check.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+      <li><a href="../guides/modbus-tcp-vs-rtu-vs-rs485.html">Modbus TCP, RTU or RS-485 &mdash; which do I have?</a></li>
+      <li><a href="../guides/modbus-function-codes-explained.html">Modbus function codes in plain English</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

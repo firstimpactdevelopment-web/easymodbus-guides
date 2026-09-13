@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A vendor asked for my Modbus information — what do I send? | Easy Modbus</title>
+<meta name="description" content="Exactly what to send when an integrator, analytics provider or contractor asks for your Modbus details: network access, addressing, register maps and a live export.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/vendor-asking-for-modbus-information.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "A vendor asked for my Modbus information — what do I send?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Send five things: how to reach the equipment on the network (IP addresses, port, and whether it is Modbus TCP or RTU over TCP), the unit IDs in use, the register map for each device from the manufacturer, a note of which system is already polling them, and &mdash; most usefully &mdash; a live export showing each register with the value it is reporting right now. That last item resolves more questions than the other four together, because it proves what is actually reachable and what the numbers actually look like." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>A vendor asked for my Modbus information — what do I send?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Send five things: how to reach the equipment on the network
+    (IP addresses, port, and whether it is Modbus TCP or RTU over TCP), the unit IDs
+    in use, the register map for each device from the manufacturer, a note of which
+    system is already polling them, and &mdash; most usefully &mdash; a live export
+    showing each register with the value it is reporting right now. That last item
+    resolves more questions than the other four together, because it proves what is
+    actually reachable and what the numbers actually look like.</p>
+  </div>
+
+
+  <h2>The five things, in detail</h2>
+
+  <h3>1. How to reach it</h3>
+  <ul>
+    <li>IP address of each device, or of the gateway.</li>
+    <li>TCP port, if it is not 502.</li>
+    <li>Whether it speaks <strong>Modbus TCP</strong> or <strong>Modbus RTU over
+    TCP</strong>. Say which; do not make them guess.</li>
+    <li>Which network or VLAN it is on, and how someone is supposed to get onto it
+    &mdash; VPN, a jump host, a physical port in a panel.</li>
+    <li>For serial equipment: baud rate and parity, usually written as 9600 8N1.</li>
+  </ul>
+
+  <h3>2. Unit IDs</h3>
+  <p>Which unit ID corresponds to which piece of equipment. &ldquo;Unit 1 is the
+  AHU-1 controller, unit 2 is the main electrical meter&rdquo; is exactly the right
+  level of detail, and it is not guessable from the outside.</p>
+
+  <h3>3. The register map</h3>
+  <p>The manufacturer's register map for each model, with the firmware revision it
+  applies to. If you do not have it, say so up front rather than letting them wait
+  &mdash; and see <a href="how-to-find-modbus-register-map.html">how to find your
+  Modbus register map</a>. A vendor who knows the map is missing can plan for it; a
+  vendor who finds out in week three cannot.</p>
+
+  <h3>4. What is already talking to it</h3>
+  <p>Important and frequently forgotten. Many Modbus devices accept only one
+  connection, or a small number, and a new system polling them can knock the
+  existing one off. Tell them what is already connected and how often it polls.</p>
+
+  <h3>5. A live export</h3>
+  <p>The most useful single item you can send: a CSV listing each register with its
+  address, how it is interpreted, its units, and the value it read at a known
+  moment. It proves the equipment is reachable, settles every addressing and scaling
+  question at a stroke, and gives them real numbers to sanity-check their own
+  results against.</p>
+  <p><a href="../index.html">Easy Modbus</a> produces this directly: it exports
+  device name, IP, port, unit ID, framing, reading name, table, the address in all
+  three conventions, data type, word order, multiplier, units, and the live value.
+  That is a complete and self-explanatory handover document.</p>
+
+  <h2>What not to send</h2>
+  <ul>
+    <li><strong>Not a photo of a screen.</strong> Addresses get transcribed wrong.</li>
+    <li><strong>Not addresses without a convention.</strong> &ldquo;Register
+    7&rdquo; is ambiguous; &ldquo;40007, which is wire address 6&rdquo; is not. See
+    <a href="modbus-address-off-by-one.html">the addressing guide</a>.</li>
+    <li><strong>Not remote access credentials by email.</strong> Use whatever your
+    organisation uses for secrets.</li>
+  </ul>
+
+  <h2>Questions worth asking them back</h2>
+  <ul>
+    <li>Will you be writing to anything, or only reading? If writing, to which
+    registers? (See <a href="is-it-safe-to-write-to-modbus.html">is it safe to write
+    to a Modbus register?</a>)</li>
+    <li>How often will you poll? Every few seconds on a slow serial chain can
+    saturate it.</li>
+    <li>Will you open your own connection, or share an existing one?</li>
+    <li>What happens at your end if the equipment stops answering?</li>
+  </ul>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/what-is-a-modbus-register-map.html">What is a Modbus register map?</a></li>
+      <li><a href="../guides/how-to-find-modbus-register-map.html">How do I find my Modbus register map?</a></li>
+      <li><a href="../guides/is-it-safe-to-write-to-modbus.html">Is it safe to write to a Modbus register?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

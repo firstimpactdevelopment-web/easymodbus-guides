@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is a Modbus register map? | Easy Modbus</title>
+<meta name="description" content="A Modbus register map is the document that says what each numbered register in a device means: its address, data type, scaling and units. Here is what one contains and how to read it.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/what-is-a-modbus-register-map.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What is a Modbus register map?",
+    "acceptedAnswer": { "@type": "Answer", "text": "A Modbus register map &mdash; also called a register list, address list, point list, or Modbus table &mdash; is the document that says what each numbered slot inside a piece of equipment actually means. A row of it says something like &ldquo;holding register 40007, 16-bit signed, multiply by 0.1, degrees Fahrenheit, leaving water temperature&rdquo;. Without it, a Modbus device is a list of meaningless numbers; the protocol itself carries no names, no units and no data types. It is the single most important document in any Modbus integration, and it comes from the equipment manufacturer." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>What is a Modbus register map?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>A Modbus register map &mdash; also called a register list,
+    address list, point list, or Modbus table &mdash; is the document that says
+    what each numbered slot inside a piece of equipment actually means. A row of it
+    says something like &ldquo;holding register 40007, 16-bit signed, multiply by
+    0.1, degrees Fahrenheit, leaving water temperature&rdquo;. Without it, a Modbus
+    device is a list of meaningless numbers; the protocol itself carries no names,
+    no units and no data types. It is the single most important document in any
+    Modbus integration, and it comes from the equipment manufacturer.</p>
+  </div>
+
+
+  <h2>What a usable register map contains</h2>
+  <p>A map that someone can actually work from has at least these columns. If a
+  vendor sends you one missing the middle three, send it back.</p>
+  <table>
+    <tr><th>Column</th><th>Why it matters</th></tr>
+    <tr><td>Description / name</td><td>What the value is. &ldquo;Supply air temperature&rdquo;, not &ldquo;AI_07&rdquo;.</td></tr>
+    <tr><td>Register type</td><td>Holding register, input register, coil, or discrete input. Decides which request is used and whether it can be written.</td></tr>
+    <tr><td>Address</td><td>The slot number &mdash; and ideally a note about which numbering convention is being used, because there are three. See <a href="modbus-address-off-by-one.html">the addressing guide</a>.</td></tr>
+    <tr><td>Data type</td><td>16-bit signed, 16-bit unsigned, 32-bit float, 32-bit integer, ASCII text, one bit of a word. Guessing wrong produces a wrong number, not an error.</td></tr>
+    <tr><td>Word order</td><td>Only for values spanning two or more registers. Usually written as ABCD or CDAB. Getting it wrong produces wild nonsense.</td></tr>
+    <tr><td>Multiplier / scaling</td><td>Many devices report tenths or hundredths. A raw 725 with a multiplier of 0.1 is 72.5.</td></tr>
+    <tr><td>Units</td><td>Degrees F, degrees C, percent, kW, kWh, ppm, PSI. A number without units is not information.</td></tr>
+    <tr><td>Read / write</td><td>Whether you are allowed to change it, and what range is acceptable.</td></tr>
+    <tr><td>Enumerations</td><td>For mode registers: 0 = Off, 1 = Heat, 2 = Cool. Otherwise &ldquo;2&rdquo; tells you nothing.</td></tr>
+  </table>
+
+  <h2>A worked example</h2>
+  <p>Three rows from a realistic map, and what each one is telling you:</p>
+  <table>
+    <tr><th>Description</th><th>Type</th><th>Address</th><th>Data type</th><th>Scale</th><th>Units</th></tr>
+    <tr><td>Supply air temperature</td><td>Holding</td><td>40001</td><td>INT16</td><td>0.1</td><td>&deg;F</td></tr>
+    <tr><td>Fan power</td><td>Holding</td><td>40007</td><td>FLOAT32 CDAB</td><td>1</td><td>kW</td></tr>
+    <tr><td>Filter alarm</td><td>Holding</td><td>40006 bit 2</td><td>Bit</td><td>&mdash;</td><td>0 = clear, 1 = dirty</td></tr>
+  </table>
+  <ul>
+    <li><strong>Row one.</strong> Read holding register address 0 (40001 means the
+    first holding register, counting from one). You get back a whole number like
+    552. Multiply by 0.1 and you have 55.2&deg;F. <em>INT16</em> means it is signed,
+    so the value can go below zero &mdash; which matters for an outside air sensor
+    in January.</li>
+    <li><strong>Row two.</strong> Read <em>two</em> registers starting at 40007,
+    because a 32-bit float does not fit in one. <em>CDAB</em> means the two halves
+    arrive in the opposite order to the obvious one; read it the other way and you
+    get something like 3.6&times;10<sup>-41</sup> instead of 12.75.</li>
+    <li><strong>Row three.</strong> Read one register and look at a single bit of
+    it. Devices routinely pack a dozen unrelated alarms into the sixteen bits of
+    one register.</li>
+  </ul>
+
+  <h2>Why everybody keeps asking you for one</h2>
+  <p>Because nothing can be done without it. An analytics platform, a new building
+  management system, a tenant billing system, a monitoring service, or a
+  contractor replacing a controller all need to know what exists before they can
+  read anything. And unlike a BACnet system, nobody can simply ask the equipment.
+  See <a href="vendor-asking-for-modbus-information.html">a vendor asked for my
+  Modbus information &mdash; what do I send?</a></p>
+
+  <h2>If you do not have one</h2>
+  <p><a href="how-to-find-modbus-register-map.html">How do I find my Modbus
+  register map?</a> covers the four places to look, in order of how likely they
+  are to work, and what to do when all four fail.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/how-to-find-modbus-register-map.html">How do I find my Modbus register map?</a></li>
+      <li><a href="../guides/vendor-asking-for-modbus-information.html">A vendor asked for my Modbus information &mdash; what do I send?</a></li>
+      <li><a href="../guides/modbus-address-off-by-one.html">Why is my Modbus address off by one?</a></li>
+      <li><a href="../guides/modbus-value-wrong-scaling-byte-order.html">Why does my Modbus value look wrong?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

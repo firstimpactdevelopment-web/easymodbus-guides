@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why does my Modbus value look wrong? | Easy Modbus</title>
+<meta name="description" content="A Modbus value that is ten times too big, negative when it should not be, or wild nonsense is almost always scaling, signedness, or word order. Here is how to tell which.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-value-wrong-scaling-byte-order.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "Why does my Modbus value look wrong?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Almost always one of four things. If it is exactly ten or a hundred times too big, the device reports tenths or hundredths and you need a multiplier. If it is a huge number like 65524 where you expected a small negative one, it is a signed value being read as unsigned. If it is wild nonsense &mdash; 3.6&times;10-41 or 2.4&times;1031 &mdash; it is a 32-bit value whose two halves are in the other order, and switching ABCD to CDAB will fix it. If it is a sensible-looking number belonging to something else entirely, your address is off by one." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>Why does my Modbus value look wrong?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Almost always one of four things. If it is exactly ten or a
+    hundred times too big, the device reports tenths or hundredths and you need a
+    multiplier. If it is a huge number like 65524 where you expected a small
+    negative one, it is a signed value being read as unsigned. If it is wild
+    nonsense &mdash; 3.6&times;10<sup>-41</sup> or 2.4&times;10<sup>31</sup> &mdash;
+    it is a 32-bit value whose two halves are in the other order, and switching
+    ABCD to CDAB will fix it. If it is a sensible-looking number belonging to
+    something else entirely, your address is off by one.</p>
+  </div>
+
+
+  <h2>Ten or a hundred times too big</h2>
+  <p>You expected 72.4 and got 724. The device is reporting tenths, which is the
+  most widespread convention in Modbus equipment: it gives one decimal place
+  without needing floating-point maths, which mattered a great deal in 1985 and
+  still matters on cheap hardware.</p>
+  <p>The fix is a multiplier of 0.1 (or 0.01 for hundredths). Occasionally it goes
+  the other way &mdash; a device reporting kilowatts where you wanted watts needs a
+  multiplier of 1000.</p>
+
+  <h2>A huge number where you expected a small negative one</h2>
+  <p>You expected &minus;11.8 and got 6541.8, or you expected &minus;12 and got
+  65524. A sixteen-bit register can hold 0 to 65535 as an unsigned number, or
+  &minus;32768 to 32767 as a signed one, and the protocol does not say which.
+  Read it as signed &mdash; INT16 rather than UINT16 &mdash; and it comes right.</p>
+  <p>Outside-air temperature sensors are where this bites, because everything looks
+  fine until the first cold morning.</p>
+
+  <h2>Wild nonsense</h2>
+  <p>You expected something like 12.75 and got 3.6&times;10<sup>-41</sup>. This is
+  a 32-bit value &mdash; a float or a big integer spread across two registers
+  &mdash; and the two halves are arriving in the opposite order to the one you
+  assumed.</p>
+  <p>Vendor documents name the orders with four letters, where the 32-bit value's
+  four bytes are A, B, C and D:</p>
+  <table>
+    <tr><th>Order</th><th>Also called</th><th>How common</th></tr>
+    <tr><td><code>ABCD</code></td><td>Big endian, high word first</td><td>The standard choice. Try it first.</td></tr>
+    <tr><td><code>CDAB</code></td><td>Word swapped, mid-little endian</td><td>Very common &mdash; a large share of power meters and variable-speed drives.</td></tr>
+    <tr><td><code>BADC</code></td><td>Byte swapped</td><td>Rare.</td></tr>
+    <tr><td><code>DCBA</code></td><td>Little endian</td><td>Occasional, usually PLC-hosted maps.</td></tr>
+  </table>
+  <p>With only four possibilities and an obvious right answer, trying each one is a
+  perfectly respectable method. The giveaway is magnitude: real engineering values
+  live roughly between a thousandth and a few million. A float decoding to
+  10<sup>-41</sup> or 10<sup>28</sup> is not a weak guess, it is a wrong one.</p>
+
+  <h2>A sensible number, but the wrong thing</h2>
+  <p>The value is plausible but it is clearly the return air temperature rather
+  than the supply. That is an addressing problem, not an interpretation one: see
+  <a href="modbus-address-off-by-one.html">why is my Modbus address off by one</a>.</p>
+
+  <h2>A number that never changes, or reads 65535</h2>
+  <ul>
+    <li><strong>Always 0xFFFF (65535)</strong> &mdash; on most equipment this means
+    &ldquo;no value&rdquo; or &ldquo;sensor fault&rdquo;, not sixty-five thousand.
+    Check whether that sensor is connected.</li>
+    <li><strong>Always 0</strong> &mdash; often an unused register, or a feature the
+    equipment does not have fitted.</li>
+    <li><strong>Never changes but looks plausible</strong> &mdash; you may be
+    reading a configuration register rather than a live measurement.</li>
+  </ul>
+
+  <h2>A value that jumps around impossibly</h2>
+  <p>A temperature reading 72, then 4096, then 71 is usually a 32-bit value being
+  read as two separate 16-bit ones, or a reply arriving one register out of step
+  after a timeout. If the jumping started when you added more readings, try asking
+  for fewer registers at a time.</p>
+
+  <h2>The systematic way through it</h2>
+  <ol>
+    <li>Look at the raw register in hex, not just the decoded number.</li>
+    <li>Compare against what the equipment's own display says. That is ground
+    truth, and it settles scaling and addressing in one move.</li>
+    <li>Change one thing at a time: signedness, then multiplier, then word order.</li>
+  </ol>
+  <p><a href="../index.html">Easy Modbus</a> does the arithmetic for you: it shows
+  the raw registers in hex and binary, lists every plausible interpretation with
+  the reasoning, and warns when a value is outside the range the quantity can
+  physically have &mdash; a humidity of 452% being the obvious case.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-address-off-by-one.html">Why is my Modbus address off by one?</a></li>
+      <li><a href="../guides/what-is-a-modbus-register-map.html">What is a Modbus register map?</a></li>
+      <li><a href="../guides/how-to-find-modbus-register-map.html">How do I find my Modbus register map?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

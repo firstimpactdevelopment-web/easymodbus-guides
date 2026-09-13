@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How do I find my Modbus register map? | Easy Modbus</title>
+<meta name="description" content="Four ways to get a Modbus register map: ask the manufacturer, find the installation manual, ask your controls contractor, or read the device and work backwards. Plus what to do when none of them work.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/how-to-find-modbus-register-map.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "How do I find my Modbus register map?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Four routes, easiest first: search the manufacturer's site for the model number plus &ldquo;Modbus&rdquo;, look in the installation or integration manual rather than the user manual, ask your controls contractor for the submittal documents, or connect to the device and work backwards from the values it reports. The last one sounds hardest but is often fastest, because it is the only method that does not depend on someone else answering an email." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>How do I find my Modbus register map?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Four routes, easiest first: search the manufacturer's site for
+    the model number plus &ldquo;Modbus&rdquo;, look in the installation or
+    integration manual rather than the user manual, ask your controls contractor
+    for the submittal documents, or connect to the device and work backwards from
+    the values it reports. The last one sounds hardest but is often fastest,
+    because it is the only method that does not depend on someone else answering an
+    email.</p>
+  </div>
+
+
+  <h2>1. The manufacturer's website</h2>
+  <p>Search for the exact model number from the equipment label plus the word
+  Modbus. The document you want is usually called one of:</p>
+  <ul>
+    <li><em>Modbus register map</em> or <em>Modbus point list</em></li>
+    <li><em>Integration guide</em> or <em>Integration manual</em></li>
+    <li><em>BMS interface manual</em> or <em>Communications manual</em></li>
+    <li><em>Installation and operation manual</em> &mdash; the Modbus table is
+    frequently an appendix at the back</li>
+  </ul>
+  <p>Two things worth knowing. The <strong>user manual almost never has it</strong>
+  &mdash; you want the installer or integrator document. And the map is often
+  specific to a firmware version, so check the revision against the label on the
+  equipment.</p>
+
+  <h2>2. The equipment label and the controller itself</h2>
+  <p>Get the model number, serial number and firmware version off the nameplate
+  before you start searching. On equipment with a display, the Modbus settings
+  screen is also worth finding: it usually shows the baud rate, the unit ID, and
+  sometimes the protocol, all of which you will need anyway and none of which can
+  be guessed reliably.</p>
+
+  <h2>3. Your controls contractor</h2>
+  <p>Whoever installed or maintains the building automation system normally holds
+  the submittals, which include integration documents. This is the fastest route
+  when it works. The caveat is the usual one: the documents describe the design,
+  and the installed system may have moved on.</p>
+
+  <h2>4. Read the device and work backwards</h2>
+  <p>This is more practical than it sounds, and for undocumented equipment it is
+  the only option. The method:</p>
+  <ol>
+    <li>Read a block of holding registers &mdash; addresses 0 to 32 is a good first
+    try &mdash; and look at what comes back.</li>
+    <li>Ignore everything reading zero and everything reading 0xFFFF. Those are
+    usually unused or faulted.</li>
+    <li>For the rest, compare against what the equipment's own display says. If the
+    unit shows 72.4&deg;F and a register reads 724, you have found it and you have
+    found the multiplier at the same time.</li>
+    <li>Look for pairs of registers where one half is zero &mdash; that pattern is
+    a 32-bit value, usually a running total like energy or hours.</li>
+    <li>Look for runs of registers holding printable characters. That is the model
+    number or serial number in text, and it is a useful landmark for where the map
+    begins.</li>
+  </ol>
+  <p>Values that change when you change something physical are the most reliable
+  evidence of all. Turn the fan up and see which register moves.</p>
+
+  <h2>Doing this from a phone</h2>
+  <p><a href="../index.html">Easy Modbus</a> is built for exactly this job. It
+  sweeps the network for equipment, reads blocks of registers and shows them in hex
+  and decimal, and for each one offers the plausible interpretations with the
+  reasoning &mdash; &ldquo;12.75 as a 32-bit float with the words swapped, which is
+  a sensible engineering magnitude&rdquo;. When a number looks right, you name it
+  and the app remembers the whole interpretation, so nobody has to work it out
+  again. The result exports as a CSV, which is how an undocumented device ends up
+  documented.</p>
+
+  <h2>When none of it works</h2>
+  <p>Ask the vendor directly, with the model and firmware version, for the Modbus
+  register map. It is a normal request and they have the document. If the equipment
+  is out of support and the manufacturer is gone, the reverse-engineering route
+  above is what remains &mdash; and a map you build yourself, exported and filed
+  somewhere, is worth more to the next person than anything else you could leave
+  them.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/what-is-a-modbus-register-map.html">What is a Modbus register map?</a></li>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+      <li><a href="../guides/modbus-value-wrong-scaling-byte-order.html">Why does my Modbus value look wrong?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

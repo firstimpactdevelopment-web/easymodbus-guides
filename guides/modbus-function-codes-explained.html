@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modbus function codes explained in plain English | Easy Modbus</title>
+<meta name="description" content="Function codes 1, 2, 3, 4, 5, 6, 15 and 16 explained in plain English, plus what each exception code means when a device refuses a request.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-function-codes-explained.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What are Modbus function codes?",
+    "acceptedAnswer": { "@type": "Answer", "text": "A function code is the verb of a Modbus request: it says which of the four data lists you want and whether you are reading or writing. You only need eight of them in practice. Function code 3 reads holding registers and is the one you will use most; 4 reads input registers; 1 and 2 read on/off values; 6 and 16 write registers; 5 and 15 write on/off values. Everything else in the specification is rarely seen in building equipment." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>What are Modbus function codes?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>A function code is the verb of a Modbus request: it says which
+    of the four data lists you want and whether you are reading or writing. You only
+    need eight of them in practice. Function code 3 reads holding registers and is
+    the one you will use most; 4 reads input registers; 1 and 2 read on/off values;
+    6 and 16 write registers; 5 and 15 write on/off values. Everything else in the
+    specification is rarely seen in building equipment.</p>
+  </div>
+
+
+  <h2>The eight that matter</h2>
+  <table>
+    <tr><th>Code</th><th>Name</th><th>In plain English</th></tr>
+    <tr><td>1</td><td>Read Coils</td><td>Read on/off values you are allowed to change</td></tr>
+    <tr><td>2</td><td>Read Discrete Inputs</td><td>Read on/off values you cannot change &mdash; statuses, alarms</td></tr>
+    <tr><td>3</td><td>Read Holding Registers</td><td>Read numbers. The workhorse; most maps live here</td></tr>
+    <tr><td>4</td><td>Read Input Registers</td><td>Read numbers you cannot change &mdash; usually live measurements</td></tr>
+    <tr><td>5</td><td>Write Single Coil</td><td>Switch one on/off value</td></tr>
+    <tr><td>6</td><td>Write Single Register</td><td>Set one number</td></tr>
+    <tr><td>15</td><td>Write Multiple Coils</td><td>Switch several on/off values at once</td></tr>
+    <tr><td>16</td><td>Write Multiple Registers</td><td>Set several numbers at once &mdash; needed for anything wider than 16 bits</td></tr>
+  </table>
+
+  <p>Two notes that save time. <strong>Function code 3 versus 4</strong> is a real
+  distinction and not interchangeable: a value in the holding registers cannot be
+  read with code 4, and plenty of devices put their measurements in holding
+  registers anyway, so the map has to tell you which. <strong>Code 16 is required
+  for 32-bit values</strong>, because writing the two halves with two separate code
+  6 requests leaves the device holding half of the old value and half of the new
+  one for a moment, which on a setpoint can be a very large number indeed.</p>
+
+  <h2>One more worth knowing about</h2>
+  <p><strong>Function code 43, sub-function 14</strong> &mdash; Read Device
+  Identification &mdash; asks the device who it is, and can return a vendor name,
+  product code, model and firmware revision. It is the nearest thing Modbus has to
+  self-description. It is also optional, and most equipment does not implement it,
+  so a refusal here means nothing at all about whether the device is healthy.</p>
+
+  <h2>When the device says no: exception codes</h2>
+  <p>An exception reply means the device received the request, understood it, and
+  declined. That is useful information: the device is alive and reachable.</p>
+  <table>
+    <tr><th>Code</th><th>Name</th><th>What to do</th></tr>
+    <tr><td>1</td><td>Illegal function</td><td>This device does not support that function code. Try 3 instead of 4, or vice versa.</td></tr>
+    <tr><td>2</td><td>Illegal data address</td><td>That register does not exist. Your address is wrong, or off by one. The device itself is fine.</td></tr>
+    <tr><td>3</td><td>Illegal data value</td><td>The value or the quantity is out of range. Often means you asked for too many registers at once, or wrote a value the device will not accept.</td></tr>
+    <tr><td>4</td><td>Device failure</td><td>Something went wrong inside the device while handling the request.</td></tr>
+    <tr><td>5</td><td>Acknowledge</td><td>Accepted, but it needs more time. Rare.</td></tr>
+    <tr><td>6</td><td>Device busy</td><td>Try again shortly.</td></tr>
+    <tr><td>10</td><td>Gateway path unavailable</td><td>The gateway has no route to that unit ID.</td></tr>
+    <tr><td>11</td><td>Gateway target device failed to respond</td><td>The gateway is fine; nothing answered at that unit ID on the serial side. Wrong unit ID, or a wiring problem.</td></tr>
+  </table>
+
+  <h2>How many registers in one request?</h2>
+  <p>The specification allows 125 registers or 2000 bits per request. A lot of real
+  equipment, especially cheap gateways, falls over well before that &mdash;
+  truncating the reply, returning exception 3, or simply hanging. If reads work one
+  at a time but fail in blocks, lower the block size to 32 or even 16 and try
+  again.</p>
+  <p>It is still worth reading in blocks rather than one register at a time. On a
+  serial chain each request costs tens of milliseconds of wire time, so forty
+  separate reads is a visible wait, and forty chances to collide with whatever else
+  is polling that chain.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-address-off-by-one.html">Why is my Modbus address off by one?</a></li>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+      <li><a href="../guides/is-it-safe-to-write-to-modbus.html">Is it safe to write to a Modbus register?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

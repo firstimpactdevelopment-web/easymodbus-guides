@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why is my Modbus reading slow or unreliable? | Easy Modbus</title>
+<meta name="description" content="Modbus reads that are slow, intermittent, or occasionally return the wrong value: block sizes, serial turnaround, connection limits, polling collisions and stale replies.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-reading-slow-or-unreliable.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "Why is my Modbus reading slow or unreliable?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Five usual causes. A slow serial chain behind a gateway, where every request costs tens of milliseconds of wire time. Asking for too many registers in one request, which some devices truncate or refuse. Reading one register at a time instead of in blocks, which multiplies the cost by the number of readings. Another system polling the same equipment and colliding with you. And stale replies, where a late answer to a timed-out request makes every subsequent value one register out of step &mdash; the nastiest of the five, because every number shown is a real number from the wrong place." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>Why is my Modbus reading slow or unreliable?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Five usual causes. A slow serial chain behind a gateway, where
+    every request costs tens of milliseconds of wire time. Asking for too many
+    registers in one request, which some devices truncate or refuse. Reading one
+    register at a time instead of in blocks, which multiplies the cost by the number
+    of readings. Another system polling the same equipment and colliding with you.
+    And stale replies, where a late answer to a timed-out request makes every
+    subsequent value one register out of step &mdash; the nastiest of the five,
+    because every number shown is a real number from the wrong place.</p>
+  </div>
+
+
+  <h2>Serial is genuinely slow</h2>
+  <p>At 9600 baud a request and its reply take something like 20&ndash;50
+  milliseconds of wire time, plus whatever the device takes to think. Reading forty
+  values one at a time is therefore a visible wait of a couple of seconds, and that
+  is with everything working. If the equipment is behind a gateway, every request
+  crosses that serial wire regardless of how fast the network side is.</p>
+  <p>The fix is to read in blocks. One request for registers 0 to 31 costs roughly
+  what one request for register 0 costs, because the overhead dominates. Grouping a
+  screenful of readings into one or two requests is frequently a tenfold
+  improvement.</p>
+
+  <h2>Blocks that are too big</h2>
+  <p>The specification permits 125 registers per request. A lot of equipment,
+  especially inexpensive gateways, does not manage that: it truncates the reply,
+  returns exception 3 (illegal data value), or stops answering altogether.</p>
+  <p>If reads work one register at a time but fail in blocks, lower the block size.
+  32 is a safe starting point and 16 works almost everywhere. It is worth finding
+  the largest size that works reliably rather than settling for one at a time.</p>
+
+  <h2>Connection limits</h2>
+  <p>Many Modbus TCP devices accept one connection. Some accept three or four and
+  then silently stop answering new ones &mdash; the symptom being that it worked
+  this morning and does not now. Close other software, and if a building management
+  system is polling the same device, expect to be sharing badly.</p>
+
+  <h2>Collisions with another poller</h2>
+  <p>On an RS-485 chain there is one wire and one conversation at a time. If the BMS
+  polls every five seconds and you poll at the same moment, requests collide and
+  both sides see intermittent failures. This shows up as values that appear and
+  disappear for no visible reason, and it gets worse the more you poll.</p>
+  <p>A quiet gap between requests helps more than it sounds like it should &mdash;
+  35 milliseconds is a reasonable default for anything behind a serial gateway.</p>
+
+  <h2>Stale replies: the one to be suspicious of</h2>
+  <p>Suppose a request times out, and the device's answer arrives a moment later
+  anyway. If the tool does not discard it, the next request reads that leftover
+  answer instead of its own, and from then on every value is one reply behind.</p>
+  <p>The symptom is values that are individually plausible but clearly belong to the
+  wrong registers &mdash; the supply temperature showing what the return should say.
+  If readings look shuffled rather than wrong, this is the first thing to suspect.
+  Closing and reopening the connection clears it.</p>
+
+  <h2>A checklist when it is unreliable</h2>
+  <ol>
+    <li>Lower the block size to 16 and see if it becomes reliable.</li>
+    <li>Raise the timeout. 1.5 seconds is fine for native Ethernet; a serial
+    gateway often needs 3 seconds or more.</li>
+    <li>Add a gap between requests, 35&nbsp;ms or so.</li>
+    <li>Make sure nothing else is talking to the device.</li>
+    <li>On a serial chain, check for duplicate unit IDs, missing termination, and
+    total cable length.</li>
+    <li>If values look shuffled rather than wrong, reconnect.</li>
+  </ol>
+  <p>All four of the first three settings are adjustable per device in
+  <a href="../index.html">Easy Modbus</a>, which also groups nearby readings into
+  single block requests automatically.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-tcp-vs-rtu-vs-rs485.html">Modbus TCP, RTU or RS-485 &mdash; which do I have?</a></li>
+      <li><a href="../guides/modbus-function-codes-explained.html">Modbus function codes in plain English</a></li>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

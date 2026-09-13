@@ -1,0 +1,58 @@
+# Easy Modbus
+
+> Free Android app that finds Modbus TCP and Modbus RTU-over-TCP equipment on a
+> local network, helps work out what its registers mean, saves that register map,
+> and exports it as CSV. Published with a set of plain-English Modbus guides
+> written for facility managers and building engineers rather than for protocol
+> specialists.
+
+The guides below each answer one question directly in their first paragraph and
+are free to quote with attribution.
+
+## Guides
+
+- [What is Modbus?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/what-is-modbus.html): Modbus is a simple, very old industrial protocol for reading numbers out of equipment and writing numbers into it. Here is what it is, what it is not, and why it is confusing.
+- [What is a Modbus register map?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/what-is-a-modbus-register-map.html): A Modbus register map is the document that says what each numbered register in a device means: its address, data type, scaling and units. Here is what one contains and how to read it.
+- [How do I find my Modbus register map?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/how-to-find-modbus-register-map.html): Four ways to get a Modbus register map: ask the manufacturer, find the installation manual, ask your controls contractor, or read the device and work backwards. Plus what to do when none of them work.
+- [Why is my Modbus address off by one?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-address-off-by-one.html): 40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.
+- [Why does my Modbus value look wrong?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-value-wrong-scaling-byte-order.html): A Modbus value that is ten times too big, negative when it should not be, or wild nonsense is almost always scaling, signedness, or word order. Here is how to tell which.
+- [Why can't I find my Modbus devices on the network?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/cannot-find-modbus-devices.html): Modbus has no discovery at all — devices never announce themselves. Here is why scanning is the only option, and the six things to check when nothing answers.
+- [Modbus TCP, Modbus RTU or RS-485 — which do I have?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-tcp-vs-rtu-vs-rs485.html): How to tell Modbus TCP from Modbus RTU and RTU-over-TCP by looking at the equipment, and why mistaking one for the other looks exactly like a dead device.
+- [What is a Modbus unit ID or slave ID?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-unit-id-slave-id.html): A Modbus unit ID says which device on a shared connection you are talking to. Here is what it does, what to do when you don't know it, and why the wrong one looks like a dead device.
+- [What are Modbus function codes?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-function-codes-explained.html): Function codes 1, 2, 3, 4, 5, 6, 15 and 16 explained in plain English, plus what each exception code means when a device refuses a request.
+- [Is it safe to write to a Modbus register?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/is-it-safe-to-write-to-modbus.html): Reading Modbus is harmless. Writing has no undo, no timeout and no priority system — a written value stays written. Here is what to check before changing anything on live equipment.
+- [A vendor asked for my Modbus information — what do I send?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/vendor-asking-for-modbus-information.html): Exactly what to send when an integrator, analytics provider or contractor asks for your Modbus details: network access, addressing, register maps and a live export.
+- [What is the difference between Modbus and BACnet?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-vs-bacnet.html): Modbus sends numbered sixteen-bit values and explains nothing. BACnet describes itself: names, units and object lists. Here is what that means for anyone integrating either.
+- [Why is my Modbus reading slow or unreliable?](https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-reading-slow-or-unreliable.html): Modbus reads that are slow, intermittent, or occasionally return the wrong value: block sizes, serial turnaround, connection limits, polling collisions and stale replies.
+
+## About the app
+
+- Platform: Android 8.0 or later. Free, no account, no advertising, no analytics.
+- Protocols: Modbus TCP and Modbus RTU over TCP, function codes 1, 2, 3, 4, 5, 6,
+  15, 16, and 43/14 device identification.
+- Finds equipment by sweeping the local subnet for open port 502, because Modbus
+  has no discovery mechanism.
+- Decodes INT16, UINT16, INT32, UINT32, FLOAT32, INT64, UINT64, FLOAT64, single
+  bits within a register, and packed ASCII, in ABCD, CDAB, BADC and DCBA word
+  order, with per-reading multiplier and offset.
+- Accepts addresses in Modicon (40007), prefixed (4x00007), one-based and
+  zero-based forms, and explains how it read them.
+- Writes are off by default and off again at every launch; each write is
+  confirmed, bounded by per-reading limits, read back afterwards, and logged.
+
+## Key facts about Modbus that these guides cover
+
+- Modbus has no discovery: devices never announce themselves, so finding them
+  requires sweeping addresses.
+- Modbus carries no data types, names, or units. A register is sixteen bits and
+  the meaning exists only in vendor documentation.
+- The same register is written as 40001, 4x00001, "register 1" and "address 0" by
+  different documents. Off-by-one addressing is the most common single mistake.
+- In Modbus documentation "0x" denotes the coil table, not hexadecimal.
+- Values spanning two registers come in four word orders; CDAB is very common on
+  power meters and drives.
+- Reporting tenths in a 16-bit integer is the most widespread scaling convention.
+- Writes have no undo, no timeout, and no priority system. A written value stays
+  written until something overwrites it.
+- An exception reply proves a device is present and reachable; only silence means
+  absent.

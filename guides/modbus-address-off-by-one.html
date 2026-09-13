@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why is my Modbus address off by one? 40001 vs 1 vs 0 | Easy Modbus</title>
+<meta name="description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/modbus-address-off-by-one.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "Why is my Modbus address off by one?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Because the same register is legitimately called four different things. 40001, 4x00001, &ldquo;holding register 1&rdquo; and &ldquo;address 0&rdquo; all refer to the identical slot in the identical device. The number that actually travels in the Modbus packet is the last one, counting from zero; most vendor documentation uses one of the first three, counting from one. If your value is one register out &mdash; you asked for the supply temperature and got the return temperature &mdash; this is almost always why." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>Why is my Modbus address off by one?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Because the same register is legitimately called four
+    different things. <code>40001</code>, <code>4x00001</code>, &ldquo;holding
+    register 1&rdquo; and &ldquo;address 0&rdquo; all refer to the identical slot
+    in the identical device. The number that actually travels in the Modbus packet
+    is the last one, counting from zero; most vendor documentation uses one of the
+    first three, counting from one. If your value is one register out &mdash;
+    you asked for the supply temperature and got the return temperature &mdash;
+    this is almost always why.</p>
+  </div>
+
+
+  <h2>The four ways to write one address</h2>
+  <table>
+    <tr><th>Written as</th><th>Called</th><th>Counts from</th><th>What goes on the wire</th></tr>
+    <tr><td><code>40001</code></td><td>Modicon five-digit</td><td>1</td><td>0</td></tr>
+    <tr><td><code>4x00001</code></td><td>Prefixed, explicit</td><td>1</td><td>0</td></tr>
+    <tr><td>&ldquo;Holding register 1&rdquo;</td><td>One-based register number</td><td>1</td><td>0</td></tr>
+    <tr><td>&ldquo;Address 0&rdquo;</td><td>Protocol address</td><td>0</td><td>0</td></tr>
+  </table>
+
+  <p>The leading digit in the first two forms is not part of the number &mdash; it
+  says which of the four lists the value is in:</p>
+  <table>
+    <tr><th>Prefix</th><th>List</th><th>Example</th></tr>
+    <tr><td>0</td><td>Coils</td><td><code>00001</code> or <code>0x00001</code></td></tr>
+    <tr><td>1</td><td>Discrete inputs</td><td><code>10001</code> or <code>1x00001</code></td></tr>
+    <tr><td>3</td><td>Input registers</td><td><code>30001</code> or <code>3x00001</code></td></tr>
+    <tr><td>4</td><td>Holding registers</td><td><code>40001</code> or <code>4x00001</code></td></tr>
+  </table>
+
+  <div class="callout">
+  <p><strong>A trap for programmers.</strong> In Modbus documentation
+  <code>0x</code> means the coil table. It is not hexadecimal. Hexadecimal
+  addresses are vanishingly rare in device manuals, so <code>0x10</code> in a
+  Modbus table almost certainly means coil number 10, not the number 16.</p>
+  </div>
+
+  <h2>How to tell which convention a document uses</h2>
+  <ul>
+    <li><strong>Addresses in the 40001&ndash;49999 range</strong> &mdash; Modicon
+    five-digit, counting from one. Subtract 40001 to get the wire address.</li>
+    <li><strong>Addresses starting at 1</strong> with a separate &ldquo;register
+    type&rdquo; column &mdash; one-based. Subtract one.</li>
+    <li><strong>Addresses starting at 0</strong> &mdash; protocol addresses. Use
+    them as they are.</li>
+    <li><strong>A column headed &ldquo;offset&rdquo;</strong> &mdash; almost always
+    zero-based.</li>
+    <li><strong>Both a &ldquo;register&rdquo; and an &ldquo;address&rdquo; column,
+    differing by one</strong> &mdash; the document is being helpful. Use the one
+    your tool asks for.</li>
+  </ul>
+
+  <h2>How to confirm it without guessing</h2>
+  <p>Read three registers in a row and compare all three against what the
+  equipment's own display shows. If the value you wanted appears one slot earlier
+  or later than the document says, you now know the convention and every other row
+  in that document falls into place at once.</p>
+
+  <p>Some equipment documents are simply wrong about this, including from large
+  manufacturers. Trusting the reading over the document is the right instinct.</p>
+
+  <h2>Why it ended up like this</h2>
+  <p>The five-digit notation comes from the original Modicon PLCs, where memory
+  references were written that way and counted from one. The protocol itself always
+  counted from zero. Forty-five years of documents later, both conventions are
+  still in active use, often in the same building, sometimes in the same PDF.</p>
+
+  <p><a href="../index.html">Easy Modbus</a> sidesteps the problem: type the
+  address however your manual writes it &mdash; <code>40007</code>,
+  <code>4x00007</code> or <code>6</code> &mdash; and it tells you how it read it
+  and which register that actually is, before you save anything.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-value-wrong-scaling-byte-order.html">Why does my Modbus value look wrong?</a></li>
+      <li><a href="../guides/what-is-a-modbus-register-map.html">What is a Modbus register map?</a></li>
+      <li><a href="../guides/modbus-function-codes-explained.html">Modbus function codes in plain English</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>
