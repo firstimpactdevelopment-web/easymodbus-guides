@@ -19,6 +19,7 @@ is known. It only affects canonical tags, the sitemap and llms.txt; every link
 between pages is relative.
 """
 
+import html as html_module
 import io
 import os
 
@@ -154,6 +155,13 @@ def page(slug, title, question, answer_html, body_html, related, description):
 
 
 def strip_tags(html):
+    """
+    Plain text from a fragment, for the JSON-LD answer.
+
+    Entities are decoded as well as tags removed. Leaving them encoded puts a
+    literal "&ldquo;" into the structured data, which is exactly the text a
+    search engine or an assistant would quote back.
+    """
     out, depth = [], 0
     for ch in html:
         if ch == "<":
@@ -162,7 +170,7 @@ def strip_tags(html):
             depth -= 1
         elif depth == 0:
             out.append(ch)
-    return " ".join("".join(out).split())
+    return " ".join(html_module.unescape("".join(out)).split())
 
 
 def jstr(s):
