@@ -23,7 +23,7 @@ import html as html_module
 import io
 import os
 
-BASE_URL = "https://firstimpactdevelopment-web.github.io/easymodbus-guides"
+BASE_URL = "https://easymodbus.com"
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -107,6 +107,18 @@ def page(slug, title, question, answer_html, body_html, related, description):
 <title>%(title)s</title>
 <meta name="description" content="%(description)s">
 <link rel="canonical" href="%(base)s/%(slug)s.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00695C">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="%(title)s">
+<meta property="og:description" content="%(description)s">
+<meta property="og:url" content="%(base)s/%(slug)s.html">
+<meta property="og:image" content="%(base)s/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="%(title)s">
+<meta name="twitter:description" content="%(description)s">
+<meta name="twitter:image" content="%(base)s/img/og-image.png">
 <style>%(css)s</style>
 <script type="application/ld+json">
 %(jsonld)s
@@ -1564,6 +1576,18 @@ INDEX = """<!doctype html>
 <title>Easy Modbus &mdash; Modbus explained in plain English</title>
 <meta name="description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
 <link rel="canonical" href="%(base)s/index.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00695C">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Easy Modbus &mdash; Modbus explained in plain English">
+<meta property="og:description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
+<meta property="og:url" content="%(base)s/index.html">
+<meta property="og:image" content="%(base)s/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Easy Modbus &mdash; Modbus explained in plain English">
+<meta name="twitter:description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
+<meta name="twitter:image" content="%(base)s/img/og-image.png">
 <style>%(css)s</style>
 <script type="application/ld+json">
 {
@@ -1672,6 +1696,18 @@ PRIVACY = """<!doctype html>
 <title>Privacy policy &mdash; Easy Modbus</title>
 <meta name="description" content="Easy Modbus privacy policy. The app collects nothing, has no account, and sends nothing to any server.">
 <link rel="canonical" href="%(base)s/privacy.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00695C">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Privacy policy &mdash; Easy Modbus">
+<meta property="og:description" content="Easy Modbus privacy policy. The app collects nothing, has no account, and sends nothing to any server.">
+<meta property="og:url" content="%(base)s/privacy.html">
+<meta property="og:image" content="%(base)s/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy policy &mdash; Easy Modbus">
+<meta name="twitter:description" content="Easy Modbus privacy policy. The app collects nothing, has no account, and sends nothing to any server.">
+<meta name="twitter:image" content="%(base)s/img/og-image.png">
 <style>%(css)s</style>
 </head>
 <body>
@@ -1795,6 +1831,32 @@ are free to quote with attribution.
 """
 
 
+NOT_FOUND = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found &mdash; Easy Modbus</title>
+<meta name="robots" content="noindex">
+<style>
+  html { color-scheme: light dark; }
+  body { max-width: 40rem; margin: 0 auto; padding: 4rem 1.25rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; text-align: center; }
+  h1 { font-size: 1.85rem; margin: 0 0 .75rem; }
+  a { color: #00695C; font-weight: 600; text-decoration: none; }
+  p { color: #5a5a5a; }
+</style>
+</head>
+<body>
+  <h1>Page not found</h1>
+  <p>Sorry, that page does not exist or has moved.</p>
+  <p><a href="/">Go to Easy Modbus</a></p>
+</body>
+</html>
+"""
+
+
 def main():
     for g in GUIDES:
         write(
@@ -1839,6 +1901,11 @@ def main():
         for g in GUIDES
     )
     write("llms.txt", LLMS % {"guides": llm_links})
+
+    # Custom-domain and hosting files for GitHub Pages.
+    write("CNAME", "easymodbus.com\n")
+    write(".nojekyll", "")
+    write("404.html", NOT_FOUND)
 
     print()
     print("%d guides, %d pages total." % (len(GUIDES), len(urls)))
