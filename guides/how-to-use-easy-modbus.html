@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to use Easy Modbus to read a device | Easy Modbus</title>
+<meta name="description" content="Step by step: find or add the device, test the connection, add your first reading with the Easy wizard, and export the register map with live values.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/how-to-use-easy-modbus.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "How do I use Easy Modbus to read values from a Modbus device?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Connect your phone to the same network as the equipment, open Easy Modbus and either tap Find devices to sweep the network or add the device by typing its IP address. Test the connection, then add a reading: in Easy mode the app asks what kind of value it is — a temperature, a kilowatt figure, an on/off — and picks the data type, scaling and units for you, reads it straight away, and warns you if the answer is not plausible. Name it and it is saved. Once you have the readings you want, Export hands you a CSV with live values." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>How do I use Easy Modbus to read values from a Modbus device?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Connect your phone to the same network as the equipment,
+    open Easy Modbus and either tap <strong>Find devices</strong> to sweep the
+    network or add the device by typing its IP address. Test the connection,
+    then add a reading: in Easy mode the app asks what kind of value it is
+    &mdash; a temperature, a kilowatt figure, an on/off &mdash; and picks the
+    data type, scaling and units for you, reads it straight away, and warns you
+    if the answer is not plausible. Name it and it is saved. Once you have the
+    readings you want, <strong>Export</strong> hands you a CSV with live
+    values.</p>
+  </div>
+
+
+  <h2>The thing to understand first</h2>
+  <p>A Modbus device will tell you the contents of register 7 and will never
+  tell you what register 7 <em>is</em>. Unlike BACnet, there is no list to ask
+  for. So most of what Easy Modbus does is help you build that list yourself
+  &mdash; and then remember it, so nobody has to work it out twice. See
+  <a href="what-is-a-modbus-register-map.html">what a Modbus register map is</a>.</p>
+
+  <h2>Step 1 &mdash; Get on the network</h2>
+  <p>Join the building's Wi-Fi or plug the phone into the controls network with
+  a USB-Ethernet adapter. Modbus TCP normally uses port 502; if the equipment
+  has an Ethernet socket that is almost certainly what it speaks. Serial
+  equipment behind a gateway box is covered below.</p>
+
+  <h2>Step 2 &mdash; Find or add the device</h2>
+  <ul>
+    <li><strong>Find devices</strong> sweeps your local subnet for anything
+    answering on port 502. The app tells you first that this is a port scan of
+    someone's network, because it is; on a customer site, ask before you tap.
+    A typical /24 takes a few seconds.</li>
+    <li><strong>Add by address</strong> when you already know the IP, or when the
+    equipment is on another subnet the sweep cannot reach. This is the normal
+    route in practice.</li>
+  </ul>
+  <p>Then <strong>Test connection</strong>. The app tries plain Modbus TCP and
+  Modbus RTU-over-TCP and tells you which one answered. This matters because a
+  serial gateway that needs RTU framing looks <em>exactly</em> like a device
+  that is switched off. An error reply counts as success here &mdash; an
+  exception from the device proves something is listening. Only silence means
+  absent. See <a href="cannot-find-modbus-devices.html">cannot find Modbus
+  devices</a>.</p>
+  <p>If the device is a gateway with several units behind it, <strong>Find unit
+  IDs</strong> sweeps a range of unit IDs and offers to add each one that
+  answers. See <a href="modbus-unit-id-slave-id.html">Modbus unit IDs</a>.</p>
+
+  <h2>Step 3 &mdash; Add a reading (Easy mode)</h2>
+  <p>Open the device and add a reading. Easy mode asks <strong>what kind of
+  reading is it?</strong> &mdash; temperature, humidity, pressure, power,
+  energy, a count, an on/off status &mdash; and picks the data type, word
+  order, multiplier and units that are usual for that quantity. You give it the
+  register address, typed however your manual writes it (40007, 4x0007,
+  "register 7", "address 6" all mean the same thing; the app shows you how it
+  read it &mdash; see <a href="modbus-address-off-by-one.html">why the address
+  is off by one</a>).</p>
+  <p>The app reads the register immediately and shows the value. If the answer
+  is not plausible for that kind of quantity &mdash; a humidity of 452%, a
+  room at 1,847 degrees &mdash; it says so, because that means the scaling or
+  word order is wrong, not the sensor. Adjust and read again. When it looks
+  right, name the reading and it is saved.</p>
+  <div class="callout">
+  <p>That saved reading &mdash; address, type, word order, scaling, units, name
+  &mdash; is the product. It is the register map the vendor never gave you,
+  built one row at a time, and it is there next visit.</p>
+  </div>
+
+  <h2>When you do not know what a register is</h2>
+  <p>Switch to <strong>Pro mode</strong> (in Settings) and open the
+  <strong>register browser</strong>. Read a block and the app shows each
+  register in hex and decimal alongside its best guesses: "12.75 as a 32-bit
+  float, words swapped", "a counter", "packed text", each with the reasoning.
+  A wrong guess is visibly wrong. See
+  <a href="modbus-value-wrong-scaling-byte-order.html">why the value looks
+  wrong</a>.</p>
+
+  <h2>Step 4 &mdash; Read them all, and export</h2>
+  <p>The device's reading list refreshes every saved reading in one tap,
+  grouping neighbouring registers into as few requests as the equipment
+  allows. <strong>Export</strong> produces a CSV of the whole map with the live
+  values and hands it to your email app; you choose who gets it. If a vendor
+  gives you a CSV register map, <strong>Import</strong> reads it in rather than
+  making you type forty rows. See
+  <a href="vendor-asking-for-modbus-information.html">a vendor asked for my
+  Modbus information</a>.</p>
+
+  <h2>Things worth knowing</h2>
+  <ul>
+    <li><strong>Reading cannot change anything.</strong> Writing is a separate
+    mode that is off by default &mdash; see
+    <a href="how-to-write-to-a-modbus-register.html">how to write to a
+    register</a>.</li>
+    <li><strong>Nothing leaves the phone</strong> except a CSV you export
+    yourself. No account, no server.</li>
+    <li><strong>Pro mode changes what you see, not what is sent.</strong> The
+    same requests go on the wire either way; Pro just stops hiding the hex,
+    function codes, per-device timeouts and the frame log.</li>
+  </ul>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/how-to-write-to-a-modbus-register.html">How do I write to a Modbus register with Easy Modbus, and put it back?</a></li>
+      <li><a href="../guides/how-to-build-a-modbus-remote.html">How do I build a custom remote in Easy Modbus?</a></li>
+      <li><a href="../guides/what-is-a-modbus-register-map.html">What is a Modbus register map?</a></li>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

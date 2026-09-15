@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to build a custom remote in Easy Modbus | Easy Modbus</title>
+<meta name="description" content="Build a drag-and-drop control screen for one drive, meter or controller from readings you have already saved: setpoint arrows, on/off switches, readouts and a restore button, sized for gloves.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/how-to-build-a-modbus-remote.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "How do I build a custom remote for a Modbus device in Easy Modbus?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Open a device, tap the menu and choose Custom Remote, then Edit and Add Control. Pick one of the device's saved readings, choose what kind of control it should be — a readout, a setpoint with minus and plus, an on/off toggle, a button, a multi-state picker, or a Restore button that puts the register back to what it was — and it appears on a grid. Drag to arrange, tap to rename or recolour, tap Done. The remote is free and it stays." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>How do I build a custom remote for a Modbus device in Easy Modbus?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Open a device, tap the menu and choose <strong>Custom
+    Remote</strong>, then <strong>Edit</strong> and <strong>Add Control</strong>.
+    Pick one of the device's saved readings, choose what kind of control it
+    should be &mdash; a readout, a setpoint with minus and plus, an on/off
+    toggle, a button, a multi-state picker, or a <em>Restore</em> button that
+    puts the register back to what it was &mdash; and it appears on a grid.
+    Drag to arrange, tap to rename or recolour, tap <strong>Done</strong>. The
+    remote is free and it stays.</p>
+  </div>
+
+
+  <h2>Build the readings first</h2>
+  <p>A remote's controls are made from the device's <strong>saved
+  readings</strong> &mdash; the ones you named in Easy mode or the browser. If
+  the reading does not exist yet, add it first (see
+  <a href="how-to-use-easy-modbus.html">how to use Easy Modbus</a>). A control
+  keeps a copy of its reading's settings, so editing the reading later updates
+  the control, and deleting the reading does not break it.</p>
+
+  <h2>Adding and arranging</h2>
+  <p>Open the device, menu &rarr; <strong>Custom Remote</strong>, then
+  <strong>Edit</strong>, then <strong>Add Control</strong>. Choose the reading,
+  then the kind of control:</p>
+  <table>
+    <tr><th>Control</th><th>What it does</th><th>Use it for</th></tr>
+    <tr><td>Readout</td><td>Shows the live value. Never writes.</td><td>Leaving water temp, kW, status.</td></tr>
+    <tr><td>Setpoint</td><td>Minus, value, plus. Tap the value to type one.</td><td>A setpoint or speed reference.</td></tr>
+    <tr><td>Toggle</td><td>Tap to flip on/off.</td><td>A coil: run enable, remote start.</td></tr>
+    <tr><td>Button</td><td>Writes one fixed value when tapped.</td><td>A reset, a fixed mode.</td></tr>
+    <tr><td>Multi-state</td><td>Tap to pick from named states.</td><td>Off/Hand/Auto, a mode register.</td></tr>
+    <tr><td>Restore</td><td>Writes back what the register held when you arrived.</td><td>Put one beside every control that writes.</td></tr>
+  </table>
+  <p>Controls snap to a four-column grid. <strong>Drag</strong> to move one (it
+  will not land on another); <strong>tap</strong> to rename it, widen it, change
+  its step size, states, colour or card style, or delete it. Nothing talks to
+  the device in Edit mode. Tap <strong>Done</strong> to go live.</p>
+  <div class="callout">
+  <p>Give the control that stops the pump a red card and leave the temperature
+  readouts plain. With gloves on, at arm's length, colour is what you see
+  first.</p>
+  </div>
+
+  <h2>Using it</h2>
+  <p>Live, the top line reports the connection honestly: <strong>Online</strong>
+  with the time of the last reply, or <strong>No response from device</strong>
+  &mdash; and when the device stops answering, the values grey out instead of
+  sitting there looking current. <strong>Refresh</strong> re-reads everything.
+  Controls that write need <strong>Write mode</strong> on, exactly like the rest
+  of the app; until then the remote is read-only and says so. See
+  <a href="how-to-write-to-a-modbus-register.html">how to write to a Modbus
+  register</a>, including why <em>Restore</em> matters.</p>
+
+  <h2>Free, and kept</h2>
+  <p>Custom remotes in Easy Modbus are free and are not deleted. They are stored
+  on the phone only, under the device they belong to, and are not backed up to
+  the cloud &mdash; a saved remote names a customer's equipment and registers,
+  and that should not leave the phone by accident.</p>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read a device?</a></li>
+      <li><a href="../guides/how-to-write-to-a-modbus-register.html">How do I write to a Modbus register with Easy Modbus, and put it back?</a></li>
+      <li><a href="../guides/is-it-safe-to-write-to-modbus.html">Is it safe to write to a Modbus register?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

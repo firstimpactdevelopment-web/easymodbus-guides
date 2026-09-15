@@ -1295,6 +1295,267 @@ GUIDES.append(dict(
 # Index
 # ---------------------------------------------------------------------------
 
+
+# ---------------------------------------------------------------------------
+# How-to guides for the app itself (added 2026-09-15)
+# ---------------------------------------------------------------------------
+
+GUIDES.append(dict(
+    slug="guides/how-to-use-easy-modbus",
+    title="How to use Easy Modbus to read a device | Easy Modbus",
+    question="How do I use Easy Modbus to read values from a Modbus device?",
+    description="Step by step: find or add the device, test the connection, add your first reading with the Easy wizard, and export the register map with live values.",
+    answer_html="""<p>Connect your phone to the same network as the equipment,
+    open Easy Modbus and either tap <strong>Find devices</strong> to sweep the
+    network or add the device by typing its IP address. Test the connection,
+    then add a reading: in Easy mode the app asks what kind of value it is
+    &mdash; a temperature, a kilowatt figure, an on/off &mdash; and picks the
+    data type, scaling and units for you, reads it straight away, and warns you
+    if the answer is not plausible. Name it and it is saved. Once you have the
+    readings you want, <strong>Export</strong> hands you a CSV with live
+    values.</p>""",
+    body_html="""
+  <h2>The thing to understand first</h2>
+  <p>A Modbus device will tell you the contents of register 7 and will never
+  tell you what register 7 <em>is</em>. Unlike BACnet, there is no list to ask
+  for. So most of what Easy Modbus does is help you build that list yourself
+  &mdash; and then remember it, so nobody has to work it out twice. See
+  <a href="what-is-a-modbus-register-map.html">what a Modbus register map is</a>.</p>
+
+  <h2>Step 1 &mdash; Get on the network</h2>
+  <p>Join the building's Wi-Fi or plug the phone into the controls network with
+  a USB-Ethernet adapter. Modbus TCP normally uses port 502; if the equipment
+  has an Ethernet socket that is almost certainly what it speaks. Serial
+  equipment behind a gateway box is covered below.</p>
+
+  <h2>Step 2 &mdash; Find or add the device</h2>
+  <ul>
+    <li><strong>Find devices</strong> sweeps your local subnet for anything
+    answering on port 502. The app tells you first that this is a port scan of
+    someone's network, because it is; on a customer site, ask before you tap.
+    A typical /24 takes a few seconds.</li>
+    <li><strong>Add by address</strong> when you already know the IP, or when the
+    equipment is on another subnet the sweep cannot reach. This is the normal
+    route in practice.</li>
+  </ul>
+  <p>Then <strong>Test connection</strong>. The app tries plain Modbus TCP and
+  Modbus RTU-over-TCP and tells you which one answered. This matters because a
+  serial gateway that needs RTU framing looks <em>exactly</em> like a device
+  that is switched off. An error reply counts as success here &mdash; an
+  exception from the device proves something is listening. Only silence means
+  absent. See <a href="cannot-find-modbus-devices.html">cannot find Modbus
+  devices</a>.</p>
+  <p>If the device is a gateway with several units behind it, <strong>Find unit
+  IDs</strong> sweeps a range of unit IDs and offers to add each one that
+  answers. See <a href="modbus-unit-id-slave-id.html">Modbus unit IDs</a>.</p>
+
+  <h2>Step 3 &mdash; Add a reading (Easy mode)</h2>
+  <p>Open the device and add a reading. Easy mode asks <strong>what kind of
+  reading is it?</strong> &mdash; temperature, humidity, pressure, power,
+  energy, a count, an on/off status &mdash; and picks the data type, word
+  order, multiplier and units that are usual for that quantity. You give it the
+  register address, typed however your manual writes it (40007, 4x0007,
+  "register 7", "address 6" all mean the same thing; the app shows you how it
+  read it &mdash; see <a href="modbus-address-off-by-one.html">why the address
+  is off by one</a>).</p>
+  <p>The app reads the register immediately and shows the value. If the answer
+  is not plausible for that kind of quantity &mdash; a humidity of 452%, a
+  room at 1,847 degrees &mdash; it says so, because that means the scaling or
+  word order is wrong, not the sensor. Adjust and read again. When it looks
+  right, name the reading and it is saved.</p>
+  <div class="callout">
+  <p>That saved reading &mdash; address, type, word order, scaling, units, name
+  &mdash; is the product. It is the register map the vendor never gave you,
+  built one row at a time, and it is there next visit.</p>
+  </div>
+
+  <h2>When you do not know what a register is</h2>
+  <p>Switch to <strong>Pro mode</strong> (in Settings) and open the
+  <strong>register browser</strong>. Read a block and the app shows each
+  register in hex and decimal alongside its best guesses: "12.75 as a 32-bit
+  float, words swapped", "a counter", "packed text", each with the reasoning.
+  A wrong guess is visibly wrong. See
+  <a href="modbus-value-wrong-scaling-byte-order.html">why the value looks
+  wrong</a>.</p>
+
+  <h2>Step 4 &mdash; Read them all, and export</h2>
+  <p>The device's reading list refreshes every saved reading in one tap,
+  grouping neighbouring registers into as few requests as the equipment
+  allows. <strong>Export</strong> produces a CSV of the whole map with the live
+  values and hands it to your email app; you choose who gets it. If a vendor
+  gives you a CSV register map, <strong>Import</strong> reads it in rather than
+  making you type forty rows. See
+  <a href="vendor-asking-for-modbus-information.html">a vendor asked for my
+  Modbus information</a>.</p>
+
+  <h2>Things worth knowing</h2>
+  <ul>
+    <li><strong>Reading cannot change anything.</strong> Writing is a separate
+    mode that is off by default &mdash; see
+    <a href="how-to-write-to-a-modbus-register.html">how to write to a
+    register</a>.</li>
+    <li><strong>Nothing leaves the phone</strong> except a CSV you export
+    yourself. No account, no server.</li>
+    <li><strong>Pro mode changes what you see, not what is sent.</strong> The
+    same requests go on the wire either way; Pro just stops hiding the hex,
+    function codes, per-device timeouts and the frame log.</li>
+  </ul>
+""",
+    related=[
+        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
+        ("guides/how-to-build-a-modbus-remote", "How do I build a custom remote in Easy Modbus?"),
+        ("guides/what-is-a-modbus-register-map", "What is a Modbus register map?"),
+        ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/how-to-write-to-a-modbus-register",
+    title="How to write to a Modbus register with Easy Modbus, and put it back | Easy Modbus",
+    question="How do I write to a Modbus register with Easy Modbus, and put it back afterwards?",
+    description="Turning on write mode, setting limits, confirming the write, and using Put It Back to restore what the register said before you touched it. Modbus has no undo; this is the closest thing.",
+    answer_html="""<p>Turn on <strong>Write mode</strong> from the menu and accept
+    the warning. Open the reading, choose to change its value, enter the new
+    one, and confirm against the summary. The app writes it, reads it back and
+    logs it. When you are done, use <strong>Put It Back</strong>: the app
+    remembered what the register said the first time it saw it this session,
+    and offers to write that value again. Modbus has no priority levels, no
+    release and no timeout &mdash; whatever you write simply <em>is</em> the
+    value until something overwrites it &mdash; so Put It Back is the only undo
+    you get.</p>""",
+    body_html="""
+  <h2>Why writing to Modbus deserves more care than BACnet</h2>
+  <p>BACnet keeps a priority array: your override sits in a slot, and releasing
+  the slot hands control back. Modbus has nothing of the kind. A holding
+  register is a box with a number in it. Write 55 and it contains 55, full
+  stop, until the equipment's own logic or another system writes something
+  else &mdash; and many devices' logic never will. Read
+  <a href="is-it-safe-to-write-to-modbus.html">is it safe to write to a Modbus
+  register?</a> before touching anything on live plant.</p>
+
+  <h2>Step 1 &mdash; Turn on write mode</h2>
+  <p>Write mode is off every time the app starts and is not remembered. Open the
+  menu, tap <strong>Write mode</strong>, read the warning and accept it. Until
+  then no screen in the app offers a write.</p>
+
+  <h2>Step 2 &mdash; Set limits, if you can</h2>
+  <p>A reading can carry a minimum and maximum. Set them on anything you are
+  going to write to &mdash; a setpoint that should live between 60 and 80, a
+  speed reference that must stay under 100%. The app refuses a write outside
+  those bounds before it gets anywhere near the wire. A typo becomes a message
+  instead of a chiller trip.</p>
+
+  <h2>Step 3 &mdash; Write</h2>
+  <p>Open the reading and choose to change its value. Enter the new value in the
+  same units the reading displays &mdash; the app applies the reading's
+  multiplier and word order to produce the raw register contents, so you type
+  <em>72.5</em>, not <em>725</em>. For an on/off coil you pick the state.</p>
+  <p>Confirm against the summary: the device, the register, the current value,
+  the new value, and the safety wording. The app then writes, waits for the
+  device to acknowledge, and <strong>reads the register back</strong> so what
+  is on screen is what the equipment actually holds, not what you asked for.
+  A refusal comes back with the device's exception in plain words.</p>
+
+  <h2>Step 4 &mdash; Put It Back</h2>
+  <p>The first time the app reads a register in a session it remembers the
+  value. <strong>Put It Back</strong> offers to write that value again. Use it
+  before you leave on anything you changed for a test. It is not a true undo
+  &mdash; if the equipment's own logic changed the register in between, "back"
+  means back to what <em>you</em> found, not to what would be there had you
+  never visited &mdash; but it is the closest Modbus allows.</p>
+  <div class="callout">
+  <p>If you overrode something to prove a point, put it back before you leave
+  site. Nobody else can see that you did it, and nothing will time it out.</p>
+  </div>
+
+  <h2>Readings you cannot write</h2>
+  <ul>
+    <li><strong>Input registers and discrete inputs</strong> are read-only by
+    definition &mdash; they report what the equipment measures.</li>
+    <li><strong>Text readings</strong> are not offered a write; a packed-ASCII
+    string in holding registers is nearly always a name or a serial number, and
+    changing it does nothing useful.</li>
+    <li>Some <strong>holding registers</strong> are read-only in practice; the
+    device will answer your write with an <em>illegal data address</em> or
+    <em>illegal function</em> exception, which the app shows you.</li>
+  </ul>
+""",
+    related=[
+        ("guides/is-it-safe-to-write-to-modbus", "Is it safe to write to a Modbus register?"),
+        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
+        ("guides/how-to-build-a-modbus-remote", "How do I build a custom remote in Easy Modbus?"),
+        ("guides/modbus-function-codes-explained", "Modbus function codes explained"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/how-to-build-a-modbus-remote",
+    title="How to build a custom remote in Easy Modbus | Easy Modbus",
+    question="How do I build a custom remote for a Modbus device in Easy Modbus?",
+    description="Build a drag-and-drop control screen for one drive, meter or controller from readings you have already saved: setpoint arrows, on/off switches, readouts and a restore button, sized for gloves.",
+    answer_html="""<p>Open a device, tap the menu and choose <strong>Custom
+    Remote</strong>, then <strong>Edit</strong> and <strong>Add Control</strong>.
+    Pick one of the device's saved readings, choose what kind of control it
+    should be &mdash; a readout, a setpoint with minus and plus, an on/off
+    toggle, a button, a multi-state picker, or a <em>Restore</em> button that
+    puts the register back to what it was &mdash; and it appears on a grid.
+    Drag to arrange, tap to rename or recolour, tap <strong>Done</strong>. The
+    remote is free and it stays.</p>""",
+    body_html="""
+  <h2>Build the readings first</h2>
+  <p>A remote's controls are made from the device's <strong>saved
+  readings</strong> &mdash; the ones you named in Easy mode or the browser. If
+  the reading does not exist yet, add it first (see
+  <a href="how-to-use-easy-modbus.html">how to use Easy Modbus</a>). A control
+  keeps a copy of its reading's settings, so editing the reading later updates
+  the control, and deleting the reading does not break it.</p>
+
+  <h2>Adding and arranging</h2>
+  <p>Open the device, menu &rarr; <strong>Custom Remote</strong>, then
+  <strong>Edit</strong>, then <strong>Add Control</strong>. Choose the reading,
+  then the kind of control:</p>
+  <table>
+    <tr><th>Control</th><th>What it does</th><th>Use it for</th></tr>
+    <tr><td>Readout</td><td>Shows the live value. Never writes.</td><td>Leaving water temp, kW, status.</td></tr>
+    <tr><td>Setpoint</td><td>Minus, value, plus. Tap the value to type one.</td><td>A setpoint or speed reference.</td></tr>
+    <tr><td>Toggle</td><td>Tap to flip on/off.</td><td>A coil: run enable, remote start.</td></tr>
+    <tr><td>Button</td><td>Writes one fixed value when tapped.</td><td>A reset, a fixed mode.</td></tr>
+    <tr><td>Multi-state</td><td>Tap to pick from named states.</td><td>Off/Hand/Auto, a mode register.</td></tr>
+    <tr><td>Restore</td><td>Writes back what the register held when you arrived.</td><td>Put one beside every control that writes.</td></tr>
+  </table>
+  <p>Controls snap to a four-column grid. <strong>Drag</strong> to move one (it
+  will not land on another); <strong>tap</strong> to rename it, widen it, change
+  its step size, states, colour or card style, or delete it. Nothing talks to
+  the device in Edit mode. Tap <strong>Done</strong> to go live.</p>
+  <div class="callout">
+  <p>Give the control that stops the pump a red card and leave the temperature
+  readouts plain. With gloves on, at arm's length, colour is what you see
+  first.</p>
+  </div>
+
+  <h2>Using it</h2>
+  <p>Live, the top line reports the connection honestly: <strong>Online</strong>
+  with the time of the last reply, or <strong>No response from device</strong>
+  &mdash; and when the device stops answering, the values grey out instead of
+  sitting there looking current. <strong>Refresh</strong> re-reads everything.
+  Controls that write need <strong>Write mode</strong> on, exactly like the rest
+  of the app; until then the remote is read-only and says so. See
+  <a href="how-to-write-to-a-modbus-register.html">how to write to a Modbus
+  register</a>, including why <em>Restore</em> matters.</p>
+
+  <h2>Free, and kept</h2>
+  <p>Custom remotes in Easy Modbus are free and are not deleted. They are stored
+  on the phone only, under the device they belong to, and are not backed up to
+  the cloud &mdash; a saved remote names a customer's equipment and registers,
+  and that should not leave the phone by accident.</p>
+""",
+    related=[
+        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
+        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
+        ("guides/is-it-safe-to-write-to-modbus", "Is it safe to write to a Modbus register?"),
+    ],
+))
+
 INDEX = """<!doctype html>
 <html lang="en">
 <head>
@@ -1341,6 +1602,13 @@ INDEX = """<!doctype html>
 <a href="guides/what-is-modbus.html">what is Modbus?</a> first. It explains the
 one thing that causes most of the difficulty: a Modbus device will happily tell
 you the contents of slot number 7, and will never tell you what slot 7 is.</p>
+
+<h2>Using the app</h2>
+<ul>
+  <li><a href="guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read values from a device?</a></li>
+  <li><a href="guides/how-to-write-to-a-modbus-register.html">How do I write to a register, and put it back afterwards?</a></li>
+  <li><a href="guides/how-to-build-a-modbus-remote.html">How do I build a custom remote for a device?</a></li>
+</ul>
 
 <h2>Guides</h2>
 <nav class="more" style="margin-top:0;border-top:none;padding-top:0">

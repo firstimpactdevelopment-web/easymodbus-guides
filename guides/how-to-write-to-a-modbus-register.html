@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to write to a Modbus register with Easy Modbus, and put it back | Easy Modbus</title>
+<meta name="description" content="Turning on write mode, setting limits, confirming the write, and using Put It Back to restore what the register said before you touched it. Modbus has no undo; this is the closest thing.">
+<link rel="canonical" href="https://firstimpactdevelopment-web.github.io/easymodbus-guides/guides/how-to-write-to-a-modbus-register.html">
+<style>
+  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
+          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
+            --box:#10231f; --line:#23443d; --code:#262626; }
+  }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
+                border-bottom:1px solid var(--line); margin-bottom:2rem;
+                flex-wrap:wrap; }
+  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
+  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
+  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
+  a { color: var(--accent); }
+  .answer { background: var(--box); border: 1px solid var(--line);
+            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
+  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
+                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
+  .answer p:last-child { margin-bottom: 0; }
+  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
+          display:block; overflow-x:auto; }
+  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: .4rem 0; }
+  .muted { color: var(--muted); font-size: .92rem; }
+  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
+             margin: 1.5rem 0; }
+  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  nav.more ul { list-style: none; padding: 0; }
+  nav.more li { margin: .5rem 0; }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "How do I write to a Modbus register with Easy Modbus, and put it back afterwards?",
+    "acceptedAnswer": { "@type": "Answer", "text": "Turn on Write mode from the menu and accept the warning. Open the reading, choose to change its value, enter the new one, and confirm against the summary. The app writes it, reads it back and logs it. When you are done, use Put It Back: the app remembered what the register said the first time it saw it this session, and offers to write that value again. Modbus has no priority levels, no release and no timeout — whatever you write simply is the value until something overwrites it — so Put It Back is the only undo you get." }
+  }]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html">Easy Modbus</a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>How do I write to a Modbus register with Easy Modbus, and put it back afterwards?</h1>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>Turn on <strong>Write mode</strong> from the menu and accept
+    the warning. Open the reading, choose to change its value, enter the new
+    one, and confirm against the summary. The app writes it, reads it back and
+    logs it. When you are done, use <strong>Put It Back</strong>: the app
+    remembered what the register said the first time it saw it this session,
+    and offers to write that value again. Modbus has no priority levels, no
+    release and no timeout &mdash; whatever you write simply <em>is</em> the
+    value until something overwrites it &mdash; so Put It Back is the only undo
+    you get.</p>
+  </div>
+
+
+  <h2>Why writing to Modbus deserves more care than BACnet</h2>
+  <p>BACnet keeps a priority array: your override sits in a slot, and releasing
+  the slot hands control back. Modbus has nothing of the kind. A holding
+  register is a box with a number in it. Write 55 and it contains 55, full
+  stop, until the equipment's own logic or another system writes something
+  else &mdash; and many devices' logic never will. Read
+  <a href="is-it-safe-to-write-to-modbus.html">is it safe to write to a Modbus
+  register?</a> before touching anything on live plant.</p>
+
+  <h2>Step 1 &mdash; Turn on write mode</h2>
+  <p>Write mode is off every time the app starts and is not remembered. Open the
+  menu, tap <strong>Write mode</strong>, read the warning and accept it. Until
+  then no screen in the app offers a write.</p>
+
+  <h2>Step 2 &mdash; Set limits, if you can</h2>
+  <p>A reading can carry a minimum and maximum. Set them on anything you are
+  going to write to &mdash; a setpoint that should live between 60 and 80, a
+  speed reference that must stay under 100%. The app refuses a write outside
+  those bounds before it gets anywhere near the wire. A typo becomes a message
+  instead of a chiller trip.</p>
+
+  <h2>Step 3 &mdash; Write</h2>
+  <p>Open the reading and choose to change its value. Enter the new value in the
+  same units the reading displays &mdash; the app applies the reading's
+  multiplier and word order to produce the raw register contents, so you type
+  <em>72.5</em>, not <em>725</em>. For an on/off coil you pick the state.</p>
+  <p>Confirm against the summary: the device, the register, the current value,
+  the new value, and the safety wording. The app then writes, waits for the
+  device to acknowledge, and <strong>reads the register back</strong> so what
+  is on screen is what the equipment actually holds, not what you asked for.
+  A refusal comes back with the device's exception in plain words.</p>
+
+  <h2>Step 4 &mdash; Put It Back</h2>
+  <p>The first time the app reads a register in a session it remembers the
+  value. <strong>Put It Back</strong> offers to write that value again. Use it
+  before you leave on anything you changed for a test. It is not a true undo
+  &mdash; if the equipment's own logic changed the register in between, "back"
+  means back to what <em>you</em> found, not to what would be there had you
+  never visited &mdash; but it is the closest Modbus allows.</p>
+  <div class="callout">
+  <p>If you overrode something to prove a point, put it back before you leave
+  site. Nobody else can see that you did it, and nothing will time it out.</p>
+  </div>
+
+  <h2>Readings you cannot write</h2>
+  <ul>
+    <li><strong>Input registers and discrete inputs</strong> are read-only by
+    definition &mdash; they report what the equipment measures.</li>
+    <li><strong>Text readings</strong> are not offered a write; a packed-ASCII
+    string in holding registers is nearly always a name or a serial number, and
+    changing it does nothing useful.</li>
+    <li>Some <strong>holding registers</strong> are read-only in practice; the
+    device will answer your write with an <em>illegal data address</em> or
+    <em>illegal function</em> exception, which the app shows you.</li>
+  </ul>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/is-it-safe-to-write-to-modbus.html">Is it safe to write to a Modbus register?</a></li>
+      <li><a href="../guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read a device?</a></li>
+      <li><a href="../guides/how-to-build-a-modbus-remote.html">How do I build a custom remote in Easy Modbus?</a></li>
+      <li><a href="../guides/modbus-function-codes-explained.html">Modbus function codes explained</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>
