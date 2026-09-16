@@ -69,6 +69,13 @@ CSS = """
   nav.more li { margin: .5rem 0; }
   footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
            color: var(--muted); font-size: .9rem; }
+  figure.shot { margin: 1.6rem 0; text-align: center; }
+  figure.shot img { max-width: 300px; width: 100%; height: auto; border: 1px solid var(--line);
+                    border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.14); }
+  figure.shot figcaption { color: var(--muted); font-size: .88rem; margin-top: .55rem; }
+  .shots { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center;
+           align-items: flex-start; margin: 1.6rem 0; }
+  .shots figure.shot { margin: 0; flex: 0 1 300px; }
 """
 
 
@@ -1351,6 +1358,10 @@ GUIDES.append(dict(
     equipment is on another subnet the sweep cannot reach. This is the normal
     route in practice.</li>
   </ul>
+  <figure class="shot">
+    <img src="../img/app-devices.png" alt="Easy Modbus device list showing saved Modbus devices with their addresses and unit IDs" loading="lazy">
+    <figcaption>Your saved devices. Tap <strong>Find devices</strong> to sweep the network, or the + button to add one by address.</figcaption>
+  </figure>
   <p>Then <strong>Test connection</strong>. The app tries plain Modbus TCP and
   Modbus RTU-over-TCP and tells you which one answered. This matters because a
   serial gateway that needs RTU framing looks <em>exactly</em> like a device
@@ -1376,6 +1387,10 @@ GUIDES.append(dict(
   room at 1,847 degrees &mdash; it says so, because that means the scaling or
   word order is wrong, not the sensor. Adjust and read again. When it looks
   right, name the reading and it is saved.</p>
+  <figure class="shot">
+    <img src="../img/app-reading-detail.png" alt="A saved reading in Easy Modbus showing its decoded value, address, data type, scaling and units" loading="lazy">
+    <figcaption>A saved reading, decoded with its data type, word order, scaling and units &mdash; and read back live.</figcaption>
+  </figure>
   <div class="callout">
   <p>That saved reading &mdash; address, type, word order, scaling, units, name
   &mdash; is the product. It is the register map the vendor never gave you,
@@ -1390,6 +1405,16 @@ GUIDES.append(dict(
   A wrong guess is visibly wrong. See
   <a href="modbus-value-wrong-scaling-byte-order.html">why the value looks
   wrong</a>.</p>
+  <div class="shots">
+    <figure class="shot">
+      <img src="../img/app-register-browser.png" alt="Easy Modbus Pro-mode register browser listing raw registers in hex and decimal" loading="lazy">
+      <figcaption>The Pro-mode register browser: every register in hex and decimal.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="../img/app-analyzer.png" alt="Easy Modbus showing ranked interpretations of a register such as a word-swapped 32-bit float, with reasoning" loading="lazy">
+      <figcaption>&ldquo;What could this be?&rdquo; ranks each interpretation and explains why.</figcaption>
+    </figure>
+  </div>
 
   <h2>Step 4 &mdash; Read them all, and export</h2>
   <p>The device's reading list refreshes every saved reading in one tap,
@@ -1400,6 +1425,10 @@ GUIDES.append(dict(
   making you type forty rows. See
   <a href="vendor-asking-for-modbus-information.html">a vendor asked for my
   Modbus information</a>.</p>
+  <figure class="shot">
+    <img src="../img/app-readings.png" alt="Easy Modbus reading list showing several named readings with their live values and units" loading="lazy">
+    <figcaption>The device's reading list &mdash; your register map &mdash; refreshed in one tap, ready to export.</figcaption>
+  </figure>
 
   <h2>Things worth knowing</h2>
   <ul>
@@ -1450,6 +1479,10 @@ GUIDES.append(dict(
   <p>Write mode is off every time the app starts and is not remembered. Open the
   menu, tap <strong>Write mode</strong>, read the warning and accept it. Until
   then no screen in the app offers a write.</p>
+  <figure class="shot">
+    <img src="../img/app-write-warning.png" alt="Easy Modbus write-mode warning dialog explaining that writes have no undo, before enabling writing" loading="lazy">
+    <figcaption>Write mode is off at every launch. You accept this warning before any write is possible.</figcaption>
+  </figure>
 
   <h2>Step 2 &mdash; Set limits, if you can</h2>
   <p>A reading can carry a minimum and maximum. Set them on anything you are
@@ -1468,6 +1501,10 @@ GUIDES.append(dict(
   device to acknowledge, and <strong>reads the register back</strong> so what
   is on screen is what the equipment actually holds, not what you asked for.
   A refusal comes back with the device's exception in plain words.</p>
+  <figure class="shot">
+    <img src="../img/app-write-confirm.png" alt="Easy Modbus write confirmation summary showing device, register, current value and new value before writing" loading="lazy">
+    <figcaption>Every write is confirmed against a summary &mdash; device, register, current and new value &mdash; then read back.</figcaption>
+  </figure>
 
   <h2>Step 4 &mdash; Put It Back</h2>
   <p>The first time the app reads a register in a session it remembers the
@@ -1540,6 +1577,10 @@ GUIDES.append(dict(
   will not land on another); <strong>tap</strong> to rename it, widen it, change
   its step size, states, colour or card style, or delete it. Nothing talks to
   the device in Edit mode. Tap <strong>Done</strong> to go live.</p>
+  <figure class="shot">
+    <img src="../img/app-remote.png" alt="A custom remote in Easy Modbus: readout tiles, a setpoint with minus and plus, and an on/off toggle on a grid" loading="lazy">
+    <figcaption>A finished remote &mdash; readouts, a setpoint and a toggle on a grid, sized for gloves.</figcaption>
+  </figure>
   <div class="callout">
   <p>Give the control that stops the pump a red card and leave the temperature
   readouts plain. With gloves on, at arm's length, colour is what you see
