@@ -104,6 +104,7 @@ def page(slug, title, question, answer_html, body_html, related, description):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>%(title)s</title>
 <meta name="description" content="%(description)s">
 <link rel="canonical" href="%(base)s/%(slug)s.html">
@@ -127,7 +128,7 @@ def page(slug, title, question, answer_html, body_html, related, description):
 <body>
 
 <header class="site">
-  <a href="%(prefix)sindex.html">Easy Modbus</a>
+  <a href="%(prefix)sindex.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
   <span class="muted">&middot; plain-English Modbus reference</span>
 </header>
 
@@ -1573,6 +1574,7 @@ INDEX = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Easy Modbus &mdash; Modbus explained in plain English</title>
 <meta name="description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
 <link rel="canonical" href="%(base)s/index.html">
@@ -1604,7 +1606,7 @@ INDEX = """<!doctype html>
 <body>
 
 <header class="site">
-  <a href="index.html">Easy Modbus</a>
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
   <span class="muted">&middot; plain-English Modbus reference</span>
 </header>
 
@@ -1693,6 +1695,7 @@ PRIVACY = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Privacy policy &mdash; Easy Modbus</title>
 <meta name="description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
 <link rel="canonical" href="%(base)s/privacy.html">
@@ -1713,7 +1716,7 @@ PRIVACY = """<!doctype html>
 <body>
 
 <header class="site">
-  <a href="index.html">Easy Modbus</a>
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
   <span class="muted">&middot; privacy policy</span>
 </header>
 
@@ -1848,6 +1851,7 @@ NOT_FOUND = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Page not found &mdash; Easy Modbus</title>
 <meta name="robots" content="noindex">
 <style>
