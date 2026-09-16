@@ -1750,11 +1750,14 @@ move a map.</p>
 <p>The free version shows occasional rewarded video ads, supplied by Google
 AdMob, in exchange for exporting a report or opening a saved custom remote. To
 serve them, Google's advertising SDK may collect a device advertising
-identifier and standard ad-delivery information, as set out in Google's own
-privacy policy. Where the law requires it you are asked for consent before any
-personalised ad, and may choose non-personalised ads instead. The one-time
-in-app purchase removes all advertising. The developer sees only aggregate,
-anonymous earnings from AdMob.</p>
+identifier and standard ad-delivery information. How Google uses that data is
+described in <a href="https://policies.google.com/privacy">Google's Privacy
+Policy</a> and in <a href="https://policies.google.com/technologies/partner-sites">How
+Google uses information from sites or apps that use its services</a>. In the EEA,
+the UK and Switzerland you are asked for consent before any personalised ad, and
+may choose non-personalised ads instead. The one-time in-app purchase removes all
+advertising and also unlocks unlimited custom remotes. The developer receives
+only aggregate, anonymous earnings figures from AdMob &mdash; never your data.</p>
 
 <h2>What leaves the phone</h2>
 <p>Two things, both only when you ask for them:</p>
@@ -1782,15 +1785,137 @@ anonymous earnings from AdMob.</p>
   <li><strong>Wi-Fi state</strong> &mdash; to read the local address and subnet.</li>
 </ul>
 
+<h2>Your choices</h2>
+<ul>
+  <li>You can reset or delete your advertising identifier, or turn off ad
+  personalisation, in Android <em>Settings &rarr; Privacy &rarr; Ads</em>.</li>
+  <li>Where a consent prompt applies, you can change your answer at any time;
+  declining simply leaves you with non-personalised ads.</li>
+  <li>The one-time purchase removes advertising entirely.</li>
+  <li>To erase everything the app has stored, uninstall it &mdash; nothing is kept
+  anywhere else.</li>
+</ul>
+
 <h2>Children</h2>
 <p>Easy Modbus is a tool for building and industrial equipment and is not directed
 at children. It collects no personal information from anyone.</p>
+
+<h2>Changes to this policy</h2>
+<p>If this policy changes, the &ldquo;last updated&rdquo; date above changes with
+it. Material changes will be reflected here before they take effect in a new
+release.</p>
 
 <h2>Contact</h2>
 <p>Questions about this policy: %(contact)s</p>
 
 <footer>
-  <p><a href="index.html">Easy Modbus</a></p>
+  <p><a href="index.html">Easy Modbus</a> &middot; <a href="pc-privacy.html">Easy Modbus PC (Windows) privacy policy</a></p>
+</footer>
+
+</body>
+</html>
+"""
+
+PC_PRIVACY = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Privacy policy &mdash; Easy Modbus PC</title>
+<meta name="description" content="Privacy policy for Easy Modbus PC, the Windows desktop app. No account, no analytics, no ads; everything stays on your PC and your local network.">
+<link rel="canonical" href="%(base)s/pc-privacy.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00695C">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Privacy policy &mdash; Easy Modbus PC">
+<meta property="og:description" content="Privacy policy for Easy Modbus PC, the Windows desktop app. No account, no analytics, no ads; everything stays on your PC.">
+<meta property="og:url" content="%(base)s/pc-privacy.html">
+<meta property="og:image" content="%(base)s/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy policy &mdash; Easy Modbus PC">
+<meta name="twitter:description" content="Privacy policy for Easy Modbus PC, the Windows desktop app. No account, no analytics, no ads; everything stays on your PC.">
+<meta name="twitter:image" content="%(base)s/img/og-image.png">
+<style>%(css)s</style>
+</head>
+<body>
+
+<header class="site">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; PC version privacy policy</span>
+</header>
+
+<h1>Privacy policy &mdash; Easy Modbus PC</h1>
+<p class="muted">Windows desktop application &middot; last updated: %(updated)s</p>
+
+<div class="answer">
+  <strong>Summary</strong>
+  <p>Easy Modbus PC has no account, no analytics, and no advertising. The app
+  sends nothing to the developer or to any server. Everything it does happens on
+  your own computer and on the local network you connect it to. A license, if you
+  buy one, is checked on your own machine without contacting anyone.</p>
+</div>
+
+<h2>What the app stores, and where</h2>
+<p>Easy Modbus PC saves the following on your computer, and nowhere else, under
+<code>%%APPDATA%%\\EasyModbusPC</code>:</p>
+<ul>
+  <li>The devices you add &mdash; address, port, unit ID and name.</li>
+  <li>The register maps you build &mdash; addresses, data types, scaling, units and notes.</li>
+  <li>The custom remotes (control panels) you create.</li>
+  <li>The emulator units you configure, and their register values.</li>
+  <li>Your settings, and your license key if you enter one.</li>
+</ul>
+<p>This file never leaves your computer unless you copy it yourself.</p>
+
+<h2>What leaves your computer</h2>
+<p>Only the network traffic you ask for, all of it on your own network:</p>
+<ul>
+  <li><strong>Modbus requests</strong> to the equipment you point the Explorer at.</li>
+  <li><strong>A network scan</strong>, when you use &ldquo;Find devices&rdquo; &mdash; the app
+  connects to port 502 on the addresses of your local subnet to see what answers.
+  It is a scan of your own network and nothing is transmitted off it.</li>
+  <li><strong>Inbound connections you host</strong> &mdash; when you run the built-in
+  device emulator, the app opens a listening socket on the port you choose so other
+  software on your network can connect to it. It answers with the register values
+  you configured and makes no outbound connection of its own.</li>
+</ul>
+<p>None of this reaches the developer. Easy Modbus PC has no server.</p>
+
+<h2>Licensing</h2>
+<p>Custom Remotes are free for one control panel; a one-time license unlocks
+unlimited remotes. The license key is verified entirely on your own computer
+&mdash; the app does not contact a license server, and no information about you or
+your machine is sent when you enter a key.</p>
+
+<h2>What the app does not do</h2>
+<ul>
+  <li>No account, sign-in, or registration.</li>
+  <li>No analytics, telemetry, or crash reporting.</li>
+  <li>No advertising and no advertising identifiers.</li>
+  <li>No access to your files beyond its own settings folder, and no access to
+  location, camera, or microphone.</li>
+  <li>No internet use beyond the local-network Modbus traffic described above.</li>
+</ul>
+
+<h2>Your choices</h2>
+<p>To erase everything the app has stored, delete the
+<code>%%APPDATA%%\\EasyModbusPC</code> folder or uninstall the app. Nothing is kept
+anywhere else, so there is nothing to request from us and nothing for us to delete.</p>
+
+<h2>Children</h2>
+<p>Easy Modbus PC is a tool for building and industrial equipment and is not
+directed at children. It collects no personal information from anyone.</p>
+
+<h2>Changes to this policy</h2>
+<p>If this policy changes, the &ldquo;last updated&rdquo; date above changes with it.</p>
+
+<h2>Contact</h2>
+<p>Questions about this policy: %(contact)s</p>
+
+<footer>
+  <p><a href="index.html">Easy Modbus</a> &middot; <a href="privacy.html">Android app privacy policy</a></p>
 </footer>
 
 </body>
@@ -1895,13 +2020,23 @@ def main():
         PRIVACY % {
             "base": BASE_URL,
             "css": CSS,
-            "updated": "13 September 2026",
+            "updated": "15 September 2026",
+            "contact": "Firstimpactdevelopment@gmail.com",
+        },
+    )
+
+    write(
+        "pc-privacy.html",
+        PC_PRIVACY % {
+            "base": BASE_URL,
+            "css": CSS,
+            "updated": "15 September 2026",
             "contact": "Firstimpactdevelopment@gmail.com",
         },
     )
 
     # sitemap + robots so crawlers and agents can enumerate the whole set
-    urls = ["index.html", "privacy.html"] + [g["slug"] + ".html" for g in GUIDES]
+    urls = ["index.html", "privacy.html", "pc-privacy.html"] + [g["slug"] + ".html" for g in GUIDES]
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
