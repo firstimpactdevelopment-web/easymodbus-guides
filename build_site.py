@@ -154,7 +154,7 @@ def page(slug, title, question, answer_html, body_html, related, description):
   <p>Published alongside <a href="%(prefix)sindex.html">Easy Modbus</a>, a free
   Android app that finds Modbus TCP equipment on a network, helps you work out
   what its registers mean, and exports the result as a CSV.</p>
-  <p><a href="%(prefix)sprivacy.html">Privacy policy</a></p>
+  <p><a href="%(prefix)sterms.html">Terms of use</a> &middot; <a href="%(prefix)sprivacy.html">Privacy policy</a></p>
 </footer>
 
 </body>
@@ -1724,7 +1724,7 @@ you the contents of slot number 7, and will never tell you what slot 7 is.</p>
 </ul>
 
 <footer>
-  <p><a href="privacy.html">Privacy policy</a></p>
+  <p><a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Privacy policy</a></p>
 </footer>
 
 </body>
@@ -1850,7 +1850,7 @@ release.</p>
 <p>Questions about this policy: %(contact)s</p>
 
 <footer>
-  <p><a href="index.html">Easy Modbus</a> &middot; <a href="pc-privacy.html">Easy Modbus PC (Windows) privacy policy</a></p>
+  <p><a href="index.html">Easy Modbus</a> &middot; <a href="terms.html">Terms of use</a> &middot; <a href="pc-privacy.html">Easy Modbus PC (Windows) privacy policy</a></p>
 </footer>
 
 </body>
@@ -1956,7 +1956,149 @@ directed at children. It collects no personal information from anyone.</p>
 <p>Questions about this policy: %(contact)s</p>
 
 <footer>
-  <p><a href="index.html">Easy Modbus</a> &middot; <a href="privacy.html">Android app privacy policy</a></p>
+  <p><a href="index.html">Easy Modbus</a> &middot; <a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Android app privacy policy</a></p>
+</footer>
+
+</body>
+</html>
+"""
+
+TERMS = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Terms of use &mdash; Easy Modbus</title>
+<meta name="description" content="Terms of use for Easy Modbus (Android) and Easy Modbus PC (Windows): acceptance, the industrial-safety responsibilities of the user, no warranty, and limitation of liability.">
+<link rel="canonical" href="%(base)s/terms.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00695C">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Terms of use &mdash; Easy Modbus">
+<meta property="og:description" content="Terms of use for Easy Modbus and Easy Modbus PC: user safety responsibilities, no warranty, and limitation of liability.">
+<meta property="og:url" content="%(base)s/terms.html">
+<meta property="og:image" content="%(base)s/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Terms of use &mdash; Easy Modbus">
+<meta name="twitter:description" content="Terms of use for Easy Modbus and Easy Modbus PC: user safety responsibilities, no warranty, and limitation of liability.">
+<meta name="twitter:image" content="%(base)s/img/og-image.png">
+<style>%(css)s</style>
+</head>
+<body>
+
+<header class="site">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; terms of use</span>
+</header>
+
+<h1>Terms of use</h1>
+<p class="muted">Last updated: %(updated)s</p>
+
+<div class="answer">
+  <strong>Please read this first</strong>
+  <p>These terms apply to <strong>Easy Modbus</strong> for Android and
+  <strong>Easy Modbus PC</strong> for Windows (together, the &ldquo;app&rdquo;).
+  By installing or using the app you agree to them. If you do not agree, do not
+  use the app. The app talks to real industrial and building equipment; the
+  safety section below is the part that matters most.</p>
+</div>
+
+<h2>1. Industrial-control safety &mdash; your responsibility</h2>
+<p>The app can read from, write to, and simulate Modbus equipment that controls
+real machinery, building services and industrial processes. Working with control
+systems is inherently hazardous when it is done without a full understanding of
+the equipment.</p>
+<ul>
+  <li><strong>Do not change a value, register, point or control logic unless you
+  understand exactly what it does and what will happen when it changes.</strong>
+  A Modbus write takes effect immediately, has no undo, and stays in effect until
+  something else overwrites it.</li>
+  <li><strong>Always consult the equipment manufacturer's documentation &mdash;
+  the register/points list, control drawings and user manual &mdash; before
+  reading, writing, or changing any point or logic.</strong> The meaning,
+  scaling, and safe range of every register comes from that documentation, not
+  from the app.</li>
+  <li>You are responsible for correctly identifying addresses, data types,
+  scaling and units, and for verifying the effect of any change on non-critical
+  equipment first where possible.</li>
+  <li>You are responsible for having the authority and permission to access and
+  modify the equipment you connect to, and for complying with all applicable
+  site rules, codes, standards and laws.</li>
+  <li>Do not use the app on life-safety, emergency, medical, or other systems
+  where a fault, an incorrect value, or a communication interruption could cause
+  injury, loss of life, or significant damage.</li>
+</ul>
+<p>If you are not certain what you are doing, stop, and consult a qualified
+controls engineer and the manufacturer before proceeding.</p>
+
+<h2>2. The app is a tool, not advice</h2>
+<p>The app and its guides are general information and utilities. They are not
+engineering, safety, or professional advice, and they are not a substitute for
+the manufacturer's documentation or a qualified professional. The datatype
+&ldquo;analyzer&rdquo; offers <em>possible</em> interpretations of raw registers
+and can be wrong; you must confirm any interpretation against the equipment's
+documentation before relying on it.</p>
+
+<h2>3. No warranty</h2>
+<p>The app is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;, without
+warranty of any kind, whether express, implied or statutory, to the maximum extent
+permitted by law. This includes, without limitation, any implied warranties of
+merchantability, fitness for a particular purpose, accuracy, and non-infringement.
+The developer does not warrant that the app will be uninterrupted, error-free, or
+that any reading, interpretation or write will be correct or safe for your
+equipment.</p>
+
+<h2>4. Limitation of liability</h2>
+<p>To the maximum extent permitted by applicable law, in no event will First
+Impact Development, or anyone involved in creating or supplying the app, be liable
+for any damages of any kind arising out of or in connection with your use of, or
+inability to use, the app. This includes, without limitation, direct, indirect,
+incidental, special, consequential, exemplary or punitive damages; loss of profits,
+revenue, data or goodwill; and damage to, malfunction of, or downtime of any
+equipment, process or property, and any resulting injury &mdash; whether based on
+warranty, contract, tort (including negligence), or any other legal theory, and
+whether or not the developer has been advised of the possibility of such damage.</p>
+<p>Where liability cannot be excluded as a matter of law, it is limited to the
+greatest extent that law permits, and in no case will the developer's total
+liability exceed the amount you paid, if any, for the app in the twelve months
+before the event giving rise to the claim.</p>
+
+<h2>5. Your responsibilities</h2>
+<ul>
+  <li>Use the app lawfully, and only on equipment and networks you are authorised
+  to access.</li>
+  <li>Keep your own backups of any configuration you rely on; the app stores your
+  data only on your own device.</li>
+  <li>Supervise any write, and put values back when you have finished testing.</li>
+</ul>
+
+<h2>6. Third-party services</h2>
+<p>The Android version's free tier shows advertising supplied by Google AdMob and
+offers an in-app purchase through Google Play; those services are governed by
+Google's own terms and by our <a href="privacy.html">privacy policy</a>. The
+Windows version contains no advertising. Your use of any third-party equipment or
+software remains subject to that third party's terms.</p>
+
+<h2>7. Licence and acceptable use</h2>
+<p>You are granted a personal, non-exclusive, non-transferable licence to use the
+app for its intended purpose. You may not resell, redistribute, or reverse
+engineer the app except to the extent that law expressly permits.</p>
+
+<h2>8. Changes</h2>
+<p>The app and these terms may change over time. Material changes to these terms
+will be reflected here, and the app may ask you to accept the updated terms. The
+&ldquo;last updated&rdquo; date above shows the current version.</p>
+
+<h2>9. Contact</h2>
+<p>Questions about these terms: %(contact)s</p>
+
+<p class="muted">These terms are provided in good faith and in plain language;
+they are not legal advice.</p>
+
+<footer>
+  <p><a href="index.html">Easy Modbus</a> &middot; <a href="privacy.html">Privacy policy</a> &middot; <a href="pc-privacy.html">PC privacy policy</a></p>
 </footer>
 
 </body>
@@ -2076,8 +2218,18 @@ def main():
         },
     )
 
+    write(
+        "terms.html",
+        TERMS % {
+            "base": BASE_URL,
+            "css": CSS,
+            "updated": "15 September 2026",
+            "contact": "Firstimpactdevelopment@gmail.com",
+        },
+    )
+
     # sitemap + robots so crawlers and agents can enumerate the whole set
-    urls = ["index.html", "privacy.html", "pc-privacy.html"] + [g["slug"] + ".html" for g in GUIDES]
+    urls = ["index.html", "privacy.html", "pc-privacy.html", "terms.html"] + [g["slug"] + ".html" for g in GUIDES]
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
