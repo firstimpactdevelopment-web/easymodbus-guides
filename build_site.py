@@ -1694,19 +1694,19 @@ PRIVACY = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy policy &mdash; Easy Modbus</title>
-<meta name="description" content="Easy Modbus privacy policy. The app collects nothing, has no account, and sends nothing to any server.">
+<meta name="description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
 <link rel="canonical" href="%(base)s/privacy.html">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#00695C">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Privacy policy &mdash; Easy Modbus">
-<meta property="og:description" content="Easy Modbus privacy policy. The app collects nothing, has no account, and sends nothing to any server.">
+<meta property="og:description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
 <meta property="og:url" content="%(base)s/privacy.html">
 <meta property="og:image" content="%(base)s/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Privacy policy &mdash; Easy Modbus">
-<meta name="twitter:description" content="Easy Modbus privacy policy. The app collects nothing, has no account, and sends nothing to any server.">
+<meta name="twitter:description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
 <meta name="twitter:image" content="%(base)s/img/og-image.png">
 <style>%(css)s</style>
 </head>
@@ -1722,9 +1722,11 @@ PRIVACY = """<!doctype html>
 
 <div class="answer">
   <strong>Summary</strong>
-  <p>Easy Modbus collects nothing, has no account, contains no advertising or
-  analytics, and sends nothing to any server. Everything it does happens on your
-  phone and on the local network you connect it to.</p>
+  <p>Easy Modbus has no account and no analytics, and the app itself sends
+  nothing to any server. Everything it does happens on your phone and on the
+  local network you connect it to. The one exception is advertising: the free
+  version shows occasional rewarded video ads from Google AdMob, described
+  below, and the one-time purchase removes them.</p>
 </div>
 
 <h2>What the app stores, and where</h2>
@@ -1741,6 +1743,16 @@ device-to-device transfer, because a register map names a customer's equipment.
 That does mean it does not follow you to a new phone; the CSV export is the way to
 move a map.</p>
 
+<h2>Advertising</h2>
+<p>The free version shows occasional rewarded video ads, supplied by Google
+AdMob, in exchange for exporting a report or opening a saved custom remote. To
+serve them, Google's advertising SDK may collect a device advertising
+identifier and standard ad-delivery information, as set out in Google's own
+privacy policy. Where the law requires it you are asked for consent before any
+personalised ad, and may choose non-personalised ads instead. The one-time
+in-app purchase removes all advertising. The developer sees only aggregate,
+anonymous earnings from AdMob.</p>
+
 <h2>What leaves the phone</h2>
 <p>Two things, both only when you ask for them:</p>
 <ul>
@@ -1754,7 +1766,7 @@ move a map.</p>
 <h2>What the app does not do</h2>
 <ul>
   <li>No account, sign-in, or registration.</li>
-  <li>No analytics, telemetry, crash reporting, or advertising.</li>
+  <li>No analytics, telemetry, or crash reporting. (The free version shows Google AdMob ads — see Advertising below.)</li>
   <li>No location, contacts, photos, or microphone access.</li>
   <li>No internet use beyond talking to the equipment you point it at.</li>
 </ul>
@@ -1799,7 +1811,7 @@ are free to quote with attribution.
 
 ## About the app
 
-- Platform: Android 8.0 or later. Free, no account, no advertising, no analytics.
+- Platform: Android 8.0 or later. Free with rewarded ads (AdMob) removable by one-time purchase; no account, no analytics.
 - Protocols: Modbus TCP and Modbus RTU over TCP, function codes 1, 2, 3, 4, 5, 6,
   15, 16, and 43/14 device identification.
 - Finds equipment by sweeping the local subnet for open port 502, because Modbus
