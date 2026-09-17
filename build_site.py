@@ -28,54 +28,67 @@ BASE_URL = "https://easymodbus.com"
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 CSS = """
-  :root { color-scheme: light dark; --fg:#1a1a1a; --bg:#fff; --muted:#5a5a5a;
-          --accent:#00695C; --box:#e8f4f1; --line:#bfe0d9; --code:#f0f0f0; }
-  @media (prefers-color-scheme: dark) {
-    :root { --fg:#e6e6e6; --bg:#121212; --muted:#a5a5a5; --accent:#5ec8b4;
-            --box:#10231f; --line:#23443d; --code:#262626; }
-  }
+  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+  :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
+          --accent:#ff9a1f; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
   * { box-sizing: border-box; }
   body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
-         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-         Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
-  header.site { display:flex; align-items:center; gap:.6rem; padding-bottom:1.5rem;
-                border-bottom:1px solid var(--line); margin-bottom:2rem;
-                flex-wrap:wrap; }
-  header.site a { color: var(--accent); text-decoration: none; font-weight: 600; }
-  h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 .75rem; }
-  h2 { font-size: 1.25rem; margin-top: 2.4rem; }
-  h3 { font-size: 1.05rem; margin-top: 1.8rem; }
-  a { color: var(--accent); }
-  .answer { background: var(--box); border: 1px solid var(--line);
-            border-radius: 10px; padding: 1rem 1.15rem; margin: 1.25rem 0 2rem; }
-  .answer strong { display:block; margin-bottom:.35rem; text-transform:uppercase;
-                   font-size:.75rem; letter-spacing:.08em; color: var(--muted); }
-  .answer p:last-child { margin-bottom: 0; }
-  code { background: var(--code); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
-  pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
-  pre code { background: none; padding: 0; }
-  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0;
-          display:block; overflow-x:auto; }
-  th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line);
-           vertical-align: top; }
-  th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
-  ul, ol { padding-left: 1.3rem; }
-  li { margin: .4rem 0; }
-  .muted { color: var(--muted); font-size: .92rem; }
-  .callout { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1rem;
-             margin: 1.5rem 0; }
-  nav.more { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
-  nav.more ul { list-style: none; padding: 0; }
-  nav.more li { margin: .5rem 0; }
-  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
-           color: var(--muted); font-size: .9rem; }
-  figure.shot { margin: 1.6rem 0; text-align: center; }
-  figure.shot img { max-width: 300px; width: 100%; height: auto; border: 1px solid var(--line);
-                    border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.14); }
-  figure.shot figcaption { color: var(--muted); font-size: .88rem; margin-top: .55rem; }
-  .shots { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center;
-           align-items: flex-start; margin: 1.6rem 0; }
-  .shots figure.shot { margin: 0; flex: 0 1 300px; }
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         font-size:17px; line-height:1.7; color:var(--fg); background:var(--bg);
+         -webkit-font-smoothing:antialiased; }
+  header.site { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+                padding-bottom:1.25rem; border-bottom:1px solid var(--line); margin-bottom:2.25rem; }
+  header.site a { color:var(--fg); text-decoration:none; }
+  header.site a span, header.site a b { font-family:"Archivo",sans-serif; font-weight:900;
+                       text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+  header.site .muted { margin-left:auto; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                       font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
+  h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
+  h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
+       margin:0 0 1rem; }
+  h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
+  h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
+  a { color:var(--accent); }
+  strong { color:#fff; }
+  .answer { background:var(--box); border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:12px; padding:1.1rem 1.3rem; margin:1.5rem 0 2rem; }
+  .answer > strong { display:block; margin-bottom:.5rem; text-transform:uppercase;
+                   font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+                   font-size:.72rem; letter-spacing:.18em; color:var(--accent); }
+  .answer p { margin:.6rem 0; }
+  .answer p:last-child { margin-bottom:0; }
+  .answer p strong { color:#fff; font-weight:700; }
+  code { background:var(--code); padding:.1rem .4rem; border-radius:4px; font-size:.9em;
+         font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  pre { background:var(--code); padding:1rem; border-radius:10px; overflow-x:auto;
+        border:1px solid var(--line); }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:1.25rem 0; display:block; overflow-x:auto; }
+  th, td { text-align:left; padding:.55rem .75rem; border-bottom:1px solid var(--line);
+           vertical-align:top; }
+  th { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+       text-transform:uppercase; letter-spacing:.1em; color:var(--accent); font-weight:600; }
+  ul, ol { padding-left:1.3rem; }
+  li { margin:.45rem 0; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  .callout { border-left:3px solid var(--accent); background:var(--box);
+             border-radius:0 10px 10px 0; padding:.75rem 1rem; margin:1.5rem 0; }
+  nav.more { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); }
+  nav.more h2 { margin-top:0; }
+  nav.more ul { list-style:none; padding:0; }
+  nav.more li { margin:0; border-bottom:1px solid var(--line); padding:.85rem 0; }
+  nav.more li:last-child { border-bottom:none; }
+  nav.more a { font-family:"Archivo",sans-serif; font-weight:600; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+           color:var(--muted); font-size:.9rem; }
+  footer a { color:var(--accent); }
+  figure.shot { margin:1.75rem 0; text-align:center; }
+  figure.shot img { max-width:300px; width:100%; height:auto; border:1px solid var(--line);
+                    border-radius:16px; background:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  figure.shot figcaption { color:var(--muted); font-size:.85rem; margin-top:.55rem; }
+  .shots { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;
+           align-items:flex-start; margin:1.75rem 0; }
+  .shots figure.shot { margin:0; flex:0 1 300px; }
 """
 
 
@@ -116,7 +129,7 @@ def page(slug, title, question, answer_html, body_html, related, description):
 <meta name="description" content="%(description)s">
 <link rel="canonical" href="%(base)s/%(slug)s.html">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#00695C">
+<meta name="theme-color" content="#14171a">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="%(title)s">
@@ -1616,22 +1629,105 @@ INDEX = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>Easy Modbus &mdash; Modbus explained in plain English</title>
-<meta name="description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
-<link rel="canonical" href="%(base)s/index.html">
+<title>Easy Modbus &mdash; read, decode and control Modbus from your phone</title>
+<meta name="description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, saves the map, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
+<link rel="canonical" href="{{BASE}}/index.html">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#00695C">
+<meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Easy Modbus &mdash; Modbus explained in plain English">
-<meta property="og:description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
-<meta property="og:url" content="%(base)s/index.html">
-<meta property="og:image" content="%(base)s/img/og-image.png">
+<meta property="og:title" content="Easy Modbus &mdash; read, decode and control Modbus from your phone">
+<meta property="og:description" content="Free Android app that finds Modbus TCP equipment, works out what its registers mean, saves the map, and exports a CSV. Plus plain-English Modbus guides.">
+<meta property="og:url" content="{{BASE}}/index.html">
+<meta property="og:image" content="{{BASE}}/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Easy Modbus &mdash; Modbus explained in plain English">
-<meta name="twitter:description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
-<meta name="twitter:image" content="%(base)s/img/og-image.png">
-<style>%(css)s</style>
+<meta name="twitter:title" content="Easy Modbus &mdash; read, decode and control Modbus from your phone">
+<meta name="twitter:description" content="Free Android app that finds Modbus TCP equipment, works out what its registers mean, saves the map, and exports a CSV. Plus plain-English Modbus guides.">
+<meta name="twitter:image" content="{{BASE}}/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14171a; --panel:#1d2227; --line:#2f363d;
+  --fg:#f3f5f6; --mut:#9aa4ad; --accent:#ff9a1f; --ink:#0d0f11;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:0 16px}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+  font-size:.74rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--accent); margin:0 0 1rem;
+}
+h1,h2,h3{font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.05}
+h1{font-weight:900; text-transform:uppercase; font-size:clamp(2.1rem,6vw,4rem); margin:0 0 1.25rem}
+h1 span{color:var(--accent)}
+h2{font-weight:800; text-transform:uppercase; font-size:clamp(1.4rem,3.2vw,2rem); margin:0 0 1.25rem}
+h3{font-weight:800; font-size:1.05rem; margin:0 0 .4rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+
+.top{border-bottom:1px solid var(--line); background:rgba(20,23,26,.85); backdrop-filter:blur(8px); position:sticky; top:0; z-index:10}
+.top .wrap{display:flex; align-items:center; gap:.65rem; height:60px}
+.brand{display:inline-flex; align-items:center; gap:.6rem; color:var(--fg)!important}
+.brand img{width:30px; height:30px; border-radius:8px; display:block}
+.brand b{font-family:"Archivo",sans-serif; font-weight:900; text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem}
+.top .tag{margin-left:auto; color:var(--mut); font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase}
+
+.hero{padding:clamp(2.5rem,6vw,5rem) 0 clamp(2rem,4vw,3.5rem)}
+.hero .wrap{display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(2rem,5vw,4rem); align-items:center}
+.hero .lede{font-size:1.12rem; color:#e7ebee; max-width:46ch}
+.hero .sub{color:var(--mut); font-size:1rem}
+.hero .sub b{color:var(--accent)}
+.phone{
+  border:2px solid var(--accent); border-radius:34px; padding:10px;
+  background:var(--ink); box-shadow:0 30px 70px rgba(0,0,0,.5); max-width:290px; margin:0 auto;
+}
+.phone img{width:100%; height:auto; display:block; border-radius:24px}
+
+.features{padding:clamp(2rem,4vw,3.5rem) 0; border-top:1px solid var(--line)}
+.grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line)}
+.cell{background:var(--panel); padding:1.6rem 1.4rem; border-top:3px solid var(--accent)}
+.cell .n{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--accent); font-size:.78rem; letter-spacing:.12em; margin-bottom:.8rem}
+.cell p{color:var(--mut); font-size:.95rem; margin:0}
+
+.shots{padding:clamp(2rem,4vw,3.5rem) 0; border-top:1px solid var(--line)}
+.shotrow{display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; justify-items:center}
+.shotrow figure{margin:0; max-width:270px}
+.shotrow img{width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:18px; background:var(--ink)}
+.shotrow figcaption{color:var(--mut); font-size:.85rem; margin-top:.6rem; text-align:center}
+
+.band{padding:clamp(2rem,4vw,3.5rem) 0; border-top:1px solid var(--line)}
+.band p{color:#e7ebee}
+.linklist{list-style:none; margin:0; padding:0}
+.linklist li{border-bottom:1px solid var(--line); padding:.9rem 0}
+.linklist li:last-child{border-bottom:none}
+.linklist a{font-family:"Archivo",sans-serif; font-weight:600; font-size:1.05rem}
+.linklist .muted{display:block; color:var(--mut); font-size:.9rem; margin-top:.15rem}
+.notes{list-style:none; margin:0; padding:0; display:grid; gap:1rem}
+.notes li{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:10px; padding:1.1rem 1.2rem; color:var(--mut); font-size:.98rem}
+.notes strong{color:#fff}
+
+footer{border-top:1px solid var(--line); padding:2rem 0 3rem; color:var(--mut); font-size:.9rem}
+footer a{color:var(--mut); text-decoration:underline}
+
+@media (max-width:760px){
+  body{font-size:16px}
+  .hero .wrap{grid-template-columns:1fr}
+  .hero .art{order:-1}
+  .grid{grid-template-columns:1fr}
+  .shotrow{grid-template-columns:1fr}
+  .top .tag{display:none}
+}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -1646,85 +1742,122 @@ INDEX = """<!doctype html>
 </head>
 <body>
 
-<header class="site">
-  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
-  <span class="muted">&middot; plain-English Modbus reference</span>
-</header>
-
-<h1>Modbus, explained for people who have to deal with it</h1>
-
-<div class="answer">
-  <strong>What this is</strong>
-  <p>Easy Modbus is a free Android app for facility managers, building engineers
-  and controls technicians. It finds Modbus TCP equipment on a network, helps you
-  work out what its registers actually mean, remembers that so nobody has to work
-  it out twice, and exports the result as a CSV you can hand to anybody. No
-  account, no server &mdash; everything happens on your phone and your local
-  network.</p>
-  <p>The guides below answer the questions that come up first, in plain language.</p>
+<div class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="icon.svg" alt=""><b>Easy Modbus</b></a>
+    <span class="tag">Modbus made Easy</span>
+  </div>
 </div>
 
-<h2>Start here</h2>
-<p>If Modbus is new to you, read
-<a href="guides/what-is-modbus.html">what is Modbus?</a> first. It explains the
-one thing that causes most of the difficulty: a Modbus device will happily tell
-you the contents of slot number 7, and will never tell you what slot 7 is.</p>
+<section class="hero">
+  <div class="wrap">
+    <div class="copy">
+      <p class="eyebrow">Modbus TCP / RTU &middot; Android</p>
+      <h1>Read, <span>decode</span> and control Modbus, straight from your phone</h1>
+      <p class="lede">Easy Modbus is a free Android app for facility managers, building
+      engineers and controls technicians. It finds Modbus TCP equipment on a network,
+      helps you work out what its registers actually mean, remembers that so nobody has
+      to work it out twice, and exports the result as a CSV you can hand to anybody.</p>
+      <p class="sub">No account, no server. <b>Easy.</b> Everything happens on your phone
+      and your local network.</p>
+    </div>
+    <div class="art">
+      <div class="phone"><img src="img/app-readings.png" alt="Easy Modbus reading list with named readings, live values and units"></div>
+    </div>
+  </div>
+</section>
 
-<h2>Using the app</h2>
-<ul>
-  <li><a href="guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read values from a device?</a></li>
-  <li><a href="guides/how-to-write-to-a-modbus-register.html">How do I write to a register, and put it back afterwards?</a></li>
-  <li><a href="guides/how-to-build-a-modbus-remote.html">How do I build a custom remote for a device?</a></li>
-</ul>
+<section class="features">
+  <div class="wrap">
+    <h2>What the app does</h2>
+    <div class="grid">
+      <div class="cell"><div class="n">01 / FIND</div>
+        <h3>Finds equipment</h3>
+        <p>Sweeps the local network for anything answering Modbus, because Modbus has no
+        discovery of its own &mdash; or add a device by typing its address.</p></div>
+      <div class="cell"><div class="n">02 / DECODE</div>
+        <h3>Two modes, one answer</h3>
+        <p>Easy mode picks the settings for the reading you want; Pro mode exposes raw
+        hex, word order, function codes and the frame log. Ranked interpretations, with
+        the reasoning, so a wrong guess is visibly wrong.</p></div>
+      <div class="cell"><div class="n">03 / REMEMBER</div>
+        <h3>Remembers the map</h3>
+        <p>Name a reading once and its address, data type, word order, scaling and units
+        are saved for next time &mdash; nobody works it out twice.</p></div>
+      <div class="cell"><div class="n">04 / IMPORT &amp; EXPORT</div>
+        <h3>Bring a map, hand one on</h3>
+        <p>Paste a vendor's CSV register map instead of retyping forty rows, and export
+        the whole thing with live values to hand to anybody.</p></div>
+      <div class="cell"><div class="n">05 / WRITE</div>
+        <h3>Writes carefully</h3>
+        <p>Off by default and off again every launch, confirmed against a summary, bounded
+        by limits you set, read back afterwards, with a <em>Put It Back</em> action that
+        restores what the register said when you arrived.</p></div>
+      <div class="cell"><div class="n">06 / BUILD</div>
+        <h3>Custom control screens</h3>
+        <p>Build a drag-and-drop panel of readouts, setpoints and switches for one device,
+        sized for a gloved finger &mdash; the handful of registers you actually use, one tap away.</p></div>
+    </div>
+  </div>
+</section>
 
-<h2>Guides</h2>
-<nav class="more" style="margin-top:0;border-top:none;padding-top:0">
-<ul>
-%(guides)s
-</ul>
-</nav>
+<section class="shots">
+  <div class="wrap">
+    <div class="shotrow">
+      <figure><img src="img/app-register-browser.png" alt="Pro-mode register browser listing raw registers in hex and decimal" loading="lazy"><figcaption>Browse and decode raw registers</figcaption></figure>
+      <figure><img src="img/app-write-confirm.png" alt="Write confirmation summary showing device, register, current and new value" loading="lazy"><figcaption>Every write confirmed before it is sent</figcaption></figure>
+      <figure><img src="img/app-remote.png" alt="A custom remote with readout tiles, a setpoint and an on/off toggle" loading="lazy"><figcaption>Build your own control panel</figcaption></figure>
+    </div>
+  </div>
+</section>
 
-<h2>What the app does</h2>
-<ul>
-  <li><strong>Finds equipment</strong> &mdash; sweeps the local network for
-  anything answering Modbus, because Modbus has no discovery of its own. Or add a
-  device by typing its address.</li>
-  <li><strong>Two modes.</strong> Easy mode asks what kind of reading you are
-  after &mdash; a temperature, a kilowatt figure, an on/off status &mdash; and
-  picks the settings for you. Pro mode exposes raw registers in hex, word order,
-  function codes and the frame log.</li>
-  <li><strong>Works out what registers mean</strong> &mdash; reads a block, shows
-  it in hex and decimal, and offers the plausible interpretations with the
-  reasoning, so a wrong guess is visibly wrong.</li>
-  <li><strong>Remembers the map</strong> &mdash; name a reading once and the
-  address, data type, word order, scaling and units are saved for next time.</li>
-  <li><strong>Imports and exports</strong> &mdash; paste a vendor's CSV register
-  map in rather than retyping forty rows; export the whole thing with live values
-  to hand on.</li>
-  <li><strong>Writes carefully</strong> &mdash; off by default, off again every
-  launch, confirmed against a summary, bounded by limits you set, read back
-  afterwards, and with a <em>Put It Back</em> action that rewrites what the
-  register said when you arrived.</li>
-  <li><strong>Custom control screens</strong> &mdash; build a drag-and-drop panel
-  of readouts, setpoints and switches for one device, sized for a gloved finger.</li>
-</ul>
+<section class="band">
+  <div class="wrap">
+    <h2>Start here</h2>
+    <p>If Modbus is new to you, read <a href="guides/what-is-modbus.html">what is Modbus?</a>
+    first. It explains the one thing that causes most of the difficulty: a Modbus device
+    will happily tell you the contents of slot number 7, and will never tell you what
+    slot 7 is.</p>
+    <h2 style="margin-top:2.2rem">Using the app</h2>
+    <ul class="linklist">
+      <li><a href="guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read values from a device?</a></li>
+      <li><a href="guides/how-to-write-to-a-modbus-register.html">How do I write to a register, and put it back afterwards?</a></li>
+      <li><a href="guides/how-to-build-a-modbus-remote.html">How do I build a custom remote for a device?</a></li>
+    </ul>
+  </div>
+</section>
 
-<h2>Notes for anyone connecting to building equipment</h2>
-<ul>
-  <li>Get onto the <strong>same network</strong> as the equipment. Controls gear is
-  usually on its own VLAN, and guest Wi-Fi will not reach it.</li>
-  <li>Modbus TCP is <strong>port 502</strong>. 503 and 5020 are both seen.</li>
-  <li>Finding equipment means <strong>sweeping the subnet</strong>, because Modbus
-  devices never announce themselves. On a monitored network that looks like a port
-  scan, so tell whoever runs it.</li>
-  <li>Reading is harmless. <strong>Writing has no undo</strong> &mdash; no
-  priorities, no timeout, no release. Read
-  <a href="guides/is-it-safe-to-write-to-modbus.html">the writing guide</a> before
-  changing anything on live equipment.</li>
-</ul>
+<section class="band">
+  <div class="wrap">
+    <h2>Guides</h2>
+    <ul class="linklist">
+{{GUIDES}}
+    </ul>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>Before you connect</h2>
+    <ul class="notes">
+      <li>Get onto the <strong>same network</strong> as the equipment. Controls gear is
+      usually on its own VLAN, and guest Wi-Fi will not reach it.</li>
+      <li>Modbus TCP is <strong>port 502</strong>. 503 and 5020 are both seen.</li>
+      <li>Finding equipment means <strong>sweeping the subnet</strong>, because Modbus
+      devices never announce themselves. On a monitored network that looks like a port
+      scan, so tell whoever runs it.</li>
+      <li>Reading is harmless. <strong>Writing has no undo</strong> &mdash; no priorities,
+      no timeout, no release. Read
+      <a href="guides/is-it-safe-to-write-to-modbus.html">the writing guide</a> before
+      changing anything on live equipment.</li>
+    </ul>
+  </div>
+</section>
 
 <footer>
-  <p><a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Privacy policy</a></p>
+  <div class="wrap">
+    <p><a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Privacy policy</a></p>
+  </div>
 </footer>
 
 </body>
@@ -1741,7 +1874,7 @@ PRIVACY = """<!doctype html>
 <meta name="description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
 <link rel="canonical" href="%(base)s/privacy.html">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#00695C">
+<meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Privacy policy &mdash; Easy Modbus">
@@ -1867,7 +2000,7 @@ PC_PRIVACY = """<!doctype html>
 <meta name="description" content="Privacy policy for Easy Modbus PC, the Windows desktop app. No account, no analytics, no ads; everything stays on your PC and your local network.">
 <link rel="canonical" href="%(base)s/pc-privacy.html">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#00695C">
+<meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Privacy policy &mdash; Easy Modbus PC">
@@ -1973,7 +2106,7 @@ TERMS = """<!doctype html>
 <meta name="description" content="Terms of use for Easy Modbus (Android) and Easy Modbus PC (Windows): acceptance, the industrial-safety responsibilities of the user, no warranty, and limitation of liability.">
 <link rel="canonical" href="%(base)s/terms.html">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#00695C">
+<meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Terms of use &mdash; Easy Modbus">
@@ -2162,14 +2295,19 @@ NOT_FOUND = """<!doctype html>
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Page not found &mdash; Easy Modbus</title>
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#14171a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  html { color-scheme: light dark; }
-  body { max-width: 40rem; margin: 0 auto; padding: 4rem 1.25rem;
-         font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-         Helvetica, Arial, sans-serif; text-align: center; }
-  h1 { font-size: 1.85rem; margin: 0 0 .75rem; }
-  a { color: #00695C; font-weight: 600; text-decoration: none; }
-  p { color: #5a5a5a; }
+  html { color-scheme: dark; }
+  body { max-width: 40rem; margin: 0 auto; padding: 6rem 1.25rem; text-align: center;
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+         font-size:17px; line-height:1.7; color:#f3f5f6; background:#14171a; }
+  h1 { font-family:"Archivo",sans-serif; font-weight:900; text-transform:uppercase;
+       font-size:2rem; margin:0 0 .75rem; }
+  a { color:#ff9a1f; font-weight:600; text-decoration:none; }
+  p { color:#9aa4ad; }
 </style>
 </head>
 <body>
@@ -2196,7 +2334,7 @@ def main():
         % (g["slug"], g["question"], summarise(g["description"]))
         for g in GUIDES
     )
-    write("index.html", INDEX % {"base": BASE_URL, "css": CSS, "guides": links})
+    write("index.html", INDEX.replace("{{BASE}}", BASE_URL).replace("{{GUIDES}}", links))
 
     write(
         "privacy.html",
