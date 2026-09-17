@@ -25,6 +25,10 @@ import os
 
 BASE_URL = "https://easymodbus.com"
 
+# Freshness signal. Bump when guide content is meaningfully revised.
+UPDATED = "2026-09-16"              # ISO, for JSON-LD and sitemap <lastmod>
+UPDATED_HUMAN = "16 September 2026"  # for the visible "Updated" line
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 CSS = """
@@ -44,7 +48,9 @@ CSS = """
                        font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
   h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
   h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
-       margin:0 0 1rem; }
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
   h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
   h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
   a { color:var(--accent); }
@@ -107,16 +113,32 @@ def page(slug, title, question, answer_html, body_html, related, description):
 
     jsonld = """{
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [{
-    "@type": "Question",
-    "name": %s,
-    "acceptedAnswer": { "@type": "Answer", "text": %s }
-  }]
-}""" % (
-        jstr(question),
-        jstr(strip_tags(answer_html)),
-    )
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "%(pub)s",
+      "dateModified": "%(pub)s",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": %(q)s,
+        "acceptedAnswer": { "@type": "Answer", "text": %(a)s }
+      }]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "%(base)s/index.html" },
+        { "@type": "ListItem", "position": 2, "name": %(q)s, "item": "%(base)s/%(slug)s.html" }
+      ]
+    }
+  ]
+}""" % {
+        "q": jstr(question),
+        "a": jstr(strip_tags(answer_html)),
+        "pub": UPDATED,
+        "base": BASE_URL,
+        "slug": slug,
+    }
 
     return """<!doctype html>
 <html lang="en">
@@ -156,6 +178,7 @@ def page(slug, title, question, answer_html, body_html, related, description):
 
 <article>
   <h1>%(question)s</h1>
+  <p class="updated">Updated %(updated_h)s</p>
 
   <div class="answer">
     <strong>Short answer</strong>
@@ -186,6 +209,7 @@ def page(slug, title, question, answer_html, body_html, related, description):
         "body": body_html,
         "rel": rel,
         "prefix": prefix,
+        "updated_h": UPDATED_HUMAN,
     }
 
 
@@ -254,7 +278,7 @@ GUIDES.append(dict(
     slug="guides/what-is-modbus",
     title="What is Modbus? A plain-English explanation | Easy Modbus",
     question="What is Modbus?",
-    description="Modbus is a simple, very old industrial protocol for reading numbers out of equipment and writing numbers into it. Here is what it is, what it is not, and why it is confusing.",
+    description="Modbus is a simple protocol for reading and writing numbered registers on industrial and building equipment. What it is, in plain English.",
     answer_html="""<p>Modbus is a way for one machine to ask another machine for
     numbers. It was published in 1979, it is deliberately simple, and it is in an
     enormous amount of building and industrial equipment: meters, variable-speed
@@ -350,7 +374,7 @@ GUIDES.append(dict(
     slug="guides/what-is-a-modbus-register-map",
     title="What is a Modbus register map? | Easy Modbus",
     question="What is a Modbus register map?",
-    description="A Modbus register map is the document that says what each numbered register in a device means: its address, data type, scaling and units. Here is what one contains and how to read it.",
+    description="A Modbus register map ties each address to what it means: data type, scaling, word order and units. What it contains and why you need one.",
     answer_html="""<p>A Modbus register map &mdash; also called a register list,
     address list, point list, or Modbus table &mdash; is the document that says
     what each numbered slot inside a piece of equipment actually means. A row of it
@@ -424,7 +448,7 @@ GUIDES.append(dict(
     slug="guides/how-to-find-modbus-register-map",
     title="How do I find my Modbus register map? | Easy Modbus",
     question="How do I find my Modbus register map?",
-    description="Four ways to get a Modbus register map: ask the manufacturer, find the installation manual, ask your controls contractor, or read the device and work backwards. Plus what to do when none of them work.",
+    description="Build a Modbus register map from a live device: read blocks, decode each value's type and scaling, name it, and export the map as a CSV.",
     answer_html="""<p>Four routes, easiest first: search the manufacturer's site for
     the model number plus &ldquo;Modbus&rdquo;, look in the installation or
     integration manual rather than the user manual, ask your controls contractor
@@ -508,7 +532,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/modbus-address-off-by-one",
-    title="Why is my Modbus address off by one? 40001 vs 1 vs 0 | Easy Modbus",
+    title="Modbus address off by one? 40001 vs 0 | Easy Modbus",
     question="Why is my Modbus address off by one?",
     description="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.",
     answer_html="""<p>Because the same register is legitimately called four
@@ -592,7 +616,7 @@ GUIDES.append(dict(
     slug="guides/modbus-value-wrong-scaling-byte-order",
     title="Why does my Modbus value look wrong? | Easy Modbus",
     question="Why does my Modbus value look wrong?",
-    description="A Modbus value that is ten times too big, negative when it should not be, or wild nonsense is almost always scaling, signedness, or word order. Here is how to tell which.",
+    description="A Modbus value that reads wrong is usually scaling or byte/word order. How to spot 32-bit floats, word swaps and multipliers, and fix them.",
     answer_html="""<p>Almost always one of four things. If it is exactly ten or a
     hundred times too big, the device reports tenths or hundredths and you need a
     multiplier. If it is a huge number like 65524 where you expected a small
@@ -681,7 +705,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/cannot-find-modbus-devices",
-    title="Why can't I find my Modbus devices on the network? | Easy Modbus",
+    title="Why can't I find my Modbus devices? | Easy Modbus",
     question="Why can't I find my Modbus devices on the network?",
     description="Modbus has no discovery at all — devices never announce themselves. Here is why scanning is the only option, and the six things to check when nothing answers.",
     answer_html="""<p>Start with the thing that surprises everyone: <strong>Modbus
@@ -772,7 +796,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/modbus-tcp-vs-rtu-vs-rs485",
-    title="Modbus TCP, Modbus RTU or RS-485 — which do I have? | Easy Modbus",
+    title="Modbus TCP vs RTU vs RS-485 | Easy Modbus",
     question="Modbus TCP, Modbus RTU or RS-485 — which do I have?",
     description="How to tell Modbus TCP from Modbus RTU and RTU-over-TCP by looking at the equipment, and why mistaking one for the other looks exactly like a dead device.",
     answer_html="""<p>Look at the socket. An Ethernet socket &mdash; the square one
@@ -857,7 +881,7 @@ GUIDES.append(dict(
     slug="guides/modbus-unit-id-slave-id",
     title="What is a Modbus unit ID or slave ID? | Easy Modbus",
     question="What is a Modbus unit ID or slave ID?",
-    description="A Modbus unit ID says which device on a shared connection you are talking to. Here is what it does, what to do when you don't know it, and why the wrong one looks like a dead device.",
+    description="The Modbus unit ID (slave ID) picks which device answers on a shared line or gateway. What it is, why it matters, and how to find the right one.",
     answer_html="""<p>A unit ID &mdash; also called a slave ID, station address, or
     device address &mdash; is a number from 1 to 247 that says <em>which</em> device
     you mean when several share one connection. On an RS-485 chain with a dozen
@@ -929,7 +953,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/modbus-function-codes-explained",
-    title="Modbus function codes explained in plain English | Easy Modbus",
+    title="Modbus function codes explained | Easy Modbus",
     question="What are Modbus function codes?",
     description="Function codes 1, 2, 3, 4, 5, 6, 15 and 16 explained in plain English, plus what each exception code means when a device refuses a request.",
     answer_html="""<p>A function code is the verb of a Modbus request: it says which
@@ -1004,7 +1028,7 @@ GUIDES.append(dict(
     slug="guides/is-it-safe-to-write-to-modbus",
     title="Is it safe to write to a Modbus register? | Easy Modbus",
     question="Is it safe to write to a Modbus register?",
-    description="Reading Modbus is harmless. Writing has no undo, no timeout and no priority system — a written value stays written. Here is what to check before changing anything on live equipment.",
+    description="Modbus writes take effect instantly and have no undo. What that means, when writing is safe, and how Easy Modbus reduces the risk.",
     answer_html="""<p>Reading is completely safe: a read request cannot change
     anything. Writing is a different matter, and Modbus gives you fewer safety nets
     than almost any comparable protocol. There is <strong>no undo, no automatic
@@ -1101,9 +1125,9 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/vendor-asking-for-modbus-information",
-    title="A vendor asked for my Modbus information — what do I send? | Easy Modbus",
+    title="What Modbus info to send a vendor | Easy Modbus",
     question="A vendor asked for my Modbus information — what do I send?",
-    description="Exactly what to send when an integrator, analytics provider or contractor asks for your Modbus details: network access, addressing, register maps and a live export.",
+    description="What to hand a vendor or integrator who asks for your Modbus details: IP, unit ID, and a full register map with types and scaling, exported as a CSV.",
     answer_html="""<p>Send five things: how to reach the equipment on the network
     (IP addresses, port, and whether it is Modbus TCP or RTU over TCP), the unit IDs
     in use, the register map for each device from the manufacturer, a note of which
@@ -1183,9 +1207,9 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/modbus-vs-bacnet",
-    title="What is the difference between Modbus and BACnet? | Easy Modbus",
+    title="Modbus vs BACnet: the difference | Easy Modbus",
     question="What is the difference between Modbus and BACnet?",
-    description="Modbus sends numbered sixteen-bit values and explains nothing. BACnet describes itself: names, units and object lists. Here is what that means for anyone integrating either.",
+    description="Modbus sends bare 16-bit values and explains nothing; BACnet describes itself with names, units and discovery. What that means for integration.",
     answer_html="""<p>The one difference that matters in practice:
     <strong>BACnet describes itself and Modbus does not</strong>. A BACnet
     controller will tell you what it has &mdash; you ask for its object list and it
@@ -1236,8 +1260,11 @@ GUIDES.append(dict(
 
   <div class="callout">
   <p>If you are working on BACnet equipment rather than Modbus, the same author
-  publishes <strong>Easy BACnet</strong>, which discovers BACnet/IP devices, reads
-  their point lists, and exports them the same way.</p>
+  publishes <a href="https://easybacnet.com"><strong>Easy BACnet</strong></a>, which
+  discovers BACnet/IP devices, reads their point lists, and exports them the same way
+  &mdash; and its own
+  <a href="https://easybacnet.com/guides/bacnet-vs-modbus.html">BACnet vs Modbus</a>
+  write-up covers this from the BACnet side.</p>
   </div>
 """,
     related=[
@@ -1251,7 +1278,7 @@ GUIDES.append(dict(
     slug="guides/modbus-reading-slow-or-unreliable",
     title="Why is my Modbus reading slow or unreliable? | Easy Modbus",
     question="Why is my Modbus reading slow or unreliable?",
-    description="Modbus reads that are slow, intermittent, or occasionally return the wrong value: block sizes, serial turnaround, connection limits, polling collisions and stale replies.",
+    description="Slow or intermittent Modbus reads: block sizes, serial turnaround, connection limits, polling collisions and stale replies, and how to fix each.",
     answer_html="""<p>Five usual causes. A slow serial chain behind a gateway, where
     every request costs tens of milliseconds of wire time. Asking for too many
     registers in one request, which some devices truncate or refuse. Reading one
@@ -1468,9 +1495,9 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/how-to-write-to-a-modbus-register",
-    title="How to write to a Modbus register with Easy Modbus, and put it back | Easy Modbus",
+    title="How to write to a Modbus register | Easy Modbus",
     question="How do I write to a Modbus register with Easy Modbus, and put it back afterwards?",
-    description="Turning on write mode, setting limits, confirming the write, and using Put It Back to restore what the register said before you touched it. Modbus has no undo; this is the closest thing.",
+    description="How to safely write a value to a Modbus register, confirm it against a summary, and put the register back the way you found it.",
     answer_html="""<p>Turn on <strong>Write mode</strong> from the menu and accept
     the warning. Open the reading, choose to change its value, enter the new
     one, and confirm against the summary. The app writes it, reads it back and
@@ -1557,7 +1584,7 @@ GUIDES.append(dict(
     slug="guides/how-to-build-a-modbus-remote",
     title="How to build a custom remote in Easy Modbus | Easy Modbus",
     question="How do I build a custom remote for a Modbus device in Easy Modbus?",
-    description="Build a drag-and-drop control screen for one drive, meter or controller from readings you have already saved: setpoint arrows, on/off switches, readouts and a restore button, sized for gloves.",
+    description="Build a drag-and-drop control screen for one Modbus device: readouts, setpoints, toggles and a restore button. The free one-remote limit explained.",
     answer_html="""<p>Open a device, tap the menu and choose <strong>Custom
     Remote</strong>, then <strong>Edit</strong> and <strong>Add Control</strong>.
     Pick one of the device's saved readings, choose what kind of control it
@@ -1631,20 +1658,20 @@ INDEX = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>Easy Modbus &mdash; read, decode and control Modbus from your phone</title>
-<meta name="description" content="Free Android app that finds Modbus TCP equipment on a network, works out what its registers mean, saves the map, and exports a CSV. Plus plain-English guides to register maps, addressing, scaling, word order and unit IDs.">
+<title>Easy Modbus &mdash; read &amp; control Modbus TCP devices</title>
+<meta name="description" content="Free Android app to find Modbus TCP equipment, decode what its registers mean, save the register map, and export it all as a CSV.">
 <link rel="canonical" href="{{BASE}}/index.html">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Easy Modbus &mdash; read, decode and control Modbus from your phone">
-<meta property="og:description" content="Free Android app that finds Modbus TCP equipment, works out what its registers mean, saves the map, and exports a CSV. Plus plain-English Modbus guides.">
+<meta property="og:title" content="Easy Modbus &mdash; read &amp; control Modbus TCP devices">
+<meta property="og:description" content="Free Android app to find Modbus TCP equipment, decode what its registers mean, save the register map, and export it all as a CSV.">
 <meta property="og:url" content="{{BASE}}/index.html">
 <meta property="og:image" content="{{BASE}}/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Easy Modbus &mdash; read, decode and control Modbus from your phone">
-<meta name="twitter:description" content="Free Android app that finds Modbus TCP equipment, works out what its registers mean, saves the map, and exports a CSV. Plus plain-English Modbus guides.">
+<meta name="twitter:title" content="Easy Modbus &mdash; read &amp; control Modbus TCP devices">
+<meta name="twitter:description" content="Free Android app to find Modbus TCP equipment, decode what its registers mean, save the register map, and export it all as a CSV.">
 <meta name="twitter:image" content="{{BASE}}/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1733,12 +1760,31 @@ footer a{color:var(--mut); text-decoration:underline}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Easy Modbus",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Android 8.0 or later",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "Finds Modbus TCP and Modbus RTU-over-TCP equipment on a local network, helps work out what its registers mean, saves the register map, and exports the result as a CSV."
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "{{BASE}}/#org",
+      "name": "Easy Modbus",
+      "url": "{{BASE}}/",
+      "logo": "{{BASE}}/icon.svg"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{BASE}}/#site",
+      "name": "Easy Modbus",
+      "url": "{{BASE}}/",
+      "publisher": { "@id": "{{BASE}}/#org" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Easy Modbus",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Android 8.0 or later",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@id": "{{BASE}}/#org" },
+      "description": "Finds Modbus TCP and Modbus RTU-over-TCP equipment on a local network, helps work out what its registers mean, saves the register map, and exports the result as a CSV."
+    }
+  ]
 }
 </script>
 </head>
@@ -2111,7 +2157,7 @@ TERMS = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Terms of use &mdash; Easy Modbus</title>
-<meta name="description" content="Terms of use for Easy Modbus (Android) and Easy Modbus PC (Windows): acceptance, the industrial-safety responsibilities of the user, no warranty, and limitation of liability.">
+<meta name="description" content="Terms of use for Easy Modbus (Android) and Easy Modbus PC (Windows): acceptance, user safety responsibilities, no warranty, and limitation of liability.">
 <link rel="canonical" href="%(base)s/terms.html">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
@@ -2382,7 +2428,7 @@ def main():
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
-        sm.append("  <url><loc>%s/%s</loc></url>" % (BASE_URL, u))
+        sm.append("  <url><loc>%s/%s</loc><lastmod>%s</lastmod></url>" % (BASE_URL, u, UPDATED))
     sm.append("</urlset>")
     write("sitemap.xml", "\n".join(sm) + "\n")
 

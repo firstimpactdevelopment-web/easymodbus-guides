@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>Why is my Modbus address off by one? 40001 vs 1 vs 0 | Easy Modbus</title>
+<title>Modbus address off by one? 40001 vs 0 | Easy Modbus</title>
 <meta name="description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
 <link rel="canonical" href="https://easymodbus.com/guides/modbus-address-off-by-one.html">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Why is my Modbus address off by one? 40001 vs 1 vs 0 | Easy Modbus">
+<meta property="og:title" content="Modbus address off by one? 40001 vs 0 | Easy Modbus">
 <meta property="og:description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
 <meta property="og:url" content="https://easymodbus.com/guides/modbus-address-off-by-one.html">
 <meta property="og:image" content="https://easymodbus.com/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Why is my Modbus address off by one? 40001 vs 1 vs 0 | Easy Modbus">
+<meta name="twitter:title" content="Modbus address off by one? 40001 vs 0 | Easy Modbus">
 <meta name="twitter:description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
 <meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +39,9 @@
                        font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
   h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
   h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
-       margin:0 0 1rem; }
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
   h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
   h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
   a { color:var(--accent); }
@@ -87,12 +89,25 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [{
-    "@type": "Question",
-    "name": "Why is my Modbus address off by one?",
-    "acceptedAnswer": { "@type": "Answer", "text": "Because the same register is legitimately called four different things. 40001, 4x00001, “holding register 1” and “address 0” all refer to the identical slot in the identical device. The number that actually travels in the Modbus packet is the last one, counting from zero; most vendor documentation uses one of the first three, counting from one. If your value is one register out — you asked for the supply temperature and got the return temperature — this is almost always why." }
-  }]
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-16",
+      "dateModified": "2026-09-16",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Why is my Modbus address off by one?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Because the same register is legitimately called four different things. 40001, 4x00001, “holding register 1” and “address 0” all refer to the identical slot in the identical device. The number that actually travels in the Modbus packet is the last one, counting from zero; most vendor documentation uses one of the first three, counting from one. If your value is one register out — you asked for the supply temperature and got the return temperature — this is almost always why." }
+      }]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "Why is my Modbus address off by one?", "item": "https://easymodbus.com/guides/modbus-address-off-by-one.html" }
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -105,6 +120,7 @@
 
 <article>
   <h1>Why is my Modbus address off by one?</h1>
+  <p class="updated">Updated 16 September 2026</p>
 
   <div class="answer">
     <strong>Short answer</strong>

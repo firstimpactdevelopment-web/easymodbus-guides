@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Why does my Modbus value look wrong? | Easy Modbus</title>
-<meta name="description" content="A Modbus value that is ten times too big, negative when it should not be, or wild nonsense is almost always scaling, signedness, or word order. Here is how to tell which.">
+<meta name="description" content="A Modbus value that reads wrong is usually scaling or byte/word order. How to spot 32-bit floats, word swaps and multipliers, and fix them.">
 <link rel="canonical" href="https://easymodbus.com/guides/modbus-value-wrong-scaling-byte-order.html">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Why does my Modbus value look wrong? | Easy Modbus">
-<meta property="og:description" content="A Modbus value that is ten times too big, negative when it should not be, or wild nonsense is almost always scaling, signedness, or word order. Here is how to tell which.">
+<meta property="og:description" content="A Modbus value that reads wrong is usually scaling or byte/word order. How to spot 32-bit floats, word swaps and multipliers, and fix them.">
 <meta property="og:url" content="https://easymodbus.com/guides/modbus-value-wrong-scaling-byte-order.html">
 <meta property="og:image" content="https://easymodbus.com/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Why does my Modbus value look wrong? | Easy Modbus">
-<meta name="twitter:description" content="A Modbus value that is ten times too big, negative when it should not be, or wild nonsense is almost always scaling, signedness, or word order. Here is how to tell which.">
+<meta name="twitter:description" content="A Modbus value that reads wrong is usually scaling or byte/word order. How to spot 32-bit floats, word swaps and multipliers, and fix them.">
 <meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +39,9 @@
                        font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
   h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
   h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
-       margin:0 0 1rem; }
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
   h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
   h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
   a { color:var(--accent); }
@@ -87,12 +89,25 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [{
-    "@type": "Question",
-    "name": "Why does my Modbus value look wrong?",
-    "acceptedAnswer": { "@type": "Answer", "text": "Almost always one of four things. If it is exactly ten or a hundred times too big, the device reports tenths or hundredths and you need a multiplier. If it is a huge number like 65524 where you expected a small negative one, it is a signed value being read as unsigned. If it is wild nonsense — 3.6×10-41 or 2.4×1031 — it is a 32-bit value whose two halves are in the other order, and switching ABCD to CDAB will fix it. If it is a sensible-looking number belonging to something else entirely, your address is off by one." }
-  }]
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-16",
+      "dateModified": "2026-09-16",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Why does my Modbus value look wrong?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Almost always one of four things. If it is exactly ten or a hundred times too big, the device reports tenths or hundredths and you need a multiplier. If it is a huge number like 65524 where you expected a small negative one, it is a signed value being read as unsigned. If it is wild nonsense — 3.6×10-41 or 2.4×1031 — it is a 32-bit value whose two halves are in the other order, and switching ABCD to CDAB will fix it. If it is a sensible-looking number belonging to something else entirely, your address is off by one." }
+      }]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "Why does my Modbus value look wrong?", "item": "https://easymodbus.com/guides/modbus-value-wrong-scaling-byte-order.html" }
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -105,6 +120,7 @@
 
 <article>
   <h1>Why does my Modbus value look wrong?</h1>
+  <p class="updated">Updated 16 September 2026</p>
 
   <div class="answer">
     <strong>Short answer</strong>
