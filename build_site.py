@@ -28,7 +28,6 @@ BASE_URL = "https://easymodbus.com"
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 CSS = """
-  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
   :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
           --accent:#ff9a1f; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
   * { box-sizing: border-box; }
@@ -140,6 +139,9 @@ def page(slug, title, question, answer_html, body_html, related, description):
 <meta name="twitter:title" content="%(title)s">
 <meta name="twitter:description" content="%(description)s">
 <meta name="twitter:image" content="%(base)s/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>%(css)s</style>
 <script type="application/ld+json">
 %(jsonld)s
@@ -1885,6 +1887,9 @@ PRIVACY = """<!doctype html>
 <meta name="twitter:title" content="Privacy policy &mdash; Easy Modbus">
 <meta name="twitter:description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
 <meta name="twitter:image" content="%(base)s/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>%(css)s</style>
 </head>
 <body>
@@ -2011,6 +2016,9 @@ PC_PRIVACY = """<!doctype html>
 <meta name="twitter:title" content="Privacy policy &mdash; Easy Modbus PC">
 <meta name="twitter:description" content="Privacy policy for Easy Modbus PC, the Windows desktop app. No account, no analytics, no ads; everything stays on your PC.">
 <meta name="twitter:image" content="%(base)s/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>%(css)s</style>
 </head>
 <body>
@@ -2117,6 +2125,9 @@ TERMS = """<!doctype html>
 <meta name="twitter:title" content="Terms of use &mdash; Easy Modbus">
 <meta name="twitter:description" content="Terms of use for Easy Modbus and Easy Modbus PC: user safety responsibilities, no warranty, and limitation of liability.">
 <meta name="twitter:image" content="%(base)s/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>%(css)s</style>
 </head>
 <body>
