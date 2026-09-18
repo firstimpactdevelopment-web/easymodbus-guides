@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Modbus exception codes explained | Easy Modbus</title>
+<meta name="description" content="Modbus exception codes 01, 02, 03, 04, 06, 0A and 0B in plain English — what each one means, what caused it, and the fix. Exception 02 is almost always addressing.">
+<link rel="canonical" href="https://easymodbus.com/guides/modbus-exception-codes.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Modbus exception codes explained | Easy Modbus">
+<meta property="og:description" content="Modbus exception codes 01, 02, 03, 04, 06, 0A and 0B in plain English — what each one means, what caused it, and the fix. Exception 02 is almost always addressing.">
+<meta property="og:url" content="https://easymodbus.com/guides/modbus-exception-codes.html">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus exception codes explained | Easy Modbus">
+<meta name="twitter:description" content="Modbus exception codes 01, 02, 03, 04, 06, 0A and 0B in plain English — what each one means, what caused it, and the fix. Exception 02 is almost always addressing.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
+          --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         font-size:17px; line-height:1.7; color:var(--fg); background:var(--bg);
+         -webkit-font-smoothing:antialiased; }
+  header.site { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+                padding-bottom:1.25rem; border-bottom:1px solid var(--line); margin-bottom:2.25rem; }
+  header.site a { color:var(--fg); text-decoration:none; }
+  header.site a span, header.site a b { font-family:"Archivo",sans-serif; font-weight:900;
+                       text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+  header.site .muted { margin-left:auto; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                       font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
+  h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
+  h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
+  h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
+  h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
+  a { color:var(--accent); }
+  strong { color:#fff; }
+  .answer { background:var(--box); border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:12px; padding:1.1rem 1.3rem; margin:1.5rem 0 2rem; }
+  .answer > strong { display:block; margin-bottom:.5rem; text-transform:uppercase;
+                   font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+                   font-size:.72rem; letter-spacing:.18em; color:var(--accent); }
+  .answer p { margin:.6rem 0; }
+  .answer p:last-child { margin-bottom:0; }
+  .answer p strong { color:#fff; font-weight:700; }
+  code { background:var(--code); padding:.1rem .4rem; border-radius:4px; font-size:.9em;
+         font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  pre { background:var(--code); padding:1rem; border-radius:10px; overflow-x:auto;
+        border:1px solid var(--line); }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:1.25rem 0; display:block; overflow-x:auto; }
+  th, td { text-align:left; padding:.55rem .75rem; border-bottom:1px solid var(--line);
+           vertical-align:top; }
+  th { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+       text-transform:uppercase; letter-spacing:.1em; color:var(--accent); font-weight:600; }
+  ul, ol { padding-left:1.3rem; }
+  li { margin:.45rem 0; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  .callout { border-left:3px solid var(--accent); background:var(--box);
+             border-radius:0 10px 10px 0; padding:.75rem 1rem; margin:1.5rem 0; }
+  nav.more { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); }
+  nav.more h2 { margin-top:0; }
+  nav.more ul { list-style:none; padding:0; }
+  nav.more li { margin:0; border-bottom:1px solid var(--line); padding:.85rem 0; }
+  nav.more li:last-child { border-bottom:none; }
+  nav.more a { font-family:"Archivo",sans-serif; font-weight:600; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+           color:var(--muted); font-size:.9rem; }
+  footer a { color:var(--accent); }
+  figure.shot { margin:1.75rem 0; text-align:center; }
+  figure.shot img { max-width:300px; width:100%; height:auto; border:1px solid var(--line);
+                    border-radius:16px; background:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  figure.shot figcaption { color:var(--muted); font-size:.85rem; margin-top:.55rem; }
+  .shots { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;
+           align-items:flex-start; margin:1.75rem 0; }
+  .shots figure.shot { margin:0; flex:0 1 300px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-18",
+      "dateModified": "2026-09-18",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What do Modbus exception codes mean?",
+        "acceptedAnswer": { "@type": "Answer", "text": "An exception reply is the device saying no — and that is good news, because it proves the device received your request, understood it, and is alive. The code tells you why it declined. The two you will meet most are 02, illegal data address (that register does not exist — almost always an off-by-one address, not a broken device) and 0B, gateway target device failed to respond (the gateway is fine, but nothing answered at that unit ID). The rest are rarer and each points at one specific thing." }
+      }]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "What do Modbus exception codes mean?", "item": "https://easymodbus.com/guides/modbus-exception-codes.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>What do Modbus exception codes mean?</h1>
+  <p class="updated">Updated 18 September 2026</p>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>An exception reply is the device saying <em>no</em> &mdash; and
+    that is good news, because it proves the device received your request, understood
+    it, and is alive. The code tells you why it declined. The two you will meet most
+    are <strong>02, illegal data address</strong> (that register does not exist &mdash;
+    almost always an off-by-one address, not a broken device) and <strong>0B, gateway
+    target device failed to respond</strong> (the gateway is fine, but nothing
+    answered at that unit ID). The rest are rarer and each points at one specific
+    thing.</p>
+  </div>
+
+
+  <h2>An exception is proof of life</h2>
+  <p>This is worth saying first because it changes how you read the situation. A
+  <a href="modbus-timeout-no-response.html">timeout</a> is silence &mdash; maybe
+  nothing is there. An <em>exception</em> is a reply: a real Modbus device got your
+  message, parsed it, and returned a coded refusal. The device is reachable. You are
+  now debugging the <em>request</em>, not the connection.</p>
+
+  <h2>The codes, in plain English</h2>
+  <table>
+    <tr><th>Code</th><th>Name</th><th>What actually happened, and the fix</th></tr>
+    <tr><td>01 (0x01)</td><td>Illegal function</td><td>This device does not support that function code. You used code 4 on a value that lives in the holding registers, or vice versa. Try 3 instead of 4. See <a href="modbus-function-codes-explained.html">function codes explained</a>.</td></tr>
+    <tr><td>02 (0x02)</td><td>Illegal data address</td><td>That register number does not exist on this device. Nine times out of ten the address is off by one, or you are using the Modicon 40001 form where the tool wants the zero-based 0. The device is fine.</td></tr>
+    <tr><td>03 (0x03)</td><td>Illegal data value</td><td>The value or the quantity is out of range. Usually you asked for too many registers in one request, or wrote a value the device rejects. Ask for fewer; check the allowed range.</td></tr>
+    <tr><td>04 (0x04)</td><td>Server / device failure</td><td>Something failed inside the device while handling the request. Often a sensor that register depends on is faulted. Retry; if it persists, it is the equipment, not you.</td></tr>
+    <tr><td>05 (0x05)</td><td>Acknowledge</td><td>Accepted, but it needs more time (used with long operations). Wait and poll. Rare in building equipment.</td></tr>
+    <tr><td>06 (0x06)</td><td>Device busy</td><td>The device is mid-task and cannot answer now. Wait and retry.</td></tr>
+    <tr><td>0A (0x0A)</td><td>Gateway path unavailable</td><td>A gateway has no configured route to that unit ID. The gateway's routing table needs the unit, or you have the wrong gateway.</td></tr>
+    <tr><td>0B (0x0B)</td><td>Gateway target device failed to respond</td><td>The gateway is healthy; nothing answered at that unit ID on its serial side. Wrong unit ID, a device powered off, or an RS-485 wiring fault.</td></tr>
+  </table>
+
+  <h2>Exception 02 in detail, because it is the common one</h2>
+  <p>&ldquo;Illegal data address&rdquo; almost never means the device is broken. It
+  means you asked for a slot that is not there, and there are three usual reasons:</p>
+  <ul>
+    <li><strong>Off-by-one.</strong> The map lists <code>40001</code> and you sent
+    <code>1</code> instead of <code>0</code> &mdash; or the reverse. This is the
+    single most common addressing mistake in Modbus. See
+    <a href="modbus-address-off-by-one.html">why is my Modbus address off by one?</a></li>
+    <li><strong>Wrong table.</strong> The value is a holding register but you read it
+    as an input register, so the address does not exist in the table you asked. Check
+    the register type in the map.</li>
+    <li><strong>Reading past the end.</strong> A block read that starts valid but runs
+    off the end of the device's map returns 02 for the whole block. Shorten it.</li>
+  </ul>
+  <p>Because an 02 confirms the device is answering, it is actually the easiest error
+  to chase: change one thing about the address and read again.</p>
+
+  <h2>Exception 0B versus a timeout</h2>
+  <p>These two get confused constantly. A plain <a href="modbus-timeout-no-response.html">timeout</a>
+  means no gateway even answered. An <strong>0B</strong> means the gateway answered
+  <em>for</em> a device that then stayed silent &mdash; so the gateway, the network
+  and the port are all fine, and the problem is downstream on the serial chain: the
+  unit ID, or the wiring to that one device. That is a much smaller haystack.</p>
+
+  <div class="callout">
+  <p><a href="../index.html">Easy Modbus</a> shows the exception name in full rather
+  than a bare hex code, and for an 02 it points you at the addressing guide, because
+  that is what it almost always is.</p>
+  </div>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-address-off-by-one.html">Why is my Modbus address off by one?</a></li>
+      <li><a href="../guides/modbus-function-codes-explained.html">What are Modbus function codes?</a></li>
+      <li><a href="../guides/modbus-timeout-no-response.html">Why is my Modbus request timing out?</a></li>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../terms.html">Terms of use</a> &middot; <a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

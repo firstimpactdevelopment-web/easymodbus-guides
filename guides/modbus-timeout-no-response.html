@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Modbus timeout / no response from slave | Easy Modbus</title>
+<meta name="description" content="A Modbus timeout means your request left but nothing came back. The seven causes in order of likelihood, and how to tell a network fault from a framing one.">
+<link rel="canonical" href="https://easymodbus.com/guides/modbus-timeout-no-response.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Modbus timeout / no response from slave | Easy Modbus">
+<meta property="og:description" content="A Modbus timeout means your request left but nothing came back. The seven causes in order of likelihood, and how to tell a network fault from a framing one.">
+<meta property="og:url" content="https://easymodbus.com/guides/modbus-timeout-no-response.html">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus timeout / no response from slave | Easy Modbus">
+<meta name="twitter:description" content="A Modbus timeout means your request left but nothing came back. The seven causes in order of likelihood, and how to tell a network fault from a framing one.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
+          --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         font-size:17px; line-height:1.7; color:var(--fg); background:var(--bg);
+         -webkit-font-smoothing:antialiased; }
+  header.site { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+                padding-bottom:1.25rem; border-bottom:1px solid var(--line); margin-bottom:2.25rem; }
+  header.site a { color:var(--fg); text-decoration:none; }
+  header.site a span, header.site a b { font-family:"Archivo",sans-serif; font-weight:900;
+                       text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+  header.site .muted { margin-left:auto; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                       font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
+  h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
+  h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
+  h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
+  h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
+  a { color:var(--accent); }
+  strong { color:#fff; }
+  .answer { background:var(--box); border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:12px; padding:1.1rem 1.3rem; margin:1.5rem 0 2rem; }
+  .answer > strong { display:block; margin-bottom:.5rem; text-transform:uppercase;
+                   font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+                   font-size:.72rem; letter-spacing:.18em; color:var(--accent); }
+  .answer p { margin:.6rem 0; }
+  .answer p:last-child { margin-bottom:0; }
+  .answer p strong { color:#fff; font-weight:700; }
+  code { background:var(--code); padding:.1rem .4rem; border-radius:4px; font-size:.9em;
+         font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  pre { background:var(--code); padding:1rem; border-radius:10px; overflow-x:auto;
+        border:1px solid var(--line); }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:1.25rem 0; display:block; overflow-x:auto; }
+  th, td { text-align:left; padding:.55rem .75rem; border-bottom:1px solid var(--line);
+           vertical-align:top; }
+  th { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+       text-transform:uppercase; letter-spacing:.1em; color:var(--accent); font-weight:600; }
+  ul, ol { padding-left:1.3rem; }
+  li { margin:.45rem 0; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  .callout { border-left:3px solid var(--accent); background:var(--box);
+             border-radius:0 10px 10px 0; padding:.75rem 1rem; margin:1.5rem 0; }
+  nav.more { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); }
+  nav.more h2 { margin-top:0; }
+  nav.more ul { list-style:none; padding:0; }
+  nav.more li { margin:0; border-bottom:1px solid var(--line); padding:.85rem 0; }
+  nav.more li:last-child { border-bottom:none; }
+  nav.more a { font-family:"Archivo",sans-serif; font-weight:600; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+           color:var(--muted); font-size:.9rem; }
+  footer a { color:var(--accent); }
+  figure.shot { margin:1.75rem 0; text-align:center; }
+  figure.shot img { max-width:300px; width:100%; height:auto; border:1px solid var(--line);
+                    border-radius:16px; background:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  figure.shot figcaption { color:var(--muted); font-size:.85rem; margin-top:.55rem; }
+  .shots { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;
+           align-items:flex-start; margin:1.75rem 0; }
+  .shots figure.shot { margin:0; flex:0 1 300px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-18",
+      "dateModified": "2026-09-18",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Why is my Modbus request timing out with no response?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A timeout means the request went out and nothing came back at all — which is different from an error reply, and points at a different set of causes. In order of how often they turn out to be the problem: the wrong framing (Modbus RTU behind a transparent gateway, spoken to as if it were Modbus TCP), the wrong unit ID, no network route to the device, a connection limit already reached, Modbus switched off on the equipment, the wrong port, or a serial-side wiring fault. The good news is that a timeout is silence, and silence narrows things down fast." }
+      }]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "Why is my Modbus request timing out with no response?", "item": "https://easymodbus.com/guides/modbus-timeout-no-response.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>Why is my Modbus request timing out with no response?</h1>
+  <p class="updated">Updated 18 September 2026</p>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>A timeout means the request went out and <strong>nothing came
+    back at all</strong> &mdash; which is different from an error reply, and points
+    at a different set of causes. In order of how often they turn out to be the
+    problem: the wrong framing (Modbus RTU behind a transparent gateway, spoken to
+    as if it were Modbus TCP), the wrong unit ID, no network route to the device, a
+    connection limit already reached, Modbus switched off on the equipment, the
+    wrong port, or a serial-side wiring fault. The good news is that a timeout is
+    silence, and silence narrows things down fast.</p>
+  </div>
+
+
+  <h2>Silence versus a &ldquo;no&rdquo;</h2>
+  <p>First, be sure it is actually a timeout. If the device replies with an
+  <em>exception</em> &mdash; illegal data address, gateway failed to respond &mdash;
+  that is not silence, it is proof of life, and it means something quite different.
+  See <a href="modbus-exception-codes.html">Modbus exception codes explained</a>. A
+  true timeout is when your tool waits the full timeout period and gives up with
+  nothing received.</p>
+
+  <h2>The seven causes, most likely first</h2>
+
+  <h3>1. Wrong framing: RTU-over-TCP mistaken for Modbus TCP</h3>
+  <p>This is the single most common cause of a silent Modbus connection. The
+  equipment is really serial RTU behind a gateway that just pipes the bytes through
+  without translating. You open a TCP connection fine &mdash; so the device
+  &ldquo;is there&rdquo; &mdash; but every request times out, because it is written
+  in the wrong dialect. Switch to <em>Modbus RTU over TCP</em> and try again. See
+  <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or RS-485 &mdash; which do I
+  have?</a></p>
+
+  <h3>2. Wrong unit ID</h3>
+  <p>Behind a gateway, the unit ID selects which device on the serial chain
+  answers. The wrong one gives either total silence or a gateway exception. Try 1
+  first, then 255, then sweep. See <a href="modbus-unit-id-slave-id.html">what is a
+  Modbus unit ID?</a></p>
+
+  <h3>3. No route to the device</h3>
+  <p>If the connection itself times out &mdash; you never even get
+  <em>connected</em> &mdash; the device is on a different subnet or VLAN with no
+  route, or a firewall is dropping it. Ping the IP first: if ping fails, no Modbus
+  tool will do better. See <a href="cannot-find-modbus-devices.html">why can't I
+  find my Modbus devices?</a></p>
+
+  <h3>4. The device's connection limit is already reached</h3>
+  <p>Many Modbus TCP devices accept only one connection, and some accept a few then
+  stop answering. If a building management system is already polling it, your
+  request may connect but never get a reply. Close other software, or try when the
+  BMS is not polling.</p>
+
+  <h3>5. Modbus is switched off, or on a different port</h3>
+  <p>Plenty of equipment ships with Modbus TCP disabled, or listening on 503 or 5020
+  rather than 502. Check the device's own network settings screen. A closed port
+  usually gives <em>connection refused</em> rather than a timeout, but a firewall in
+  front of it turns that refusal into silence.</p>
+
+  <h3>6. Reading too many registers at once</h3>
+  <p>If single reads work but a block read times out, the device or its gateway is
+  choking on the request size. Drop the block to 32 or 16 registers. Cheap gateways
+  fall over well below the 125-register limit the specification allows.</p>
+
+  <h3>7. Serial-side trouble (RTU only)</h3>
+  <p>On an RS-485 chain, silence can be a baud-rate or parity mismatch, A and B
+  swapped, missing termination on a long run, or two devices sharing a unit ID and
+  colliding. None of these is discoverable &mdash; every device on the chain has to
+  agree, and the settings have to be entered by hand.</p>
+
+  <h2>A two-minute triage</h2>
+  <ol>
+    <li><strong>Ping the IP.</strong> Fails &rarr; it is the network (cause 3). Works
+    &rarr; carry on.</li>
+    <li><strong>Does it connect but not reply?</strong> &rarr; framing or unit ID
+    (causes 1, 2), or a connection limit (cause 4).</li>
+    <li><strong>Switch to RTU-over-TCP and retry.</strong> This one move fixes more
+    timeouts than any other.</li>
+    <li><strong>Try unit ID 1, then 255, then sweep a small range.</strong></li>
+    <li><strong>Ask for one register instead of a block.</strong></li>
+  </ol>
+  <div class="callout">
+  <p><a href="../index.html">Easy Modbus</a> has a <em>Test connection</em> action
+  that tries both framings and reports which one answered, and a <em>Find unit
+  IDs</em> sweep &mdash; between them they settle causes 1 and 2, which are most of
+  all Modbus timeouts, without guesswork.</p>
+  </div>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-exception-codes.html">What do Modbus exception codes mean?</a></li>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+      <li><a href="../guides/modbus-tcp-vs-rtu-vs-rs485.html">Modbus TCP, RTU or RS-485 &mdash; which do I have?</a></li>
+      <li><a href="../guides/modbus-unit-id-slave-id.html">What is a Modbus unit ID or slave ID?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../terms.html">Terms of use</a> &middot; <a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

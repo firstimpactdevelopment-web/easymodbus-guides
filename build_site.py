@@ -1798,6 +1798,739 @@ GUIDES.append(dict(
     ],
 ))
 
+GUIDES.append(dict(
+    slug="guides/modbus-timeout-no-response",
+    title="Modbus timeout / no response from slave | Easy Modbus",
+    question="Why is my Modbus request timing out with no response?",
+    description="A Modbus timeout means your request left but nothing came back. The seven causes in order of likelihood, and how to tell a network fault from a framing one.",
+    answer_html="""<p>A timeout means the request went out and <strong>nothing came
+    back at all</strong> &mdash; which is different from an error reply, and points
+    at a different set of causes. In order of how often they turn out to be the
+    problem: the wrong framing (Modbus RTU behind a transparent gateway, spoken to
+    as if it were Modbus TCP), the wrong unit ID, no network route to the device, a
+    connection limit already reached, Modbus switched off on the equipment, the
+    wrong port, or a serial-side wiring fault. The good news is that a timeout is
+    silence, and silence narrows things down fast.</p>""",
+    body_html="""
+  <h2>Silence versus a &ldquo;no&rdquo;</h2>
+  <p>First, be sure it is actually a timeout. If the device replies with an
+  <em>exception</em> &mdash; illegal data address, gateway failed to respond &mdash;
+  that is not silence, it is proof of life, and it means something quite different.
+  See <a href="modbus-exception-codes.html">Modbus exception codes explained</a>. A
+  true timeout is when your tool waits the full timeout period and gives up with
+  nothing received.</p>
+
+  <h2>The seven causes, most likely first</h2>
+
+  <h3>1. Wrong framing: RTU-over-TCP mistaken for Modbus TCP</h3>
+  <p>This is the single most common cause of a silent Modbus connection. The
+  equipment is really serial RTU behind a gateway that just pipes the bytes through
+  without translating. You open a TCP connection fine &mdash; so the device
+  &ldquo;is there&rdquo; &mdash; but every request times out, because it is written
+  in the wrong dialect. Switch to <em>Modbus RTU over TCP</em> and try again. See
+  <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or RS-485 &mdash; which do I
+  have?</a></p>
+
+  <h3>2. Wrong unit ID</h3>
+  <p>Behind a gateway, the unit ID selects which device on the serial chain
+  answers. The wrong one gives either total silence or a gateway exception. Try 1
+  first, then 255, then sweep. See <a href="modbus-unit-id-slave-id.html">what is a
+  Modbus unit ID?</a></p>
+
+  <h3>3. No route to the device</h3>
+  <p>If the connection itself times out &mdash; you never even get
+  <em>connected</em> &mdash; the device is on a different subnet or VLAN with no
+  route, or a firewall is dropping it. Ping the IP first: if ping fails, no Modbus
+  tool will do better. See <a href="cannot-find-modbus-devices.html">why can't I
+  find my Modbus devices?</a></p>
+
+  <h3>4. The device's connection limit is already reached</h3>
+  <p>Many Modbus TCP devices accept only one connection, and some accept a few then
+  stop answering. If a building management system is already polling it, your
+  request may connect but never get a reply. Close other software, or try when the
+  BMS is not polling.</p>
+
+  <h3>5. Modbus is switched off, or on a different port</h3>
+  <p>Plenty of equipment ships with Modbus TCP disabled, or listening on 503 or 5020
+  rather than 502. Check the device's own network settings screen. A closed port
+  usually gives <em>connection refused</em> rather than a timeout, but a firewall in
+  front of it turns that refusal into silence.</p>
+
+  <h3>6. Reading too many registers at once</h3>
+  <p>If single reads work but a block read times out, the device or its gateway is
+  choking on the request size. Drop the block to 32 or 16 registers. Cheap gateways
+  fall over well below the 125-register limit the specification allows.</p>
+
+  <h3>7. Serial-side trouble (RTU only)</h3>
+  <p>On an RS-485 chain, silence can be a baud-rate or parity mismatch, A and B
+  swapped, missing termination on a long run, or two devices sharing a unit ID and
+  colliding. None of these is discoverable &mdash; every device on the chain has to
+  agree, and the settings have to be entered by hand.</p>
+
+  <h2>A two-minute triage</h2>
+  <ol>
+    <li><strong>Ping the IP.</strong> Fails &rarr; it is the network (cause 3). Works
+    &rarr; carry on.</li>
+    <li><strong>Does it connect but not reply?</strong> &rarr; framing or unit ID
+    (causes 1, 2), or a connection limit (cause 4).</li>
+    <li><strong>Switch to RTU-over-TCP and retry.</strong> This one move fixes more
+    timeouts than any other.</li>
+    <li><strong>Try unit ID 1, then 255, then sweep a small range.</strong></li>
+    <li><strong>Ask for one register instead of a block.</strong></li>
+  </ol>
+  <div class="callout">
+  <p><a href="../index.html">Easy Modbus</a> has a <em>Test connection</em> action
+  that tries both framings and reports which one answered, and a <em>Find unit
+  IDs</em> sweep &mdash; between them they settle causes 1 and 2, which are most of
+  all Modbus timeouts, without guesswork.</p>
+  </div>
+""",
+    related=[
+        ("guides/modbus-exception-codes", "What do Modbus exception codes mean?"),
+        ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
+        ("guides/modbus-tcp-vs-rtu-vs-rs485", "Modbus TCP, RTU or RS-485 &mdash; which do I have?"),
+        ("guides/modbus-unit-id-slave-id", "What is a Modbus unit ID or slave ID?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/modbus-exception-codes",
+    title="Modbus exception codes explained | Easy Modbus",
+    question="What do Modbus exception codes mean?",
+    description="Modbus exception codes 01, 02, 03, 04, 06, 0A and 0B in plain English — what each one means, what caused it, and the fix. Exception 02 is almost always addressing.",
+    answer_html="""<p>An exception reply is the device saying <em>no</em> &mdash; and
+    that is good news, because it proves the device received your request, understood
+    it, and is alive. The code tells you why it declined. The two you will meet most
+    are <strong>02, illegal data address</strong> (that register does not exist &mdash;
+    almost always an off-by-one address, not a broken device) and <strong>0B, gateway
+    target device failed to respond</strong> (the gateway is fine, but nothing
+    answered at that unit ID). The rest are rarer and each points at one specific
+    thing.</p>""",
+    body_html="""
+  <h2>An exception is proof of life</h2>
+  <p>This is worth saying first because it changes how you read the situation. A
+  <a href="modbus-timeout-no-response.html">timeout</a> is silence &mdash; maybe
+  nothing is there. An <em>exception</em> is a reply: a real Modbus device got your
+  message, parsed it, and returned a coded refusal. The device is reachable. You are
+  now debugging the <em>request</em>, not the connection.</p>
+
+  <h2>The codes, in plain English</h2>
+  <table>
+    <tr><th>Code</th><th>Name</th><th>What actually happened, and the fix</th></tr>
+    <tr><td>01 (0x01)</td><td>Illegal function</td><td>This device does not support that function code. You used code 4 on a value that lives in the holding registers, or vice versa. Try 3 instead of 4. See <a href="modbus-function-codes-explained.html">function codes explained</a>.</td></tr>
+    <tr><td>02 (0x02)</td><td>Illegal data address</td><td>That register number does not exist on this device. Nine times out of ten the address is off by one, or you are using the Modicon 40001 form where the tool wants the zero-based 0. The device is fine.</td></tr>
+    <tr><td>03 (0x03)</td><td>Illegal data value</td><td>The value or the quantity is out of range. Usually you asked for too many registers in one request, or wrote a value the device rejects. Ask for fewer; check the allowed range.</td></tr>
+    <tr><td>04 (0x04)</td><td>Server / device failure</td><td>Something failed inside the device while handling the request. Often a sensor that register depends on is faulted. Retry; if it persists, it is the equipment, not you.</td></tr>
+    <tr><td>05 (0x05)</td><td>Acknowledge</td><td>Accepted, but it needs more time (used with long operations). Wait and poll. Rare in building equipment.</td></tr>
+    <tr><td>06 (0x06)</td><td>Device busy</td><td>The device is mid-task and cannot answer now. Wait and retry.</td></tr>
+    <tr><td>0A (0x0A)</td><td>Gateway path unavailable</td><td>A gateway has no configured route to that unit ID. The gateway's routing table needs the unit, or you have the wrong gateway.</td></tr>
+    <tr><td>0B (0x0B)</td><td>Gateway target device failed to respond</td><td>The gateway is healthy; nothing answered at that unit ID on its serial side. Wrong unit ID, a device powered off, or an RS-485 wiring fault.</td></tr>
+  </table>
+
+  <h2>Exception 02 in detail, because it is the common one</h2>
+  <p>&ldquo;Illegal data address&rdquo; almost never means the device is broken. It
+  means you asked for a slot that is not there, and there are three usual reasons:</p>
+  <ul>
+    <li><strong>Off-by-one.</strong> The map lists <code>40001</code> and you sent
+    <code>1</code> instead of <code>0</code> &mdash; or the reverse. This is the
+    single most common addressing mistake in Modbus. See
+    <a href="modbus-address-off-by-one.html">why is my Modbus address off by one?</a></li>
+    <li><strong>Wrong table.</strong> The value is a holding register but you read it
+    as an input register, so the address does not exist in the table you asked. Check
+    the register type in the map.</li>
+    <li><strong>Reading past the end.</strong> A block read that starts valid but runs
+    off the end of the device's map returns 02 for the whole block. Shorten it.</li>
+  </ul>
+  <p>Because an 02 confirms the device is answering, it is actually the easiest error
+  to chase: change one thing about the address and read again.</p>
+
+  <h2>Exception 0B versus a timeout</h2>
+  <p>These two get confused constantly. A plain <a href="modbus-timeout-no-response.html">timeout</a>
+  means no gateway even answered. An <strong>0B</strong> means the gateway answered
+  <em>for</em> a device that then stayed silent &mdash; so the gateway, the network
+  and the port are all fine, and the problem is downstream on the serial chain: the
+  unit ID, or the wiring to that one device. That is a much smaller haystack.</p>
+
+  <div class="callout">
+  <p><a href="../index.html">Easy Modbus</a> shows the exception name in full rather
+  than a bare hex code, and for an 02 it points you at the addressing guide, because
+  that is what it almost always is.</p>
+  </div>
+""",
+    related=[
+        ("guides/modbus-address-off-by-one", "Why is my Modbus address off by one?"),
+        ("guides/modbus-function-codes-explained", "What are Modbus function codes?"),
+        ("guides/modbus-timeout-no-response", "Why is my Modbus request timing out?"),
+        ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/modbus-crc-error",
+    title="Modbus CRC error: causes and fixes | Easy Modbus",
+    question="What causes a Modbus CRC error, and how do I fix it?",
+    description="A Modbus CRC error means the message arrived corrupted. The real causes — noise, termination, baud mismatch, and RTU/TCP framing confusion — and how to fix each.",
+    answer_html="""<p>A CRC error means a Modbus RTU message arrived but its checksum
+    did not match, so the receiver knows the bytes were corrupted in transit and
+    throws them away. It is almost always a <strong>physical or serial-settings
+    problem</strong>, not a software one: electrical noise on the RS-485 line,
+    missing or wrong termination, a baud-rate or parity mismatch, or two devices
+    talking over each other. One software cause exists and is worth ruling out first
+    &mdash; feeding RTU frames to a tool expecting Modbus TCP, or the reverse, which
+    makes every message look corrupt.</p>""",
+    body_html="""
+  <h2>What the CRC actually is</h2>
+  <p>Every Modbus RTU message ends with a two-byte CRC &mdash; a number calculated
+  from all the preceding bytes. The receiver recalculates it and compares. If a
+  single bit changed on the wire, the two will not match, and the receiver discards
+  the frame rather than acting on corrupted data. So a CRC error is not the protocol
+  failing; it is the protocol doing its job and catching damage. Modbus TCP has no
+  CRC &mdash; the TCP layer handles integrity &mdash; so CRC errors belong to RTU and
+  RTU-over-TCP.</p>
+
+  <h2>The causes, most common first</h2>
+
+  <h3>1. Wrong framing (the software one, rule it out first)</h3>
+  <p>If a tool set to Modbus TCP is pointed at an RTU-over-TCP gateway, or a tool
+  expecting RTU receives clean TCP frames, every message looks malformed and can be
+  reported as a CRC or framing error. Before chasing cables, confirm you are speaking
+  the right dialect. See <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or RS-485
+  &mdash; which do I have?</a></p>
+
+  <h3>2. Baud rate, parity or stop bits mismatched</h3>
+  <p>Every device on an RS-485 chain must use identical serial settings. If one is at
+  9600 8N1 and the master is at 19200 8E1, the bytes are misread and the CRC never
+  matches. This produces consistent, every-message CRC errors &mdash; which is
+  actually a helpful signature, because intermittent errors point elsewhere.</p>
+
+  <h3>3. Missing or wrong termination</h3>
+  <p>A long RS-485 run needs a termination resistor (typically 120 ohm) at each end,
+  and only at the ends. Missing termination causes reflections that corrupt bytes,
+  and the symptom is classic: it works on the bench with a short cable and fails once
+  it is installed on a long one. Too <em>much</em> termination &mdash; a resistor at
+  every device &mdash; loads the line down and does the same.</p>
+
+  <h3>4. Electrical noise</h3>
+  <p>RS-485 near variable-speed drives, contactors or motor cabling picks up
+  interference. Intermittent CRC errors that get worse when a big load switches on are
+  the tell. Fixes are shielded twisted-pair cable, a proper ground on the shield at
+  one end only, and routing the data cable away from power.</p>
+
+  <h3>5. Two devices on the same unit ID</h3>
+  <p>Duplicated unit IDs make two devices answer at once; their replies overlap on the
+  wire and arrive as garbage that fails the CRC. If a chain worked until equipment was
+  added, suspect this first. See <a href="modbus-unit-id-slave-id.html">what is a
+  Modbus unit ID?</a></p>
+
+  <h3>6. A and B swapped, or a marginal connection</h3>
+  <p>Reversed data lines, a loose terminal, or a nicked conductor all corrupt bytes
+  intermittently. Vendors disagree on which wire is A and which is B, so swapping them
+  is a normal diagnostic step, not a mistake.</p>
+
+  <h2>How to narrow it down</h2>
+  <table>
+    <tr><th>Pattern</th><th>Points at</th></tr>
+    <tr><td>Every single message fails</td><td>Baud/parity mismatch, or wrong framing</td></tr>
+    <tr><td>Intermittent, worse on long cable</td><td>Termination or noise</td></tr>
+    <tr><td>Intermittent, worse when a load switches</td><td>Electrical noise</td></tr>
+    <tr><td>Started when a device was added</td><td>Duplicate unit ID, or termination now in the wrong place</td></tr>
+    <tr><td>Only over the network, never local</td><td>Framing &mdash; you are on RTU-over-TCP</td></tr>
+  </table>
+  <div class="callout">
+  <p>Because Modbus TCP carries no CRC, moving a stubborn serial device onto a proper
+  translating gateway can make the problem disappear entirely &mdash; the integrity
+  check becomes TCP's job over clean Ethernet. It treats the symptom rather than the
+  cause, but on a noisy site it is often the pragmatic fix.</p>
+  </div>
+""",
+    related=[
+        ("guides/modbus-tcp-vs-rtu-vs-rs485", "Modbus TCP, RTU or RS-485 &mdash; which do I have?"),
+        ("guides/modbus-unit-id-slave-id", "What is a Modbus unit ID or slave ID?"),
+        ("guides/modbus-timeout-no-response", "Why is my Modbus request timing out?"),
+        ("guides/modbus-reading-slow-or-unreliable", "Why is my Modbus reading slow or unreliable?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/modbus-poll-vs-easy-modbus",
+    title="Modbus Poll vs Easy Modbus, compared | Easy Modbus",
+    question="Modbus Poll vs Easy Modbus — which should I use?",
+    description="A straight comparison of Modbus Poll and Easy Modbus: platform, price, reading, writing, data-type decoding and simulation, with a clear rule for choosing.",
+    answer_html="""<p>They are built for different moments. <strong>Modbus Poll</strong>
+    is a mature Windows master for the desk and the bench &mdash; excellent for
+    development, scripted polling and long soak tests, and paid, with slave simulation
+    sold as a second product. <strong>Easy Modbus</strong> is built for the field: it
+    runs on the phone in your pocket, it is free, it works out what unknown registers
+    mean, and it saves that register map to reuse and export. If your work is at a
+    Windows workstation, Modbus Poll. If it is in front of equipment, or you want a
+    free tool that decodes and remembers, Easy Modbus.</p>""",
+    body_html="""
+  <h2>Side by side</h2>
+  <table>
+    <tr><th></th><th>Modbus Poll</th><th>Easy Modbus</th></tr>
+    <tr><td>Made by</td><td>Witte Software</td><td>First Impact Development</td></tr>
+    <tr><td>Platform</td><td>Windows desktop</td><td>Android, plus a Windows version</td></tr>
+    <tr><td>Price</td><td>Paid licence; Modbus Slave is a separate purchase</td><td>Free; optional one-time purchase removes ads and unlocks unlimited control panels</td></tr>
+    <tr><td>Transports</td><td>TCP, RTU, ASCII, RTU-over-TCP</td><td>Modbus TCP and RTU-over-TCP</td></tr>
+    <tr><td>Direct serial (USB&ndash;RS485)</td><td>Yes, with a COM port</td><td>No &mdash; reaches serial through a gateway</td></tr>
+    <tr><td>Reading</td><td>Fast, mature, many concurrent windows</td><td>Block reads, live values, hex and decimal</td></tr>
+    <tr><td>Writing</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with one-tap <em>Put it back</em></td></tr>
+    <tr><td>Works out data type &amp; word order</td><td>You choose them</td><td>Ranks the plausible readings and explains each &mdash; the standout feature</td></tr>
+    <tr><td>Saves what a register means</td><td>Saves poll definitions</td><td>Named, scaled register map exported as CSV</td></tr>
+    <tr><td>Simulate a slave</td><td>Yes, via Modbus Slave (separate)</td><td>Built-in emulator in the Windows version</td></tr>
+    <tr><td>Scripting / automation</td><td>Excel DDE/OLE, strong</td><td>Not a scripting tool</td></tr>
+  </table>
+
+  <h2>Choose Modbus Poll if&hellip;</h2>
+  <ul>
+    <li>You work at a Windows workstation and want the established, heavily-featured
+    master.</li>
+    <li>You need to plug a USB-to-RS485 adapter straight into a bare serial chain with
+    no network anywhere.</li>
+    <li>You script Modbus from Excel, or run many polling windows and long unattended
+    soak tests.</li>
+    <li>You do bench simulation and don't mind buying Modbus Slave alongside it.</li>
+  </ul>
+
+  <h2>Choose Easy Modbus if&hellip;</h2>
+  <ul>
+    <li>You are standing in front of the equipment and would rather use the phone in
+    your pocket than find a laptop and a network port.</li>
+    <li>The registers are undocumented and you need the tool to <em>work out</em> what
+    they are &mdash; float versus integer, word order, scaling &mdash; not just show a
+    raw number. See <a href="modbus-value-wrong-scaling-byte-order.html">why your value
+    looks wrong</a>.</li>
+    <li>You want to <strong>save the register map</strong> and leave a documented
+    device behind, exported as a CSV.</li>
+    <li>You want it to be free.</li>
+  </ul>
+
+  <div class="callout">
+  <p>Plenty of people use both: Modbus Poll on the workbench, Easy Modbus in the
+  field. They are not really rivals so much as tools for two different places. If you
+  only want the free options in general &mdash; desktop included &mdash; see
+  <a href="modbus-poll-alternative.html">free Modbus Poll alternatives</a>.</p>
+  </div>
+""",
+    related=[
+        ("guides/modbus-poll-alternative", "What is a good free alternative to Modbus Poll?"),
+        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
+        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
+        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/modbus-register-reads-zero",
+    title="Modbus register reads 0? Why, and the fix | Easy Modbus",
+    question="Why does my Modbus register read 0?",
+    description="A Modbus register that reads 0 is usually the wrong function code, an off-by-one address, or a value split across two registers — not a dead device. How to tell which.",
+    answer_html="""<p>A register stuck at zero is rarely a broken sensor. Five things
+    cause it, and only the last is the equipment's fault: you are reading the wrong
+    <strong>table</strong> (an input register with the holding-register request, or
+    the reverse), the address is <strong>off by one</strong>, the value is really a
+    <strong>32-bit number split across two registers</strong> and you are looking at
+    the empty half, the register is <strong>genuinely unused</strong> on this model,
+    or the reading really is zero right now. The quickest way to tell them apart is to
+    read a block around it and look at the neighbours.</p>""",
+    body_html="""
+  <h2>1. Wrong table (the most common)</h2>
+  <p>Modbus keeps measurements in two different lists &mdash; <em>input
+  registers</em> (read with function code 4) and <em>holding registers</em> (read
+  with function code 3). Ask the wrong one and many devices return zero rather than
+  an error. If a value reads 0 on FC3, try FC4, and vice versa. See
+  <a href="modbus-function-codes-explained.html">function codes explained</a>.</p>
+
+  <h2>2. Off-by-one address</h2>
+  <p>If the map lists <code>40001</code> and you read protocol address 1 instead of
+  0, you land one slot early &mdash; often on an unused register that reads zero. This
+  is the single most common Modbus addressing mistake. See
+  <a href="modbus-address-off-by-one.html">why is my Modbus address off by one?</a></p>
+
+  <h2>3. It is half of a 32-bit value</h2>
+  <p>A 32-bit float or integer occupies two registers. If the real number is small,
+  one of those two registers is often all zeros &mdash; so reading just that half
+  gives you 0, and reading just the other half gives you nonsense. The fix is to read
+  the pair as one 32-bit value, in the right word order. See
+  <a href="modbus-value-wrong-scaling-byte-order.html">why does my Modbus value look
+  wrong?</a></p>
+
+  <h2>4. The register is genuinely unused</h2>
+  <p>Maps reserve blocks for features a given model does not have fitted, or for
+  future use. Those read a steady zero forever. If a whole run of registers reads
+  zero and never moves, you are probably in reserved space &mdash; check the map for
+  where the real data starts.</p>
+
+  <h2>5. It really is zero</h2>
+  <p>A flow of zero, a fault count of zero, a stopped motor's speed &mdash; sometimes
+  the honest answer is zero. Make something change physically and watch: if the
+  register moves, it was live all along.</p>
+
+  <h2>The fast way to tell which</h2>
+  <ol>
+    <li><strong>Read a block, not one register.</strong> Ask for 0 to 20 and look at
+    the pattern. Isolated zeros among live values point at addressing or a 32-bit
+    split; a solid wall of zeros points at the wrong table or reserved space.</li>
+    <li><strong>Compare with the device's own display.</strong> If it shows 72.5 and
+    the register reads 0, the value is elsewhere &mdash; keep moving the address.</li>
+    <li><strong>Let the app decode it.</strong> <a href="../index.html">Easy
+    Modbus</a> shows the raw registers in hex and, through its Analyzer, flags when a
+    zero is really the empty half of a 32-bit value next door &mdash; the case people
+    miss most.</li>
+  </ol>
+  <div class="callout">
+  <p>If instead of a zero you got an <em>error</em> reply &mdash; illegal data
+  address &mdash; that is different and more helpful: the device is answering, the
+  address just does not exist. See <a href="modbus-exception-codes.html">Modbus
+  exception codes</a>.</p>
+  </div>
+""",
+    related=[
+        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
+        ("guides/modbus-address-off-by-one", "Why is my Modbus address off by one?"),
+        ("guides/modbus-function-codes-explained", "What are Modbus function codes?"),
+        ("guides/modbus-exception-codes", "What do Modbus exception codes mean?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/modbus-connection-refused",
+    title="Modbus connection refused (Errno 111) | Easy Modbus",
+    question="What does Modbus connection refused (Errno 111) mean?",
+    description="Connection refused means something is at that IP but nothing is listening on the Modbus port. The four causes — wrong port, Modbus off, wrong host, connection limit — and fixes.",
+    answer_html="""<p>&ldquo;Connection refused&rdquo; &mdash; often shown as
+    <code>[Errno 111] Connection refused</code> &mdash; means your request reached a
+    real host, but nothing was listening on the Modbus port you tried, so the host
+    actively said no. That is different from a timeout, which is silence. It narrows
+    to four things: the wrong port (Modbus TCP is 502, but some devices use 503 or
+    5020), Modbus TCP switched off on the equipment, the right port on the wrong host,
+    or the device's single connection already being in use.</p>""",
+    body_html="""
+  <h2>Refused is not the same as timed out</h2>
+  <p>The distinction tells you where to look. A <a href="modbus-timeout-no-response.html">timeout</a>
+  means nothing answered at all &mdash; usually no route, or a firewall silently
+  dropping packets. <strong>Refused</strong> means a host <em>was</em> reached and it
+  actively rejected the connection, because nothing is listening on that port. The
+  network is fine; the port is the problem.</p>
+
+  <h2>The four causes</h2>
+
+  <h3>1. Wrong port</h3>
+  <p>Modbus TCP is registered on <strong>502</strong>, and that is the default to
+  try. But 503 turns up where two Modbus services share a host, and 5020 is common on
+  gateways and where 502 was already taken. Check the device's own network settings
+  screen for the actual port.</p>
+
+  <h3>2. Modbus TCP is switched off</h3>
+  <p>A lot of equipment ships with Modbus disabled, or with only the serial port
+  enabled. There is usually a menu item to turn Modbus TCP on, and some devices need a
+  reboot afterwards. Until it is on, port 502 is closed and every attempt is refused.</p>
+
+  <h3>3. Right port, wrong host</h3>
+  <p>If you are pointing at a PC, a PLC's programming port, or a switch rather than
+  the Modbus device itself, the host is up but has nothing on 502. Double-check the IP
+  against the equipment label or its display.</p>
+
+  <h3>4. The one connection is already taken</h3>
+  <p>Many Modbus TCP devices accept exactly one connection. If a building management
+  system or a logger already holds it, some devices refuse the second attempt outright
+  rather than timing out. Close other software and try again.</p>
+
+  <h2>How to confirm it in a minute</h2>
+  <ol>
+    <li><strong>Ping the IP.</strong> If ping works but Modbus is refused, it is the
+    port or the service (causes 1&ndash;2), not the network.</li>
+    <li><strong>Try 502, then 503, then 5020.</strong></li>
+    <li><strong>Check the device screen</strong> for whether Modbus TCP is enabled and
+    on which port.</li>
+    <li><strong>Close anything else talking to it</strong> and retry.</li>
+  </ol>
+  <div class="callout">
+  <p><a href="../index.html">Easy Modbus</a> reports refused and timed-out
+  differently, so you know at a glance whether to chase the port or the network &mdash;
+  and its sweep tries the common Modbus ports for you. If the device is really serial
+  behind a gateway, also see <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or
+  RS-485 &mdash; which do I have?</a></p>
+  </div>
+""",
+    related=[
+        ("guides/modbus-timeout-no-response", "Why is my Modbus request timing out?"),
+        ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
+        ("guides/modbus-tcp-vs-rtu-vs-rs485", "Modbus TCP, RTU or RS-485 &mdash; which do I have?"),
+        ("guides/modbus-exception-codes", "What do Modbus exception codes mean?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/log-modbus-to-csv-on-phone",
+    title="Log Modbus data to CSV on your phone | Easy Modbus",
+    question="How do I log Modbus data to CSV, and trend a register over time?",
+    description="How to record Modbus register values to a CSV you can open in Excel — from a phone in the field, no laptop or SCADA — and what to capture to make the log useful.",
+    answer_html="""<p>You do not need a SCADA system or a laptop to trend a Modbus
+    value. Read the registers you care about, name them once so the numbers mean
+    something, and export the result as a CSV you can open in Excel or email to
+    whoever needs it. <a href="../index.html">Easy Modbus</a> does this from an
+    Android phone: it saves the register map you build, so every export already has
+    real names, scaling and units attached rather than a wall of raw numbers.</p>""",
+    body_html="""
+  <h2>Why log to CSV at all</h2>
+  <p>Two jobs come up constantly in the field and both are a CSV underneath. The
+  first is <strong>proof</strong> &mdash; capturing what a meter or drive was doing at
+  a moment, to send to a vendor or file with a commissioning record. The second is
+  <strong>trend</strong> &mdash; watching a value move over minutes or hours to catch
+  something intermittent. A phone that can read Modbus and write a CSV covers both
+  without dragging out a laptop or standing up a logging server.</p>
+
+  <h2>Make the numbers mean something first</h2>
+  <p>A raw Modbus dump is a column of integers, and a column of integers is close to
+  useless a week later. Before you export, give each register the four things the
+  protocol leaves out:</p>
+  <ul>
+    <li><strong>A name</strong> &mdash; &ldquo;Supply air temp&rdquo;, not
+    &ldquo;40007&rdquo;.</li>
+    <li><strong>A data type and word order</strong> &mdash; so a 32-bit float reads as
+    72.5, not as two random halves. See <a href="modbus-value-wrong-scaling-byte-order.html">why
+    your value looks wrong</a>.</li>
+    <li><strong>A multiplier</strong> &mdash; so a raw 725 becomes 72.5.</li>
+    <li><strong>Units</strong> &mdash; &deg;F, kW, ppm.</li>
+  </ul>
+  <p>Do this once and it is saved. Every later reading and every export carries it,
+  which is the whole point of building a register map rather than re-deciphering the
+  device each visit. See <a href="what-is-a-modbus-register-map.html">what a Modbus
+  register map is</a>.</p>
+
+  <h2>Capturing a trend</h2>
+  <p>For a snapshot, read the device and export &mdash; the CSV holds each named
+  register with its value, type and units. For a trend, re-read on an interval and
+  export the set; each export is timestamped, so a sequence of them lines up into a
+  time series in Excel. Keep the interval sane: on a serial chain each read costs real
+  wire time, and hammering a device that the building controls also rely on is a way
+  to make enemies. See <a href="modbus-reading-slow-or-unreliable.html">why is my
+  Modbus reading slow or unreliable?</a></p>
+
+  <h2>What the CSV is good for</h2>
+  <ul>
+    <li><strong>Open it in Excel</strong> and chart a column to see a value drift or
+    spike.</li>
+    <li><strong>Send it to a vendor</strong> as evidence of what the equipment
+    reported, with names they can read.</li>
+    <li><strong>Leave it as documentation</strong> &mdash; a CSV of a device's real,
+    named registers is worth more to the next person than the undocumented device they
+    would otherwise inherit.</li>
+  </ul>
+  <div class="callout">
+  <p>The CSV lives on your phone and in the email you choose to send. Easy Modbus has
+  no account and no server, and a register map names a customer's equipment &mdash; so
+  nothing leaves the phone unless you send it.</p>
+  </div>
+""",
+    related=[
+        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
+        ("guides/what-is-a-modbus-register-map", "What is a Modbus register map?"),
+        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
+        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/find-modbus-baud-rate-parity",
+    title="Find an unknown Modbus baud rate & parity | Easy Modbus",
+    question="How do I find an unknown Modbus device's baud rate and parity?",
+    description="No display, no paperwork, and a serial Modbus device that won't answer? How to find the baud rate, parity and unit ID by trying the handful of combinations that actually occur.",
+    answer_html="""<p>You cannot ask a serial Modbus device what its settings are
+    &mdash; there is no discovery, so you try the combinations that actually occur in
+    the wild until one answers. That is fewer than it sounds: baud is almost always
+    <strong>9600</strong> or <strong>19200</strong>, framing is almost always
+    <strong>8N1</strong> or <strong>8E1</strong>, and the unit ID is usually
+    <strong>1</strong>. Hold the framing steady, sweep the two common baud rates
+    first, and the moment a read succeeds you have found all three at once.</p>""",
+    body_html="""
+  <h2>Why you have to guess at all</h2>
+  <p>An RS-485 chain has no way to announce its serial settings, and every device on
+  it must already agree on them. If the settings in your tool do not match, the bytes
+  are misread and you get silence or a <a href="modbus-crc-error.html">CRC error</a>,
+  never a helpful &ldquo;wrong baud rate&rdquo; message. So the job is to narrow the
+  guess to the combinations that are actually used.</p>
+
+  <h2>The short list that covers almost everything</h2>
+  <table>
+    <tr><th>Setting</th><th>Try in this order</th></tr>
+    <tr><td>Baud rate</td><td><strong>9600</strong>, <strong>19200</strong>, then 38400, 4800, 115200, 2400</td></tr>
+    <tr><td>Framing (data/parity/stop)</td><td><strong>8N1</strong>, then <strong>8E1</strong>, then 8O1, 8N2</td></tr>
+    <tr><td>Unit ID</td><td><strong>1</strong>, then a sweep of 1&ndash;16, then up to 32</td></tr>
+  </table>
+  <p>That is 6 baud &times; 4 framings &times; a small ID sweep &mdash; a few dozen
+  combinations at most, and the first two of each cover the large majority of
+  equipment. You will usually land in the first handful.</p>
+
+  <h2>A method that does not drive you mad</h2>
+  <ol>
+    <li><strong>Change one thing at a time.</strong> Fix framing at 8N1 and unit ID at
+    1, then step through baud rates. If nothing, switch framing to 8E1 and step the
+    baud rates again.</li>
+    <li><strong>Watch for the shape of the reply.</strong> Total silence usually means
+    the baud or framing is wrong. Garbled bytes or intermittent CRC errors mean you
+    are <em>close</em> &mdash; often the right baud with the wrong parity.</li>
+    <li><strong>Once anything answers, stop.</strong> A single successful read fixes
+    baud, framing <em>and</em> a working unit ID in one go. Then sweep unit IDs at
+    those settings to find the others on the chain.</li>
+    <li><strong>Isolate if you can.</strong> If several devices share the line and
+    replies collide, unplug all but one while you hunt.</li>
+  </ol>
+
+  <h2>Where to shortcut the guessing</h2>
+  <p>Before sweeping, spend two minutes looking for the answer: the device's own
+  display or settings menu, the DIP switches (often the unit ID in binary), the
+  commissioning paperwork, or the vendor's manual &mdash; the defaults are usually
+  printed there. See <a href="modbus-unit-id-slave-id.html">what is a Modbus unit
+  ID?</a> for reading DIP switches.</p>
+
+  <div class="callout">
+  <p>Easy Modbus reaches serial equipment through a network gateway rather than a
+  bare RS-485 cable, so the baud rate and framing are set on the <em>gateway</em>, and
+  the app hunts the <em>unit ID</em> with a <em>Find unit IDs</em> sweep. If you are
+  wiring straight into RS-485 with a USB adapter, a Windows master is the tool for the
+  baud/framing hunt &mdash; see <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or
+  RS-485 &mdash; which do I have?</a></p>
+  </div>
+""",
+    related=[
+        ("guides/modbus-unit-id-slave-id", "What is a Modbus unit ID or slave ID?"),
+        ("guides/modbus-tcp-vs-rtu-vs-rs485", "Modbus TCP, RTU or RS-485 &mdash; which do I have?"),
+        ("guides/modbus-crc-error", "What causes a Modbus CRC error?"),
+        ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/modbus-poll-10-minute-limit",
+    title="Modbus Poll 10-minute limit? A free option | Easy Modbus",
+    question="How do I get around the Modbus Poll 10-minute trial limit?",
+    description="Modbus Poll's trial disconnects after 10 minutes until you buy a licence. If you just need to read or write registers, Easy Modbus is free with no timer — here's the trade-off.",
+    answer_html="""<p>Modbus Poll's free download is a trial: it stops communicating
+    after about ten minutes per session until you buy a licence. There is no trick to
+    remove that &mdash; it is how the trial is meant to work, and buying the licence is
+    the right thing to do if you rely on Modbus Poll's desktop features. But if you
+    just need to read or write a few registers without a countdown, <a href="../index.html">Easy
+    Modbus</a> is genuinely free with no time limit, and it runs on the phone already
+    in your pocket.</p>""",
+    body_html="""
+  <h2>What the limit actually is</h2>
+  <p>Modbus Poll by Witte Software is commercial software with a free evaluation. The
+  evaluation is fully featured but disconnects after roughly ten minutes, so you
+  reconnect to keep going. It is a fair trial design, not a bug &mdash; the intent is
+  that people who use it for real buy a licence (around US$129, with the matching
+  Modbus Slave sold separately). If Modbus Poll is your daily desk tool, that licence
+  is worth it.</p>
+
+  <h2>When you don't need to buy anything</h2>
+  <p>Plenty of Modbus jobs are not &ldquo;sit at a Windows desk for an hour&rdquo;
+  jobs. They are &ldquo;walk up to a meter, read six registers, maybe change a
+  setpoint, leave.&rdquo; For those, a free tool with no timer is simply less
+  friction &mdash; and a phone beats finding a laptop and a network port in a plant
+  room.</p>
+  <table>
+    <tr><th></th><th>Modbus Poll (trial)</th><th>Easy Modbus</th></tr>
+    <tr><td>Time limit</td><td>~10 minutes per session until licensed</td><td>None &mdash; free, no timer</td></tr>
+    <tr><td>Cost to use fully</td><td>Paid licence (Slave sold separately)</td><td>Free; optional one-time purchase only for unlimited saved control panels</td></tr>
+    <tr><td>Platform</td><td>Windows desktop</td><td>Android phone/tablet, plus a Windows version</td></tr>
+    <tr><td>Reads &amp; writes registers</td><td>Yes</td><td>Yes, with guard rails and a one-tap <em>Put it back</em></td></tr>
+    <tr><td>Works out data type for you</td><td>You set it</td><td>Yes &mdash; ranks the plausible readings</td></tr>
+    <tr><td>Direct USB&ndash;RS485 serial</td><td>Yes</td><td>No &mdash; reaches serial through a gateway</td></tr>
+  </table>
+
+  <h2>Being fair about it</h2>
+  <p>This is not a knock on Modbus Poll. It is mature, fast, scriptable from Excel,
+  and excellent for bench and development work, and if that is your world the licence
+  pays for itself. The point is narrower: if the ten-minute limit is the only thing in
+  your way and you just need to read or write a register in the field, you do not have
+  to buy anything &mdash; there is a free tool that does that part. For the fuller
+  comparison see <a href="modbus-poll-vs-easy-modbus.html">Modbus Poll vs Easy
+  Modbus</a> and <a href="modbus-poll-alternative.html">free Modbus Poll
+  alternatives</a>.</p>
+""",
+    related=[
+        ("guides/modbus-poll-vs-easy-modbus", "Modbus Poll vs Easy Modbus &mdash; which should I use?"),
+        ("guides/modbus-poll-alternative", "What is a good free alternative to Modbus Poll?"),
+        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
+        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/read-eastron-sdm-modbus",
+    title="Read an Eastron SDM power meter over Modbus | Easy Modbus",
+    question="How do I read an Eastron SDM power meter over Modbus?",
+    description="Eastron SDM120, SDM220 and SDM630 meters report every value as a 32-bit float over Modbus. The settings, the function code, the word order, and how to read them from a phone.",
+    answer_html="""<p>Eastron's SDM range &mdash; the SDM120, SDM220, SDM630 and their
+    relatives &mdash; is one of the most common Modbus devices in the field, and it is
+    refreshingly consistent: <strong>every measurement is a 32-bit IEEE-754 float</strong>,
+    read with <strong>function code 4</strong> (input registers), in
+    <strong>big-endian (ABCD) word order</strong>. Default serial settings are usually
+    <strong>9600 baud, 8N1, unit ID 1</strong> (some ship at 2400). Get those right and
+    the whole meter falls open.</p>""",
+    body_html="""
+  <h2>The settings that matter</h2>
+  <table>
+    <tr><th>Setting</th><th>Eastron SDM default</th></tr>
+    <tr><td>Function code</td><td>04 &mdash; read input registers</td></tr>
+    <tr><td>Data type</td><td>32-bit IEEE-754 float (every value; two registers each)</td></tr>
+    <tr><td>Word order</td><td>ABCD (big-endian, high word first)</td></tr>
+    <tr><td>Baud rate</td><td>9600 (SDM630); some models/older units default to 2400</td></tr>
+    <tr><td>Framing</td><td>8N1 (parity is configurable on the meter)</td></tr>
+    <tr><td>Unit ID</td><td>1</td></tr>
+  </table>
+  <p>The single most useful fact: because <em>everything</em> is a float, you never
+  wonder about the data type. If a value reads as wild nonsense, it is the word order,
+  not the type &mdash; and ABCD is the answer for Eastron. See
+  <a href="modbus-value-wrong-scaling-byte-order.html">why your value looks wrong</a>.</p>
+
+  <h2>Commonly documented SDM630 registers</h2>
+  <p>These are the landmark measurements most people want. Addresses are for the
+  SDM630; the SDM120 and SDM220 use the same float/FC04/ABCD encoding but expose a
+  subset. <strong>Confirm the exact list against your model's datasheet</strong>
+  &mdash; Eastron publishes a register map per model.</p>
+  <table>
+    <tr><th>Measurement</th><th>Register (3x)</th><th>Type</th></tr>
+    <tr><td>Phase 1 voltage</td><td>30001</td><td>Float, V</td></tr>
+    <tr><td>Phase 1 current</td><td>30007</td><td>Float, A</td></tr>
+    <tr><td>Phase 1 active power</td><td>30013</td><td>Float, W</td></tr>
+    <tr><td>Total system power</td><td>30053</td><td>Float, W</td></tr>
+    <tr><td>Frequency</td><td>30071</td><td>Float, Hz</td></tr>
+    <tr><td>Import active energy</td><td>30073</td><td>Float, kWh</td></tr>
+    <tr><td>Export active energy</td><td>30075</td><td>Float, kWh</td></tr>
+  </table>
+  <p>Remember the addressing convention: <code>30001</code> is the first input
+  register, which is protocol address 0 on the wire. If every value is one slot out,
+  that is why &mdash; see <a href="modbus-address-off-by-one.html">Modbus address off
+  by one</a>.</p>
+
+  <h2>Reading one from a phone</h2>
+  <p>If the meter is on a network (native Ethernet, or RS-485 behind a gateway),
+  <a href="../index.html">Easy Modbus</a> reads it directly. Point it at the meter,
+  read the input-register block, and its Analyzer confirms each pair as a float in
+  ABCD order &mdash; so you are not trusting the numbers above blind, you are watching
+  the app decode the live value and match it to what the meter's own display shows.
+  Name each register once, and the map is saved and exportable as a CSV. To trend
+  energy or power over time, see <a href="log-modbus-to-csv-on-phone.html">log Modbus
+  data to CSV on your phone</a>.</p>
+
+  <div class="callout">
+  <p>If the meter is straight RS-485 with no gateway, you will read it with a Windows
+  master and a USB adapter instead &mdash; the encoding above is identical, only the
+  transport differs. And a stuck 2400-vs-9600 mismatch is the usual reason a known-good
+  SDM stays silent; see <a href="find-modbus-baud-rate-parity.html">finding an unknown
+  baud rate</a>.</p>
+  </div>
+""",
+    related=[
+        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
+        ("guides/find-modbus-baud-rate-parity", "How do I find an unknown Modbus baud rate?"),
+        ("guides/log-modbus-to-csv-on-phone", "How do I log Modbus data to CSV?"),
+        ("guides/modbus-function-codes-explained", "What are Modbus function codes?"),
+    ],
+))
+
 INDEX = """<!doctype html>
 <html lang="en">
 <head>

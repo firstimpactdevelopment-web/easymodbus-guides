@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Find an unknown Modbus baud rate & parity | Easy Modbus</title>
+<meta name="description" content="No display, no paperwork, and a serial Modbus device that won't answer? How to find the baud rate, parity and unit ID by trying the handful of combinations that actually occur.">
+<link rel="canonical" href="https://easymodbus.com/guides/find-modbus-baud-rate-parity.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Find an unknown Modbus baud rate & parity | Easy Modbus">
+<meta property="og:description" content="No display, no paperwork, and a serial Modbus device that won't answer? How to find the baud rate, parity and unit ID by trying the handful of combinations that actually occur.">
+<meta property="og:url" content="https://easymodbus.com/guides/find-modbus-baud-rate-parity.html">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Find an unknown Modbus baud rate & parity | Easy Modbus">
+<meta name="twitter:description" content="No display, no paperwork, and a serial Modbus device that won't answer? How to find the baud rate, parity and unit ID by trying the handful of combinations that actually occur.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
+          --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         font-size:17px; line-height:1.7; color:var(--fg); background:var(--bg);
+         -webkit-font-smoothing:antialiased; }
+  header.site { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+                padding-bottom:1.25rem; border-bottom:1px solid var(--line); margin-bottom:2.25rem; }
+  header.site a { color:var(--fg); text-decoration:none; }
+  header.site a span, header.site a b { font-family:"Archivo",sans-serif; font-weight:900;
+                       text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+  header.site .muted { margin-left:auto; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                       font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
+  h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
+  h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
+  h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
+  h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
+  a { color:var(--accent); }
+  strong { color:#fff; }
+  .answer { background:var(--box); border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:12px; padding:1.1rem 1.3rem; margin:1.5rem 0 2rem; }
+  .answer > strong { display:block; margin-bottom:.5rem; text-transform:uppercase;
+                   font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+                   font-size:.72rem; letter-spacing:.18em; color:var(--accent); }
+  .answer p { margin:.6rem 0; }
+  .answer p:last-child { margin-bottom:0; }
+  .answer p strong { color:#fff; font-weight:700; }
+  code { background:var(--code); padding:.1rem .4rem; border-radius:4px; font-size:.9em;
+         font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  pre { background:var(--code); padding:1rem; border-radius:10px; overflow-x:auto;
+        border:1px solid var(--line); }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:1.25rem 0; display:block; overflow-x:auto; }
+  th, td { text-align:left; padding:.55rem .75rem; border-bottom:1px solid var(--line);
+           vertical-align:top; }
+  th { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+       text-transform:uppercase; letter-spacing:.1em; color:var(--accent); font-weight:600; }
+  ul, ol { padding-left:1.3rem; }
+  li { margin:.45rem 0; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  .callout { border-left:3px solid var(--accent); background:var(--box);
+             border-radius:0 10px 10px 0; padding:.75rem 1rem; margin:1.5rem 0; }
+  nav.more { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); }
+  nav.more h2 { margin-top:0; }
+  nav.more ul { list-style:none; padding:0; }
+  nav.more li { margin:0; border-bottom:1px solid var(--line); padding:.85rem 0; }
+  nav.more li:last-child { border-bottom:none; }
+  nav.more a { font-family:"Archivo",sans-serif; font-weight:600; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+           color:var(--muted); font-size:.9rem; }
+  footer a { color:var(--accent); }
+  figure.shot { margin:1.75rem 0; text-align:center; }
+  figure.shot img { max-width:300px; width:100%; height:auto; border:1px solid var(--line);
+                    border-radius:16px; background:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  figure.shot figcaption { color:var(--muted); font-size:.85rem; margin-top:.55rem; }
+  .shots { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;
+           align-items:flex-start; margin:1.75rem 0; }
+  .shots figure.shot { margin:0; flex:0 1 300px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-18",
+      "dateModified": "2026-09-18",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "How do I find an unknown Modbus device's baud rate and parity?",
+        "acceptedAnswer": { "@type": "Answer", "text": "You cannot ask a serial Modbus device what its settings are — there is no discovery, so you try the combinations that actually occur in the wild until one answers. That is fewer than it sounds: baud is almost always 9600 or 19200, framing is almost always 8N1 or 8E1, and the unit ID is usually 1. Hold the framing steady, sweep the two common baud rates first, and the moment a read succeeds you have found all three at once." }
+      }]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "How do I find an unknown Modbus device's baud rate and parity?", "item": "https://easymodbus.com/guides/find-modbus-baud-rate-parity.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>How do I find an unknown Modbus device's baud rate and parity?</h1>
+  <p class="updated">Updated 18 September 2026</p>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>You cannot ask a serial Modbus device what its settings are
+    &mdash; there is no discovery, so you try the combinations that actually occur in
+    the wild until one answers. That is fewer than it sounds: baud is almost always
+    <strong>9600</strong> or <strong>19200</strong>, framing is almost always
+    <strong>8N1</strong> or <strong>8E1</strong>, and the unit ID is usually
+    <strong>1</strong>. Hold the framing steady, sweep the two common baud rates
+    first, and the moment a read succeeds you have found all three at once.</p>
+  </div>
+
+
+  <h2>Why you have to guess at all</h2>
+  <p>An RS-485 chain has no way to announce its serial settings, and every device on
+  it must already agree on them. If the settings in your tool do not match, the bytes
+  are misread and you get silence or a <a href="modbus-crc-error.html">CRC error</a>,
+  never a helpful &ldquo;wrong baud rate&rdquo; message. So the job is to narrow the
+  guess to the combinations that are actually used.</p>
+
+  <h2>The short list that covers almost everything</h2>
+  <table>
+    <tr><th>Setting</th><th>Try in this order</th></tr>
+    <tr><td>Baud rate</td><td><strong>9600</strong>, <strong>19200</strong>, then 38400, 4800, 115200, 2400</td></tr>
+    <tr><td>Framing (data/parity/stop)</td><td><strong>8N1</strong>, then <strong>8E1</strong>, then 8O1, 8N2</td></tr>
+    <tr><td>Unit ID</td><td><strong>1</strong>, then a sweep of 1&ndash;16, then up to 32</td></tr>
+  </table>
+  <p>That is 6 baud &times; 4 framings &times; a small ID sweep &mdash; a few dozen
+  combinations at most, and the first two of each cover the large majority of
+  equipment. You will usually land in the first handful.</p>
+
+  <h2>A method that does not drive you mad</h2>
+  <ol>
+    <li><strong>Change one thing at a time.</strong> Fix framing at 8N1 and unit ID at
+    1, then step through baud rates. If nothing, switch framing to 8E1 and step the
+    baud rates again.</li>
+    <li><strong>Watch for the shape of the reply.</strong> Total silence usually means
+    the baud or framing is wrong. Garbled bytes or intermittent CRC errors mean you
+    are <em>close</em> &mdash; often the right baud with the wrong parity.</li>
+    <li><strong>Once anything answers, stop.</strong> A single successful read fixes
+    baud, framing <em>and</em> a working unit ID in one go. Then sweep unit IDs at
+    those settings to find the others on the chain.</li>
+    <li><strong>Isolate if you can.</strong> If several devices share the line and
+    replies collide, unplug all but one while you hunt.</li>
+  </ol>
+
+  <h2>Where to shortcut the guessing</h2>
+  <p>Before sweeping, spend two minutes looking for the answer: the device's own
+  display or settings menu, the DIP switches (often the unit ID in binary), the
+  commissioning paperwork, or the vendor's manual &mdash; the defaults are usually
+  printed there. See <a href="modbus-unit-id-slave-id.html">what is a Modbus unit
+  ID?</a> for reading DIP switches.</p>
+
+  <div class="callout">
+  <p>Easy Modbus reaches serial equipment through a network gateway rather than a
+  bare RS-485 cable, so the baud rate and framing are set on the <em>gateway</em>, and
+  the app hunts the <em>unit ID</em> with a <em>Find unit IDs</em> sweep. If you are
+  wiring straight into RS-485 with a USB adapter, a Windows master is the tool for the
+  baud/framing hunt &mdash; see <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or
+  RS-485 &mdash; which do I have?</a></p>
+  </div>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-unit-id-slave-id.html">What is a Modbus unit ID or slave ID?</a></li>
+      <li><a href="../guides/modbus-tcp-vs-rtu-vs-rs485.html">Modbus TCP, RTU or RS-485 &mdash; which do I have?</a></li>
+      <li><a href="../guides/modbus-crc-error.html">What causes a Modbus CRC error?</a></li>
+      <li><a href="../guides/cannot-find-modbus-devices.html">Why can't I find my Modbus devices?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../terms.html">Terms of use</a> &middot; <a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Modbus CRC error: causes and fixes | Easy Modbus</title>
+<meta name="description" content="A Modbus CRC error means the message arrived corrupted. The real causes — noise, termination, baud mismatch, and RTU/TCP framing confusion — and how to fix each.">
+<link rel="canonical" href="https://easymodbus.com/guides/modbus-crc-error.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Modbus CRC error: causes and fixes | Easy Modbus">
+<meta property="og:description" content="A Modbus CRC error means the message arrived corrupted. The real causes — noise, termination, baud mismatch, and RTU/TCP framing confusion — and how to fix each.">
+<meta property="og:url" content="https://easymodbus.com/guides/modbus-crc-error.html">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus CRC error: causes and fixes | Easy Modbus">
+<meta name="twitter:description" content="A Modbus CRC error means the message arrived corrupted. The real causes — noise, termination, baud mismatch, and RTU/TCP framing confusion — and how to fix each.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
+          --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         font-size:17px; line-height:1.7; color:var(--fg); background:var(--bg);
+         -webkit-font-smoothing:antialiased; }
+  header.site { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+                padding-bottom:1.25rem; border-bottom:1px solid var(--line); margin-bottom:2.25rem; }
+  header.site a { color:var(--fg); text-decoration:none; }
+  header.site a span, header.site a b { font-family:"Archivo",sans-serif; font-weight:900;
+                       text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+  header.site .muted { margin-left:auto; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                       font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
+  h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
+  h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
+  h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
+  h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
+  a { color:var(--accent); }
+  strong { color:#fff; }
+  .answer { background:var(--box); border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:12px; padding:1.1rem 1.3rem; margin:1.5rem 0 2rem; }
+  .answer > strong { display:block; margin-bottom:.5rem; text-transform:uppercase;
+                   font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+                   font-size:.72rem; letter-spacing:.18em; color:var(--accent); }
+  .answer p { margin:.6rem 0; }
+  .answer p:last-child { margin-bottom:0; }
+  .answer p strong { color:#fff; font-weight:700; }
+  code { background:var(--code); padding:.1rem .4rem; border-radius:4px; font-size:.9em;
+         font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  pre { background:var(--code); padding:1rem; border-radius:10px; overflow-x:auto;
+        border:1px solid var(--line); }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:1.25rem 0; display:block; overflow-x:auto; }
+  th, td { text-align:left; padding:.55rem .75rem; border-bottom:1px solid var(--line);
+           vertical-align:top; }
+  th { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+       text-transform:uppercase; letter-spacing:.1em; color:var(--accent); font-weight:600; }
+  ul, ol { padding-left:1.3rem; }
+  li { margin:.45rem 0; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  .callout { border-left:3px solid var(--accent); background:var(--box);
+             border-radius:0 10px 10px 0; padding:.75rem 1rem; margin:1.5rem 0; }
+  nav.more { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); }
+  nav.more h2 { margin-top:0; }
+  nav.more ul { list-style:none; padding:0; }
+  nav.more li { margin:0; border-bottom:1px solid var(--line); padding:.85rem 0; }
+  nav.more li:last-child { border-bottom:none; }
+  nav.more a { font-family:"Archivo",sans-serif; font-weight:600; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+           color:var(--muted); font-size:.9rem; }
+  footer a { color:var(--accent); }
+  figure.shot { margin:1.75rem 0; text-align:center; }
+  figure.shot img { max-width:300px; width:100%; height:auto; border:1px solid var(--line);
+                    border-radius:16px; background:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  figure.shot figcaption { color:var(--muted); font-size:.85rem; margin-top:.55rem; }
+  .shots { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;
+           align-items:flex-start; margin:1.75rem 0; }
+  .shots figure.shot { margin:0; flex:0 1 300px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-18",
+      "dateModified": "2026-09-18",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "What causes a Modbus CRC error, and how do I fix it?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A CRC error means a Modbus RTU message arrived but its checksum did not match, so the receiver knows the bytes were corrupted in transit and throws them away. It is almost always a physical or serial-settings problem, not a software one: electrical noise on the RS-485 line, missing or wrong termination, a baud-rate or parity mismatch, or two devices talking over each other. One software cause exists and is worth ruling out first — feeding RTU frames to a tool expecting Modbus TCP, or the reverse, which makes every message look corrupt." }
+      }]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "What causes a Modbus CRC error, and how do I fix it?", "item": "https://easymodbus.com/guides/modbus-crc-error.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>What causes a Modbus CRC error, and how do I fix it?</h1>
+  <p class="updated">Updated 18 September 2026</p>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>A CRC error means a Modbus RTU message arrived but its checksum
+    did not match, so the receiver knows the bytes were corrupted in transit and
+    throws them away. It is almost always a <strong>physical or serial-settings
+    problem</strong>, not a software one: electrical noise on the RS-485 line,
+    missing or wrong termination, a baud-rate or parity mismatch, or two devices
+    talking over each other. One software cause exists and is worth ruling out first
+    &mdash; feeding RTU frames to a tool expecting Modbus TCP, or the reverse, which
+    makes every message look corrupt.</p>
+  </div>
+
+
+  <h2>What the CRC actually is</h2>
+  <p>Every Modbus RTU message ends with a two-byte CRC &mdash; a number calculated
+  from all the preceding bytes. The receiver recalculates it and compares. If a
+  single bit changed on the wire, the two will not match, and the receiver discards
+  the frame rather than acting on corrupted data. So a CRC error is not the protocol
+  failing; it is the protocol doing its job and catching damage. Modbus TCP has no
+  CRC &mdash; the TCP layer handles integrity &mdash; so CRC errors belong to RTU and
+  RTU-over-TCP.</p>
+
+  <h2>The causes, most common first</h2>
+
+  <h3>1. Wrong framing (the software one, rule it out first)</h3>
+  <p>If a tool set to Modbus TCP is pointed at an RTU-over-TCP gateway, or a tool
+  expecting RTU receives clean TCP frames, every message looks malformed and can be
+  reported as a CRC or framing error. Before chasing cables, confirm you are speaking
+  the right dialect. See <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or RS-485
+  &mdash; which do I have?</a></p>
+
+  <h3>2. Baud rate, parity or stop bits mismatched</h3>
+  <p>Every device on an RS-485 chain must use identical serial settings. If one is at
+  9600 8N1 and the master is at 19200 8E1, the bytes are misread and the CRC never
+  matches. This produces consistent, every-message CRC errors &mdash; which is
+  actually a helpful signature, because intermittent errors point elsewhere.</p>
+
+  <h3>3. Missing or wrong termination</h3>
+  <p>A long RS-485 run needs a termination resistor (typically 120 ohm) at each end,
+  and only at the ends. Missing termination causes reflections that corrupt bytes,
+  and the symptom is classic: it works on the bench with a short cable and fails once
+  it is installed on a long one. Too <em>much</em> termination &mdash; a resistor at
+  every device &mdash; loads the line down and does the same.</p>
+
+  <h3>4. Electrical noise</h3>
+  <p>RS-485 near variable-speed drives, contactors or motor cabling picks up
+  interference. Intermittent CRC errors that get worse when a big load switches on are
+  the tell. Fixes are shielded twisted-pair cable, a proper ground on the shield at
+  one end only, and routing the data cable away from power.</p>
+
+  <h3>5. Two devices on the same unit ID</h3>
+  <p>Duplicated unit IDs make two devices answer at once; their replies overlap on the
+  wire and arrive as garbage that fails the CRC. If a chain worked until equipment was
+  added, suspect this first. See <a href="modbus-unit-id-slave-id.html">what is a
+  Modbus unit ID?</a></p>
+
+  <h3>6. A and B swapped, or a marginal connection</h3>
+  <p>Reversed data lines, a loose terminal, or a nicked conductor all corrupt bytes
+  intermittently. Vendors disagree on which wire is A and which is B, so swapping them
+  is a normal diagnostic step, not a mistake.</p>
+
+  <h2>How to narrow it down</h2>
+  <table>
+    <tr><th>Pattern</th><th>Points at</th></tr>
+    <tr><td>Every single message fails</td><td>Baud/parity mismatch, or wrong framing</td></tr>
+    <tr><td>Intermittent, worse on long cable</td><td>Termination or noise</td></tr>
+    <tr><td>Intermittent, worse when a load switches</td><td>Electrical noise</td></tr>
+    <tr><td>Started when a device was added</td><td>Duplicate unit ID, or termination now in the wrong place</td></tr>
+    <tr><td>Only over the network, never local</td><td>Framing &mdash; you are on RTU-over-TCP</td></tr>
+  </table>
+  <div class="callout">
+  <p>Because Modbus TCP carries no CRC, moving a stubborn serial device onto a proper
+  translating gateway can make the problem disappear entirely &mdash; the integrity
+  check becomes TCP's job over clean Ethernet. It treats the symptom rather than the
+  cause, but on a noisy site it is often the pragmatic fix.</p>
+  </div>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-tcp-vs-rtu-vs-rs485.html">Modbus TCP, RTU or RS-485 &mdash; which do I have?</a></li>
+      <li><a href="../guides/modbus-unit-id-slave-id.html">What is a Modbus unit ID or slave ID?</a></li>
+      <li><a href="../guides/modbus-timeout-no-response.html">Why is my Modbus request timing out?</a></li>
+      <li><a href="../guides/modbus-reading-slow-or-unreliable.html">Why is my Modbus reading slow or unreliable?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../terms.html">Terms of use</a> &middot; <a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

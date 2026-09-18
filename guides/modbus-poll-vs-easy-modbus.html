@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Modbus Poll vs Easy Modbus, compared | Easy Modbus</title>
+<meta name="description" content="A straight comparison of Modbus Poll and Easy Modbus: platform, price, reading, writing, data-type decoding and simulation, with a clear rule for choosing.">
+<link rel="canonical" href="https://easymodbus.com/guides/modbus-poll-vs-easy-modbus.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Modbus Poll vs Easy Modbus, compared | Easy Modbus">
+<meta property="og:description" content="A straight comparison of Modbus Poll and Easy Modbus: platform, price, reading, writing, data-type decoding and simulation, with a clear rule for choosing.">
+<meta property="og:url" content="https://easymodbus.com/guides/modbus-poll-vs-easy-modbus.html">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modbus Poll vs Easy Modbus, compared | Easy Modbus">
+<meta name="twitter:description" content="A straight comparison of Modbus Poll and Easy Modbus: platform, price, reading, writing, data-type decoding and simulation, with a clear rule for choosing.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
+          --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         font-size:17px; line-height:1.7; color:var(--fg); background:var(--bg);
+         -webkit-font-smoothing:antialiased; }
+  header.site { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+                padding-bottom:1.25rem; border-bottom:1px solid var(--line); margin-bottom:2.25rem; }
+  header.site a { color:var(--fg); text-decoration:none; }
+  header.site a span, header.site a b { font-family:"Archivo",sans-serif; font-weight:900;
+                       text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+  header.site .muted { margin-left:auto; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                       font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
+  h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
+  h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
+  h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
+  h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
+  a { color:var(--accent); }
+  strong { color:#fff; }
+  .answer { background:var(--box); border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:12px; padding:1.1rem 1.3rem; margin:1.5rem 0 2rem; }
+  .answer > strong { display:block; margin-bottom:.5rem; text-transform:uppercase;
+                   font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+                   font-size:.72rem; letter-spacing:.18em; color:var(--accent); }
+  .answer p { margin:.6rem 0; }
+  .answer p:last-child { margin-bottom:0; }
+  .answer p strong { color:#fff; font-weight:700; }
+  code { background:var(--code); padding:.1rem .4rem; border-radius:4px; font-size:.9em;
+         font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  pre { background:var(--code); padding:1rem; border-radius:10px; overflow-x:auto;
+        border:1px solid var(--line); }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:1.25rem 0; display:block; overflow-x:auto; }
+  th, td { text-align:left; padding:.55rem .75rem; border-bottom:1px solid var(--line);
+           vertical-align:top; }
+  th { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+       text-transform:uppercase; letter-spacing:.1em; color:var(--accent); font-weight:600; }
+  ul, ol { padding-left:1.3rem; }
+  li { margin:.45rem 0; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  .callout { border-left:3px solid var(--accent); background:var(--box);
+             border-radius:0 10px 10px 0; padding:.75rem 1rem; margin:1.5rem 0; }
+  nav.more { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); }
+  nav.more h2 { margin-top:0; }
+  nav.more ul { list-style:none; padding:0; }
+  nav.more li { margin:0; border-bottom:1px solid var(--line); padding:.85rem 0; }
+  nav.more li:last-child { border-bottom:none; }
+  nav.more a { font-family:"Archivo",sans-serif; font-weight:600; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+           color:var(--muted); font-size:.9rem; }
+  footer a { color:var(--accent); }
+  figure.shot { margin:1.75rem 0; text-align:center; }
+  figure.shot img { max-width:300px; width:100%; height:auto; border:1px solid var(--line);
+                    border-radius:16px; background:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  figure.shot figcaption { color:var(--muted); font-size:.85rem; margin-top:.55rem; }
+  .shots { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;
+           align-items:flex-start; margin:1.75rem 0; }
+  .shots figure.shot { margin:0; flex:0 1 300px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "datePublished": "2026-09-18",
+      "dateModified": "2026-09-18",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Modbus Poll vs Easy Modbus — which should I use?",
+        "acceptedAnswer": { "@type": "Answer", "text": "They are built for different moments. Modbus Poll is a mature Windows master for the desk and the bench — excellent for development, scripted polling and long soak tests, and paid, with slave simulation sold as a second product. Easy Modbus is built for the field: it runs on the phone in your pocket, it is free, it works out what unknown registers mean, and it saves that register map to reuse and export. If your work is at a Windows workstation, Modbus Poll. If it is in front of equipment, or you want a free tool that decodes and remembers, Easy Modbus." }
+      }]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "Modbus Poll vs Easy Modbus — which should I use?", "item": "https://easymodbus.com/guides/modbus-poll-vs-easy-modbus.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; plain-English Modbus reference</span>
+</header>
+
+<article>
+  <h1>Modbus Poll vs Easy Modbus — which should I use?</h1>
+  <p class="updated">Updated 18 September 2026</p>
+
+  <div class="answer">
+    <strong>Short answer</strong>
+    <p>They are built for different moments. <strong>Modbus Poll</strong>
+    is a mature Windows master for the desk and the bench &mdash; excellent for
+    development, scripted polling and long soak tests, and paid, with slave simulation
+    sold as a second product. <strong>Easy Modbus</strong> is built for the field: it
+    runs on the phone in your pocket, it is free, it works out what unknown registers
+    mean, and it saves that register map to reuse and export. If your work is at a
+    Windows workstation, Modbus Poll. If it is in front of equipment, or you want a
+    free tool that decodes and remembers, Easy Modbus.</p>
+  </div>
+
+
+  <h2>Side by side</h2>
+  <table>
+    <tr><th></th><th>Modbus Poll</th><th>Easy Modbus</th></tr>
+    <tr><td>Made by</td><td>Witte Software</td><td>First Impact Development</td></tr>
+    <tr><td>Platform</td><td>Windows desktop</td><td>Android, plus a Windows version</td></tr>
+    <tr><td>Price</td><td>Paid licence; Modbus Slave is a separate purchase</td><td>Free; optional one-time purchase removes ads and unlocks unlimited control panels</td></tr>
+    <tr><td>Transports</td><td>TCP, RTU, ASCII, RTU-over-TCP</td><td>Modbus TCP and RTU-over-TCP</td></tr>
+    <tr><td>Direct serial (USB&ndash;RS485)</td><td>Yes, with a COM port</td><td>No &mdash; reaches serial through a gateway</td></tr>
+    <tr><td>Reading</td><td>Fast, mature, many concurrent windows</td><td>Block reads, live values, hex and decimal</td></tr>
+    <tr><td>Writing</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with one-tap <em>Put it back</em></td></tr>
+    <tr><td>Works out data type &amp; word order</td><td>You choose them</td><td>Ranks the plausible readings and explains each &mdash; the standout feature</td></tr>
+    <tr><td>Saves what a register means</td><td>Saves poll definitions</td><td>Named, scaled register map exported as CSV</td></tr>
+    <tr><td>Simulate a slave</td><td>Yes, via Modbus Slave (separate)</td><td>Built-in emulator in the Windows version</td></tr>
+    <tr><td>Scripting / automation</td><td>Excel DDE/OLE, strong</td><td>Not a scripting tool</td></tr>
+  </table>
+
+  <h2>Choose Modbus Poll if&hellip;</h2>
+  <ul>
+    <li>You work at a Windows workstation and want the established, heavily-featured
+    master.</li>
+    <li>You need to plug a USB-to-RS485 adapter straight into a bare serial chain with
+    no network anywhere.</li>
+    <li>You script Modbus from Excel, or run many polling windows and long unattended
+    soak tests.</li>
+    <li>You do bench simulation and don't mind buying Modbus Slave alongside it.</li>
+  </ul>
+
+  <h2>Choose Easy Modbus if&hellip;</h2>
+  <ul>
+    <li>You are standing in front of the equipment and would rather use the phone in
+    your pocket than find a laptop and a network port.</li>
+    <li>The registers are undocumented and you need the tool to <em>work out</em> what
+    they are &mdash; float versus integer, word order, scaling &mdash; not just show a
+    raw number. See <a href="modbus-value-wrong-scaling-byte-order.html">why your value
+    looks wrong</a>.</li>
+    <li>You want to <strong>save the register map</strong> and leave a documented
+    device behind, exported as a CSV.</li>
+    <li>You want it to be free.</li>
+  </ul>
+
+  <div class="callout">
+  <p>Plenty of people use both: Modbus Poll on the workbench, Easy Modbus in the
+  field. They are not really rivals so much as tools for two different places. If you
+  only want the free options in general &mdash; desktop included &mdash; see
+  <a href="modbus-poll-alternative.html">free Modbus Poll alternatives</a>.</p>
+  </div>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="../guides/modbus-poll-alternative.html">What is a good free alternative to Modbus Poll?</a></li>
+      <li><a href="../guides/modbus-scanner-app-android.html">Is there a Modbus scanner app for Android?</a></li>
+      <li><a href="../guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read a device?</a></li>
+      <li><a href="../guides/modbus-value-wrong-scaling-byte-order.html">Why does my Modbus value look wrong?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="../index.html">Easy Modbus</a>, a free
+  Android app that finds Modbus TCP equipment on a network, helps you work out
+  what its registers mean, and exports the result as a CSV.</p>
+  <p><a href="../terms.html">Terms of use</a> &middot; <a href="../privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>
