@@ -2531,6 +2531,284 @@ GUIDES.append(dict(
     ],
 ))
 
+# ---------------------------------------------------------------------------
+# Free interactive tools (link magnets; generated, schema-marked)
+# ---------------------------------------------------------------------------
+
+TOOLS = []
+
+TOOL_CSS_EXTRA = """
+  .tool { background:var(--box); border:1px solid var(--line); border-radius:14px;
+          padding:1.3rem 1.4rem; margin:1.75rem 0; }
+  .tool label { display:block; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                font-size:.72rem; text-transform:uppercase; letter-spacing:.12em;
+                color:var(--accent); margin:.9rem 0 .3rem; }
+  .tool input, .tool select { width:100%; padding:.6rem .7rem; font-size:1rem;
+                font-family:"IBM Plex Mono",ui-monospace,monospace; color:var(--fg);
+                background:var(--code); border:1px solid var(--line); border-radius:8px; }
+  .tool .row { display:flex; gap:1rem; flex-wrap:wrap; }
+  .tool .row > div { flex:1 1 160px; }
+  .tool button { margin-top:1.1rem; padding:.6rem 1.2rem; font-family:"Archivo",sans-serif;
+                font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:.85rem;
+                color:var(--ink); background:var(--accent); border:none; border-radius:8px;
+                cursor:pointer; }
+  .tool table { margin:1.3rem 0 0; }
+  .tool .best { color:var(--accent); font-weight:700; }
+  .tool .out-note { color:var(--muted); font-size:.85rem; margin-top:.8rem; }
+"""
+
+
+def tool_page(slug, title, question, description, intro_html, tool_html, related):
+    """A standalone interactive tool page. Rendered with .replace() (not %-format)
+    so JavaScript in tool_html is safe. Carries BreadcrumbList + SoftwareApplication
+    JSON-LD, which the competing tool sites do not."""
+    rel = ""
+    if related:
+        items = "\n".join(
+            '      <li><a href="%s.html">%s</a></li>' % (r[0], r[1]) for r in related
+        )
+        rel = ('\n  <nav class="more">\n    <h2>Related</h2>\n    <ul>\n' + items +
+               '\n    </ul>\n  </nav>')
+    jsonld = ('{"@context":"https://schema.org","@graph":['
+              '{"@type":"SoftwareApplication","name":' + jstr(question) +
+              ',"applicationCategory":"UtilitiesApplication","operatingSystem":"Any (web browser)"'
+              ',"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}'
+              ',"description":' + jstr(description) + '},'
+              '{"@type":"BreadcrumbList","itemListElement":['
+              '{"@type":"ListItem","position":1,"name":"Home","item":"' + BASE_URL + '/index.html"},'
+              '{"@type":"ListItem","position":2,"name":' + jstr(question) +
+              ',"item":"' + BASE_URL + '/' + slug + '.html"}]}]}')
+    return (TOOL_TEMPLATE
+            .replace("{{TITLE}}", title)
+            .replace("{{DESC}}", description)
+            .replace("{{BASE}}", BASE_URL)
+            .replace("{{SLUG}}", slug)
+            .replace("{{CSS}}", CSS + TOOL_CSS_EXTRA)
+            .replace("{{JSONLD}}", jsonld)
+            .replace("{{H1}}", question)
+            .replace("{{UPDATED}}", UPDATED_HUMAN)
+            .replace("{{INTRO}}", intro_html)
+            .replace("{{TOOL}}", tool_html)
+            .replace("{{REL}}", rel))
+
+
+TOOL_TEMPLATE = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESC}}">
+<link rel="canonical" href="{{BASE}}/{{SLUG}}.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESC}}">
+<meta property="og:url" content="{{BASE}}/{{SLUG}}.html">
+<meta property="og:image" content="{{BASE}}/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>{{CSS}}</style>
+<script type="application/ld+json">
+{{JSONLD}}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; free Modbus tools</span>
+</header>
+
+<article>
+  <h1>{{H1}}</h1>
+  <p class="updated">Free browser tool &middot; nothing is uploaded &middot; updated {{UPDATED}}</p>
+  {{INTRO}}
+  {{TOOL}}
+</article>{{REL}}
+
+<footer>
+  <p>Published alongside <a href="index.html">Easy Modbus</a>, a free Android app
+  that finds Modbus equipment on a network, works out what its registers mean, and
+  exports the result as a CSV. This tool runs entirely in your browser.</p>
+  <p><a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>
+"""
+
+TOOLS.append(dict(
+    slug="modbus-float-decoder",
+    title="Modbus float & byte-order decoder (ABCD/CDAB) | Easy Modbus",
+    question="Modbus float and byte-order decoder",
+    description="Paste two Modbus registers and see the 32-bit float and integer in all four word orders (ABCD, CDAB, BADC, DCBA) at once. Free, runs in your browser, nothing uploaded.",
+    intro_html="""<p>A 32-bit value lives in two Modbus registers, and vendors put the
+    two halves in one of four orders. Guess wrong and a perfectly good 12.75 reads as
+    wild nonsense. Paste the two registers below and this decoder shows the float and
+    the integers in <strong>all four orders at once</strong>, and highlights the ones
+    that land on a sensible engineering magnitude &mdash; the same reasoning the
+    <a href="index.html">Easy Modbus</a> Analyzer does on the phone. Read the
+    background in <a href="guides/modbus-value-wrong-scaling-byte-order.html">why does
+    my Modbus value look wrong?</a></p>""",
+    tool_html="""
+  <div class="tool">
+    <div class="row">
+      <div><label for="r1">Register 1 (first)</label><input id="r1" value="0x4248" inputmode="text"></div>
+      <div><label for="r2">Register 2 (second)</label><input id="r2" value="0x0000" inputmode="text"></div>
+    </div>
+    <p class="out-note">Enter each 16-bit register as hex (<code>0x4248</code> or
+    <code>4248</code>) or as a decimal number (<code>16968</code>).</p>
+    <button onclick="decodeFloat()">Decode</button>
+    <table id="fout" style="display:none">
+      <tr><th>Word order</th><th>Float32</th><th>Int32 (signed)</th><th>UInt32</th></tr>
+      <tbody id="fbody"></tbody>
+    </table>
+    <p class="out-note" id="fnote"></p>
+  </div>
+<script>
+function pReg(s){
+  s=(s||'').trim().toLowerCase();
+  if(s===''){return NaN;}
+  if(s.indexOf('0x')===0){return parseInt(s.slice(2),16);}
+  if(/^[0-9a-f]+$/.test(s)&&/[a-f]/.test(s)){return parseInt(s,16);}
+  var d=parseInt(s,10);
+  return d;
+}
+function bytesFor(order,A,B,C,D){
+  if(order==='ABCD'){return [A,B,C,D];}
+  if(order==='CDAB'){return [C,D,A,B];}
+  if(order==='BADC'){return [B,A,D,C];}
+  return [D,C,B,A];
+}
+function plausible(f){
+  if(!isFinite(f)){return false;}
+  var a=Math.abs(f);
+  if(a===0){return true;}
+  return a>=0.001 && a<1e9;
+}
+function decodeFloat(){
+  var r1=pReg(document.getElementById('r1').value);
+  var r2=pReg(document.getElementById('r2').value);
+  var note=document.getElementById('fnote');
+  if(isNaN(r1)||isNaN(r2)||r1<0||r2<0||r1>65535||r2>65535){
+    note.textContent='Enter two register values between 0 and 65535 (0x0000 to 0xFFFF).';
+    document.getElementById('fout').style.display='none';
+    return;
+  }
+  var A=(r1>>8)&255, B=r1&255, C=(r2>>8)&255, D=r2&255;
+  var orders=['ABCD','CDAB','BADC','DCBA'];
+  var body=document.getElementById('fbody');
+  body.innerHTML='';
+  var anyPlausible=false;
+  for(var i=0;i<orders.length;i++){
+    var bytes=bytesFor(orders[i],A,B,C,D);
+    var buf=new ArrayBuffer(4), dv=new DataView(buf);
+    for(var j=0;j<4;j++){dv.setUint8(j,bytes[j]);}
+    var f=dv.getFloat32(0,false);
+    var si=dv.getInt32(0,false);
+    var ui=dv.getUint32(0,false);
+    var good=plausible(f);
+    if(good){anyPlausible=true;}
+    var fstr=isFinite(f)?(Math.abs(f)<1e-4&&f!==0||Math.abs(f)>=1e7?f.toExponential(4):f.toPrecision(7)):String(f);
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>'+orders[i]+'</td><td class="'+(good?'best':'')+'">'+fstr+
+      '</td><td>'+si+'</td><td>'+ui+'</td>';
+    body.appendChild(tr);
+  }
+  document.getElementById('fout').style.display='';
+  note.innerHTML=anyPlausible
+    ? 'Rows in amber decode to a sensible engineering magnitude &mdash; usually the right order. Confirm against what the equipment displays.'
+    : 'None of the four orders looks like a normal engineering value &mdash; this pair may not be a 32-bit float, or one register is wrong.';
+}
+window.addEventListener('DOMContentLoaded',decodeFloat);
+</script>
+""",
+    related=[
+        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
+        ("guides/modbus-register-reads-zero", "Why does my Modbus register read 0?"),
+        ("modbus-address-converter", "Modbus address converter (40001 &harr; 0)"),
+        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
+    ],
+))
+
+TOOLS.append(dict(
+    slug="modbus-address-converter",
+    title="Modbus address converter: 40001 to 0 | Easy Modbus",
+    question="Modbus address converter",
+    description="Convert any Modbus address between Modicon (40001), prefixed (4x00001), 1-based and 0-based protocol forms. Shows the register table and function code. Free browser tool.",
+    intro_html="""<p>The same Modbus register is written four different ways, and the
+    number that actually travels on the wire is the zero-based one &mdash; which is why
+    values so often come out one slot off. Type an address in whatever form your manual
+    uses and this converter shows the table, the protocol (wire) address, the function
+    codes, and every notation. Background: <a href="guides/modbus-address-off-by-one.html">why
+    is my Modbus address off by one?</a></p>""",
+    tool_html="""
+  <div class="tool">
+    <label for="addr">Modbus address</label>
+    <input id="addr" value="40007" inputmode="text">
+    <p class="out-note">Try <code>40007</code>, <code>4x00007</code>, <code>30001</code>,
+    <code>00001</code>, or a plain number like <code>6</code>.</p>
+    <button onclick="convAddr()">Convert</button>
+    <table id="aout" style="display:none"><tbody id="abody"></tbody></table>
+    <p class="out-note" id="anote"></p>
+  </div>
+<script>
+var TABLES={'0':['Coil','FC01 read / FC05,FC15 write','read/write'],
+            '1':['Discrete input','FC02 read','read only'],
+            '3':['Input register','FC04 read','read only'],
+            '4':['Holding register','FC03 read / FC06,FC16 write','read/write']};
+function row(k,v){return '<tr><th>'+k+'</th><td>'+v+'</td></tr>';}
+function convAddr(){
+  var s=(document.getElementById('addr').value||'').trim().toLowerCase();
+  var note=document.getElementById('anote');
+  var body=document.getElementById('abody');
+  var out=document.getElementById('aout');
+  var prefix=null, wire=null, human=null;
+  var m;
+  if((m=s.match(/^([0134])x0*(\\d+)$/))){ prefix=m[1]; human=parseInt(m[2],10); wire=human-1; }
+  else if((m=s.match(/^([0134])(\\d{4,5})$/))){ prefix=m[1]; human=parseInt(m[2],10); wire=human-1; }
+  else if((m=s.match(/^(\\d+)$/))){
+    var n=parseInt(m[1],10);
+    body.innerHTML=row('You entered','a plain number, '+n)
+      +row('If it is 1-based','wire (protocol) address '+(n-1))
+      +row('If it is 0-based','wire (protocol) address '+n+' (use as-is)')
+      +row('Tip','Most vendor tables count from 1; most tools want the 0-based value. Confirm against the device display.');
+    out.style.display=''; note.textContent=''; return;
+  }
+  if(prefix===null||isNaN(human)){
+    note.textContent='Could not read that. Try a form like 40007, 4x00007, 30001 or a plain number.';
+    out.style.display='none'; return;
+  }
+  if(human<1){ note.textContent='Register number must be 1 or more in the 4xxxx / 4x form.'; out.style.display='none'; return; }
+  var t=TABLES[prefix];
+  var modicon=prefix+String(human).padStart(4,'0');
+  var pfx=prefix+'x'+String(human).padStart(5,'0');
+  body.innerHTML=row('Register table',t[0])
+    +row('Function code',t[1])
+    +row('Access',t[2])
+    +row('Protocol (wire) address',wire+'  &larr; the number to send')
+    +row('1-based register number',human)
+    +row('Modicon form',modicon)
+    +row('Prefixed form',pfx);
+  out.style.display=''; note.innerHTML='Remember: in Modbus documentation <code>0x</code> means the coil table, not hexadecimal.';
+}
+window.addEventListener('DOMContentLoaded',convAddr);
+</script>
+""",
+    related=[
+        ("guides/modbus-address-off-by-one", "Why is my Modbus address off by one?"),
+        ("guides/modbus-function-codes-explained", "What are Modbus function codes?"),
+        ("modbus-float-decoder", "Modbus float & byte-order decoder"),
+        ("guides/modbus-exception-codes", "What do Modbus exception codes mean?"),
+    ],
+))
+
 INDEX = """<!doctype html>
 <html lang="en">
 <head>
@@ -2751,6 +3029,17 @@ footer a{color:var(--mut); text-decoration:underline}
       <li><a href="guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read values from a device?</a></li>
       <li><a href="guides/how-to-write-to-a-modbus-register.html">How do I write to a register, and put it back afterwards?</a></li>
       <li><a href="guides/how-to-build-a-modbus-remote.html">How do I build a custom remote for a device?</a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>Free tools</h2>
+    <p>Quick browser calculators &mdash; nothing is uploaded, and they do the same
+    arithmetic the app does on the phone.</p>
+    <ul class="linklist">
+{{TOOLS}}
     </ul>
   </div>
 </section>
@@ -3186,6 +3475,10 @@ LLMS = """# Easy Modbus
 The guides below each answer one question directly in their first paragraph and
 are free to quote with attribution.
 
+## Free tools
+
+%(tools)s
+
 ## Guides
 
 %(guides)s
@@ -3266,12 +3559,27 @@ def main():
             ),
         )
 
+    for t in TOOLS:
+        write(
+            t["slug"] + ".html",
+            tool_page(
+                t["slug"], t["title"], t["question"], t["description"],
+                t["intro_html"], t["tool_html"], t["related"],
+            ),
+        )
+
     links = "\n".join(
         '  <li><a href="%s.html">%s</a><br><span class="muted">%s</span></li>'
         % (g["slug"], g["question"], summarise(g["description"]))
         for g in GUIDES
     )
-    write("index.html", INDEX.replace("{{BASE}}", BASE_URL).replace("{{GUIDES}}", links))
+    tool_links = "\n".join(
+        '  <li><a href="%s.html">%s</a><br><span class="muted">%s</span></li>'
+        % (t["slug"], t["question"], summarise(t["description"]))
+        for t in TOOLS
+    )
+    write("index.html", INDEX.replace("{{BASE}}", BASE_URL)
+          .replace("{{TOOLS}}", tool_links).replace("{{GUIDES}}", links))
 
     write(
         "privacy.html",
@@ -3304,7 +3612,9 @@ def main():
     )
 
     # sitemap + robots so crawlers and agents can enumerate the whole set
-    urls = ["index.html", "privacy.html", "pc-privacy.html", "terms.html"] + [g["slug"] + ".html" for g in GUIDES]
+    urls = (["index.html", "privacy.html", "pc-privacy.html", "terms.html"]
+            + [t["slug"] + ".html" for t in TOOLS]
+            + [g["slug"] + ".html" for g in GUIDES])
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
@@ -3319,7 +3629,11 @@ def main():
         "- [%s](%s/%s.html): %s" % (g["question"], BASE_URL, g["slug"], g["description"])
         for g in GUIDES
     )
-    write("llms.txt", LLMS % {"guides": llm_links})
+    tool_llm_links = "\n".join(
+        "- [%s](%s/%s.html): %s" % (t["question"], BASE_URL, t["slug"], t["description"])
+        for t in TOOLS
+    )
+    write("llms.txt", LLMS % {"guides": llm_links, "tools": tool_llm_links})
 
     # Custom-domain and hosting files for GitHub Pages.
     write("CNAME", "easymodbus.com\n")

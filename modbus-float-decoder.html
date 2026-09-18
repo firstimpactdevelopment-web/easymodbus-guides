@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Modbus float & byte-order decoder (ABCD/CDAB) | Easy Modbus</title>
+<meta name="description" content="Paste two Modbus registers and see the 32-bit float and integer in all four word orders (ABCD, CDAB, BADC, DCBA) at once. Free, runs in your browser, nothing uploaded.">
+<link rel="canonical" href="https://easymodbus.com/modbus-float-decoder.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Modbus float & byte-order decoder (ABCD/CDAB) | Easy Modbus">
+<meta property="og:description" content="Paste two Modbus registers and see the 32-bit float and integer in all four word orders (ABCD, CDAB, BADC, DCBA) at once. Free, runs in your browser, nothing uploaded.">
+<meta property="og:url" content="https://easymodbus.com/modbus-float-decoder.html">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
+          --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         font-size:17px; line-height:1.7; color:var(--fg); background:var(--bg);
+         -webkit-font-smoothing:antialiased; }
+  header.site { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+                padding-bottom:1.25rem; border-bottom:1px solid var(--line); margin-bottom:2.25rem; }
+  header.site a { color:var(--fg); text-decoration:none; }
+  header.site a span, header.site a b { font-family:"Archivo",sans-serif; font-weight:900;
+                       text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+  header.site .muted { margin-left:auto; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                       font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
+  h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
+  h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
+  h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
+  h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
+  a { color:var(--accent); }
+  strong { color:#fff; }
+  .answer { background:var(--box); border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:12px; padding:1.1rem 1.3rem; margin:1.5rem 0 2rem; }
+  .answer > strong { display:block; margin-bottom:.5rem; text-transform:uppercase;
+                   font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+                   font-size:.72rem; letter-spacing:.18em; color:var(--accent); }
+  .answer p { margin:.6rem 0; }
+  .answer p:last-child { margin-bottom:0; }
+  .answer p strong { color:#fff; font-weight:700; }
+  code { background:var(--code); padding:.1rem .4rem; border-radius:4px; font-size:.9em;
+         font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  pre { background:var(--code); padding:1rem; border-radius:10px; overflow-x:auto;
+        border:1px solid var(--line); }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:1.25rem 0; display:block; overflow-x:auto; }
+  th, td { text-align:left; padding:.55rem .75rem; border-bottom:1px solid var(--line);
+           vertical-align:top; }
+  th { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+       text-transform:uppercase; letter-spacing:.1em; color:var(--accent); font-weight:600; }
+  ul, ol { padding-left:1.3rem; }
+  li { margin:.45rem 0; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  .callout { border-left:3px solid var(--accent); background:var(--box);
+             border-radius:0 10px 10px 0; padding:.75rem 1rem; margin:1.5rem 0; }
+  nav.more { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); }
+  nav.more h2 { margin-top:0; }
+  nav.more ul { list-style:none; padding:0; }
+  nav.more li { margin:0; border-bottom:1px solid var(--line); padding:.85rem 0; }
+  nav.more li:last-child { border-bottom:none; }
+  nav.more a { font-family:"Archivo",sans-serif; font-weight:600; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+           color:var(--muted); font-size:.9rem; }
+  footer a { color:var(--accent); }
+  figure.shot { margin:1.75rem 0; text-align:center; }
+  figure.shot img { max-width:300px; width:100%; height:auto; border:1px solid var(--line);
+                    border-radius:16px; background:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  figure.shot figcaption { color:var(--muted); font-size:.85rem; margin-top:.55rem; }
+  .shots { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;
+           align-items:flex-start; margin:1.75rem 0; }
+  .shots figure.shot { margin:0; flex:0 1 300px; }
+
+  .tool { background:var(--box); border:1px solid var(--line); border-radius:14px;
+          padding:1.3rem 1.4rem; margin:1.75rem 0; }
+  .tool label { display:block; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                font-size:.72rem; text-transform:uppercase; letter-spacing:.12em;
+                color:var(--accent); margin:.9rem 0 .3rem; }
+  .tool input, .tool select { width:100%; padding:.6rem .7rem; font-size:1rem;
+                font-family:"IBM Plex Mono",ui-monospace,monospace; color:var(--fg);
+                background:var(--code); border:1px solid var(--line); border-radius:8px; }
+  .tool .row { display:flex; gap:1rem; flex-wrap:wrap; }
+  .tool .row > div { flex:1 1 160px; }
+  .tool button { margin-top:1.1rem; padding:.6rem 1.2rem; font-family:"Archivo",sans-serif;
+                font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:.85rem;
+                color:var(--ink); background:var(--accent); border:none; border-radius:8px;
+                cursor:pointer; }
+  .tool table { margin:1.3rem 0 0; }
+  .tool .best { color:var(--accent); font-weight:700; }
+  .tool .out-note { color:var(--muted); font-size:.85rem; margin-top:.8rem; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Modbus float and byte-order decoder","applicationCategory":"UtilitiesApplication","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Paste two Modbus registers and see the 32-bit float and integer in all four word orders (ABCD, CDAB, BADC, DCBA) at once. Free, runs in your browser, nothing uploaded."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://easymodbus.com/index.html"},{"@type":"ListItem","position":2,"name":"Modbus float and byte-order decoder","item":"https://easymodbus.com/modbus-float-decoder.html"}]}]}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; free Modbus tools</span>
+</header>
+
+<article>
+  <h1>Modbus float and byte-order decoder</h1>
+  <p class="updated">Free browser tool &middot; nothing is uploaded &middot; updated 18 September 2026</p>
+  <p>A 32-bit value lives in two Modbus registers, and vendors put the
+    two halves in one of four orders. Guess wrong and a perfectly good 12.75 reads as
+    wild nonsense. Paste the two registers below and this decoder shows the float and
+    the integers in <strong>all four orders at once</strong>, and highlights the ones
+    that land on a sensible engineering magnitude &mdash; the same reasoning the
+    <a href="index.html">Easy Modbus</a> Analyzer does on the phone. Read the
+    background in <a href="guides/modbus-value-wrong-scaling-byte-order.html">why does
+    my Modbus value look wrong?</a></p>
+  
+  <div class="tool">
+    <div class="row">
+      <div><label for="r1">Register 1 (first)</label><input id="r1" value="0x4248" inputmode="text"></div>
+      <div><label for="r2">Register 2 (second)</label><input id="r2" value="0x0000" inputmode="text"></div>
+    </div>
+    <p class="out-note">Enter each 16-bit register as hex (<code>0x4248</code> or
+    <code>4248</code>) or as a decimal number (<code>16968</code>).</p>
+    <button onclick="decodeFloat()">Decode</button>
+    <table id="fout" style="display:none">
+      <tr><th>Word order</th><th>Float32</th><th>Int32 (signed)</th><th>UInt32</th></tr>
+      <tbody id="fbody"></tbody>
+    </table>
+    <p class="out-note" id="fnote"></p>
+  </div>
+<script>
+function pReg(s){
+  s=(s||'').trim().toLowerCase();
+  if(s===''){return NaN;}
+  if(s.indexOf('0x')===0){return parseInt(s.slice(2),16);}
+  if(/^[0-9a-f]+$/.test(s)&&/[a-f]/.test(s)){return parseInt(s,16);}
+  var d=parseInt(s,10);
+  return d;
+}
+function bytesFor(order,A,B,C,D){
+  if(order==='ABCD'){return [A,B,C,D];}
+  if(order==='CDAB'){return [C,D,A,B];}
+  if(order==='BADC'){return [B,A,D,C];}
+  return [D,C,B,A];
+}
+function plausible(f){
+  if(!isFinite(f)){return false;}
+  var a=Math.abs(f);
+  if(a===0){return true;}
+  return a>=0.001 && a<1e9;
+}
+function decodeFloat(){
+  var r1=pReg(document.getElementById('r1').value);
+  var r2=pReg(document.getElementById('r2').value);
+  var note=document.getElementById('fnote');
+  if(isNaN(r1)||isNaN(r2)||r1<0||r2<0||r1>65535||r2>65535){
+    note.textContent='Enter two register values between 0 and 65535 (0x0000 to 0xFFFF).';
+    document.getElementById('fout').style.display='none';
+    return;
+  }
+  var A=(r1>>8)&255, B=r1&255, C=(r2>>8)&255, D=r2&255;
+  var orders=['ABCD','CDAB','BADC','DCBA'];
+  var body=document.getElementById('fbody');
+  body.innerHTML='';
+  var anyPlausible=false;
+  for(var i=0;i<orders.length;i++){
+    var bytes=bytesFor(orders[i],A,B,C,D);
+    var buf=new ArrayBuffer(4), dv=new DataView(buf);
+    for(var j=0;j<4;j++){dv.setUint8(j,bytes[j]);}
+    var f=dv.getFloat32(0,false);
+    var si=dv.getInt32(0,false);
+    var ui=dv.getUint32(0,false);
+    var good=plausible(f);
+    if(good){anyPlausible=true;}
+    var fstr=isFinite(f)?(Math.abs(f)<1e-4&&f!==0||Math.abs(f)>=1e7?f.toExponential(4):f.toPrecision(7)):String(f);
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>'+orders[i]+'</td><td class="'+(good?'best':'')+'">'+fstr+
+      '</td><td>'+si+'</td><td>'+ui+'</td>';
+    body.appendChild(tr);
+  }
+  document.getElementById('fout').style.display='';
+  note.innerHTML=anyPlausible
+    ? 'Rows in amber decode to a sensible engineering magnitude &mdash; usually the right order. Confirm against what the equipment displays.'
+    : 'None of the four orders looks like a normal engineering value &mdash; this pair may not be a 32-bit float, or one register is wrong.';
+}
+window.addEventListener('DOMContentLoaded',decodeFloat);
+</script>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="guides/modbus-value-wrong-scaling-byte-order.html">Why does my Modbus value look wrong?</a></li>
+      <li><a href="guides/modbus-register-reads-zero.html">Why does my Modbus register read 0?</a></li>
+      <li><a href="modbus-address-converter.html">Modbus address converter (40001 &harr; 0)</a></li>
+      <li><a href="guides/modbus-scanner-app-android.html">Is there a Modbus scanner app for Android?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="index.html">Easy Modbus</a>, a free Android app
+  that finds Modbus equipment on a network, works out what its registers mean, and
+  exports the result as a CSV. This tool runs entirely in your browser.</p>
+  <p><a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>

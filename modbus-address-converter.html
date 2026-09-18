@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<title>Modbus address converter: 40001 to 0 | Easy Modbus</title>
+<meta name="description" content="Convert any Modbus address between Modicon (40001), prefixed (4x00001), 1-based and 0-based protocol forms. Shows the register table and function code. Free browser tool.">
+<link rel="canonical" href="https://easymodbus.com/modbus-address-converter.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Modbus address converter: 40001 to 0 | Easy Modbus">
+<meta property="og:description" content="Convert any Modbus address between Modicon (40001), prefixed (4x00001), 1-based and 0-based protocol forms. Shows the register table and function code. Free browser tool.">
+<meta property="og:url" content="https://easymodbus.com/modbus-address-converter.html">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
+          --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
+  * { box-sizing: border-box; }
+  body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
+         font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         font-size:17px; line-height:1.7; color:var(--fg); background:var(--bg);
+         -webkit-font-smoothing:antialiased; }
+  header.site { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+                padding-bottom:1.25rem; border-bottom:1px solid var(--line); margin-bottom:2.25rem; }
+  header.site a { color:var(--fg); text-decoration:none; }
+  header.site a span, header.site a b { font-family:"Archivo",sans-serif; font-weight:900;
+                       text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem; }
+  header.site .muted { margin-left:auto; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                       font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; }
+  h1, h2, h3 { font-family:"Archivo",sans-serif; letter-spacing:-.01em; line-height:1.12; }
+  h1 { font-weight:900; text-transform:uppercase; font-size:clamp(1.7rem,4.5vw,2.5rem);
+       margin:0 0 .6rem; }
+  .updated { color:var(--muted); font-size:.8rem; margin:0 0 1.5rem;
+             font-family:"IBM Plex Mono",ui-monospace,monospace; letter-spacing:.06em; }
+  h2 { font-weight:800; font-size:1.35rem; margin:2.6rem 0 .6rem; }
+  h3 { font-weight:800; font-size:1.06rem; margin:1.8rem 0 .4rem; }
+  a { color:var(--accent); }
+  strong { color:#fff; }
+  .answer { background:var(--box); border:1px solid var(--line); border-left:3px solid var(--accent);
+            border-radius:12px; padding:1.1rem 1.3rem; margin:1.5rem 0 2rem; }
+  .answer > strong { display:block; margin-bottom:.5rem; text-transform:uppercase;
+                   font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:600;
+                   font-size:.72rem; letter-spacing:.18em; color:var(--accent); }
+  .answer p { margin:.6rem 0; }
+  .answer p:last-child { margin-bottom:0; }
+  .answer p strong { color:#fff; font-weight:700; }
+  code { background:var(--code); padding:.1rem .4rem; border-radius:4px; font-size:.9em;
+         font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  pre { background:var(--code); padding:1rem; border-radius:10px; overflow-x:auto;
+        border:1px solid var(--line); }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:1.25rem 0; display:block; overflow-x:auto; }
+  th, td { text-align:left; padding:.55rem .75rem; border-bottom:1px solid var(--line);
+           vertical-align:top; }
+  th { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+       text-transform:uppercase; letter-spacing:.1em; color:var(--accent); font-weight:600; }
+  ul, ol { padding-left:1.3rem; }
+  li { margin:.45rem 0; }
+  .muted { color:var(--muted); font-size:.92rem; }
+  .callout { border-left:3px solid var(--accent); background:var(--box);
+             border-radius:0 10px 10px 0; padding:.75rem 1rem; margin:1.5rem 0; }
+  nav.more { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); }
+  nav.more h2 { margin-top:0; }
+  nav.more ul { list-style:none; padding:0; }
+  nav.more li { margin:0; border-bottom:1px solid var(--line); padding:.85rem 0; }
+  nav.more li:last-child { border-bottom:none; }
+  nav.more a { font-family:"Archivo",sans-serif; font-weight:600; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line);
+           color:var(--muted); font-size:.9rem; }
+  footer a { color:var(--accent); }
+  figure.shot { margin:1.75rem 0; text-align:center; }
+  figure.shot img { max-width:300px; width:100%; height:auto; border:1px solid var(--line);
+                    border-radius:16px; background:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  figure.shot figcaption { color:var(--muted); font-size:.85rem; margin-top:.55rem; }
+  .shots { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;
+           align-items:flex-start; margin:1.75rem 0; }
+  .shots figure.shot { margin:0; flex:0 1 300px; }
+
+  .tool { background:var(--box); border:1px solid var(--line); border-radius:14px;
+          padding:1.3rem 1.4rem; margin:1.75rem 0; }
+  .tool label { display:block; font-family:"IBM Plex Mono",ui-monospace,monospace;
+                font-size:.72rem; text-transform:uppercase; letter-spacing:.12em;
+                color:var(--accent); margin:.9rem 0 .3rem; }
+  .tool input, .tool select { width:100%; padding:.6rem .7rem; font-size:1rem;
+                font-family:"IBM Plex Mono",ui-monospace,monospace; color:var(--fg);
+                background:var(--code); border:1px solid var(--line); border-radius:8px; }
+  .tool .row { display:flex; gap:1rem; flex-wrap:wrap; }
+  .tool .row > div { flex:1 1 160px; }
+  .tool button { margin-top:1.1rem; padding:.6rem 1.2rem; font-family:"Archivo",sans-serif;
+                font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:.85rem;
+                color:var(--ink); background:var(--accent); border:none; border-radius:8px;
+                cursor:pointer; }
+  .tool table { margin:1.3rem 0 0; }
+  .tool .best { color:var(--accent); font-weight:700; }
+  .tool .out-note { color:var(--muted); font-size:.85rem; margin-top:.8rem; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Modbus address converter","applicationCategory":"UtilitiesApplication","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Convert any Modbus address between Modicon (40001), prefixed (4x00001), 1-based and 0-based protocol forms. Shows the register table and function code. Free browser tool."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://easymodbus.com/index.html"},{"@type":"ListItem","position":2,"name":"Modbus address converter","item":"https://easymodbus.com/modbus-address-converter.html"}]}]}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
+  <span class="muted">&middot; free Modbus tools</span>
+</header>
+
+<article>
+  <h1>Modbus address converter</h1>
+  <p class="updated">Free browser tool &middot; nothing is uploaded &middot; updated 18 September 2026</p>
+  <p>The same Modbus register is written four different ways, and the
+    number that actually travels on the wire is the zero-based one &mdash; which is why
+    values so often come out one slot off. Type an address in whatever form your manual
+    uses and this converter shows the table, the protocol (wire) address, the function
+    codes, and every notation. Background: <a href="guides/modbus-address-off-by-one.html">why
+    is my Modbus address off by one?</a></p>
+  
+  <div class="tool">
+    <label for="addr">Modbus address</label>
+    <input id="addr" value="40007" inputmode="text">
+    <p class="out-note">Try <code>40007</code>, <code>4x00007</code>, <code>30001</code>,
+    <code>00001</code>, or a plain number like <code>6</code>.</p>
+    <button onclick="convAddr()">Convert</button>
+    <table id="aout" style="display:none"><tbody id="abody"></tbody></table>
+    <p class="out-note" id="anote"></p>
+  </div>
+<script>
+var TABLES={'0':['Coil','FC01 read / FC05,FC15 write','read/write'],
+            '1':['Discrete input','FC02 read','read only'],
+            '3':['Input register','FC04 read','read only'],
+            '4':['Holding register','FC03 read / FC06,FC16 write','read/write']};
+function row(k,v){return '<tr><th>'+k+'</th><td>'+v+'</td></tr>';}
+function convAddr(){
+  var s=(document.getElementById('addr').value||'').trim().toLowerCase();
+  var note=document.getElementById('anote');
+  var body=document.getElementById('abody');
+  var out=document.getElementById('aout');
+  var prefix=null, wire=null, human=null;
+  var m;
+  if((m=s.match(/^([0134])x0*(\d+)$/))){ prefix=m[1]; human=parseInt(m[2],10); wire=human-1; }
+  else if((m=s.match(/^([0134])(\d{4,5})$/))){ prefix=m[1]; human=parseInt(m[2],10); wire=human-1; }
+  else if((m=s.match(/^(\d+)$/))){
+    var n=parseInt(m[1],10);
+    body.innerHTML=row('You entered','a plain number, '+n)
+      +row('If it is 1-based','wire (protocol) address '+(n-1))
+      +row('If it is 0-based','wire (protocol) address '+n+' (use as-is)')
+      +row('Tip','Most vendor tables count from 1; most tools want the 0-based value. Confirm against the device display.');
+    out.style.display=''; note.textContent=''; return;
+  }
+  if(prefix===null||isNaN(human)){
+    note.textContent='Could not read that. Try a form like 40007, 4x00007, 30001 or a plain number.';
+    out.style.display='none'; return;
+  }
+  if(human<1){ note.textContent='Register number must be 1 or more in the 4xxxx / 4x form.'; out.style.display='none'; return; }
+  var t=TABLES[prefix];
+  var modicon=prefix+String(human).padStart(4,'0');
+  var pfx=prefix+'x'+String(human).padStart(5,'0');
+  body.innerHTML=row('Register table',t[0])
+    +row('Function code',t[1])
+    +row('Access',t[2])
+    +row('Protocol (wire) address',wire+'  &larr; the number to send')
+    +row('1-based register number',human)
+    +row('Modicon form',modicon)
+    +row('Prefixed form',pfx);
+  out.style.display=''; note.innerHTML='Remember: in Modbus documentation <code>0x</code> means the coil table, not hexadecimal.';
+}
+window.addEventListener('DOMContentLoaded',convAddr);
+</script>
+
+</article>
+  <nav class="more">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="guides/modbus-address-off-by-one.html">Why is my Modbus address off by one?</a></li>
+      <li><a href="guides/modbus-function-codes-explained.html">What are Modbus function codes?</a></li>
+      <li><a href="modbus-float-decoder.html">Modbus float & byte-order decoder</a></li>
+      <li><a href="guides/modbus-exception-codes.html">What do Modbus exception codes mean?</a></li>
+    </ul>
+  </nav>
+
+<footer>
+  <p>Published alongside <a href="index.html">Easy Modbus</a>, a free Android app
+  that finds Modbus equipment on a network, works out what its registers mean, and
+  exports the result as a CSV. This tool runs entirely in your browser.</p>
+  <p><a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Privacy policy</a></p>
+</footer>
+
+</body>
+</html>
