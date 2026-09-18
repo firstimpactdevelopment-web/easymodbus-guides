@@ -26,8 +26,8 @@ import os
 BASE_URL = "https://easymodbus.com"
 
 # Freshness signal. Bump when guide content is meaningfully revised.
-UPDATED = "2026-09-16"              # ISO, for JSON-LD and sitemap <lastmod>
-UPDATED_HUMAN = "16 September 2026"  # for the visible "Updated" line
+UPDATED = "2026-09-18"              # ISO, for JSON-LD and sitemap <lastmod>
+UPDATED_HUMAN = "18 September 2026"  # for the visible "Updated" line
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -1400,6 +1400,14 @@ GUIDES.append(dict(
     equipment is on another subnet the sweep cannot reach. This is the normal
     route in practice.</li>
   </ul>
+  <p>The scan settings have a <strong>Thorough scan</strong> option. A normal
+  sweep speaks plain Modbus TCP. Some serial gateways open port 502 but only
+  answer Modbus RTU over TCP, so a normal sweep never sees them; with Thorough
+  scan on, any address that accepts the connection but stays silent to the first
+  framing is asked again in the other framing before being written off. It is
+  slower — it roughly doubles the time spent on addresses that open the port
+  without answering — so it is off by default and worth turning on when you know
+  a gateway is out there but the sweep is not finding it.</p>
   <figure class="shot">
     <img src="../img/app-devices.png" alt="Easy Modbus device list showing saved Modbus devices with their addresses and unit IDs" loading="lazy">
     <figcaption>Your saved devices. Tap <strong>Find devices</strong> to sweep the network, or the + button to add one by address.</figcaption>
@@ -1649,6 +1657,144 @@ GUIDES.append(dict(
         ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
         ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
         ("guides/is-it-safe-to-write-to-modbus", "Is it safe to write to a Modbus register?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/modbus-poll-alternative",
+    title="Free Modbus Poll alternative | Easy Modbus",
+    question="What is a good free alternative to Modbus Poll?",
+    description="Modbus Poll is a paid Windows master. If you want a free tool, or one that runs on your phone in front of the equipment, here are the honest trade-offs.",
+    answer_html="""<p>Modbus Poll is a good, mature Modbus master, and if you live
+    at a Windows desk it is worth what it costs. But it is paid, Windows-only, and a
+    master only &mdash; simulating a slave is a second product (Modbus Slave) you buy
+    separately. If what you actually want is a <strong>free</strong> tool, or one you
+    can carry <strong>in front of the equipment on a phone</strong>, that is the gap
+    <a href="../index.html">Easy Modbus</a> is built for: it finds equipment, reads
+    and writes registers, works out what each value means, and saves the result &mdash;
+    for free, on Android, with a Windows version as well.</p>""",
+    body_html="""
+  <h2>What people are really asking</h2>
+  <p>&ldquo;Modbus Poll alternative&rdquo; is almost always one of three wishes:
+  <em>I don't want to pay for it</em>, <em>I don't have a Windows laptop where the
+  equipment is</em>, or <em>I want it to also decode the value, not just show me a
+  raw register</em>. It is worth being clear which one you have, because the honest
+  answer is different for each.</p>
+
+  <h2>An honest comparison</h2>
+  <table>
+    <tr><th></th><th>Modbus Poll</th><th>Easy Modbus</th></tr>
+    <tr><td>Platform</td><td>Windows desktop</td><td>Android phone or tablet, plus a Windows version</td></tr>
+    <tr><td>Price</td><td>Paid licence, master and slave sold separately</td><td>Free; an optional one-time purchase removes ads and unlocks unlimited saved control panels</td></tr>
+    <tr><td>Reads</td><td>Yes, mature and fast</td><td>Yes &mdash; TCP and RTU-over-TCP, function codes 1&ndash;4</td></tr>
+    <tr><td>Writes</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with a one-tap <em>Put it back</em></td></tr>
+    <tr><td>Works out data types for you</td><td>You set type and word order yourself</td><td>Yes &mdash; ranks the plausible readings of a raw register and explains each</td></tr>
+    <tr><td>Saves what a register means</td><td>Saves a poll definition</td><td>Yes &mdash; names, scaling and units per register, exported as CSV</td></tr>
+    <tr><td>Simulates a slave for the bench</td><td>Separate product (Modbus Slave)</td><td>Built-in device emulator in the Windows version</td></tr>
+    <tr><td>Best at</td><td>Desk and bench work on Windows, heavy scripting, long soak tests</td><td>Fieldwork on a phone, decoding unknown equipment, leaving a documented map behind</td></tr>
+  </table>
+
+  <div class="callout">
+  <p>This is not a &ldquo;Modbus Poll is bad&rdquo; page. For desk-bound
+  development and bench simulation it is genuinely good. The point is narrower: if
+  you are paying for it only to read a meter from a plant room, or fighting to get a
+  laptop onto a control network, there is a free tool in your pocket that does that
+  part.</p>
+  </div>
+
+  <h2>Other free tools people compare</h2>
+  <p>If you specifically want a free Windows desktop master, the names that come up
+  most are <strong>QModMaster</strong>, <strong>modpoll</strong> (a command-line
+  tool), and <strong>CAS Modbus Scanner</strong>. They read and write fine. What
+  they mostly do not do is the part that eats your afternoon: telling you that a raw
+  <code>0x2A3D</code> across two registers is 12.75 as a word-swapped float rather
+  than nonsense. See <a href="modbus-value-wrong-scaling-byte-order.html">why your
+  Modbus value looks wrong</a> for why that step matters.</p>
+
+  <h2>Where Easy Modbus fits</h2>
+  <p>Easy Modbus is the tool for the moment you are standing in front of equipment
+  with a phone and a question: <em>what is on this network, what do these registers
+  mean, and can I change this one safely?</em> It sweeps the subnet for Modbus on
+  port 502, reads blocks of registers, offers the sensible interpretations of each
+  with the reasoning, lets you write with guard rails, and &mdash; the part the free
+  desktop tools skip &mdash; <strong>remembers the whole register map</strong> so the
+  next person does not start from zero. See <a href="how-to-use-easy-modbus.html">how
+  to use Easy Modbus</a> to read a device end to end.</p>
+""",
+    related=[
+        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
+        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
+        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register, and put it back?"),
+        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/modbus-scanner-app-android",
+    title="Modbus scanner app for Android | Easy Modbus",
+    question="Is there a Modbus scanner app for Android?",
+    description="Yes. How to scan for, read and write Modbus TCP equipment from an Android phone, what a phone can and cannot reach, and the RTU-over-gateway catch.",
+    answer_html="""<p>Yes &mdash; <a href="../index.html">Easy Modbus</a> is an
+    Android app that finds Modbus TCP equipment on the network you are joined to,
+    reads its registers, helps you work out what they mean, and writes to them with
+    guard rails. The one thing to understand first is that <strong>Modbus has no
+    discovery</strong>: no device ever announces itself, so &ldquo;scanning&rdquo;
+    means sweeping the local network for anything answering on port 502. A phone does
+    that just as well as a laptop, as long as it is on the same network as the
+    equipment.</p>""",
+    body_html="""
+  <h2>Why a phone is often the right tool</h2>
+  <p>The equipment is in a plant room, a riser, or on a roof. The register you need
+  to check is a two-minute job. Carrying a laptop, finding a network port, and
+  getting an IP on the right subnet is not a two-minute job. A phone already on the
+  building Wi-Fi, or tethered to a small travel router plugged into the panel, gets
+  you there faster &mdash; and it is the difference between documenting a device on
+  the spot and promising to come back.</p>
+
+  <h2>What &ldquo;scanning&rdquo; actually does</h2>
+  <p>Because Modbus has no <em>who-is-out-there</em> broadcast, Easy Modbus sweeps
+  the addresses on your subnet and connects to each in turn on port 502, listing
+  whatever accepts. From there you open a device and read blocks of registers. If
+  the sweep finds nothing, the cause is almost always the network rather than the
+  app &mdash; see <a href="cannot-find-modbus-devices.html">why can't I find my
+  Modbus devices?</a> for the six things to check.</p>
+
+  <h2>What an Android app can and cannot reach</h2>
+  <table>
+    <tr><th>Situation</th><th>Works from the phone?</th></tr>
+    <tr><td>Modbus TCP equipment on the same Wi-Fi / subnet</td><td>Yes &mdash; the normal case</td></tr>
+    <tr><td>Serial RS-485 (RTU) behind a network gateway</td><td>Yes &mdash; switch the device to <em>Modbus RTU over TCP</em></td></tr>
+    <tr><td>Equipment on a different subnet or VLAN with no route</td><td>No &mdash; nothing can reach it until there is a route. See <a href="cannot-find-modbus-devices.html">the checklist</a></td></tr>
+    <tr><td>A bare RS-485 cable with no gateway, straight into the phone</td><td>No &mdash; Easy Modbus speaks over the network, not a USB-to-serial adapter</td></tr>
+  </table>
+  <p>That last row is the honest limit worth knowing up front: Easy Modbus reaches
+  serial RTU equipment <strong>through a gateway</strong> (very common in the field),
+  not by plugging an RS-485 dongle into the phone. If everything you touch is bare
+  two-wire RS-485 with no network anywhere, a laptop with a USB adapter is still the
+  tool.</p>
+
+  <h2>The catch that looks like a dead device</h2>
+  <p>The most common false alarm on a phone is the same as on a laptop: the
+  equipment is really serial RTU behind a transparent gateway, so it stays silent
+  when you speak proper Modbus TCP to it. The fix is one setting &mdash; <em>Modbus
+  RTU over TCP</em> &mdash; and Easy Modbus can test both framings and tell you which
+  one answered. See <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or RS-485
+  &mdash; which do I have?</a></p>
+
+  <h2>Beyond reading: what the app remembers</h2>
+  <p>Reading a raw register is the easy half. The half that takes time is working
+  out that slot 7 is a leaving-water temperature in tenths of a degree, and that a
+  32-bit float two slots along is word-swapped. Easy Modbus does that arithmetic for
+  you and, crucially, <strong>saves the answer</strong> as a named, scaled register
+  map you can export as a CSV &mdash; so an undocumented device on your phone becomes
+  a documented one for everyone after you. Walk through it in
+  <a href="how-to-use-easy-modbus.html">how to use Easy Modbus</a>.</p>
+""",
+    related=[
+        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
+        ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
+        ("guides/modbus-tcp-vs-rtu-vs-rs485", "Modbus TCP, RTU or RS-485 &mdash; which do I have?"),
+        ("guides/modbus-poll-alternative", "What is a good free alternative to Modbus Poll?"),
     ],
 ))
 
