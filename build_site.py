@@ -33,7 +33,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 CSS = """
   :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
-          --accent:#ff9a1f; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
+          --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
   * { box-sizing: border-box; }
   body { max-width: 48rem; margin: 0 auto; padding: 2rem 1.25rem 5rem;
          font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -1680,7 +1680,7 @@ INDEX = """<!doctype html>
 <style>
 :root{
   --bg:#14171a; --panel:#1d2227; --line:#2f363d;
-  --fg:#f3f5f6; --mut:#9aa4ad; --accent:#ff9a1f; --ink:#0d0f11;
+  --fg:#f3f5f6; --mut:#9aa4ad; --accent:#2dd4bf; --ink:#0d0f11;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -2364,7 +2364,7 @@ NOT_FOUND = """<!doctype html>
          font-size:17px; line-height:1.7; color:#f3f5f6; background:#14171a; }
   h1 { font-family:"Archivo",sans-serif; font-weight:900; text-transform:uppercase;
        font-size:2rem; margin:0 0 .75rem; }
-  a { color:#ff9a1f; font-weight:600; text-decoration:none; }
+  a { color:#2dd4bf; font-weight:600; text-decoration:none; }
   p { color:#9aa4ad; }
 </style>
 </head>
