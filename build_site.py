@@ -31,6 +31,47 @@ UPDATED_HUMAN = "18 September 2026"  # for the visible "Updated" line
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
+# Google Analytics 4 measurement ID for easymodbus.com (GA4 property under
+# tim.bruhn89 "Default Account for Firebase", created 2026-09-20).
+GA_MEASUREMENT_ID = "G-C75X0X538C"
+
+# GA4 with Consent Mode v2. Analytics storage defaults to DENIED and only
+# loads gtag/config after the visitor accepts the cookie banner (GDPR/ePrivacy).
+# Self-contained (own <style>, own banner DOM) so it can be dropped into any
+# page after the <meta charset> line. IP anonymisation is on; no ad signals.
+ANALYTICS = ("""
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="%(ga)s", KEY="ga-consent", P="%(privacy)s";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+""" % {"ga": GA_MEASUREMENT_ID, "privacy": BASE_URL + "/privacy.html"})
+
 CSS = """
   :root { color-scheme: dark; --fg:#f3f5f6; --bg:#14171a; --muted:#9aa4ad;
           --accent:#2dd4bf; --box:#1d2227; --line:#2f363d; --code:#101418; --ink:#0d0f11; }
@@ -260,6 +301,14 @@ def summarise(description, target=90, cap=180):
 
 
 def write(relpath, content):
+    # Inject the analytics + consent banner into every HTML page, right after
+    # the charset meta so it never pushes charset past the first 1 KB.
+    if "<head>" in content and "googletagmanager" not in content:
+        marker = '<meta charset="utf-8">'
+        if marker in content:
+            content = content.replace(marker, marker + ANALYTICS, 1)
+        else:
+            content = content.replace("<head>", "<head>" + ANALYTICS, 1)
     full = os.path.join(HERE, relpath)
     directory = os.path.dirname(full)
     if directory:
@@ -514,6 +563,20 @@ GUIDES.append(dict(
   and the app remembers the whole interpretation, so nobody has to work it out
   again. The result exports as a CSV, which is how an undocumented device ends up
   documented.</p>
+  <div class="shots">
+    <figure class="shot">
+      <img src="../img/app-register-browser.png" alt="Easy Modbus Pro-mode register browser listing raw registers in hex and decimal" loading="lazy">
+      <figcaption>Read a block and see every register in hex and decimal.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="../img/app-analyzer.png" alt="Easy Modbus showing ranked interpretations of a register such as a word-swapped 32-bit float, with reasoning" loading="lazy">
+      <figcaption>&ldquo;What could this be?&rdquo; ranks each interpretation and explains why.</figcaption>
+    </figure>
+  </div>
+  <figure class="shot">
+    <img src="../img/app-readings.png" alt="Easy Modbus reading list showing named readings with their live values and units, ready to export as CSV" loading="lazy">
+    <figcaption>Name each value you identify and it becomes your register map &mdash; export it as a CSV.</figcaption>
+  </figure>
 
   <h2>When none of it works</h2>
   <p>Ask the vendor directly, with the model and firmware version, for the Modbus
@@ -3119,11 +3182,13 @@ PRIVACY = """<!doctype html>
 
 <div class="answer">
   <strong>Summary</strong>
-  <p>Easy Modbus has no account and no analytics, and the app itself sends
+  <p>The Easy Modbus <em>app</em> has no account and no analytics, and it sends
   nothing to any server. Everything it does happens on your phone and on the
   local network you connect it to. The one exception is advertising: the free
   version shows occasional rewarded video ads from Google AdMob, described
-  below, and the one-time purchase removes them.</p>
+  below, and the one-time purchase removes them. This <em>website</em>
+  (easymodbus.com) uses Google Analytics, but only after you accept the cookie
+  banner &mdash; see <a href="#website-analytics">Website analytics</a>.</p>
 </div>
 
 <h2>What the app stores, and where</h2>
@@ -3163,10 +3228,22 @@ only aggregate, anonymous earnings figures from AdMob &mdash; never your data.</
   Modbus has no server and does not upload it anywhere.</li>
 </ul>
 
+<h2 id="website-analytics">Website analytics</h2>
+<p>This website, easymodbus.com, uses Google Analytics (GA4) to understand which
+guides are useful and how visitors arrive. It is loaded with Google Consent Mode:
+no analytics cookie is set and no data is sent until you choose <em>Accept</em> on
+the cookie banner. If you decline, or ignore the banner, Analytics stays off. Your
+choice is remembered in your browser and you can clear it any time by clearing this
+site's data. IP addresses are anonymised, and no advertising or cross-site tracking
+signals are collected on the website. Google's handling of Analytics data is
+described in <a href="https://policies.google.com/privacy">Google's Privacy
+Policy</a>. This is separate from the app, which contains no analytics at all.</p>
+
 <h2>What the app does not do</h2>
 <ul>
   <li>No account, sign-in, or registration.</li>
-  <li>No analytics, telemetry, or crash reporting. (The free version shows Google AdMob ads — see Advertising below.)</li>
+  <li>No analytics, telemetry, or crash reporting inside the app itself. (The
+  website uses Google Analytics with consent — see Website analytics above.)</li>
   <li>No location, contacts, photos, or microphone access.</li>
   <li>No internet use beyond talking to the equipment you point it at.</li>
 </ul>
@@ -3251,7 +3328,10 @@ PC_PRIVACY = """<!doctype html>
   <p>Easy Modbus PC has no account, no analytics, and no advertising. The app
   sends nothing to the developer or to any server. Everything it does happens on
   your own computer and on the local network you connect it to. A license, if you
-  buy one, is checked on your own machine without contacting anyone.</p>
+  buy one, is checked on your own machine without contacting anyone. (This
+  <em>website</em>, easymodbus.com, uses Google Analytics only after you accept
+  the cookie banner &mdash; that is separate from the desktop app, which contains
+  no analytics.)</p>
 </div>
 
 <h2>What the app stores, and where</h2>
