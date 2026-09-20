@@ -22,6 +22,7 @@ between pages is relative.
 import html as html_module
 import io
 import os
+import re
 
 BASE_URL = "https://easymodbus.com"
 
@@ -300,6 +301,34 @@ def summarise(description, target=90, cap=180):
     return out or description
 
 
+def _to_clean_url(u):
+    # Cloudflare Pages serves extensionless clean URLs and 301-redirects any
+    # ".html" to them. So every internal URL we emit — links, canonical, og:url,
+    # breadcrumb items, sitemap <loc> — must be the extensionless form, or it
+    # points at a redirect (Google Search Central: link consistently to the
+    # canonical URL and keep sitemaps/canonicals in agreement). Same-site and
+    # relative URLs only; external hosts (e.g. easybacnet.com) are left alone.
+    if u.startswith(("http://", "https://")) and "easymodbus.com" not in u:
+        return u
+    if u.startswith(("mailto:", "tel:", "#", "javascript:", "data:")):
+        return u
+    u = re.sub(r'index\.html(?=$|[#?])', "", u)   # ".../index.html" -> ".../"
+    u = re.sub(r'\.html(?=$|[#?])', "", u)          # ".../page.html"  -> ".../page"
+    return u or "/"                                  # bare "index.html" -> "/"
+
+
+def _clean_internal_urls(text):
+    text = re.sub(r'href="([^"]*)"',
+                  lambda m: 'href="%s"' % _to_clean_url(m.group(1)), text)
+    text = re.sub(r'(<meta property="og:url" content=")([^"]*)(")',
+                  lambda m: m.group(1) + _to_clean_url(m.group(2)) + m.group(3), text)
+    text = re.sub(r'("item":\s*")([^"]*)(")',
+                  lambda m: m.group(1) + _to_clean_url(m.group(2)) + m.group(3), text)
+    text = re.sub(r'(<loc>)([^<]*)(</loc>)',
+                  lambda m: m.group(1) + _to_clean_url(m.group(2)) + m.group(3), text)
+    return text
+
+
 def write(relpath, content):
     # Inject the analytics + consent banner into every HTML page, right after
     # the charset meta so it never pushes charset past the first 1 KB.
@@ -309,6 +338,7 @@ def write(relpath, content):
             content = content.replace(marker, marker + ANALYTICS, 1)
         else:
             content = content.replace("<head>", "<head>" + ANALYTICS, 1)
+    content = _clean_internal_urls(content)
     full = os.path.join(HERE, relpath)
     directory = os.path.dirname(full)
     if directory:
@@ -1960,7 +1990,7 @@ GUIDES.append(dict(
     slug="guides/modbus-exception-codes",
     title="Modbus exception codes explained | Easy Modbus",
     question="What do Modbus exception codes mean?",
-    description="Modbus exception codes 01, 02, 03, 04, 06, 0A and 0B in plain English — what each one means, what caused it, and the fix. Exception 02 is almost always addressing.",
+    description="Modbus exception codes 01, 02, 03, 04, 06, 0A and 0B in plain English: what each means, what caused it, and the fix. Exception 02 is almost always addressing.",
     answer_html="""<p>An exception reply is the device saying <em>no</em> &mdash; and
     that is good news, because it proves the device received your request, understood
     it, and is alive. The code tells you why it declined. The two you will meet most
@@ -2032,7 +2062,7 @@ GUIDES.append(dict(
     slug="guides/modbus-crc-error",
     title="Modbus CRC error: causes and fixes | Easy Modbus",
     question="What causes a Modbus CRC error, and how do I fix it?",
-    description="A Modbus CRC error means the message arrived corrupted. The real causes — noise, termination, baud mismatch, and RTU/TCP framing confusion — and how to fix each.",
+    description="A Modbus CRC error means the message arrived corrupted. The real causes: noise, termination, baud mismatch, and RTU/TCP framing confusion, and how to fix each.",
     answer_html="""<p>A CRC error means a Modbus RTU message arrived but its checksum
     did not match, so the receiver knows the bytes were corrupted in transit and
     throws them away. It is almost always a <strong>physical or serial-settings
@@ -2187,7 +2217,7 @@ GUIDES.append(dict(
     slug="guides/modbus-register-reads-zero",
     title="Modbus register reads 0? Why, and the fix | Easy Modbus",
     question="Why does my Modbus register read 0?",
-    description="A Modbus register that reads 0 is usually the wrong function code, an off-by-one address, or a value split across two registers — not a dead device. How to tell which.",
+    description="A Modbus register reading 0 is usually the wrong function code, an off-by-one address, or a value split across two registers, not a dead device.",
     answer_html="""<p>A register stuck at zero is rarely a broken sensor. Five things
     cause it, and only the last is the equipment's fault: you are reading the wrong
     <strong>table</strong> (an input register with the holding-register request, or
@@ -2260,7 +2290,7 @@ GUIDES.append(dict(
     slug="guides/modbus-connection-refused",
     title="Modbus connection refused (Errno 111) | Easy Modbus",
     question="What does Modbus connection refused (Errno 111) mean?",
-    description="Connection refused means something is at that IP but nothing is listening on the Modbus port. The four causes — wrong port, Modbus off, wrong host, connection limit — and fixes.",
+    description="Connection refused means something is at that IP but nothing listens on the Modbus port. The causes (wrong port, Modbus off, wrong host, limit) and fixes.",
     answer_html="""<p>&ldquo;Connection refused&rdquo; &mdash; often shown as
     <code>[Errno 111] Connection refused</code> &mdash; means your request reached a
     real host, but nothing was listening on the Modbus port you tried, so the host
@@ -2328,7 +2358,7 @@ GUIDES.append(dict(
     slug="guides/log-modbus-to-csv-on-phone",
     title="Log Modbus data to CSV on your phone | Easy Modbus",
     question="How do I log Modbus data to CSV, and trend a register over time?",
-    description="How to record Modbus register values to a CSV you can open in Excel — from a phone in the field, no laptop or SCADA — and what to capture to make the log useful.",
+    description="How to record Modbus register values to a CSV you can open in Excel, from a phone with no laptop or SCADA, and what to capture to make the log useful.",
     answer_html="""<p>You do not need a SCADA system or a laptop to trend a Modbus
     value. Read the registers you care about, name them once so the numbers mean
     something, and export the result as a CSV you can open in Excel or email to
@@ -2399,7 +2429,7 @@ GUIDES.append(dict(
     slug="guides/find-modbus-baud-rate-parity",
     title="Find an unknown Modbus baud rate & parity | Easy Modbus",
     question="How do I find an unknown Modbus device's baud rate and parity?",
-    description="No display, no paperwork, and a serial Modbus device that won't answer? How to find the baud rate, parity and unit ID by trying the handful of combinations that actually occur.",
+    description="No display, no paperwork, and a serial Modbus device that won't answer? How to find the baud rate, parity and unit ID by trying the few combinations that occur.",
     answer_html="""<p>You cannot ask a serial Modbus device what its settings are
     &mdash; there is no discovery, so you try the combinations that actually occur in
     the wild until one answers. That is fewer than it sounds: baud is almost always
@@ -2469,7 +2499,7 @@ GUIDES.append(dict(
     slug="guides/modbus-poll-10-minute-limit",
     title="Modbus Poll 10-minute limit? A free option | Easy Modbus",
     question="How do I get around the Modbus Poll 10-minute trial limit?",
-    description="Modbus Poll's trial disconnects after 10 minutes until you buy a licence. If you just need to read or write registers, Easy Modbus is free with no timer — here's the trade-off.",
+    description="Modbus Poll's trial disconnects after 10 minutes until you buy a licence. To just read or write registers, Easy Modbus is free with no timer.",
     answer_html="""<p>Modbus Poll's free download is a trial: it stops communicating
     after about ten minutes per session until you buy a licence. There is no trick to
     remove that &mdash; it is how the trial is meant to work, and buying the licence is
@@ -2524,7 +2554,7 @@ GUIDES.append(dict(
     slug="guides/read-eastron-sdm-modbus",
     title="Read an Eastron SDM power meter over Modbus | Easy Modbus",
     question="How do I read an Eastron SDM power meter over Modbus?",
-    description="Eastron SDM120, SDM220 and SDM630 meters report every value as a 32-bit float over Modbus. The settings, the function code, the word order, and how to read them from a phone.",
+    description="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them from a phone.",
     answer_html="""<p>Eastron's SDM range &mdash; the SDM120, SDM220, SDM630 and their
     relatives &mdash; is one of the most common Modbus devices in the field, and it is
     refreshingly consistent: <strong>every measurement is a 32-bit IEEE-754 float</strong>,
@@ -2710,7 +2740,7 @@ TOOLS.append(dict(
     slug="modbus-float-decoder",
     title="Modbus float & byte-order decoder (ABCD/CDAB) | Easy Modbus",
     question="Modbus float and byte-order decoder",
-    description="Paste two Modbus registers and see the 32-bit float and integer in all four word orders (ABCD, CDAB, BADC, DCBA) at once. Free, runs in your browser, nothing uploaded.",
+    description="Paste two Modbus registers and see the 32-bit float and integer in all four word orders (ABCD, CDAB, BADC, DCBA). Free, runs in your browser, nothing uploaded.",
     intro_html="""<p>A 32-bit value lives in two Modbus registers, and vendors put the
     two halves in one of four orders. Guess wrong and a perfectly good 12.75 reads as
     wild nonsense. Paste the two registers below and this decoder shows the float and
@@ -2804,7 +2834,7 @@ TOOLS.append(dict(
     slug="modbus-address-converter",
     title="Modbus address converter: 40001 to 0 | Easy Modbus",
     question="Modbus address converter",
-    description="Convert any Modbus address between Modicon (40001), prefixed (4x00001), 1-based and 0-based protocol forms. Shows the register table and function code. Free browser tool.",
+    description="Convert any Modbus address between Modicon (40001), prefixed (4x00001), 1-based and 0-based forms. Shows the register table and function code. Free tool.",
     intro_html="""<p>The same Modbus register is written four different ways, and the
     number that actually travels on the wire is the zero-based one &mdash; which is why
     values so often come out one slot off. Type an address in whatever form your manual
@@ -3706,11 +3736,11 @@ def main():
 
     # llms.txt: the same enumeration, for assistants that look for it.
     llm_links = "\n".join(
-        "- [%s](%s/%s.html): %s" % (g["question"], BASE_URL, g["slug"], g["description"])
+        "- [%s](%s/%s): %s" % (g["question"], BASE_URL, g["slug"], g["description"])
         for g in GUIDES
     )
     tool_llm_links = "\n".join(
-        "- [%s](%s/%s.html): %s" % (t["question"], BASE_URL, t["slug"], t["description"])
+        "- [%s](%s/%s): %s" % (t["question"], BASE_URL, t["slug"], t["description"])
         for t in TOOLS
     )
     write("llms.txt", LLMS % {"guides": llm_links, "tools": tool_llm_links})
