@@ -2913,6 +2913,7 @@ INDEX = """<!doctype html>
 <link rel="canonical" href="{{BASE}}/index.html">
 <meta name="robots" content="index, follow">
 <meta name="google-site-verification" content="HxMj_NPDl3R9Axg40Y-NMb3WkXU5nK-otX92OkhI3Z4">
+<meta name="google-site-verification" content="DD9YuFSwl6uUHegREypWoA1NwQhJyVpjQt7QftOVb4Q">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
