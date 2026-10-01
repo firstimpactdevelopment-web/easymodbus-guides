@@ -4011,7 +4011,7 @@ def main():
         PRIVACY % {
             "base": BASE_URL,
             "css": CSS,
-            "updated": "15 September 2026",
+            "updated": "30 September 2026",
             "contact": "Firstimpactdevelopment@gmail.com",
         },
     )
@@ -4048,6 +4048,10 @@ def main():
     write("sitemap.xml", "\n".join(sm) + "\n")
 
     write("robots.txt", "User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n" % BASE_URL)
+
+    # AdMob app-ads.txt (app publisher pub-6721099502169382). Must sit at the
+    # root of the developer-website domain entered on the Play store listing.
+    write("app-ads.txt", "google.com, pub-6721099502169382, DIRECT, f08c47fec0942fa0\n")
 
     # llms.txt: the same enumeration, for assistants that look for it.
     llm_links = "\n".join(
