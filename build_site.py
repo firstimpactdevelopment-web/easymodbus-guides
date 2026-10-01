@@ -27,8 +27,8 @@ import re
 BASE_URL = "https://easymodbus.com"
 
 # Freshness signal. Bump when guide content is meaningfully revised.
-UPDATED = "2026-09-18"              # ISO, for JSON-LD and sitemap <lastmod>
-UPDATED_HUMAN = "18 September 2026"  # for the visible "Updated" line
+UPDATED = "2026-09-30"              # ISO, for JSON-LD and sitemap <lastmod>
+UPDATED_HUMAN = "30 September 2026"  # for the visible "Updated" line
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -1461,13 +1461,13 @@ GUIDES.append(dict(
     question="How do I use Easy Modbus to read values from a Modbus device?",
     description="Step by step: find or add the device, test the connection, add your first reading with the Easy wizard, and export the register map with live values.",
     answer_html="""<p>Connect your phone to the same network as the equipment,
-    open Easy Modbus and either tap <strong>Find devices</strong> to sweep the
-    network or add the device by typing its IP address. Test the connection,
+    open Easy Modbus and either tap <strong>Find Devices</strong> to sweep the
+    network or tap <strong>Add by IP Address</strong>. Test the connection,
     then add a reading: in Easy mode the app asks what kind of value it is
     &mdash; a temperature, a kilowatt figure, an on/off &mdash; and picks the
     data type, scaling and units for you, reads it straight away, and warns you
     if the answer is not plausible. Name it and it is saved. Once you have the
-    readings you want, <strong>Export</strong> hands you a CSV with live
+    readings you want, <strong>Export Report</strong> hands you a CSV with live
     values.</p>""",
     body_html="""
   <h2>The thing to understand first</h2>
@@ -1485,15 +1485,16 @@ GUIDES.append(dict(
 
   <h2>Step 2 &mdash; Find or add the device</h2>
   <ul>
-    <li><strong>Find devices</strong> sweeps your local subnet for anything
+    <li><strong>Find Devices</strong> sweeps your local subnet for anything
     answering on port 502. The app tells you first that this is a port scan of
     someone's network, because it is; on a customer site, ask before you tap.
     A typical /24 takes a few seconds.</li>
-    <li><strong>Add by address</strong> when you already know the IP, or when the
+    <li><strong>Add by IP Address</strong> when you already know the IP, or when the
     equipment is on another subnet the sweep cannot reach. This is the normal
     route in practice.</li>
   </ul>
-  <p>The scan settings have a <strong>Thorough scan</strong> option. A normal
+  <p>In Pro mode the scan settings (port, framing, unit IDs) have a
+  <strong>Thorough scan</strong> option. A normal
   sweep speaks plain Modbus TCP. Some serial gateways open port 502 but only
   answer Modbus RTU over TCP, so a normal sweep never sees them; with Thorough
   scan on, any address that accepts the connection but stays silent to the first
@@ -1503,9 +1504,9 @@ GUIDES.append(dict(
   a gateway is out there but the sweep is not finding it.</p>
   <figure class="shot">
     <img src="../img/app-devices.png" alt="Easy Modbus device list showing saved Modbus devices with their addresses and unit IDs" loading="lazy">
-    <figcaption>Your saved devices. Tap <strong>Find devices</strong> to sweep the network, or the + button to add one by address.</figcaption>
+    <figcaption>Your saved devices. Tap <strong>Find Devices</strong> to sweep the network, or <strong>Add by IP Address</strong> to type one in.</figcaption>
   </figure>
-  <p>Then <strong>Test connection</strong>. The app tries plain Modbus TCP and
+  <p>Then open the device and choose &#8942; &rarr; <strong>Test connection</strong>. The app tries plain Modbus TCP and
   Modbus RTU-over-TCP and tells you which one answered. This matters because a
   serial gateway that needs RTU framing looks <em>exactly</em> like a device
   that is switched off. An error reply counts as success here &mdash; an
@@ -1517,7 +1518,7 @@ GUIDES.append(dict(
   answers. See <a href="modbus-unit-id-slave-id.html">Modbus unit IDs</a>.</p>
 
   <h2>Step 3 &mdash; Add a reading (Easy mode)</h2>
-  <p>Open the device and add a reading. Easy mode asks <strong>what kind of
+  <p>Open the device and tap <strong>Add a Reading</strong>. Easy mode asks <strong>what kind of
   reading is it?</strong> &mdash; temperature, humidity, pressure, power,
   energy, a count, an on/off status &mdash; and picks the data type, word
   order, multiplier and units that are usual for that quantity. You give it the
@@ -1541,8 +1542,9 @@ GUIDES.append(dict(
   </div>
 
   <h2>When you do not know what a register is</h2>
-  <p>Switch to <strong>Pro mode</strong> (in Settings) and open the
-  <strong>register browser</strong>. Read a block and the app shows each
+  <p>Switch to <strong>Pro mode</strong> (tap the <em>Easy mode &middot; tap to
+  switch</em> row on the main screen) and open the device's &#8942; &rarr;
+  <strong>Register browser</strong>. Read a block and the app shows each
   register in hex and decimal alongside its best guesses: "12.75 as a 32-bit
   float, words swapped", "a counter", "packed text", each with the reasoning.
   A wrong guess is visibly wrong. See
@@ -1560,14 +1562,17 @@ GUIDES.append(dict(
   </div>
 
   <h2>Step 4 &mdash; Read them all, and export</h2>
-  <p>The device's reading list refreshes every saved reading in one tap,
-  grouping neighbouring registers into as few requests as the equipment
-  allows. <strong>Export</strong> produces a CSV of the whole map with the live
-  values and hands it to your email app; you choose who gets it. If a vendor
-  gives you a CSV register map, <strong>Import</strong> reads it in rather than
-  making you type forty rows. See
-  <a href="vendor-asking-for-modbus-information.html">a vendor asked for my
-  Modbus information</a>.</p>
+  <p><strong>Read All</strong> on the device screen refreshes every saved reading
+  in one tap, grouping neighbouring registers into as few requests as the
+  equipment allows. <strong>Export Report</strong> on the main screen produces a
+  CSV of every device's map with live values and hands it to your email or file
+  app; you choose who gets it (the free version asks first whether you will watch
+  a short ad). One device's map goes out with &#8942; &rarr; <strong>Export this
+  map</strong>. If a vendor gives you a CSV register map, &#8942; &rarr;
+  <strong>Import map from CSV</strong> reads it in rather than making you type
+  forty rows. See <a href="how-to-export-modbus-data.html">collecting and
+  exporting Modbus data</a> and <a href="vendor-asking-for-modbus-information.html">a
+  vendor asked for my Modbus information</a>.</p>
   <figure class="shot">
     <img src="../img/app-readings.png" alt="Easy Modbus reading list showing several named readings with their live values and units" loading="lazy">
     <figcaption>The device's reading list &mdash; your register map &mdash; refreshed in one tap, ready to export.</figcaption>
@@ -1579,8 +1584,10 @@ GUIDES.append(dict(
     mode that is off by default &mdash; see
     <a href="how-to-write-to-a-modbus-register.html">how to write to a
     register</a>.</li>
-    <li><strong>Nothing leaves the phone</strong> except a CSV you export
-    yourself. No account, no server.</li>
+    <li><strong>Nothing you build leaves the phone</strong> except a file you
+    export yourself. No account, no server. (The free version's optional ads come
+    from Google AdMob &mdash; see the <a href="../privacy.html">privacy
+    policy</a>.)</li>
     <li><strong>Pro mode changes what you see, not what is sent.</strong> The
     same requests go on the wire either way; Pro just stops hiding the hex,
     function codes, per-device timeouts and the frame log.</li>
@@ -1589,7 +1596,7 @@ GUIDES.append(dict(
     related=[
         ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
         ("guides/how-to-build-a-modbus-remote", "How do I build a custom remote in Easy Modbus?"),
-        ("guides/what-is-a-modbus-register-map", "What is a Modbus register map?"),
+        ("guides/how-to-export-modbus-data", "How do I collect and export Modbus data with Easy Modbus?"),
         ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
     ],
 ))
@@ -1599,9 +1606,10 @@ GUIDES.append(dict(
     title="How to write to a Modbus register | Easy Modbus",
     question="How do I write to a Modbus register with Easy Modbus, and put it back afterwards?",
     description="How to safely write a value to a Modbus register, confirm it against a summary, and put the register back the way you found it.",
-    answer_html="""<p>Turn on <strong>Write mode</strong> from the menu and accept
-    the warning. Open the reading, choose to change its value, enter the new
-    one, and confirm against the summary. The app writes it, reads it back and
+    answer_html="""<p>Turn on <strong>Write mode</strong> from the main screen's
+    &#8942; menu and accept the warning. Open the reading, tap <strong>Change
+    Value</strong>, enter the new one, tap <strong>Review&hellip;</strong> and
+    confirm against the summary with <strong>Write it</strong>. The app writes it, reads it back and
     logs it. When you are done, use <strong>Put It Back</strong>: the app
     remembered what the register said the first time it saw it this session,
     and offers to write that value again. Modbus has no priority levels, no
@@ -1620,7 +1628,8 @@ GUIDES.append(dict(
 
   <h2>Step 1 &mdash; Turn on write mode</h2>
   <p>Write mode is off every time the app starts and is not remembered. Open the
-  menu, tap <strong>Write mode</strong>, read the warning and accept it. Until
+  main screen's &#8942; menu, tap <strong>Write mode</strong>, read the warning and
+  accept it (<em>I understand &mdash; turn it on</em>). Until
   then no screen in the app offers a write.</p>
   <figure class="shot">
     <img src="../img/app-write-warning.png" alt="Easy Modbus write-mode warning dialog explaining that writes have no undo, before enabling writing" loading="lazy">
@@ -1628,14 +1637,16 @@ GUIDES.append(dict(
   </figure>
 
   <h2>Step 2 &mdash; Set limits, if you can</h2>
-  <p>A reading can carry a minimum and maximum. Set them on anything you are
+  <p>A reading can carry a minimum and maximum (open the reading, &#8942; &rarr;
+  <em>Edit this reading</em> &rarr; <em>Lowest / Highest value allowed to
+  write</em>). Set them on anything you are
   going to write to &mdash; a setpoint that should live between 60 and 80, a
   speed reference that must stay under 100%. The app refuses a write outside
   those bounds before it gets anywhere near the wire. A typo becomes a message
   instead of a chiller trip.</p>
 
   <h2>Step 3 &mdash; Write</h2>
-  <p>Open the reading and choose to change its value. Enter the new value in the
+  <p>Open the reading and tap <strong>Change Value</strong>. Enter the new value in the
   same units the reading displays &mdash; the app applies the reading's
   multiplier and word order to produce the raw register contents, so you type
   <em>72.5</em>, not <em>725</em>. For an on/off coil you pick the state.</p>
@@ -1651,7 +1662,9 @@ GUIDES.append(dict(
 
   <h2>Step 4 &mdash; Put It Back</h2>
   <p>The first time the app reads a register in a session it remembers the
-  value. <strong>Put It Back</strong> offers to write that value again. Use it
+  value. Once the value has changed, the reading shows a <strong>Put It
+  Back</strong> button that offers to write that value again (a custom remote or
+  control panel can carry a <em>Put back</em> control for the same job). Use it
   before you leave on anything you changed for a test. It is not a true undo
   &mdash; if the equipment's own logic changed the register in between, "back"
   means back to what <em>you</em> found, not to what would be there had you
@@ -1685,71 +1698,321 @@ GUIDES.append(dict(
     slug="guides/how-to-build-a-modbus-remote",
     title="How to build a custom remote in Easy Modbus | Easy Modbus",
     question="How do I build a custom remote for a Modbus device in Easy Modbus?",
-    description="Build a drag-and-drop control screen for one Modbus device: readouts, setpoints, toggles and a restore button. The free one-remote limit explained.",
-    answer_html="""<p>Open a device, tap the menu and choose <strong>Custom
-    Remote</strong>, then <strong>Edit</strong> and <strong>Add Control</strong>.
-    Pick one of the device's saved readings, choose what kind of control it
-    should be &mdash; a readout, a setpoint with minus and plus, an on/off
-    toggle, a button, a multi-state picker, or a <em>Restore</em> button that
-    puts the register back to what it was &mdash; and it appears on a grid.
-    Drag to arrange, tap to rename or recolour, tap <strong>Done</strong>. The
-    remote is free and it stays.</p>""",
+    description="Step by step: build a drag-and-drop control screen for one Modbus device with readouts, setpoints, toggles, buttons and Put back, then use it live.",
+    answer_html="""<p>Open a device, tap the <strong>&#8942;</strong> menu and choose
+    <strong>Custom Remote</strong>. Tap <strong>Edit</strong>, then <strong>Add
+    Control</strong>, pick one of the device's saved readings (or enter an address by
+    hand), and choose the kind of control &mdash; Readout, Setpoint, Toggle, Button,
+    Multi-state or Put back. Drag tiles to arrange them, tap a tile to rename, resize
+    or recolour it, then tap <strong>Done</strong>. The remote reads live values;
+    controls that write work only while <strong>Write mode</strong> is on. The free
+    version keeps one remote; a one-time unlock gives unlimited remotes and removes
+    the optional ad shown when you open one.</p>""",
     body_html="""
-  <h2>Build the readings first</h2>
-  <p>A remote's controls are made from the device's <strong>saved
-  readings</strong> &mdash; the ones you named in Easy mode or the browser. If
-  the reading does not exist yet, add it first (see
-  <a href="how-to-use-easy-modbus.html">how to use Easy Modbus</a>). A control
-  keeps a copy of its reading's settings, so editing the reading later updates
-  the control, and deleting the reading does not break it.</p>
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>Add the device</strong> (Find Devices or Add by IP Address) and
+    check it answers &mdash; device &#8942; menu &rarr; <em>Test connection</em>.</li>
+    <li><strong>Save the readings you want on the remote.</strong> A control is
+    built from one of the device's saved readings, so it inherits the reading's data
+    type, word order, multiplier, units, named states and write limits. Add them first
+    with <strong>Add a Reading</strong> (see <a href="how-to-use-easy-modbus.html">how
+    to use Easy Modbus</a>), or use <em>Enter an address by hand</em> while building,
+    which runs the same add-a-reading wizard.</li>
+  </ul>
 
-  <h2>Adding and arranging</h2>
-  <p>Open the device, menu &rarr; <strong>Custom Remote</strong>, then
-  <strong>Edit</strong>, then <strong>Add Control</strong>. Choose the reading,
-  then the kind of control:</p>
+  <h2>Step 1 &mdash; Open the remote</h2>
+  <p>Tap the device in your list, open its <strong>&#8942;</strong> menu and choose
+  <strong>Custom Remote</strong>. A new remote opens empty: &ldquo;No controls yet.
+  Tap Edit, then Add Control.&rdquo; Tap <strong>Edit</strong> at the top right.
+  Nothing is sent to the device while you are in Edit mode.</p>
+
+  <h2>Step 2 &mdash; Add controls</h2>
+  <p>Tap <strong>Add Control</strong>, then either <em>Pick from this device&rsquo;s
+  readings</em> or <em>Enter an address by hand</em>. Choose the reading, then the
+  control type &mdash; each row shows a small picture of the control:</p>
   <table>
     <tr><th>Control</th><th>What it does</th><th>Use it for</th></tr>
-    <tr><td>Readout</td><td>Shows the live value. Never writes.</td><td>Leaving water temp, kW, status.</td></tr>
+    <tr><td>Readout</td><td>Shows the live value. Never writes.</td><td>Leaving water temp, kW, a status word.</td></tr>
     <tr><td>Setpoint</td><td>Minus, value, plus. Tap the value to type one.</td><td>A setpoint or speed reference.</td></tr>
-    <tr><td>Toggle</td><td>Tap to flip on/off.</td><td>A coil: run enable, remote start.</td></tr>
-    <tr><td>Button</td><td>Writes one fixed value when tapped.</td><td>A reset, a fixed mode.</td></tr>
+    <tr><td>Toggle</td><td>Tap to flip between the off and on values.</td><td>A coil: run enable, remote start.</td></tr>
+    <tr><td>Button</td><td>Writes one fixed value, after a confirmation.</td><td>A reset, a fixed mode.</td></tr>
     <tr><td>Multi-state</td><td>Tap to pick from named states.</td><td>Off/Hand/Auto, a mode register.</td></tr>
-    <tr><td>Restore</td><td>Writes back what the register held when you arrived.</td><td>Put one beside every control that writes.</td></tr>
+    <tr><td>Put back</td><td>Rewrites the value the register held the first time the app read it this session.</td><td>Put one beside every control that writes.</td></tr>
   </table>
-  <p>Controls snap to a four-column grid. <strong>Drag</strong> to move one (it
-  will not land on another); <strong>tap</strong> to rename it, widen it, change
-  its step size, states, colour or card style, or delete it. Nothing talks to
-  the device in Edit mode. Tap <strong>Done</strong> to go live.</p>
+  <p>Each new control drops into the first free space on the four-column grid.</p>
+
+  <h2>Step 3 &mdash; Arrange and configure</h2>
+  <ul>
+    <li><strong>Drag</strong> a tile to move it. It snaps to the grid and will not land
+    on another tile &mdash; a drop on an occupied spot snaps back.</li>
+    <li><strong>Tap</strong> a tile for its options: <em>Rename control</em>,
+    <em>Width</em> (setpoints and multi-state are at least two cells wide), <em>Step
+    size</em> (setpoints), <em>Value to send</em> (buttons), <em>State names</em>
+    (multi-state and toggles, one per line as <code>value=name</code>, e.g.
+    <code>0=Off</code>), <em>Value limits</em>, <em>Colour</em>, <em>Card style</em>,
+    <em>Toggle large value text</em> and <em>Delete control</em>.</li>
+    <li>Use <strong>Value limits</strong> to narrow what this remote may write &mdash; it
+    can be tighter than the reading's own limits, which still apply.</li>
+    <li>&#8942; menu &rarr; <strong>Rename remote</strong> gives it a name;
+    <strong>Delete remote</strong> removes it from the phone (nothing on the
+    equipment changes).</li>
+  </ul>
   <figure class="shot">
     <img src="../img/app-remote.png" alt="A custom remote in Easy Modbus: readout tiles, a setpoint with minus and plus, and an on/off toggle on a grid" loading="lazy">
     <figcaption>A finished remote &mdash; readouts, a setpoint and a toggle on a grid, sized for gloves.</figcaption>
   </figure>
   <div class="callout">
-  <p>Give the control that stops the pump a red card and leave the temperature
-  readouts plain. With gloves on, at arm's length, colour is what you see
-  first.</p>
+  <p>Give the control that stops the pump a red, bold card and leave the temperature
+  readouts plain. With gloves on, at arm's length, colour is what you see first.</p>
   </div>
 
-  <h2>Using it</h2>
-  <p>Live, the top line reports the connection honestly: <strong>Online</strong>
-  with the time of the last reply, or <strong>No response from device</strong>
-  &mdash; and when the device stops answering, the values grey out instead of
-  sitting there looking current. <strong>Refresh</strong> re-reads everything.
-  Controls that write need <strong>Write mode</strong> on, exactly like the rest
-  of the app; until then the remote is read-only and says so. See
-  <a href="how-to-write-to-a-modbus-register.html">how to write to a Modbus
-  register</a>, including why <em>Restore</em> matters.</p>
+  <h2>Step 4 &mdash; Use it</h2>
+  <p>Tap <strong>Done</strong>. The remote reads every control in as few Modbus
+  requests as the device allows. The status line says <strong>Answering</strong>
+  with the time of the last reply, <strong>Some readings not answering</strong>, or
+  <strong>No response from device</strong> &mdash; and values that did not come back
+  are dimmed instead of looking current. <strong>Refresh</strong> reads them all
+  again.</p>
+  <p>Controls that write need <strong>Write mode</strong> on (main screen &#8942;
+  menu &rarr; <em>Write mode</em>); until then the remote says it is read-only. A
+  toggle or setpoint will not write until a value has been read, so a timed-out read
+  can never switch something on by accident. Every write is read back and recorded
+  in the <em>Session write log</em>. See <a href="how-to-write-to-a-modbus-register.html">how
+  to write to a Modbus register</a>, including why <em>Put back</em> matters.</p>
 
-  <h2>Free, and kept</h2>
-  <p>Custom remotes in Easy Modbus are free and are not deleted. They are stored
-  on the phone only, under the device they belong to, and are not backed up to
-  the cloud &mdash; a saved remote names a customer's equipment and registers,
-  and that should not leave the phone by accident.</p>
+  <h2>Free version, unlock, and where remotes live</h2>
+  <ul>
+    <li>The free version keeps <strong>one</strong> custom remote. Opening it asks
+    whether you want to watch a short rewarded ad; if no ad is available (no signal,
+    for example) it just opens.</li>
+    <li>The one-time unlock (<em>Remove ads &amp; unlimited remotes</em>) removes the
+    ads and lets you build a remote for every device. Remotes never expire.</li>
+    <li>Remotes are stored on the phone only, under the device they belong to, and
+    are excluded from cloud backup. Deleting a device deletes its remote.</li>
+    <li>Need one screen for several devices? Use the
+    <a href="how-to-build-a-modbus-control-panel.html">Control Panel Builder</a>.</li>
+  </ul>
 """,
     related=[
+        ("guides/how-to-build-a-modbus-control-panel", "How do I build a control panel for several Modbus devices?"),
         ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
         ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
         ("guides/is-it-safe-to-write-to-modbus", "Is it safe to write to a Modbus register?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/how-to-build-a-modbus-control-panel",
+    title="Build a Modbus control panel for 32 devices | Easy Modbus",
+    question="How do I build a control panel for several Modbus devices in Easy Modbus?",
+    description="Step by step: the Control Panel Builder (beta) puts readouts and controls for up to 32 Modbus devices on one screen. Devices, controls, export and limits.",
+    answer_html="""<p>On the main screen tap <strong>Control Panel Builder &middot;
+    Beta</strong> (or &#8942; menu &rarr; <em>Control panels (beta)</em>), then
+    <strong>Create a Panel</strong>. Pick the first device and name the panel; it
+    opens in Edit mode. Add more devices from &#8942; &rarr; <strong>Devices&hellip;</strong>
+    &rarr; <em>Add a device</em> (up to 32 per panel), then <strong>Add Control</strong>,
+    choose which device each control is for, pick a reading and a control type, and
+    arrange the tiles. Tap <strong>Done</strong> to run it. The free version keeps one
+    panel on one device; the one-time unlock gives unlimited panels of up to 32 devices
+    each.</p>""",
+    body_html="""
+  <p><strong>Beta.</strong> The Control Panel Builder is new. It uses the same
+  controls and safety rules as <a href="how-to-build-a-modbus-remote.html">custom
+  remotes</a>, but test a panel on non-critical equipment before you rely on it.</p>
+
+  <h2>What a control panel is</h2>
+  <p>A custom remote is one screen for <em>one</em> device. A control panel is one
+  screen for a whole set of equipment &mdash; the four energy meters behind one
+  gateway, a row of VFDs, a boiler and its pumps. Each control on the panel carries
+  its own target device, so one tap reads all of them and every write goes to the
+  device that control belongs to. A device here is exactly what it is everywhere
+  else in Easy Modbus: a host (IP address or name), a port, a unit ID and a framing
+  (Modbus TCP, or RTU over TCP for a serial gateway). Two meters behind one gateway
+  are two devices with the same IP and different unit IDs.</p>
+
+  <h2>Before you start</h2>
+  <ul>
+    <li>Add each device to your device list (Find Devices, Add by IP Address, or
+    <em>Find unit IDs</em> on a gateway) and save the readings you want on the panel.
+    You can also add devices and readings while building.</li>
+    <li>Readings you save on a device are reused by the panel, with their data type,
+    word order, multiplier, units, named states and write limits.</li>
+  </ul>
+
+  <h2>Step 1 &mdash; Create the panel</h2>
+  <ol>
+    <li>Main screen &rarr; <strong>Control Panel Builder &middot; Beta</strong>.</li>
+    <li>Tap <strong>Create a Panel</strong> (or <strong>+</strong> in the top bar once
+    you have one).</li>
+    <li>Choose the device to start with &mdash; this becomes the panel's
+    <em>primary</em> device &mdash; and give the panel a name.</li>
+  </ol>
+  <p>The new panel opens in <strong>Edit</strong> mode. Nothing is sent to any device
+  while you edit.</p>
+
+  <h2>Step 2 &mdash; Add the other devices</h2>
+  <ol>
+    <li>&#8942; menu &rarr; <strong>Devices&hellip;</strong>. The title shows how many
+    of the 32 you are using.</li>
+    <li>Tap <strong>Add a device</strong> and pick one of your saved devices, or
+    <em>Enter a device by hand</em> (IP address or hostname, port, unit ID, framing,
+    optional name). A device entered by hand is also added to your device list, so you
+    can build readings for it.</li>
+    <li>To take a device off the panel, tap it in the list. Its controls move to the
+    primary device &mdash; the app tells you how many first. The primary itself stays.</li>
+  </ol>
+
+  <h2>Step 3 &mdash; Add controls</h2>
+  <ol>
+    <li>Tap <strong>Add Control</strong> and choose which device the control is for.</li>
+    <li>Choose <em>Pick from this device&rsquo;s readings</em> or <em>Enter an address by
+    hand</em>.</li>
+    <li>Pick the control type: Readout, Setpoint, Toggle, Button, Multi-state or Put
+    back (the same six as a remote &mdash; see the
+    <a href="how-to-build-a-modbus-remote.html">custom remote guide</a> for what each
+    does).</li>
+  </ol>
+  <p>Tap a tile for its options. Panels add <strong>Change device</strong>, which
+  points a control at another device on the panel while keeping its register and
+  scaling &mdash; the quick way to repeat &ldquo;kW&rdquo; for meter 2, 3 and 4. With
+  more than one device, the options title shows which device the control talks to,
+  so give controls clear names (&ldquo;M2 kW&rdquo;, not just &ldquo;kW&rdquo;).</p>
+
+  <h2>Step 4 &mdash; Lay it out</h2>
+  <ul>
+    <li>&#8942; &rarr; <strong>Grid width</strong> sets 2 to 6 columns (a wide panel
+    for a tablet, a narrow one for a phone in your pocket).</li>
+    <li>Drag tiles to arrange them; tap for Width, Colour, Card style and Large
+    value text.</li>
+    <li>&#8942; &rarr; <strong>Rename panel</strong> or <strong>Delete panel</strong>.</li>
+  </ul>
+
+  <h2>Step 5 &mdash; Run it</h2>
+  <p>Tap <strong>Done</strong>. The panel reads each device's controls in as few
+  requests as that device allows, one device after another, and skips a device for
+  the rest of the pass once it stops answering &mdash; so one dead meter does not hold
+  up the other thirty-one. The status line shows how many devices the panel drives,
+  or how many controls failed. Writing works exactly as it does everywhere else: turn
+  on <strong>Write mode</strong> from the main screen first, every write is read back
+  and logged, and a toggle will not write until a value has been read.</p>
+
+  <h2>Share or move a panel</h2>
+  <ul>
+    <li><strong>Export:</strong> on the Control Panels list, <em>long-press</em> a
+    panel and choose where to save it. It is saved as a <code>.empanel</code> file
+    (plain JSON: the layout, each device's host, port, unit ID and framing, and each
+    control's register and scaling).</li>
+    <li><strong>Import:</strong> &#8942; &rarr; <strong>Import panel</strong> and pick the
+    file. An import always becomes a new panel. Devices you do not have on this phone
+    are reached using the addresses saved in the file.</li>
+    <li>Panels are stored on the phone only and excluded from cloud backup; the
+    export file is the way to move one.</li>
+  </ul>
+  <div class="callout">
+  <p>A <code>.empanel</code> file contains IP addresses and unit IDs of a customer's
+  equipment. Treat it like the register map it is.</p>
+  </div>
+
+  <h2>Free version and unlock</h2>
+  <table>
+    <tr><th></th><th>Free</th><th>After the one-time unlock</th></tr>
+    <tr><td>Panels</td><td>1</td><td>Unlimited</td></tr>
+    <tr><td>Devices per panel</td><td>1 (the primary)</td><td>Up to 32</td></tr>
+    <tr><td>Ads</td><td>None when opening a panel</td><td>None anywhere</td></tr>
+  </table>
+  <p>Importing a multi-device panel on the free version keeps the primary device and
+  moves every control onto it.</p>
+""",
+    related=[
+        ("guides/how-to-build-a-modbus-remote", "How do I build a custom remote for a Modbus device in Easy Modbus?"),
+        ("guides/modbus-unit-id-slave-id", "What is a Modbus unit ID or slave ID?"),
+        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
+        ("guides/how-to-export-modbus-data", "How do I collect and export Modbus data with Easy Modbus?"),
+    ],
+))
+
+GUIDES.append(dict(
+    slug="guides/how-to-export-modbus-data",
+    title="Collect and export Modbus data to CSV | Easy Modbus",
+    question="How do I collect and export Modbus data with Easy Modbus?",
+    description="Step by step: read your saved Modbus registers, export a full CSV report or one device's register map, what each CSV column means, and how to move panels.",
+    answer_html="""<p>Save the readings you care about on each device, then on the
+    main screen tap <strong>Export Report</strong>. The app reads every saved reading
+    on every device, builds one CSV with names, addresses in three conventions, data
+    type, word order, scaling, units, the live value and any error, and hands it to
+    your email or file app. To send just one device's register map, open the device
+    and choose &#8942; &rarr; <strong>Export this map</strong>. The free version asks
+    whether you want to watch a short ad before an Export Report; the one-time unlock
+    removes it.</p>""",
+    body_html="""
+  <h2>Step 1 &mdash; Collect: save the readings</h2>
+  <p>An export contains the readings you have <em>saved</em> &mdash; Modbus will not
+  tell anyone what its registers are, so the map you build is the content. For each
+  device:</p>
+  <ol>
+    <li>Open the device and tap <strong>Add a Reading</strong>. In Easy mode choose
+    what kind of value it is; in Pro mode fill in the full editor. Give it a name
+    (&ldquo;AHU-1 supply air temp&rdquo;), the address as your manual writes it, and
+    check the test read looks right.</li>
+    <li>Have a vendor spreadsheet? &#8942; &rarr; <strong>Import map from CSV</strong>
+    and paste it instead of typing forty rows.</li>
+    <li>Tap <strong>Read All</strong> to read every saved reading in as few requests as
+    the device allows. Rows that fail show why when you tap them.</li>
+  </ol>
+
+  <h2>Step 2 &mdash; Export the report</h2>
+  <ol>
+    <li>Back on the main screen, tap <strong>Export Report</strong>.</li>
+    <li>Free version: you are asked <em>Watch a short ad?</em> &mdash; choose
+    <em>Watch ad</em>, <em>Remove ads</em> (the one-time unlock) or <em>Cancel</em>. With
+    no signal, no ad loads and the export simply goes ahead.</li>
+    <li>The app reads every device again, so the values are current, then opens the
+    share sheet with <code>EasyModbus_YYYYMMDD_HHMM.csv</code> attached. Pick email,
+    Drive, Teams or anything else; nothing is uploaded anywhere by the app.</li>
+  </ol>
+
+  <h2>What is in the CSV</h2>
+  <table>
+    <tr><th>Column</th><th>Meaning</th></tr>
+    <tr><td>Device Name, Host, Port, Unit ID, Transport</td><td>Which device the row came from (Transport is TCP or RTU_OVER_TCP).</td></tr>
+    <tr><td>Reading Name</td><td>The name you gave the reading.</td></tr>
+    <tr><td>Table</td><td>Coil, discrete input, input register or holding register.</td></tr>
+    <tr><td>Wire Address, Register Number, Modicon</td><td>The same address three ways: 0-based on the wire, 1-based, and 40001-style. See <a href="modbus-address-off-by-one.html">why addresses are off by one</a>.</td></tr>
+    <tr><td>Data Type, Word Order, Bit</td><td>How the raw registers are decoded.</td></tr>
+    <tr><td>Multiplier, Offset Value, Units</td><td>Scaling applied to get the value shown.</td></tr>
+    <tr><td>Value</td><td>The live value at export time.</td></tr>
+    <tr><td>Status</td><td>Blank when the read worked; otherwise the reason it failed.</td></tr>
+    <tr><td>Notes</td><td>Your notes from the manual.</td></tr>
+  </table>
+  <p>A device with no readings yet still gets a row, so nothing on site vanishes from
+  the report.</p>
+
+  <h2>Other ways to get data out</h2>
+  <ul>
+    <li><strong>One device&rsquo;s map:</strong> device &#8942; &rarr; <em>Export this
+    map</em> &mdash; the same columns, one device, no ad. It is also the way to move a
+    map to another phone (import it there with <em>Import map from CSV</em>), because
+    the app's data is deliberately not included in phone backups.</li>
+    <li><strong>A control panel:</strong> long-press it on the Control Panels screen
+    to save a <code>.empanel</code> file. See
+    <a href="how-to-build-a-modbus-control-panel.html">building a control panel</a>.</li>
+    <li><strong>A trend:</strong> export at intervals; each file name carries the date
+    and time, so a series lines up in Excel. See
+    <a href="log-modbus-to-csv-on-phone.html">log Modbus data to CSV</a>.</li>
+    <li><strong>What you changed:</strong> main screen &#8942; &rarr; <em>Session write
+    log</em> lists every write this session with the before and after values.</li>
+  </ul>
+  <div class="callout">
+  <p>A register map names a customer's equipment and the addresses that control it.
+  Send it to the people who need it, not to everyone.</p>
+  </div>
+""",
+    related=[
+        ("guides/log-modbus-to-csv-on-phone", "How do I log Modbus data to CSV, and trend a register over time?"),
+        ("guides/vendor-asking-for-modbus-information", "A vendor asked for my Modbus information — what do I send?"),
+        ("guides/what-is-a-modbus-register-map", "What is a Modbus register map?"),
+        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
     ],
 ))
 
@@ -2163,7 +2426,7 @@ GUIDES.append(dict(
     <tr><th></th><th>Modbus Poll</th><th>Easy Modbus</th></tr>
     <tr><td>Made by</td><td>Witte Software</td><td>First Impact Development</td></tr>
     <tr><td>Platform</td><td>Windows desktop</td><td>Android, plus a Windows version</td></tr>
-    <tr><td>Price</td><td>Paid licence; Modbus Slave is a separate purchase</td><td>Free; optional one-time purchase removes ads and unlocks unlimited control panels</td></tr>
+    <tr><td>Price</td><td>Paid licence; Modbus Slave is a separate purchase</td><td>Free; optional rewarded ads on export and on opening a saved remote; a one-time purchase removes ads and unlocks unlimited custom remotes and control panels</td></tr>
     <tr><td>Transports</td><td>TCP, RTU, ASCII, RTU-over-TCP</td><td>Modbus TCP and RTU-over-TCP</td></tr>
     <tr><td>Direct serial (USB&ndash;RS485)</td><td>Yes, with a COM port</td><td>No &mdash; reaches serial through a gateway</td></tr>
     <tr><td>Reading</td><td>Fast, mature, many concurrent windows</td><td>Block reads, live values, hex and decimal</td></tr>
@@ -2395,8 +2658,10 @@ GUIDES.append(dict(
   <h2>Capturing a trend</h2>
   <p>For a snapshot, read the device and export &mdash; the CSV holds each named
   register with its value, type and units. For a trend, re-read on an interval and
-  export the set; each export is timestamped, so a sequence of them lines up into a
-  time series in Excel. Keep the interval sane: on a serial chain each read costs real
+  export the set; each export file is named with its date and time
+  (<code>EasyModbus_YYYYMMDD_HHMM.csv</code>), so a sequence of them lines up into a
+  time series in Excel. Step by step: <a href="how-to-export-modbus-data.html">collect
+  and export Modbus data</a>. Keep the interval sane: on a serial chain each read costs real
   wire time, and hammering a device that the building controls also rely on is a way
   to make enemies. See <a href="modbus-reading-slow-or-unreliable.html">why is my
   Modbus reading slow or unreliable?</a></p>
@@ -2525,7 +2790,7 @@ GUIDES.append(dict(
   <table>
     <tr><th></th><th>Modbus Poll (trial)</th><th>Easy Modbus</th></tr>
     <tr><td>Time limit</td><td>~10 minutes per session until licensed</td><td>None &mdash; free, no timer</td></tr>
-    <tr><td>Cost to use fully</td><td>Paid licence (Slave sold separately)</td><td>Free; optional one-time purchase only for unlimited saved control panels</td></tr>
+    <tr><td>Cost to use fully</td><td>Paid licence (Slave sold separately)</td><td>Free; a one-time purchase removes the optional ads and unlocks unlimited custom remotes and control panels</td></tr>
     <tr><td>Platform</td><td>Windows desktop</td><td>Android phone/tablet, plus a Windows version</td></tr>
     <tr><td>Reads &amp; writes registers</td><td>Yes</td><td>Yes, with guard rails and a one-tap <em>Put it back</em></td></tr>
     <tr><td>Works out data type for you</td><td>You set it</td><td>Yes &mdash; ranks the plausible readings</td></tr>
@@ -3106,7 +3371,7 @@ footer a{color:var(--mut); text-decoration:underline}
     <div class="shotrow">
       <figure><img src="img/app-register-browser.png" alt="Pro-mode register browser listing raw registers in hex and decimal" loading="lazy"><figcaption>Browse and decode raw registers</figcaption></figure>
       <figure><img src="img/app-write-confirm.png" alt="Write confirmation summary showing device, register, current and new value" loading="lazy"><figcaption>Every write confirmed before it is sent</figcaption></figure>
-      <figure><img src="img/app-remote.png" alt="A custom remote with readout tiles, a setpoint and an on/off toggle" loading="lazy"><figcaption>Build your own control panel</figcaption></figure>
+      <figure><img src="img/app-remote.png" alt="A custom remote with readout tiles, a setpoint and an on/off toggle" loading="lazy"><figcaption>Build your own custom remote</figcaption></figure>
     </div>
   </div>
 </section>
@@ -3123,6 +3388,8 @@ footer a{color:var(--mut); text-decoration:underline}
       <li><a href="guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read values from a device?</a></li>
       <li><a href="guides/how-to-write-to-a-modbus-register.html">How do I write to a register, and put it back afterwards?</a></li>
       <li><a href="guides/how-to-build-a-modbus-remote.html">How do I build a custom remote for a device?</a></li>
+      <li><a href="guides/how-to-build-a-modbus-control-panel.html">How do I build a control panel for up to 32 devices? (beta)</a></li>
+      <li><a href="guides/how-to-export-modbus-data.html">How do I collect and export Modbus data?</a></li>
     </ul>
   </div>
 </section>
@@ -3182,19 +3449,19 @@ PRIVACY = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Privacy policy &mdash; Easy Modbus</title>
-<meta name="description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
+<meta name="description" content="Easy Modbus privacy policy: no account, no analytics in the app; optional AdMob rewarded ads with consent, Play Billing, all data kept on your phone.">
 <link rel="canonical" href="%(base)s/privacy.html">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Privacy policy &mdash; Easy Modbus">
-<meta property="og:description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
+<meta property="og:description" content="Easy Modbus privacy policy: no account, no analytics in the app; optional AdMob rewarded ads with consent, Play Billing, all data kept on your phone.">
 <meta property="og:url" content="%(base)s/privacy.html">
 <meta property="og:image" content="%(base)s/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Privacy policy &mdash; Easy Modbus">
-<meta name="twitter:description" content="Easy Modbus privacy policy. The app has no account and sends nothing to any server; the free version shows Google AdMob ads.">
+<meta name="twitter:description" content="Easy Modbus privacy policy: no account, no analytics in the app; optional AdMob rewarded ads with consent, Play Billing, all data kept on your phone.">
 <meta name="twitter:image" content="%(base)s/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3209,54 +3476,91 @@ PRIVACY = """<!doctype html>
 </header>
 
 <h1>Privacy policy</h1>
-<p class="muted">Last updated: %(updated)s</p>
+<p class="muted">Effective 30 September 2026 &middot; Last updated: %(updated)s</p>
 
 <div class="answer">
   <strong>Summary</strong>
-  <p>The Easy Modbus <em>app</em> has no account and no analytics, and it sends
-  nothing to any server. Everything it does happens on your phone and on the
-  local network you connect it to. The one exception is advertising: the free
-  version shows occasional rewarded video ads from Google AdMob, described
-  below, and the one-time purchase removes them. This <em>website</em>
+  <p>The Easy Modbus <em>app</em> has no account and no analytics, and the
+  developer runs no server: everything you build in the app stays on your phone
+  and goes only to the equipment on the network you connect it to. Two Google
+  services are involved, and only these two: <strong>Google AdMob</strong>, which
+  shows the free version's optional rewarded video ads (and may use your
+  device's advertising ID), and <strong>Google Play Billing</strong>, which
+  handles the one-time purchase that removes ads. This <em>website</em>
   (easymodbus.com) uses Google Analytics, but only after you accept the cookie
   banner &mdash; see <a href="#website-analytics">Website analytics</a>.</p>
 </div>
 
 <h2>What the app stores, and where</h2>
-<p>Easy Modbus saves the following on your phone, and nowhere else:</p>
+<p>Easy Modbus saves the following on your phone only, in the app's private
+storage:</p>
 <ul>
-  <li>The devices you add &mdash; address, port, unit ID and name.</li>
-  <li>The register maps you build &mdash; addresses, data types, scaling, units
-  and notes.</li>
-  <li>Any custom control screens you create.</li>
-  <li>Your choice of Easy or Pro mode.</li>
+  <li>The devices you add &mdash; host name or IP address, port, unit (slave)
+  ID, framing (Modbus TCP or RTU over TCP), timeouts, and the name you give
+  each one.</li>
+  <li>The register maps you build &mdash; addresses, data types, word order,
+  scaling, units, named states, write limits and notes.</li>
+  <li>Your <strong>custom remotes</strong> and <strong>control panels</strong>:
+  the controls you place and the registers they read and write. A control panel
+  also keeps the last-known address (host, port, unit ID) of every device it
+  drives, so it can still reach them if a device is later removed from your
+  list.</li>
+  <li>Your settings: Easy or Pro mode, language, the last port you used, and
+  whether you have accepted the Terms of Use.</li>
+  <li>Whether this install has the one-time unlock (cached so it keeps working
+  offline).</li>
 </ul>
-<p>This data is deliberately excluded from Android cloud backup and from
-device-to-device transfer, because a register map names a customer's equipment.
-That does mean it does not follow you to a new phone; the CSV export is the way to
-move a map.</p>
+<p>The app sets <code>allowBackup="false"</code> and excludes all of this from
+Android cloud backup and from device-to-device transfer, because a register map
+or panel names a customer's equipment and the addresses that command it. That
+means it does not follow you to a new phone; the exports below are the way to
+move it.</p>
 
-<h2>Advertising</h2>
-<p>The free version shows occasional rewarded video ads, supplied by Google
-AdMob, in exchange for exporting a report or opening a saved custom remote. To
-serve them, Google's advertising SDK may collect a device advertising
-identifier and standard ad-delivery information. How Google uses that data is
-described in <a href="https://policies.google.com/privacy">Google's Privacy
-Policy</a> and in <a href="https://policies.google.com/technologies/partner-sites">How
-Google uses information from sites or apps that use its services</a>. In the EEA,
-the UK and Switzerland you are asked for consent before any personalised ad, and
-may choose non-personalised ads instead. The one-time in-app purchase removes all
-advertising and also unlocks unlimited custom remotes. The developer receives
-only aggregate, anonymous earnings figures from AdMob &mdash; never your data.</p>
+<h2>Advertising (Google AdMob)</h2>
+<p>The free version offers short <strong>rewarded video ads</strong>, supplied by
+Google AdMob, before exporting a report and before opening a saved custom remote.
+The app always asks first &mdash; <em>Watch ad</em>, <em>Remove ads</em> or
+<em>Cancel</em> &mdash; and never starts an ad on its own. If no ad can be loaded
+(no signal, no consent, nothing to show) the action simply goes ahead.</p>
+<p>To serve ads, Google's Mobile Ads SDK may collect your device's
+<strong>advertising ID</strong> (the app declares the <code>AD_ID</code>
+permission for this), your IP address, and standard ad-delivery and diagnostic
+information. How Google uses that data is described in
+<a href="https://policies.google.com/privacy">Google's Privacy Policy</a> and in
+<a href="https://policies.google.com/technologies/partner-sites">How Google uses
+information from sites or apps that use its services</a>. The developer receives
+only aggregate earnings figures from AdMob &mdash; never your data. No ads are
+requested before you have accepted the Terms of Use, and none are shown after the
+one-time purchase.</p>
+
+<h2>Consent (EEA, UK and Switzerland)</h2>
+<p>Where the law requires it, the app uses Google's User Messaging Platform (UMP)
+to ask for your consent before any ad is requested; you may refuse personalised
+ads and still use everything. The consent form appears only after you accept the
+Terms of Use. You can change your answer at any time from
+<strong>Ad privacy choices</strong> in the app's menu (on the main screen and on
+the Control Panels screen), which appears wherever UMP says it is required.</p>
+
+<h2>Purchases (Google Play Billing)</h2>
+<p>The one-time in-app purchase (&ldquo;Remove ads &amp; unlimited remotes&rdquo;)
+is processed entirely by Google Play. The app asks Play whether this account
+owns the purchase so a reinstall gets it back, and records the answer on the
+phone. The developer never sees your payment details. Google's handling of
+purchase data is covered by Google Play's own terms and privacy policy.</p>
 
 <h2>What leaves the phone</h2>
-<p>Two things, both only when you ask for them:</p>
 <ul>
   <li><strong>Modbus requests</strong> to the equipment you point the app at, on
-  your local network.</li>
-  <li><strong>A CSV export</strong>, when you tap Export. The file is written to
-  the app's cache and handed to whichever app you choose to send it with. Easy
-  Modbus has no server and does not upload it anywhere.</li>
+  your local network (or over a VPN you set up). Finding devices sweeps your own
+  subnet for port 502 &mdash; the app explains this before every scan.</li>
+  <li><strong>Exports you ask for</strong>, handed to whichever app you choose
+  (email, Drive, and so on): the <em>Export Report</em> CSV of every device and
+  reading with live values; a single device's register map as CSV (<em>Export
+  this map</em>); and a control panel as a <code>.empanel</code> file (a JSON
+  layout including each device's address and unit ID), when you long-press a
+  panel. Easy Modbus has no server and uploads none of these anywhere.</li>
+  <li><strong>Google AdMob, UMP and Play Billing traffic</strong>, as described
+  above.</li>
 </ul>
 
 <h2 id="website-analytics">Website analytics</h2>
@@ -3274,33 +3578,42 @@ Policy</a>. This is separate from the app, which contains no analytics at all.</
 <ul>
   <li>No account, sign-in, or registration.</li>
   <li>No analytics, telemetry, or crash reporting inside the app itself. (The
-  website uses Google Analytics with consent — see Website analytics above.)</li>
-  <li>No location, contacts, photos, or microphone access.</li>
-  <li>No internet use beyond talking to the equipment you point it at.</li>
+  website uses Google Analytics with consent &mdash; see Website analytics above.)</li>
+  <li>No location, contacts, photos, camera, microphone or file-storage
+  permission. Imports and exports go through Android's own file picker and share
+  sheet.</li>
+  <li>No selling or sharing of your data by the developer.</li>
 </ul>
 
 <h2>Permissions</h2>
 <ul>
   <li><strong>Internet</strong> and <strong>network state</strong> &mdash; to open
-  TCP connections to Modbus equipment, and to find out which local network the
-  phone is on so it can be swept.</li>
+  TCP connections to Modbus equipment, to find out which local network the phone
+  is on so it can be swept, and to keep that traffic on Wi-Fi or Ethernet when the
+  network has no internet. Also used by the ad and billing services.</li>
   <li><strong>Wi-Fi state</strong> &mdash; to read the local address and subnet.</li>
+  <li><strong>Advertising ID</strong> (<code>AD_ID</code>, and the related Android
+  ad-services permissions added by the Google Mobile Ads SDK) &mdash; used only by
+  AdMob, as described above.</li>
+  <li><strong>Google Play billing</strong> &mdash; for the one-time purchase.</li>
 </ul>
 
 <h2>Your choices</h2>
 <ul>
-  <li>You can reset or delete your advertising identifier, or turn off ad
-  personalisation, in Android <em>Settings &rarr; Privacy &rarr; Ads</em>.</li>
-  <li>Where a consent prompt applies, you can change your answer at any time;
-  declining simply leaves you with non-personalised ads.</li>
+  <li>Decline any ad prompt with <em>Cancel</em>; nothing plays unless you choose
+  <em>Watch ad</em>.</li>
+  <li>Change your ad-consent answer any time from <strong>Ad privacy
+  choices</strong> in the app's menu (where that applies).</li>
+  <li>Reset or delete your advertising identifier, or turn off ad personalisation,
+  in Android <em>Settings &rarr; Privacy &rarr; Ads</em>.</li>
   <li>The one-time purchase removes advertising entirely.</li>
-  <li>To erase everything the app has stored, uninstall it &mdash; nothing is kept
-  anywhere else.</li>
+  <li>To erase everything the app has stored, uninstall it or clear its storage
+  &mdash; nothing is kept anywhere else.</li>
 </ul>
 
 <h2>Children</h2>
 <p>Easy Modbus is a tool for building and industrial equipment and is not directed
-at children. It collects no personal information from anyone.</p>
+at children. It does not knowingly collect personal information from anyone.</p>
 
 <h2>Changes to this policy</h2>
 <p>If this policy changes, the &ldquo;last updated&rdquo; date above changes with
@@ -3596,7 +3909,8 @@ are free to quote with attribution.
 
 ## About the app
 
-- Platform: Android 8.0 or later. Free with rewarded ads (AdMob) removable by one-time purchase; no account, no analytics.
+- Platform: Android 8.0 or later. Free; optional opt-in rewarded ads (AdMob) before an export or opening a saved remote, removable by a one-time purchase that also unlocks unlimited custom remotes and control panels; no account, no analytics.
+- Custom Remotes: drag-and-drop control screens for one device. Control Panel Builder (beta): one screen for up to 32 devices.
 - Protocols: Modbus TCP and Modbus RTU over TCP, function codes 1, 2, 3, 4, 5, 6,
   15, 16, and 43/14 device identification.
 - Finds equipment by sweeping the local subnet for open port 502, because Modbus

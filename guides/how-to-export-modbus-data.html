@@ -35,20 +35,20 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>Modbus address off by one? 40001 vs 0 | Easy Modbus</title>
-<meta name="description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
-<link rel="canonical" href="https://easymodbus.com/guides/modbus-address-off-by-one">
+<title>Collect and export Modbus data to CSV | Easy Modbus</title>
+<meta name="description" content="Step by step: read your saved Modbus registers, export a full CSV report or one device's register map, what each CSV column means, and how to move panels.">
+<link rel="canonical" href="https://easymodbus.com/guides/how-to-export-modbus-data">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Modbus address off by one? 40001 vs 0 | Easy Modbus">
-<meta property="og:description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
-<meta property="og:url" content="https://easymodbus.com/guides/modbus-address-off-by-one">
+<meta property="og:title" content="Collect and export Modbus data to CSV | Easy Modbus">
+<meta property="og:description" content="Step by step: read your saved Modbus registers, export a full CSV report or one device's register map, what each CSV column means, and how to move panels.">
+<meta property="og:url" content="https://easymodbus.com/guides/how-to-export-modbus-data">
 <meta property="og:image" content="https://easymodbus.com/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Modbus address off by one? 40001 vs 0 | Easy Modbus">
-<meta name="twitter:description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
+<meta name="twitter:title" content="Collect and export Modbus data to CSV | Easy Modbus">
+<meta name="twitter:description" content="Step by step: read your saved Modbus registers, export a full CSV report or one device's register map, what each CSV column means, and how to move panels.">
 <meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -127,15 +127,15 @@
       "dateModified": "2026-09-30",
       "mainEntity": [{
         "@type": "Question",
-        "name": "Why is my Modbus address off by one?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Because the same register is legitimately called four different things. 40001, 4x00001, “holding register 1” and “address 0” all refer to the identical slot in the identical device. The number that actually travels in the Modbus packet is the last one, counting from zero; most vendor documentation uses one of the first three, counting from one. If your value is one register out — you asked for the supply temperature and got the return temperature — this is almost always why." }
+        "name": "How do I collect and export Modbus data with Easy Modbus?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Save the readings you care about on each device, then on the main screen tap Export Report. The app reads every saved reading on every device, builds one CSV with names, addresses in three conventions, data type, word order, scaling, units, the live value and any error, and hands it to your email or file app. To send just one device's register map, open the device and choose ⋮ → Export this map. The free version asks whether you want to watch a short ad before an Export Report; the one-time unlock removes it." }
       }]
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/" },
-        { "@type": "ListItem", "position": 2, "name": "Why is my Modbus address off by one?", "item": "https://easymodbus.com/guides/modbus-address-off-by-one" }
+        { "@type": "ListItem", "position": 2, "name": "How do I collect and export Modbus data with Easy Modbus?", "item": "https://easymodbus.com/guides/how-to-export-modbus-data" }
       ]
     }
   ]
@@ -150,90 +150,92 @@
 </header>
 
 <article>
-  <h1>Why is my Modbus address off by one?</h1>
+  <h1>How do I collect and export Modbus data with Easy Modbus?</h1>
   <p class="updated">Updated 30 September 2026</p>
 
   <div class="answer">
     <strong>Short answer</strong>
-    <p>Because the same register is legitimately called four
-    different things. <code>40001</code>, <code>4x00001</code>, &ldquo;holding
-    register 1&rdquo; and &ldquo;address 0&rdquo; all refer to the identical slot
-    in the identical device. The number that actually travels in the Modbus packet
-    is the last one, counting from zero; most vendor documentation uses one of the
-    first three, counting from one. If your value is one register out &mdash;
-    you asked for the supply temperature and got the return temperature &mdash;
-    this is almost always why.</p>
+    <p>Save the readings you care about on each device, then on the
+    main screen tap <strong>Export Report</strong>. The app reads every saved reading
+    on every device, builds one CSV with names, addresses in three conventions, data
+    type, word order, scaling, units, the live value and any error, and hands it to
+    your email or file app. To send just one device's register map, open the device
+    and choose &#8942; &rarr; <strong>Export this map</strong>. The free version asks
+    whether you want to watch a short ad before an Export Report; the one-time unlock
+    removes it.</p>
   </div>
 
 
-  <h2>The four ways to write one address</h2>
+  <h2>Step 1 &mdash; Collect: save the readings</h2>
+  <p>An export contains the readings you have <em>saved</em> &mdash; Modbus will not
+  tell anyone what its registers are, so the map you build is the content. For each
+  device:</p>
+  <ol>
+    <li>Open the device and tap <strong>Add a Reading</strong>. In Easy mode choose
+    what kind of value it is; in Pro mode fill in the full editor. Give it a name
+    (&ldquo;AHU-1 supply air temp&rdquo;), the address as your manual writes it, and
+    check the test read looks right.</li>
+    <li>Have a vendor spreadsheet? &#8942; &rarr; <strong>Import map from CSV</strong>
+    and paste it instead of typing forty rows.</li>
+    <li>Tap <strong>Read All</strong> to read every saved reading in as few requests as
+    the device allows. Rows that fail show why when you tap them.</li>
+  </ol>
+
+  <h2>Step 2 &mdash; Export the report</h2>
+  <ol>
+    <li>Back on the main screen, tap <strong>Export Report</strong>.</li>
+    <li>Free version: you are asked <em>Watch a short ad?</em> &mdash; choose
+    <em>Watch ad</em>, <em>Remove ads</em> (the one-time unlock) or <em>Cancel</em>. With
+    no signal, no ad loads and the export simply goes ahead.</li>
+    <li>The app reads every device again, so the values are current, then opens the
+    share sheet with <code>EasyModbus_YYYYMMDD_HHMM.csv</code> attached. Pick email,
+    Drive, Teams or anything else; nothing is uploaded anywhere by the app.</li>
+  </ol>
+
+  <h2>What is in the CSV</h2>
   <table>
-    <tr><th>Written as</th><th>Called</th><th>Counts from</th><th>What goes on the wire</th></tr>
-    <tr><td><code>40001</code></td><td>Modicon five-digit</td><td>1</td><td>0</td></tr>
-    <tr><td><code>4x00001</code></td><td>Prefixed, explicit</td><td>1</td><td>0</td></tr>
-    <tr><td>&ldquo;Holding register 1&rdquo;</td><td>One-based register number</td><td>1</td><td>0</td></tr>
-    <tr><td>&ldquo;Address 0&rdquo;</td><td>Protocol address</td><td>0</td><td>0</td></tr>
+    <tr><th>Column</th><th>Meaning</th></tr>
+    <tr><td>Device Name, Host, Port, Unit ID, Transport</td><td>Which device the row came from (Transport is TCP or RTU_OVER_TCP).</td></tr>
+    <tr><td>Reading Name</td><td>The name you gave the reading.</td></tr>
+    <tr><td>Table</td><td>Coil, discrete input, input register or holding register.</td></tr>
+    <tr><td>Wire Address, Register Number, Modicon</td><td>The same address three ways: 0-based on the wire, 1-based, and 40001-style. See <a href="modbus-address-off-by-one">why addresses are off by one</a>.</td></tr>
+    <tr><td>Data Type, Word Order, Bit</td><td>How the raw registers are decoded.</td></tr>
+    <tr><td>Multiplier, Offset Value, Units</td><td>Scaling applied to get the value shown.</td></tr>
+    <tr><td>Value</td><td>The live value at export time.</td></tr>
+    <tr><td>Status</td><td>Blank when the read worked; otherwise the reason it failed.</td></tr>
+    <tr><td>Notes</td><td>Your notes from the manual.</td></tr>
   </table>
+  <p>A device with no readings yet still gets a row, so nothing on site vanishes from
+  the report.</p>
 
-  <p>The leading digit in the first two forms is not part of the number &mdash; it
-  says which of the four lists the value is in:</p>
-  <table>
-    <tr><th>Prefix</th><th>List</th><th>Example</th></tr>
-    <tr><td>0</td><td>Coils</td><td><code>00001</code> or <code>0x00001</code></td></tr>
-    <tr><td>1</td><td>Discrete inputs</td><td><code>10001</code> or <code>1x00001</code></td></tr>
-    <tr><td>3</td><td>Input registers</td><td><code>30001</code> or <code>3x00001</code></td></tr>
-    <tr><td>4</td><td>Holding registers</td><td><code>40001</code> or <code>4x00001</code></td></tr>
-  </table>
-
-  <div class="callout">
-  <p><strong>A trap for programmers.</strong> In Modbus documentation
-  <code>0x</code> means the coil table. It is not hexadecimal. Hexadecimal
-  addresses are vanishingly rare in device manuals, so <code>0x10</code> in a
-  Modbus table almost certainly means coil number 10, not the number 16.</p>
-  </div>
-
-  <h2>How to tell which convention a document uses</h2>
+  <h2>Other ways to get data out</h2>
   <ul>
-    <li><strong>Addresses in the 40001&ndash;49999 range</strong> &mdash; Modicon
-    five-digit, counting from one. Subtract 40001 to get the wire address.</li>
-    <li><strong>Addresses starting at 1</strong> with a separate &ldquo;register
-    type&rdquo; column &mdash; one-based. Subtract one.</li>
-    <li><strong>Addresses starting at 0</strong> &mdash; protocol addresses. Use
-    them as they are.</li>
-    <li><strong>A column headed &ldquo;offset&rdquo;</strong> &mdash; almost always
-    zero-based.</li>
-    <li><strong>Both a &ldquo;register&rdquo; and an &ldquo;address&rdquo; column,
-    differing by one</strong> &mdash; the document is being helpful. Use the one
-    your tool asks for.</li>
+    <li><strong>One device&rsquo;s map:</strong> device &#8942; &rarr; <em>Export this
+    map</em> &mdash; the same columns, one device, no ad. It is also the way to move a
+    map to another phone (import it there with <em>Import map from CSV</em>), because
+    the app's data is deliberately not included in phone backups.</li>
+    <li><strong>A control panel:</strong> long-press it on the Control Panels screen
+    to save a <code>.empanel</code> file. See
+    <a href="how-to-build-a-modbus-control-panel">building a control panel</a>.</li>
+    <li><strong>A trend:</strong> export at intervals; each file name carries the date
+    and time, so a series lines up in Excel. See
+    <a href="log-modbus-to-csv-on-phone">log Modbus data to CSV</a>.</li>
+    <li><strong>What you changed:</strong> main screen &#8942; &rarr; <em>Session write
+    log</em> lists every write this session with the before and after values.</li>
   </ul>
-
-  <h2>How to confirm it without guessing</h2>
-  <p>Read three registers in a row and compare all three against what the
-  equipment's own display shows. If the value you wanted appears one slot earlier
-  or later than the document says, you now know the convention and every other row
-  in that document falls into place at once.</p>
-
-  <p>Some equipment documents are simply wrong about this, including from large
-  manufacturers. Trusting the reading over the document is the right instinct.</p>
-
-  <h2>Why it ended up like this</h2>
-  <p>The five-digit notation comes from the original Modicon PLCs, where memory
-  references were written that way and counted from one. The protocol itself always
-  counted from zero. Forty-five years of documents later, both conventions are
-  still in active use, often in the same building, sometimes in the same PDF.</p>
-
-  <p><a href="../">Easy Modbus</a> sidesteps the problem: type the
-  address however your manual writes it &mdash; <code>40007</code>,
-  <code>4x00007</code> or <code>6</code> &mdash; and it tells you how it read it
-  and which register that actually is, before you save anything.</p>
+  <div class="callout">
+  <p>A register map names a customer's equipment and the addresses that control it.
+  Send it to the people who need it, not to everyone.</p>
+  </div>
 
 </article>
   <nav class="more">
     <h2>Related</h2>
     <ul>
-      <li><a href="../guides/modbus-value-wrong-scaling-byte-order">Why does my Modbus value look wrong?</a></li>
+      <li><a href="../guides/log-modbus-to-csv-on-phone">How do I log Modbus data to CSV, and trend a register over time?</a></li>
+      <li><a href="../guides/vendor-asking-for-modbus-information">A vendor asked for my Modbus information — what do I send?</a></li>
       <li><a href="../guides/what-is-a-modbus-register-map">What is a Modbus register map?</a></li>
-      <li><a href="../guides/modbus-function-codes-explained">Modbus function codes in plain English</a></li>
+      <li><a href="../guides/how-to-use-easy-modbus">How do I use Easy Modbus to read a device?</a></li>
     </ul>
   </nav>
 

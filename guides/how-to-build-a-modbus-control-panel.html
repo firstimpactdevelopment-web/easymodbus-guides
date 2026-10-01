@@ -35,20 +35,20 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>Modbus address off by one? 40001 vs 0 | Easy Modbus</title>
-<meta name="description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
-<link rel="canonical" href="https://easymodbus.com/guides/modbus-address-off-by-one">
+<title>Build a Modbus control panel for 32 devices | Easy Modbus</title>
+<meta name="description" content="Step by step: the Control Panel Builder (beta) puts readouts and controls for up to 32 Modbus devices on one screen. Devices, controls, export and limits.">
+<link rel="canonical" href="https://easymodbus.com/guides/how-to-build-a-modbus-control-panel">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Modbus address off by one? 40001 vs 0 | Easy Modbus">
-<meta property="og:description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
-<meta property="og:url" content="https://easymodbus.com/guides/modbus-address-off-by-one">
+<meta property="og:title" content="Build a Modbus control panel for 32 devices | Easy Modbus">
+<meta property="og:description" content="Step by step: the Control Panel Builder (beta) puts readouts and controls for up to 32 Modbus devices on one screen. Devices, controls, export and limits.">
+<meta property="og:url" content="https://easymodbus.com/guides/how-to-build-a-modbus-control-panel">
 <meta property="og:image" content="https://easymodbus.com/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Modbus address off by one? 40001 vs 0 | Easy Modbus">
-<meta name="twitter:description" content="40001, 4x00001, register 1 and address 0 are all the same Modbus register. Here is why the conventions conflict, and how to tell which one your document uses.">
+<meta name="twitter:title" content="Build a Modbus control panel for 32 devices | Easy Modbus">
+<meta name="twitter:description" content="Step by step: the Control Panel Builder (beta) puts readouts and controls for up to 32 Modbus devices on one screen. Devices, controls, export and limits.">
 <meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -127,15 +127,15 @@
       "dateModified": "2026-09-30",
       "mainEntity": [{
         "@type": "Question",
-        "name": "Why is my Modbus address off by one?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Because the same register is legitimately called four different things. 40001, 4x00001, “holding register 1” and “address 0” all refer to the identical slot in the identical device. The number that actually travels in the Modbus packet is the last one, counting from zero; most vendor documentation uses one of the first three, counting from one. If your value is one register out — you asked for the supply temperature and got the return temperature — this is almost always why." }
+        "name": "How do I build a control panel for several Modbus devices in Easy Modbus?",
+        "acceptedAnswer": { "@type": "Answer", "text": "On the main screen tap Control Panel Builder · Beta (or ⋮ menu → Control panels (beta)), then Create a Panel. Pick the first device and name the panel; it opens in Edit mode. Add more devices from ⋮ → Devices… → Add a device (up to 32 per panel), then Add Control, choose which device each control is for, pick a reading and a control type, and arrange the tiles. Tap Done to run it. The free version keeps one panel on one device; the one-time unlock gives unlimited panels of up to 32 devices each." }
       }]
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/" },
-        { "@type": "ListItem", "position": 2, "name": "Why is my Modbus address off by one?", "item": "https://easymodbus.com/guides/modbus-address-off-by-one" }
+        { "@type": "ListItem", "position": 2, "name": "How do I build a control panel for several Modbus devices in Easy Modbus?", "item": "https://easymodbus.com/guides/how-to-build-a-modbus-control-panel" }
       ]
     }
   ]
@@ -150,90 +150,138 @@
 </header>
 
 <article>
-  <h1>Why is my Modbus address off by one?</h1>
+  <h1>How do I build a control panel for several Modbus devices in Easy Modbus?</h1>
   <p class="updated">Updated 30 September 2026</p>
 
   <div class="answer">
     <strong>Short answer</strong>
-    <p>Because the same register is legitimately called four
-    different things. <code>40001</code>, <code>4x00001</code>, &ldquo;holding
-    register 1&rdquo; and &ldquo;address 0&rdquo; all refer to the identical slot
-    in the identical device. The number that actually travels in the Modbus packet
-    is the last one, counting from zero; most vendor documentation uses one of the
-    first three, counting from one. If your value is one register out &mdash;
-    you asked for the supply temperature and got the return temperature &mdash;
-    this is almost always why.</p>
+    <p>On the main screen tap <strong>Control Panel Builder &middot;
+    Beta</strong> (or &#8942; menu &rarr; <em>Control panels (beta)</em>), then
+    <strong>Create a Panel</strong>. Pick the first device and name the panel; it
+    opens in Edit mode. Add more devices from &#8942; &rarr; <strong>Devices&hellip;</strong>
+    &rarr; <em>Add a device</em> (up to 32 per panel), then <strong>Add Control</strong>,
+    choose which device each control is for, pick a reading and a control type, and
+    arrange the tiles. Tap <strong>Done</strong> to run it. The free version keeps one
+    panel on one device; the one-time unlock gives unlimited panels of up to 32 devices
+    each.</p>
   </div>
 
 
-  <h2>The four ways to write one address</h2>
-  <table>
-    <tr><th>Written as</th><th>Called</th><th>Counts from</th><th>What goes on the wire</th></tr>
-    <tr><td><code>40001</code></td><td>Modicon five-digit</td><td>1</td><td>0</td></tr>
-    <tr><td><code>4x00001</code></td><td>Prefixed, explicit</td><td>1</td><td>0</td></tr>
-    <tr><td>&ldquo;Holding register 1&rdquo;</td><td>One-based register number</td><td>1</td><td>0</td></tr>
-    <tr><td>&ldquo;Address 0&rdquo;</td><td>Protocol address</td><td>0</td><td>0</td></tr>
-  </table>
+  <p><strong>Beta.</strong> The Control Panel Builder is new. It uses the same
+  controls and safety rules as <a href="how-to-build-a-modbus-remote">custom
+  remotes</a>, but test a panel on non-critical equipment before you rely on it.</p>
 
-  <p>The leading digit in the first two forms is not part of the number &mdash; it
-  says which of the four lists the value is in:</p>
-  <table>
-    <tr><th>Prefix</th><th>List</th><th>Example</th></tr>
-    <tr><td>0</td><td>Coils</td><td><code>00001</code> or <code>0x00001</code></td></tr>
-    <tr><td>1</td><td>Discrete inputs</td><td><code>10001</code> or <code>1x00001</code></td></tr>
-    <tr><td>3</td><td>Input registers</td><td><code>30001</code> or <code>3x00001</code></td></tr>
-    <tr><td>4</td><td>Holding registers</td><td><code>40001</code> or <code>4x00001</code></td></tr>
-  </table>
+  <h2>What a control panel is</h2>
+  <p>A custom remote is one screen for <em>one</em> device. A control panel is one
+  screen for a whole set of equipment &mdash; the four energy meters behind one
+  gateway, a row of VFDs, a boiler and its pumps. Each control on the panel carries
+  its own target device, so one tap reads all of them and every write goes to the
+  device that control belongs to. A device here is exactly what it is everywhere
+  else in Easy Modbus: a host (IP address or name), a port, a unit ID and a framing
+  (Modbus TCP, or RTU over TCP for a serial gateway). Two meters behind one gateway
+  are two devices with the same IP and different unit IDs.</p>
 
-  <div class="callout">
-  <p><strong>A trap for programmers.</strong> In Modbus documentation
-  <code>0x</code> means the coil table. It is not hexadecimal. Hexadecimal
-  addresses are vanishingly rare in device manuals, so <code>0x10</code> in a
-  Modbus table almost certainly means coil number 10, not the number 16.</p>
-  </div>
-
-  <h2>How to tell which convention a document uses</h2>
+  <h2>Before you start</h2>
   <ul>
-    <li><strong>Addresses in the 40001&ndash;49999 range</strong> &mdash; Modicon
-    five-digit, counting from one. Subtract 40001 to get the wire address.</li>
-    <li><strong>Addresses starting at 1</strong> with a separate &ldquo;register
-    type&rdquo; column &mdash; one-based. Subtract one.</li>
-    <li><strong>Addresses starting at 0</strong> &mdash; protocol addresses. Use
-    them as they are.</li>
-    <li><strong>A column headed &ldquo;offset&rdquo;</strong> &mdash; almost always
-    zero-based.</li>
-    <li><strong>Both a &ldquo;register&rdquo; and an &ldquo;address&rdquo; column,
-    differing by one</strong> &mdash; the document is being helpful. Use the one
-    your tool asks for.</li>
+    <li>Add each device to your device list (Find Devices, Add by IP Address, or
+    <em>Find unit IDs</em> on a gateway) and save the readings you want on the panel.
+    You can also add devices and readings while building.</li>
+    <li>Readings you save on a device are reused by the panel, with their data type,
+    word order, multiplier, units, named states and write limits.</li>
   </ul>
 
-  <h2>How to confirm it without guessing</h2>
-  <p>Read three registers in a row and compare all three against what the
-  equipment's own display shows. If the value you wanted appears one slot earlier
-  or later than the document says, you now know the convention and every other row
-  in that document falls into place at once.</p>
+  <h2>Step 1 &mdash; Create the panel</h2>
+  <ol>
+    <li>Main screen &rarr; <strong>Control Panel Builder &middot; Beta</strong>.</li>
+    <li>Tap <strong>Create a Panel</strong> (or <strong>+</strong> in the top bar once
+    you have one).</li>
+    <li>Choose the device to start with &mdash; this becomes the panel's
+    <em>primary</em> device &mdash; and give the panel a name.</li>
+  </ol>
+  <p>The new panel opens in <strong>Edit</strong> mode. Nothing is sent to any device
+  while you edit.</p>
 
-  <p>Some equipment documents are simply wrong about this, including from large
-  manufacturers. Trusting the reading over the document is the right instinct.</p>
+  <h2>Step 2 &mdash; Add the other devices</h2>
+  <ol>
+    <li>&#8942; menu &rarr; <strong>Devices&hellip;</strong>. The title shows how many
+    of the 32 you are using.</li>
+    <li>Tap <strong>Add a device</strong> and pick one of your saved devices, or
+    <em>Enter a device by hand</em> (IP address or hostname, port, unit ID, framing,
+    optional name). A device entered by hand is also added to your device list, so you
+    can build readings for it.</li>
+    <li>To take a device off the panel, tap it in the list. Its controls move to the
+    primary device &mdash; the app tells you how many first. The primary itself stays.</li>
+  </ol>
 
-  <h2>Why it ended up like this</h2>
-  <p>The five-digit notation comes from the original Modicon PLCs, where memory
-  references were written that way and counted from one. The protocol itself always
-  counted from zero. Forty-five years of documents later, both conventions are
-  still in active use, often in the same building, sometimes in the same PDF.</p>
+  <h2>Step 3 &mdash; Add controls</h2>
+  <ol>
+    <li>Tap <strong>Add Control</strong> and choose which device the control is for.</li>
+    <li>Choose <em>Pick from this device&rsquo;s readings</em> or <em>Enter an address by
+    hand</em>.</li>
+    <li>Pick the control type: Readout, Setpoint, Toggle, Button, Multi-state or Put
+    back (the same six as a remote &mdash; see the
+    <a href="how-to-build-a-modbus-remote">custom remote guide</a> for what each
+    does).</li>
+  </ol>
+  <p>Tap a tile for its options. Panels add <strong>Change device</strong>, which
+  points a control at another device on the panel while keeping its register and
+  scaling &mdash; the quick way to repeat &ldquo;kW&rdquo; for meter 2, 3 and 4. With
+  more than one device, the options title shows which device the control talks to,
+  so give controls clear names (&ldquo;M2 kW&rdquo;, not just &ldquo;kW&rdquo;).</p>
 
-  <p><a href="../">Easy Modbus</a> sidesteps the problem: type the
-  address however your manual writes it &mdash; <code>40007</code>,
-  <code>4x00007</code> or <code>6</code> &mdash; and it tells you how it read it
-  and which register that actually is, before you save anything.</p>
+  <h2>Step 4 &mdash; Lay it out</h2>
+  <ul>
+    <li>&#8942; &rarr; <strong>Grid width</strong> sets 2 to 6 columns (a wide panel
+    for a tablet, a narrow one for a phone in your pocket).</li>
+    <li>Drag tiles to arrange them; tap for Width, Colour, Card style and Large
+    value text.</li>
+    <li>&#8942; &rarr; <strong>Rename panel</strong> or <strong>Delete panel</strong>.</li>
+  </ul>
+
+  <h2>Step 5 &mdash; Run it</h2>
+  <p>Tap <strong>Done</strong>. The panel reads each device's controls in as few
+  requests as that device allows, one device after another, and skips a device for
+  the rest of the pass once it stops answering &mdash; so one dead meter does not hold
+  up the other thirty-one. The status line shows how many devices the panel drives,
+  or how many controls failed. Writing works exactly as it does everywhere else: turn
+  on <strong>Write mode</strong> from the main screen first, every write is read back
+  and logged, and a toggle will not write until a value has been read.</p>
+
+  <h2>Share or move a panel</h2>
+  <ul>
+    <li><strong>Export:</strong> on the Control Panels list, <em>long-press</em> a
+    panel and choose where to save it. It is saved as a <code>.empanel</code> file
+    (plain JSON: the layout, each device's host, port, unit ID and framing, and each
+    control's register and scaling).</li>
+    <li><strong>Import:</strong> &#8942; &rarr; <strong>Import panel</strong> and pick the
+    file. An import always becomes a new panel. Devices you do not have on this phone
+    are reached using the addresses saved in the file.</li>
+    <li>Panels are stored on the phone only and excluded from cloud backup; the
+    export file is the way to move one.</li>
+  </ul>
+  <div class="callout">
+  <p>A <code>.empanel</code> file contains IP addresses and unit IDs of a customer's
+  equipment. Treat it like the register map it is.</p>
+  </div>
+
+  <h2>Free version and unlock</h2>
+  <table>
+    <tr><th></th><th>Free</th><th>After the one-time unlock</th></tr>
+    <tr><td>Panels</td><td>1</td><td>Unlimited</td></tr>
+    <tr><td>Devices per panel</td><td>1 (the primary)</td><td>Up to 32</td></tr>
+    <tr><td>Ads</td><td>None when opening a panel</td><td>None anywhere</td></tr>
+  </table>
+  <p>Importing a multi-device panel on the free version keeps the primary device and
+  moves every control onto it.</p>
 
 </article>
   <nav class="more">
     <h2>Related</h2>
     <ul>
-      <li><a href="../guides/modbus-value-wrong-scaling-byte-order">Why does my Modbus value look wrong?</a></li>
-      <li><a href="../guides/what-is-a-modbus-register-map">What is a Modbus register map?</a></li>
-      <li><a href="../guides/modbus-function-codes-explained">Modbus function codes in plain English</a></li>
+      <li><a href="../guides/how-to-build-a-modbus-remote">How do I build a custom remote for a Modbus device in Easy Modbus?</a></li>
+      <li><a href="../guides/modbus-unit-id-slave-id">What is a Modbus unit ID or slave ID?</a></li>
+      <li><a href="../guides/how-to-write-to-a-modbus-register">How do I write to a Modbus register with Easy Modbus, and put it back?</a></li>
+      <li><a href="../guides/how-to-export-modbus-data">How do I collect and export Modbus data with Easy Modbus?</a></li>
     </ul>
   </nav>
 

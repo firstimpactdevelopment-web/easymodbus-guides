@@ -123,12 +123,12 @@
   "@graph": [
     {
       "@type": "FAQPage",
-      "datePublished": "2026-09-18",
-      "dateModified": "2026-09-18",
+      "datePublished": "2026-09-30",
+      "dateModified": "2026-09-30",
       "mainEntity": [{
         "@type": "Question",
         "name": "How do I use Easy Modbus to read values from a Modbus device?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Connect your phone to the same network as the equipment, open Easy Modbus and either tap Find devices to sweep the network or add the device by typing its IP address. Test the connection, then add a reading: in Easy mode the app asks what kind of value it is — a temperature, a kilowatt figure, an on/off — and picks the data type, scaling and units for you, reads it straight away, and warns you if the answer is not plausible. Name it and it is saved. Once you have the readings you want, Export hands you a CSV with live values." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Connect your phone to the same network as the equipment, open Easy Modbus and either tap Find Devices to sweep the network or tap Add by IP Address. Test the connection, then add a reading: in Easy mode the app asks what kind of value it is — a temperature, a kilowatt figure, an on/off — and picks the data type, scaling and units for you, reads it straight away, and warns you if the answer is not plausible. Name it and it is saved. Once you have the readings you want, Export Report hands you a CSV with live values." }
       }]
     },
     {
@@ -151,18 +151,18 @@
 
 <article>
   <h1>How do I use Easy Modbus to read values from a Modbus device?</h1>
-  <p class="updated">Updated 18 September 2026</p>
+  <p class="updated">Updated 30 September 2026</p>
 
   <div class="answer">
     <strong>Short answer</strong>
     <p>Connect your phone to the same network as the equipment,
-    open Easy Modbus and either tap <strong>Find devices</strong> to sweep the
-    network or add the device by typing its IP address. Test the connection,
+    open Easy Modbus and either tap <strong>Find Devices</strong> to sweep the
+    network or tap <strong>Add by IP Address</strong>. Test the connection,
     then add a reading: in Easy mode the app asks what kind of value it is
     &mdash; a temperature, a kilowatt figure, an on/off &mdash; and picks the
     data type, scaling and units for you, reads it straight away, and warns you
     if the answer is not plausible. Name it and it is saved. Once you have the
-    readings you want, <strong>Export</strong> hands you a CSV with live
+    readings you want, <strong>Export Report</strong> hands you a CSV with live
     values.</p>
   </div>
 
@@ -182,15 +182,16 @@
 
   <h2>Step 2 &mdash; Find or add the device</h2>
   <ul>
-    <li><strong>Find devices</strong> sweeps your local subnet for anything
+    <li><strong>Find Devices</strong> sweeps your local subnet for anything
     answering on port 502. The app tells you first that this is a port scan of
     someone's network, because it is; on a customer site, ask before you tap.
     A typical /24 takes a few seconds.</li>
-    <li><strong>Add by address</strong> when you already know the IP, or when the
+    <li><strong>Add by IP Address</strong> when you already know the IP, or when the
     equipment is on another subnet the sweep cannot reach. This is the normal
     route in practice.</li>
   </ul>
-  <p>The scan settings have a <strong>Thorough scan</strong> option. A normal
+  <p>In Pro mode the scan settings (port, framing, unit IDs) have a
+  <strong>Thorough scan</strong> option. A normal
   sweep speaks plain Modbus TCP. Some serial gateways open port 502 but only
   answer Modbus RTU over TCP, so a normal sweep never sees them; with Thorough
   scan on, any address that accepts the connection but stays silent to the first
@@ -200,9 +201,9 @@
   a gateway is out there but the sweep is not finding it.</p>
   <figure class="shot">
     <img src="../img/app-devices.png" alt="Easy Modbus device list showing saved Modbus devices with their addresses and unit IDs" loading="lazy">
-    <figcaption>Your saved devices. Tap <strong>Find devices</strong> to sweep the network, or the + button to add one by address.</figcaption>
+    <figcaption>Your saved devices. Tap <strong>Find Devices</strong> to sweep the network, or <strong>Add by IP Address</strong> to type one in.</figcaption>
   </figure>
-  <p>Then <strong>Test connection</strong>. The app tries plain Modbus TCP and
+  <p>Then open the device and choose &#8942; &rarr; <strong>Test connection</strong>. The app tries plain Modbus TCP and
   Modbus RTU-over-TCP and tells you which one answered. This matters because a
   serial gateway that needs RTU framing looks <em>exactly</em> like a device
   that is switched off. An error reply counts as success here &mdash; an
@@ -214,7 +215,7 @@
   answers. See <a href="modbus-unit-id-slave-id">Modbus unit IDs</a>.</p>
 
   <h2>Step 3 &mdash; Add a reading (Easy mode)</h2>
-  <p>Open the device and add a reading. Easy mode asks <strong>what kind of
+  <p>Open the device and tap <strong>Add a Reading</strong>. Easy mode asks <strong>what kind of
   reading is it?</strong> &mdash; temperature, humidity, pressure, power,
   energy, a count, an on/off status &mdash; and picks the data type, word
   order, multiplier and units that are usual for that quantity. You give it the
@@ -238,8 +239,9 @@
   </div>
 
   <h2>When you do not know what a register is</h2>
-  <p>Switch to <strong>Pro mode</strong> (in Settings) and open the
-  <strong>register browser</strong>. Read a block and the app shows each
+  <p>Switch to <strong>Pro mode</strong> (tap the <em>Easy mode &middot; tap to
+  switch</em> row on the main screen) and open the device's &#8942; &rarr;
+  <strong>Register browser</strong>. Read a block and the app shows each
   register in hex and decimal alongside its best guesses: "12.75 as a 32-bit
   float, words swapped", "a counter", "packed text", each with the reasoning.
   A wrong guess is visibly wrong. See
@@ -257,14 +259,17 @@
   </div>
 
   <h2>Step 4 &mdash; Read them all, and export</h2>
-  <p>The device's reading list refreshes every saved reading in one tap,
-  grouping neighbouring registers into as few requests as the equipment
-  allows. <strong>Export</strong> produces a CSV of the whole map with the live
-  values and hands it to your email app; you choose who gets it. If a vendor
-  gives you a CSV register map, <strong>Import</strong> reads it in rather than
-  making you type forty rows. See
-  <a href="vendor-asking-for-modbus-information">a vendor asked for my
-  Modbus information</a>.</p>
+  <p><strong>Read All</strong> on the device screen refreshes every saved reading
+  in one tap, grouping neighbouring registers into as few requests as the
+  equipment allows. <strong>Export Report</strong> on the main screen produces a
+  CSV of every device's map with live values and hands it to your email or file
+  app; you choose who gets it (the free version asks first whether you will watch
+  a short ad). One device's map goes out with &#8942; &rarr; <strong>Export this
+  map</strong>. If a vendor gives you a CSV register map, &#8942; &rarr;
+  <strong>Import map from CSV</strong> reads it in rather than making you type
+  forty rows. See <a href="how-to-export-modbus-data">collecting and
+  exporting Modbus data</a> and <a href="vendor-asking-for-modbus-information">a
+  vendor asked for my Modbus information</a>.</p>
   <figure class="shot">
     <img src="../img/app-readings.png" alt="Easy Modbus reading list showing several named readings with their live values and units" loading="lazy">
     <figcaption>The device's reading list &mdash; your register map &mdash; refreshed in one tap, ready to export.</figcaption>
@@ -276,8 +281,10 @@
     mode that is off by default &mdash; see
     <a href="how-to-write-to-a-modbus-register">how to write to a
     register</a>.</li>
-    <li><strong>Nothing leaves the phone</strong> except a CSV you export
-    yourself. No account, no server.</li>
+    <li><strong>Nothing you build leaves the phone</strong> except a file you
+    export yourself. No account, no server. (The free version's optional ads come
+    from Google AdMob &mdash; see the <a href="../privacy">privacy
+    policy</a>.)</li>
     <li><strong>Pro mode changes what you see, not what is sent.</strong> The
     same requests go on the wire either way; Pro just stops hiding the hex,
     function codes, per-device timeouts and the frame log.</li>
@@ -289,7 +296,7 @@
     <ul>
       <li><a href="../guides/how-to-write-to-a-modbus-register">How do I write to a Modbus register with Easy Modbus, and put it back?</a></li>
       <li><a href="../guides/how-to-build-a-modbus-remote">How do I build a custom remote in Easy Modbus?</a></li>
-      <li><a href="../guides/what-is-a-modbus-register-map">What is a Modbus register map?</a></li>
+      <li><a href="../guides/how-to-export-modbus-data">How do I collect and export Modbus data with Easy Modbus?</a></li>
       <li><a href="../guides/cannot-find-modbus-devices">Why can't I find my Modbus devices?</a></li>
     </ul>
   </nav>
