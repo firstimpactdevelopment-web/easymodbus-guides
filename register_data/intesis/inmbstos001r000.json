@@ -1,0 +1,720 @@
+{
+ "manufacturer": "Intesis (HMS Networks)",
+ "manufacturer_slug": "intesis",
+ "model": "INMBSTOS001R000 Toshiba AC to Modbus RTU gateway",
+ "model_slug": "inmbstos001r000",
+ "short_model": "INMBSTOS001R000 Toshiba",
+ "aliases": [
+  "INMBSTOS001R000",
+  "INMBSTOS001R0xx",
+  "Intesis Toshiba Modbus"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "Toshiba Digital Inverter (RAV) and VRF indoor units on the AB remote bus via INMBSTOS001R0xx, user manual r2.9 (01/2024).",
+ "summary": "Modbus RTU server on the AB remote-controller bus of Toshiba Digital Inverter (RAV) and VRF indoor units. Basic holding registers cover on/off, mode, fan, vane, setpoint, room temperature, alarm and error code; with a unit type chosen on SW1 it also exposes per-indoor-unit diagnostics such as room and suction temperatures, defrost and filter alarm.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 2,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Tables give a 'protocol address' (base 0) and a 'PLC address' (base 1); the protocol address is the wire address. Per-indoor-unit diagnostics are printed as a formula, (IU - 1) * 25 + 4000 + n; this file lists IU 1 only (4000-4021, without 4013-4015 and 4018-4019). For IU 2 add 25, and so on."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Intesis INMBSTOS001R0xx Modbus RTU (EIA-485) Interface for Toshiba air conditioners - User's Manual",
+  "doc_number": "User's Manual r2.9 EN",
+  "revision_date": "2024-01",
+  "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-inmbstos001r000.pdf",
+  "pages": "pp. 8-16 (registers), pp. 18-19 (DIP switches)"
+ },
+ "notes": [
+  "Every register is documented as a 16-bit unsigned holding register and no temperature range in the manual goes below zero, so temperatures are UINT16. The 'no value' marker the manual writes as -32768 is raw 0x8000 (32768) and is listed as an enum entry. Temperature registers depend on DIP SW4: x1 °C, x10 °C (decidegrees) or °F (no °F x10). The register-table footnote calls x10 the default, but the SW4 table and the quick-start page (all other switches off) give x1 °C as the factory setting, so scale 1 / °C is used. Read SW4 position 1-2 on site: if x10 is set use scale 0.1; if °F is set the values are whole °F.",
+  "Advanced diagnostic temperatures (4010-4012, 4016, 4021) are printed as 'x1 °C' and kept as UINT16 per the manual; the manual never says how a sub-zero value would be encoded.",
+  "Left out: indoor fan-coil temperatures TCJ, TC2 and TC1 (4013-4015). Coil temperatures can fall below 0 °C and the manual gives no signed encoding for these unsigned registers.",
+  "Left out because the printed scale is ambiguous: indoor PMV opening ('x1, x10 Pulses', 4018) and running hours indoor fan ('x100 hours', 4019).",
+  "Left out: outdoor-unit diagnostic blocks for VRF-SMMSi (4200+), VRF-SHRM/SMMS and RAV systems. They mix 'x10 A', 'X100 MPa', 'x10 RPS' and 'x100 hours' notations whose direction (multiply or divide) is not defined, and outdoor temperatures can go below zero with no signedness stated.",
+  "Advanced registers are only populated when SW1 selects a unit type other than the default; the Priority column (0 start-up, 1 high, 2 low) sets how often each is refreshed, tuned with register 4451.",
+  "Error code enum (Toshiba codes) not reproduced; see manual section 7.",
+  "Register 5 is marked R/W in the register table but described as read-only in the temperature section; it is listed read-only here. Use register 22 to supply an external temperature.",
+  "Default slave address: the quick-start page and register 15 range (1..63) give 1, while the SW3 table labels the all-off position (address 0) as default. Unit ID 1 is listed; check SW3 on site."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0",
+   "name": "AC unit On/Off",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1",
+   "name": "AC unit mode",
+   "description": "Available modes depend on the indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Dry",
+    "3": "Fan",
+    "4": "Cool"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "AC unit fan speed",
+   "description": "Available speeds depend on the indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Low",
+    "2": "Mid",
+    "3": "High"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "AC unit vane position",
+   "description": "Availability depends on the indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "POS1 (Horizontal)",
+    "2": "POS2 (Horizontal)",
+    "3": "POS3 (Medium)",
+    "4": "POS4 (Vertical)",
+    "5": "POS5 (Vertical)",
+    "6": "POS6",
+    "7": "POS7",
+    "10": "Swing"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4",
+   "name": "AC unit temperature setpoint",
+   "description": "Setpoint 16..32 °C (61..90 °F). SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": {
+    "32768": "Not initialised / no value (0x8000; manual writes -32768)"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "5",
+   "name": "AC unit temperature reference",
+   "description": "Control temperature (reg 22 if valid). SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": {
+    "32768": "Not initialised / no value (0x8000; manual writes -32768)"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6",
+   "name": "Window contact",
+   "description": "Virtual window contact written from Modbus.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Closed",
+    "1": "Open"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Gateway disablement",
+   "description": "Stops the gateway passing commands; stored in NVM.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "INMBSTOS001R000 enabled",
+    "1": "INMBSTOS001R000 disabled"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "8",
+   "name": "AC remote control disablement",
+   "description": "Blocks the Toshiba wired remote; stored in NVM.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Remote control enabled",
+    "1": "Remote control disabled"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "9",
+   "name": "AC unit operation time",
+   "description": "Hours the unit has been on; stored in NVM.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "h",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "10",
+   "name": "AC unit alarm status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No alarm condition",
+    "1": "Alarm condition"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "11",
+   "name": "Error code",
+   "description": "Toshiba error number (manual section 7); 65535 = no comms with indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error active",
+    "65535": "Communication error with AC indoor unit"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "13",
+   "name": "Open window switch-off timeout",
+   "description": "Countdown after window opens before switch-off (0..30, default 30).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "min",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "14",
+   "name": "Modbus RTU baud rate",
+   "description": "Baud rate in use (38400-115200 need FW 2.3+).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "15",
+   "name": "Modbus slave address",
+   "description": "Range 1..63.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 21,
+   "documented": "21",
+   "name": "Max number of fan speeds",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "22",
+   "name": "External ambient temperature (Modbus)",
+   "description": "Room temperature written from Modbus. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": {
+    "32768": "Not initialised / no value (0x8000; manual writes -32768)"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "23",
+   "name": "AC real temperature setpoint",
+   "description": "Setpoint in use; equals register 4. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 49,
+   "documented": "49",
+   "name": "Device ID",
+   "description": "Reads 0x1F00.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 50,
+   "documented": "50",
+   "name": "Software version",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 97,
+   "documented": "97",
+   "name": "Block periodic sendings",
+   "description": "1 = only forward Modbus writes that change the value (FW 2.3+).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Non-blocked",
+    "1": "Blocked"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4000,
+   "documented": "(IU - 1) * 25 + 4000",
+   "name": "IU1 indoor unit exist",
+   "description": "IU 1 (advanced, SW1 type set).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Doesn't exist",
+    "1": "Exist"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4001,
+   "documented": "(IU - 1) * 25 + 4001",
+   "name": "IU1 indoor unit address",
+   "description": "High byte = outdoor unit address, low byte = indoor unit address.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4002,
+   "documented": "(IU - 1) * 25 + 4002",
+   "name": "IU1 indoor unit duty",
+   "description": "Range 0..15. IU 1 (advanced, SW1 type set).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4003,
+   "documented": "(IU - 1) * 25 + 4003",
+   "name": "IU1 indoor unit defrost",
+   "description": "IU 1 (advanced, SW1 type set).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4004,
+   "documented": "(IU - 1) * 25 + 4004",
+   "name": "IU1 indoor unit filter alarm",
+   "description": "IU 1 (advanced, SW1 type set).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No alarm",
+    "1": "Alarm"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4005,
+   "documented": "(IU - 1) * 25 + 4005",
+   "name": "IU1 indoor unit thermo ON",
+   "description": "Printed as '11hermos ON'. IU 1 (advanced, SW1 type set).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Cool",
+    "1": "Heat"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4010,
+   "documented": "(IU - 1) * 25 + 4010",
+   "name": "IU1 room temperature (during control)",
+   "description": "x1 °C. IU 1 (advanced, SW1 type set).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4011,
+   "documented": "(IU - 1) * 25 + 4011",
+   "name": "IU1 room temperature (remote controller)",
+   "description": "x1 °C. IU 1 (advanced, SW1 type set).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4012,
+   "documented": "(IU - 1) * 25 + 4012",
+   "name": "IU1 indoor suction temperature (TA)",
+   "description": "x1 °C. IU 1 (advanced, SW1 type set).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4016,
+   "documented": "(IU - 1) * 25 + 4016",
+   "name": "IU1 indoor discharge temperature (TF)",
+   "description": "x1 °C, VRF systems only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4017,
+   "documented": "(IU - 1) * 25 + 4017",
+   "name": "IU1 revolutions indoor fan",
+   "description": "RAV systems only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "rps",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4020,
+   "documented": "(IU - 1) * 25 + 4020",
+   "name": "IU1 time filter sign",
+   "description": "RAV systems only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "h",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4021,
+   "documented": "(IU - 1) * 25 + 4021",
+   "name": "IU1 estimated supply air temperature",
+   "description": "x1 °C, RAV systems only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4450,
+   "documented": "4450",
+   "name": "Indoor unit type",
+   "description": "Mirrors the SW1 unit-type selection.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Not defined (extra signals disabled)",
+    "1": "RAV",
+    "2": "VRF (SMMSi)",
+    "3": "VRF (SHRM/SMMS)"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4451,
+   "documented": "4451",
+   "name": "Refresh time adjust",
+   "description": "High-priority polls per low-priority poll (1..4).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  }
+ ],
+ "integration": {
+  "summary": "Leave SW1 at the defaults for plain control (gateway is AB-bus master), set address and baud on SW3/SW4, power-cycle, then poll holding registers 0-11 with function 03 and write with 06. Select RAV or VRF on SW1 only if you need the 4000+ diagnostics.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "On/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Fan speed"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Room temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 10,
+    "why": "Alarm flag"
+   },
+   {
+    "table": "holding_register",
+    "address": 11,
+    "why": "Error code"
+   }
+  ],
+  "enable": "No enable step; register 7 (gateway disablement) must be 0 for commands to reach the unit.",
+  "watchdog": null,
+  "quirks": [
+   "Diagnostic addresses are per indoor unit: (IU - 1) * 25 + 4000 + offset.",
+   "Register 5 reads the Modbus-supplied temperature (reg 22) when one is valid, and is offset ±0.5 °C by mode.",
+   "8-N-2 by default; 8-N-1 is auto-detected."
+  ],
+  "setup": [
+   "SW1: indoor unit type (default 'not specified'; RAV / VRF SMMS / VRF SHRM enable diagnostics) and AB-bus role (master by default; slave if a Toshiba remote is the header).",
+   "SW3: slave address; SW3/SW4: baud (9600 default).",
+   "SW4: x1/x10, °C/°F and 120 Ω termination.",
+   "DIP changes need a power cycle."
+  ],
+  "gotchas": [
+   "Writes made while the gateway is still initialising are not applied; some registers read undetermined values until start-up completes.",
+   "Error code 65535 means the gateway lost the indoor unit."
+  ]
+ },
+ "verified": {
+  "date": "2026-10-16",
+  "method": "independent re-check of every register against the source PDF",
+  "pages": "PDF pp. 5-20 (registers pp. 8-15, temperature notes pp. 16-17, DIP pp. 18-19, functions p. 20)",
+  "corrections": 19,
+  "removed": 3
+ }
+}

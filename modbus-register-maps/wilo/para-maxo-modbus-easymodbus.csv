@@ -1,0 +1,29 @@
+Device Name,Host,Port,Unit ID,Transport,Reading Name,Table,Wire Address,Register Number,Modicon,Data Type,Word Order,Bit,Multiplier,Offset Value,Units,Value,Status,Notes
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Pressure,Input Register,1,2,30002,UINT16,,,10,0,cm H2O,,,Actual (differential) pressure; 65535 = error/not available.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Flow (calculated),Input Register,2,3,30003,UINT16,,,0.1,0,m³/h,,,"Calculated estimate, not for closed-loop control; error value 9999 (list) or 65535 (guide)."
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Energy Consumption,Input Register,3,4,30004,UINT16,,,1,0,kWh,,,Total consumed electrical energy; 65535 = error.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,power input,Input Register,4,5,30005,UINT16,,,1,0,W,,,Actual electrical input power; 65535 = error.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Operation Time,Input Register,5,6,30006,UINT16,,,10,0,h,,,Total running time (motor turning); 65535 = error.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Speed,Input Register,7,8,30008,INT16,,,1,0,rpm,,,Rotational speed; 65535 = error.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Control Function (active),Input Register,10,11,30011,UINT16,,,1,0,,,,Active control mode. | 1 = Gen_Spd (constant speed); 3 = Gen_PHdConst (constant differential pressure); 4 = Gen_PHdVar (variable differential pressure); 140 = Gen_UsrDfd (user-configurable PID)
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Speed max-pres-value,Input Register,18,19,30019,UINT16,,,1,0,rpm,,,Maximum speed value.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Speed min-pres-value,Input Register,19,20,30020,UINT16,,,1,0,rpm,,,Minimum speed value.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Flow (calculated) max-pres-value,Input Register,24,25,30025,UINT16,,,0.1,0,m³/h,,,
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,duty point (rel.) (active),Input Register,200,201,30201,INT16,,,0.5,0,%,,,Setpoint currently in effect.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,duty point (rel.) maximum-output,Input Register,202,203,30203,INT16,,,0.5,0,%,,,Highest duty point the pump accepts in this mode.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,duty point (rel.) minimum-output,Input Register,204,205,30205,INT16,,,0.5,0,%,,,Lowest duty point the pump accepts; lower writes are clamped.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,duty point (rel.) units,Input Register,208,209,30209,UINT16,,,1,0,,,,Unit code of the duty-point reference. | 19 = kWh; 47 = W; 73 = s; 104 = rpm (min-1); 135 = m³/h
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,duty point (rel.) (output),Input Register,400,401,30401,INT16,,,0.5,0,%,,,Actual operating point as % of the duty-point range.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Pump Command active,Input Register,402,403,30403,UINT16,,,1,0,,,,Command currently in effect. | bit 0 = Pump on; bit 3 = TRUE (static 1)
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Operation Status,Input Register,404,405,30405,UINT16,,,1,0,,,,Pump operating state flags. | bit 0 = Ready for Operation; bit 1 = Pump on; bit 3 = Warning Present; bit 4 = Error Present (will retry); bit 5 = Final Error present (no retry)
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Warning/Error Message,Input Register,940,941,30941,UINT16,,,1,0,,,,Current Wilo warning/error code (E000-E255). | 0 = No error; 4 = Mains undervoltage; 7 = Generator operation; 10 = Blocked rotor; 11 = Dry running; 19 = Pump flow error; 21 = Motor overload (torque); 23 = Short circuit; 25 = Motor/winding contact missing; 30 = Module overtemperature; 31 = Power bridge/component overtemperature; 32 = DC link undervoltage; 33 = DC link overvoltage; 38 = Fluid temperature sensor defect; 50 = BMS communication timeout; 111 = Overcurrent; 112 = Speed above synchronous value; 119 = Turbine operation; 252 = Extended code
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,duty point (rel.),Holding Register,1,2,40002,INT16,,,0.5,0,%,,,Setpoint as % of the duty-point range (200 = 100 %); 32767 = error.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Pump Command in,Holding Register,40,41,40041,UINT16,,,1,0,,,,Pump on/off command. | bit 0 = Pump on
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Control Function,Holding Register,42,43,40043,UINT16,,,1,0,,,,Control mode; an unsupported value leaves the previous mode active. | 1 = Gen_Spd (constant speed); 3 = Gen_PHdConst (constant differential pressure); 4 = Gen_PHdVar (variable differential pressure); 140 = Gen_UsrDfd (user-configurable PID)
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Bus Command Timer,Holding Register,300,301,40301,UINT16,,,1,0,,,,Local-lockout / fallback timer state machine (write SET or SET_PRESET periodically). | 1 = OFF; 2 = SET; 3 = ACTIVE; 4 = RESET; 5 = MANUAL; 6 = SET_PRESET; 7 = ACTIVE_PRESET; 8 = RESET_PRESET; 9 = MANUAL_PRESET
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Bus Command Timer Timeout,Holding Register,400,401,40401,UINT16,,,1,0,s,,,"Fallback timeout, 20-65534 s (factory 300 s)."
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,duty point (rel.) preset,Holding Register,402,403,40403,INT16,,,0.5,0,%,,,Fallback setpoint used after the bus command timer elapses.
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,Pump Command preset,Holding Register,404,405,40405,UINT16,,,1,0,,,,Fallback on/off command. | bit 0 = Pump on preset
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,interface device identifier,Holding Register,61440,61441,461441,UINT16,,,1,0,,,,"Modbus slave address, 1-247 (default 101)."
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,transmission serial speed,Holding Register,61441,61442,461442,UINT16,,,1,0,,,,Baud rate (default 19200). | 0 = 300; 1 = 600; 2 = 1200; 3 = 2400; 4 = 4800; 5 = 9600; 6 = 19200; 7 = 38400; 8 = 57600; 9 = 115200; 10 = 76800; 12 = Invalid
+Wilo Para MAXO,,502,101,RTU_OVER_TCP,transmission serial frame,Holding Register,61442,61443,461443,UINT16,,,1,0,,,,Data bits / parity / stop bits (default 8E1). | 2 = 8N1; 3 = 8N2; 6 = 8E1; 10 = 8O1; 15 = Invalid

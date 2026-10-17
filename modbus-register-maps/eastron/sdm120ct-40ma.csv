@@ -1,0 +1,33 @@
+﻿# Eastron SDM120CT-40mA Modbus register map - easymodbus.com - source: https://www.eastrongroup.com/eastrongroup/2026/07/17/EastronSDM120CT-M40mAUsermanualV10.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,30001,30001,Voltage,Line-to-neutral RMS voltage.,FLOAT32,2,ABCD,1,0,V,Read,
+Input register,FC04 read,6,30007,30007,Current,,FLOAT32,2,ABCD,1,0,A,Read,
+Input register,FC04 read,12,30013,30013,Active power,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,18,30019,30019,Apparent power,,FLOAT32,2,ABCD,1,0,VA,Read,
+Input register,FC04 read,24,30025,30025,Reactive power,,FLOAT32,2,ABCD,1,0,VAr,Read,
+Input register,FC04 read,30,30031,30031,Power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,70,30071,30071,Frequency,,FLOAT32,2,ABCD,1,0,Hz,Read,
+Input register,FC04 read,72,30073,30073,Import active energy,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Input register,FC04 read,74,30075,30075,Export active energy,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Input register,FC04 read,76,30077,30077,Import reactive energy,,FLOAT32,2,ABCD,1,0,kVArh,Read,
+Input register,FC04 read,78,30079,30079,Export reactive energy,,FLOAT32,2,ABCD,1,0,kVArh,Read,
+Input register,FC04 read,84,30085,30085,Total active power demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,86,30087,30087,Max total active power demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,88,30089,30089,Import active power demand,Printed as 'import active energy demand' but given in W.,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,90,30091,30091,Max import active power demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,92,30093,30093,Export active power demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,94,30095,30095,Max export active power demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,258,30259,30259,Current demand,,FLOAT32,2,ABCD,1,0,A,Read,
+Input register,FC04 read,264,30265,30265,Max current demand,,FLOAT32,2,ABCD,1,0,A,Read,
+Input register,FC04 read,342,30343,30343,Total kWh,What 'total' includes depends on the metering-mode setting (not mapped; see notes).,FLOAT32,2,ABCD,1,0,kWh,Read,
+Input register,FC04 read,344,30345,30345,Total kVArh,,FLOAT32,2,ABCD,1,0,kVArh,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Demand period,0 to 60 minutes; 0 updates demand every second. Default 60.,FLOAT32,2,ABCD,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12,40013,40013,Relay pulse width,"Pulse on-time: 60, 100 or 200 ms. Default 60.",FLOAT32,2,ABCD,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",18,40019,40019,Parity and stop bit,"RS485 framing. Default one stop bit, no parity.",FLOAT32,2,ABCD,1,0,,Read/write,"0 = 1 stop bit, no parity; 1 = 1 stop bit, even parity; 2 = 1 stop bit, odd parity; 3 = 2 stop bits, no parity"
+Holding register,"FC03 read / FC06, FC16 write",20,40021,40021,Modbus address,Node address 1 to 247. Default 1.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28,40029,40029,Baud rate,Default 9600.,FLOAT32,2,ABCD,1,0,,Read/write,0 = 2400; 1 = 4800; 2 = 9600; 5 = 1200
+Holding register,"FC03 read / FC06, FC16 write",50,40051,40051,CT1,"CT primary current, 5 to 9999. Default 5.",FLOAT32,2,ABCD,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",60,40061,40061,Backlit time,"0 to 121; 0 keeps backlight on, 121 keeps it off. Default 60.",FLOAT32,2,ABCD,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",86,40087,40087,Pulse 1 output mode,Energy quantity driving pulse output 1. Default export active.,FLOAT32,2,ABCD,1,0,,Read/write,1 = Import active energy; 2 = Import + export active energy; 4 = Export active energy; 5 = Import reactive energy; 6 = Import + export reactive energy; 8 = Export reactive energy
+Holding register,"FC03 read / FC06, FC16 write",61456,461457,461457,Reset,Write 0000 to clear maximum demand.,UINT16,1,,1,0,,Write,0 = Reset maximum demand
+Holding register,"FC03 read / FC06, FC16 write",63760,463761,463761,Pulse 1 output constant,Energy per pulse on output 1. Default 0.001 kWh/imp.,UINT16,1,,1,0,,Read/write,0 = 0.001 kWh/imp; 1 = 0.01 kWh/imp; 2 = 0.1 kWh/imp; 3 = 1 kWh/imp

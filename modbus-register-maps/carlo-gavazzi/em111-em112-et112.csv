@@ -1,0 +1,50 @@
+﻿"# Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112) Modbus register map - easymodbus.com - source: https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM111_EM112_ET112_CP.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,300001 / 0000h,30001,V L-N,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,2,300003 / 0002h,30003,A,Negative when exporting in measurement mode B.,INT32,2,CDAB,0.001,0,A,Read,
+Input register,FC04 read,4,300005 / 0004h,30005,W,,INT32,2,CDAB,0.1,0,W,Read,
+Input register,FC04 read,6,300007 / 0006h,30007,VA,,INT32,2,CDAB,0.1,0,VA,Read,
+Input register,FC04 read,8,300009 / 0008h,30009,var,,INT32,2,CDAB,0.1,0,var,Read,
+Input register,FC04 read,10,300011 / 000Ah,30011,W dmd,Demand (average) active power.,INT32,2,CDAB,0.1,0,W,Read,
+Input register,FC04 read,11,300012 / 000Bh,30012,Carlo Gavazzi identification code,Read alone; shares 000Bh with W dmd (000Ah-000Bh).,UINT16,1,,1,0,,Read,100 = EM110 AV7; 101 = EM111 AV7; 102 = EM112 AV1; 103 = EM111 AV8; 104 = EM112 AV0; 110 = EM110 AV8; 114 = EM111 AV5; 120 = ET112 AV0; 121 = ET112 AV1
+Input register,FC04 read,12,300013 / 000Ch,30013,W dmd peak,,INT32,2,CDAB,0.1,0,W,Read,
+Input register,FC04 read,14,300015 / 000Eh,30015,PF,,INT16,1,,0.001,0,,Read,
+Input register,FC04 read,15,300016 / 000Fh,30016,Frequency,,INT16,1,,0.1,0,Hz,Read,
+Input register,FC04 read,16,300017 / 0010h,30017,kWh(+) total,Imported active energy.,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,18,300019 / 0012h,30019,kvarh(+) total,,INT32,2,CDAB,0.1,0,kvarh,Read,
+Input register,FC04 read,20,300021 / 0014h,30021,kWh(+) partial,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,22,300023 / 0016h,30023,kvarh(+) partial,,INT32,2,CDAB,0.1,0,kvarh,Read,
+Input register,FC04 read,24,300025 / 0018h,30025,kWh(+) tariff 1,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,26,300027 / 001Ah,30027,kWh(+) tariff 2,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,32,300033 / 0020h,30033,kWh(-) total,Exported active energy.,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,34,300035 / 0022h,30035,kvarh(-) total,,INT32,2,CDAB,0.1,0,kvarh,Read,
+Input register,FC04 read,44,300045 / 002Ch,30045,Hour counter,ET112 only.,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,770,300771 / 0302h,30771,Version code,"0 = version A, 1 = B, and so on.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,771,300772 / 0303h,30772,Revision code,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,1024,301025 / 0400h,31025,kWh(+) total integer part,Whole units; add the decimal part register.,INT32,2,CDAB,1,0,kWh,Read,
+Input register,FC04 read,1026,301027 / 0402h,31027,kWh(+) total decimal part,"Thousandths, 0-999.",INT32,2,CDAB,0.001,0,kWh,Read,
+Input register,FC04 read,1028,301029 / 0404h,31029,kvarh(+) total integer part,Whole units; add the decimal part register.,INT32,2,CDAB,1,0,kvarh,Read,
+Input register,FC04 read,1030,301031 / 0406h,31031,kvarh(+) total decimal part,"Thousandths, 0-999.",INT32,2,CDAB,0.001,0,kvarh,Read,
+Input register,FC04 read,1034,301035 / 040Ah,31035,kWh(-) total decimal part,"Thousandths, 0-999.",INT32,2,CDAB,0.001,0,kWh,Read,
+Input register,FC04 read,1036,301037 / 040Ch,31037,kvarh(-) total integer part,Whole units; add the decimal part register.,INT32,2,CDAB,1,0,kvarh,Read,
+Input register,FC04 read,1038,301039 / 040Eh,31039,kvarh(-) total decimal part,"Thousandths, 0-999.",INT32,2,CDAB,0.001,0,kvarh,Read,
+Holding register,"FC03 read / FC06, FC16 write",4096,304097 / 1000h,44097,Password,"0-9999, EM only; always 0 on ET.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4098,304099 / 1002h,44099,Measuring system,,UINT16,1,,1,0,,Read/write,0 = 1P (1-phase)
+Holding register,"FC03 read / FC06, FC16 write",4099,304100 / 1003h,44100,CT ratio,Raw 10-600 = CT 1.0-60.0.,UINT32,2,CDAB,0.1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4112,1010h,44113,Demand integration time,1-30.,UINT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4114,1012h,44115,Pulse output Ton,,UINT32,2,CDAB,1,0,,Read/write,0 = 30 ms; 1 = 100 ms
+Holding register,"FC03 read / FC06, FC16 write",4352,304353 / 1100h,44353,Display mode,EM112 only.,UINT16,1,,1,0,,Read/write,0 = Full; 1 = Easy
+Holding register,"FC03 read / FC06, FC16 write",4353,304354 / 1101h,44354,Tariff management,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",4354,304355 / 1102h,44355,Home page selection,"0-17, EM112 only; 0 on others.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4355,304356 / 1103h,44356,Measurement mode,Writable on non-MID X versions; repeated writes of 1 toggle.,UINT16,1,,1,0,,Read/write,0 = A (easy connection); 1 = B (bidirectional)
+Holding register,"FC03 read / FC06, FC16 write",4608,304609 / 1200h,44609,Tariff mode,,UINT16,1,,1,0,,Read/write,0 = Via digital input; 1 = Via serial
+Holding register,"FC03 read / FC06, FC16 write",4609,304610 / 1201h,44610,Tariff selection via serial,Read-only when 1200h = 0.,UINT16,1,,1,0,,Read/write,1 = Tariff 1; 2 = Tariff 2
+Holding register,"FC03 read / FC06, FC16 write",8192,308193 / 2000h,48193,RS485 address,"1-247, default 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8193,308194 / 2001h,48194,RS485 baud rate,,UINT16,1,,1,0,,Read/write,1 = 9600 (default); 2 = 19200; 3 = 38400; 4 = 57600; 5 = 115200
+Holding register,"FC03 read / FC06, FC16 write",8194,308195 / 2002h,48195,RS485 parity,,UINT16,1,,1,0,,Read/write,1 = None (default); 2 = Even
+Holding register,"FC03 read / FC06, FC16 write",8195,308196 / 2003h,48196,RS485 stop bits,,UINT16,1,,1,0,,Read/write,1 = 1 (default); 2 = 2 (only with no parity)
+Holding register,"FC03 read / FC06, FC16 write",8196,308197 / 2004h,48197,Max words per read,Read-only; returns 50.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",16384,316385 / 4000h,416385,"Reset partial, tariff and demand","Write 1: clears partial and tariff meters, kW dmd and peak.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16385,316386 / 4001h,416386,Reset total energy meters,Write 1; non-MID (X) versions only.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16386,316387 / 4002h,416387,Reset hour counter,Write 1; ET112 only.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20496,320497 / 5010h,420497,Production year,EM111 made from Oct 2018 onward.,UINT16,1,,1,0,,Read,

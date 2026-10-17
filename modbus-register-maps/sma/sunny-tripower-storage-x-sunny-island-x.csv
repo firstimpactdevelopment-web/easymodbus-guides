@@ -1,0 +1,32 @@
+﻿"# SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS) Modbus register map - easymodbus.com - source: https://files.sma.de/downloads/SMAModbus-STPS-X-SI-X-TI-en-11.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,30005,30005,330006,Serial number (unit ID 1),Serial number of the device.,UINT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,30051,30051,330052,Device category (unit ID 1),"Device category tag, e.g. 8009 = hybrid inverter.",UINT32,2,ABCD,1,0,,Read,8009 = Hybrid inverter
+Input register,FC04 read,30201,30201,330202,Current state of health (unit ID 2/3),Health status tag (5-minute value).,UINT32,2,ABCD,1,0,,Read,307 = OK
+Input register,FC04 read,30845,30845,330846,Current battery state of charge (unit ID 2/3),User SoC: SoC within the configured charge/discharge limits.,UINT32,2,ABCD,1,0,%,Read,
+Input register,FC04 read,30955,30955,330956,Operating status of battery (unit ID 3),Battery state tag.,UINT32,2,ABCD,1,0,,Read,303 = Off; 2291 = Battery standby; 2292 = Battery charging (default); 2293 = Battery discharging
+Input register,FC04 read,33017,33017,333018,Nominal active power WMaxOutRtg (unit ID 2),Rated feed-in active power of the system.,INT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,33019,33019,333020,Nominal active power WMaxInRtg (unit ID 2/3),"Rated intake (charging) power, negative, e.g. -50000 W.",INT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",40018,40018,440019,Quick shut-down of the inverters (unit ID 2/3),Fast stop/start of the system (UID 2) or one device (UID 3).,UINT32,2,ABCD,1,0,,Read/write,381 = Standby; 1467 = Start; 1749 = Full stop (AC and DC side)
+Holding register,"FC03 read / FC06, FC16 write",40029,40029,440030,General operating status (unit ID 2/3),Overall operating state tag.,UINT32,2,ABCD,1,0,,Read,303 = Off; 309 = Operation; 569 = Switched on (default); 1295 = Standby; 1795 = Blocked; 16777213 = Information not available
+Holding register,"FC03 read / FC06, FC16 write",40187,40187,440188,Nominal battery capacity (unit ID 2/3),Rated battery capacity.,UINT32,2,ABCD,1,0,Wh,Read,
+Holding register,"FC03 read / FC06, FC16 write",40210,40210,440211,Operating mode active power setpoint (unit ID 3),Source of the active power setpoint; 1079 needed for battery control.,UINT32,2,ABCD,1,0,,Read/write,303 = Off; 1077 = Manual setpoint in W; 1078 = Manual setpoint in %; 1079 = External active power setpoint (default)
+Holding register,"FC03 read / FC06, FC16 write",40212,40212,440213,"Active power limitation, in W (unit ID 3)","Absolute active power limit, 0-60000 W.",UINT32,2,ABCD,1,0,W,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40214,40214,440215,Active power limitation in % (unit ID 3),"Relative active power limit, 0-100 %.",UINT32,2,ABCD,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40236,40236,440237,Operating mode of the BMS (unit ID 3),Battery management operating mode.,UINT32,2,ABCD,1,0,,Read/write,303 = Off; 308 = On; 2289 = Battery charging (default); 2290 = Battery discharging; 2424 = Default setting
+Holding register,"FC03 read / FC06, FC16 write",40472,40472,440473,Nominal grid voltage (unit ID 2/3),"Nominal grid voltage, e.g. 230 or 400 V.",UINT32,2,ABCD,1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40721,40721,440722,Minimum width of deep discharge protection range (unit ID 3),"Default 1 %, recommended above 0 %.",UINT32,2,ABCD,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41193,41193,441194,Behavior during failure of external setpoint (unit ID 2/3),What happens when external setpoints stop arriving.,UINT32,2,ABCD,1,0,,Read/write,2506 = Keep values (default); 2507 = Use fallback values
+Holding register,"FC03 read / FC06, FC16 write",41195,41195,441196,Timeout for external setpoint (unit ID 2/3),"Setpoint timeout, 1-1800 s, default 600 s.",UINT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41315,41315,441316,Operating mode active power controller (unit ID 2),Selects open-loop or closed-loop active power control.,UINT32,2,ABCD,1,0,,Read/write,3352 = Open-loop control (default); 3353 = Closed-loop control
+Holding register,"FC03 read / FC06, FC16 write",41369,41369,441370,"Activation threshold, grid feed-in (unit ID 2/3)",Default 5 %.,INT32,2,ABCD,0.001,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41371,41371,441372,Deactivation threshold grid feed-in (unit ID 2/3),Default 5 %.,INT32,2,ABCD,0.001,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41373,41373,441374,Activation threshold power consumption (unit ID 2/3),Default 5 %.,INT32,2,ABCD,0.001,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41375,41375,441376,Deactivation threshold power consumption (unit ID 2/3),Default 5 %.,INT32,2,ABCD,0.001,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",44001,44001,444002,Soft start rate P (unit ID 2/3),"Active power soft-start ramp, 1-10000 %/min, default 1200.",UINT32,2,ABCD,1,0,%/min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",44013,44013,444014,Soft start P after a grid fault (unit ID 2/3),Enables the soft start after a grid fault.,UINT32,2,ABCD,1,0,,Read/write,303 = Off; 308 = On
+Holding register,"FC03 read / FC06, FC16 write",44381,44381,444382,Nominal active power WMaxOut (unit ID 2/3),"Feed-in active power setting, e.g. 12000 W.",INT32,2,ABCD,1,0,W,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",44383,44383,444384,Nominal active power WMaxIn (unit ID 2/3),"Intake active power setting, -60000 to 0 W.",INT32,2,ABCD,1,0,W,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",44449,44449,444450,Maximum active power battery (unit ID 3),"Upper battery power bound, % of nominal; write together with 44451.",INT32,2,ABCD,0.01,0,%,Write,
+Holding register,"FC03 read / FC06, FC16 write",44451,44451,444452,Minimum active power battery (unit ID 3),"Lower battery power bound, % of nominal; write together with 44449.",INT32,2,ABCD,0.01,0,%,Write,
+Holding register,"FC03 read / FC06, FC16 write",44505,44505,444506,Limitation of active power in % (unit ID 2),"System active power limit; 0-100.00 %, default 100 %.",UINT32,2,ABCD,0.01,0,%,Read/write,

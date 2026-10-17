@@ -1,0 +1,32 @@
+﻿# Carlo Gavazzi EM24-IS (SFA and SFB models) Modbus register map - easymodbus.com - source: https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM24_IS_SFA_SFB.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,300001 / 0000h,30001,V L1-N,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,2,300003 / 0002h,30003,V L2-N,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,4,300005 / 0004h,30005,V L3-N,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,6,300007 / 0006h,30007,V L1-L2,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,8,300009 / 0008h,30009,V L2-L3,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,10,300011 / 000Ah,30011,V L3-L1,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,11,300012 / 000Bh,30012,Carlo Gavazzi identification code,Shares 000Bh with the high word of V L3-L1; read it alone.,UINT16,1,,1,0,,Read,1696 = EM24DINAV23XISSFA; 1697 = EM24DINAV53XISSFA; 1698 = EM24DINAV23XISSFB; 1699 = EM24DINAV53XISSFB
+Input register,FC04 read,12,300013 / 000Ch,30013,A L1,,INT32,2,CDAB,0.001,0,A,Read,
+Input register,FC04 read,14,300015 / 000Eh,30015,A L2,,INT32,2,CDAB,0.001,0,A,Read,
+Input register,FC04 read,16,300017 / 0010h,30017,A L3,,INT32,2,CDAB,0.001,0,A,Read,
+Input register,FC04 read,36,300037 / 0024h,30037,V L-N system,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,38,300039 / 0026h,30039,V L-L system,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,50,300051 / 0032h,30051,PF L1,"Negative = capacitive (lead), positive = inductive (lag).",INT16,1,,0.001,0,,Read,
+Input register,FC04 read,51,300052 / 0033h,30052,PF L2,"Negative = capacitive (lead), positive = inductive (lag).",INT16,1,,0.001,0,,Read,
+Input register,FC04 read,52,300053 / 0034h,30053,PF L3,"Negative = capacitive (lead), positive = inductive (lag).",INT16,1,,0.001,0,,Read,
+Input register,FC04 read,53,300054 / 0035h,30054,PF system,"Negative = capacitive (lead), positive = inductive (lag).",INT16,1,,0.001,0,,Read,
+Input register,FC04 read,54,300055 / 0036h,30055,Phase sequence,Meaningful on 3-phase systems only.,INT16,1,,1,0,,Read,0 = L1-L2-L3; -1 = L1-L3-L2
+Input register,FC04 read,55,300056 / 0037h,30056,Frequency,,INT16,1,,0.1,0,Hz,Read,
+Input register,FC04 read,62,300063 / 003Eh,30063,kWh(+) total,Imported active energy.,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,768,300769 / 0300h,30769,Digital input status,"Bit = 0 input closed, 1 input open.",BITMAP16,1,,1,0,,Read,bit 0 = Input 1 open; bit 1 = Input 2 open; bit 2 = Input 3 open
+Input register,FC04 read,770,300771 / 0302h,30771,Version and revision code,"High byte: bits 4-7 major, 0-3 minor; low byte revision (101Eh = 1.0.30).",UINT16,1,,1,0,,Read,
+Input register,FC04 read,772,300773 / 0304h,30773,Front selector status,,UINT16,1,,1,0,,Read,0 = Keypad unlocked; 1 = Keypad unlocked; 2 = Keypad unlocked; 3 = Keypad locked
+Holding register,"FC03 read / FC06, FC16 write",4352,304353 / 1100h,44353,Password,0-9999; out-of-range values are treated as 0.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4354,304355 / 1102h,44355,Measuring system,SFA/SFB models support only 3Pn.,UINT16,1,,1,0,,Read/write,0 = 3Pn; 1 = 3P1; 2 = 2P; 3 = 1P; 4 = 3P
+Holding register,"FC03 read / FC06, FC16 write",4360,304361 / 1108h,44361,Filter span parameter,0-100.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4361,304362 / 1109h,44362,Filter coefficient,1-32.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4362,304363 / 110Ah,44363,RS485 instrument address,1-247.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4363,304364 / 110Bh,44364,RS485 baud rate,,UINT16,1,,1,0,,Read/write,0 = 4800; 1 = 9600
+Holding register,"FC03 read / FC06, FC16 write",4396,304397 / 112Ch,44397,CT ratio,Raw 10-600000 = CT 1.0-60000.0.,UINT32,2,CDAB,0.1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4398,304399 / 112Eh,44399,VT ratio,Raw 10-60000 = VT 1.0-6000.0.,UINT32,2,CDAB,0.1,0,,Read/write,

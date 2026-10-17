@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fronius GEN24 int+SF Modbus Register Map | Easy Modbus</title>
+<meta name="description" content="Fronius GEN24 int+SF Modbus register map: 162 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Fronius GEN24 int+SF Modbus Register Map | Easy Modbus">
+<meta property="og:description" content="Fronius GEN24 int+SF Modbus register map: 162 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fronius GEN24 int+SF Modbus Register Map | Easy Modbus">
+<meta name="twitter:description" content="Fronius GEN24 int+SF Modbus register map: 162 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf",
+   "url": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf",
+   "name": "Fronius GEN24 int+SF Modbus Register Map | Easy Modbus",
+   "description": "Fronius GEN24 int+SF Modbus register map: 162 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-10-16",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf#dataset",
+   "name": "Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus register map",
+   "description": "GEN24 hybrid inverters host Modbus TCP and RTU themselves and present a SunSpec map: common block, inverter model 101/103, nameplate, settings, status, immediate controls, multiple-MPPT (PV inputs 1-2 plus battery charge/discharge as inputs 3-4) and basic storage control. This map covers the 16-bit measurements, ratings, battery state of charge and every control register, each scaled through its SunSpec scale factor. Fronius GEN24 int+SF Modbus register map: 162 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf",
+   "keywords": [
+    "Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus register map",
+    "Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus registers",
+    "Fronius Modbus map",
+    "Primo GEN24 Plus Modbus register map",
+    "Symo GEN24 Plus Modbus register map",
+    "Primo GEN24 Modbus register map",
+    "Symo GEN24 Modbus register map",
+    "Symo GEN24 10.0 Plus Modbus register map",
+    "Primo GEN24 6.0 Plus Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "dateModified": "2026-10-16",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "Fronius GEN24 Modbus TCP & RTU (operating instructions) + Gen24_Primo_Symo_Inverter_Register_Map_Int&SF_storage_ROW.xlsx",
+    "url": "https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Fronius"
+    }
+   },
+   "about": {
+    "@type": "Product",
+    "name": "Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF",
+    "brand": {
+     "@type": "Brand",
+     "name": "Fronius"
+    },
+    "category": "Solar inverter"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "name": "Easy Modbus import CSV",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf-easymodbus.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@id": "https://easymodbus.com/modbus-register-maps/#catalog"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 162 registers: 162 holding registers. 24 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Fronius numbers SunSpec registers from 40001 and says to send the register number minus one: register 40001 is read at address 40000 (0x9C40). The manual's RTU example reads register 40005 (Mn) with address bytes 9C 44 (40004)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 40069 Inverter ID (Inverter model ID (101/103) - confirms int+SF layout); HR 40083 W (AC power); HR 40084 W_SF (AC power scale factor (auto-scaled)); HR 40107 St (Operating state); HR 40351 ChaState (Battery state of charge); HR 40365 ChaState_SF (SoC scale factor); HR 40232 WMaxLimPct (Active power limit %); HR 40236 WMaxLim_Ena (Enable/disable the power limit); HR 40250 WMaxLimPct_SF (Power limit scale factor)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Inverter web interface > Communication > Modbus: choose TCP Server and/or RTU Server, set SunSpec Model Type (int+SF for this map), and activate 'Allow Control' for on/off, power reduction, power factor, reactive power and battery commands. 'Restrict Control' limits control to fixed IP addresses. Writes to models 123/124 raise an exception when control is not allowed."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What happens when the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF loses Modbus communication?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Model 123 controls have *_RvrtTms fallback timers (0-28800 s) that restart with every Modbus message; on expiry the control ends and the next-priority mode takes over. 0 (default) keeps the setting until disabled. Model 124 has InOutWRte_RvrtTms (0-28800 s) for the battery window."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is Fronius GEN24 Modbus TCP & RTU (operating instructions) + Gen24_Primo_Symo_Inverter_Register_Map_Int&SF_storage_ROW.xlsx (42,0410,2649 (034-28092026)), revision 2026-09, published free by Fronius at https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Fronius",
+     "item": "https://easymodbus.com/modbus-register-maps/fronius/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF",
+     "item": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/fronius/">Fronius</a></li><li aria-current="page">Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF</li></ol>
+<p class="eyebrow">Solar inverter &middot; Modbus register map</p><h1><span class="mfr">Fronius</span> Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus register map</h1><p class="updated">Updated 16 October 2026</p>
+
+<div class="answer"><b>Short answer</b><p>GEN24 hybrid inverters host Modbus TCP and RTU themselves and present a SunSpec map: common block, inverter model 101/103, nameplate, settings, status, immediate controls, multiple-MPPT (PV inputs 1-2 plus battery charge/discharge as inputs 3-4) and basic storage control. This map covers the 16-bit measurements, ratings, battery state of charge and every control register, each scaled through its SunSpec scale factor.</p>
+<p>This page lists <strong>162 Modbus registers</strong> for the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF &mdash; 24 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Fronius&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/fronius/">Fronius</a></dd></div><div><dt>Model</dt><dd>Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/solar-inverters/">Solar inverter</a></dd></div><div><dt>Registers</dt><dd>162 (24 writable)</dd></div><div><dt>Transport</dt><dd>Modbus TCP, Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Documented addressing</dt><dd>1-based (subtract 1 for the wire address)</dd></div><div><dt>Firmware</dt><dd>Register map archive 1.2.7-2 (bundled with GEN24 firmware 1.36.x); manual 42,0410,2649 rev. 034-28092026.</dd></div><div><dt>Also known as</dt><dd>Primo GEN24 Plus, Symo GEN24 Plus, Primo GEN24, Symo GEN24, Symo GEN24 10.0 Plus, Primo GEN24 6.0 Plus</dd></div><div><dt>Source document</dt><dd><a href="https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf" rel="nofollow noopener" target="_blank">Fronius GEN24 Modbus TCP &amp; RTU (operating instructions) + Gen24_Primo_Symo_Inverter_Register_Map_Int&amp;SF_storage_ROW.xlsx &middot; 42,0410,2649 (034-28092026) &middot; rev. 2026-09</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/fronius/gen24-sunspec-int-sf-easymodbus.csv" download>Open in Easy Modbus <small>153 rows</small></a>
+  <button type="button" class="btn" id="copy-em" data-src="/modbus-register-maps/fronius/gen24-sunspec-int-sf-easymodbus.csv">Copy for the phone app</button>
+  <a class="btn" href="/modbus-register-maps/fronius/gen24-sunspec-int-sf.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/fronius/gen24-sunspec-int-sf.json">JSON</a>
+  <a class="btn" href="https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+  <span class="toast" id="copy-msg" role="status"></span>
+</div>
+<p class="count">Easy Modbus PC: Explorer &rarr; Import, pick the downloaded file. Phone app: open the device &rarr;
+Import map &rarr; paste. Addresses import as wire addresses whatever your address style is.</p>
+<section class="integ" id="integration"><h2>Integration notes: Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF</h2>
+<div class="answer"><b>Integration in brief</b><p>In the inverter web UI (Communication &gt; Modbus) enable the TCP server, select int+SF and tick Allow Control if you need writes; then poll unit ID 1. Read registers 40070-40109 (wire addresses 40069-40108) for live data, register 40352 (address 40351) for battery SoC, and use models 123/124 for power limits and battery windows.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-40069">HR 40069</a></td><td class="n">Inverter ID</td><td class="f">UINT16</td><td>Inverter model ID (101/103) - confirms int+SF layout</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40083">HR 40083</a></td><td class="n">W</td><td class="f">INT16</td><td>AC power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40084">HR 40084</a></td><td class="n">W_SF</td><td class="f">INT16</td><td>AC power scale factor (auto-scaled)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40107">HR 40107</a></td><td class="n">St</td><td class="f">UINT16</td><td>Operating state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40351">HR 40351</a></td><td class="n">ChaState</td><td class="f">UINT16</td><td>Battery state of charge</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40365">HR 40365</a></td><td class="n">ChaState_SF</td><td class="f">INT16</td><td>SoC scale factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40232">HR 40232</a></td><td class="n">WMaxLimPct</td><td class="f">UINT16</td><td>Active power limit %</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-40236">HR 40236</a></td><td class="n">WMaxLim_Ena</td><td class="f">UINT16</td><td>Enable/disable the power limit</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-40250">HR 40250</a></td><td class="n">WMaxLimPct_SF</td><td class="f">INT16</td><td>Power limit scale factor</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Inverter web interface &gt; Communication &gt; Modbus: choose TCP Server and/or RTU Server, set SunSpec Model Type (int+SF for this map), and activate &#x27;Allow Control&#x27; for on/off, power reduction, power factor, reactive power and battery commands. &#x27;Restrict Control&#x27; limits control to fixed IP addresses. Writes to models 123/124 raise an exception when control is not allowed.</p></div><div class="ib"><h3>Communication loss &amp; watchdog</h3><p>Model 123 controls have *_RvrtTms fallback timers (0-28800 s) that restart with every Modbus message; on expiry the control ends and the next-priority mode takes over. 0 (default) keeps the setting until disabled. Model 124 has InOutWRte_RvrtTms (0-28800 s) for the battery window.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Off-by-one: SunSpec registers are numbered from 40001; request number minus one (40001 -&gt; 40000).</li><li>Switching float/int+SF changes the address of every model after the inverter model.</li><li>Battery power appears as MPPT inputs 3 (charge) and 4 (discharge); only one is non-zero at a time.</li><li>Storage window sign convention: negative power = charging, positive = discharging; OutWRte/InWRte may be negative to force charging or discharging.</li><li>Writes to read-only or unsupported registers are silently ignored; out-of-range values return exception 3.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>TCP: inverter unit ID is always 1 (identify devices by IP address); port 502 or 1502 selectable in the web UI.</li><li>RTU: set Inverter address (1-247, factory 1), interface M0 or M1, baud and parity in the web UI; each inverter on the bus needs a unique address.</li><li>RTU wiring: 120-ohm termination enabled at both line ends, shielded twisted pair, single-point grounding, strict daisy chain.</li><li>Smart Meter unit ID is set via &#x27;Meter address offset&#x27; (factory 200).</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Query sequentially (at most 2 requests in parallel) with a response timeout of at least 1 s; read blocks rather than single registers.</li><li>Grid charging via ChaGriSet only works if &#x27;battery charging from DNO grid&#x27; is also enabled in the system settings (the two are AND-linked).</li><li>Changing InWRte/OutWRte/StorCtl_Mod shows up in Solar.web as Forced Recharge or Energy saving mode.</li><li>After changing a value of an active mode (e.g. a new WMaxLimPct), re-write the matching _Ena register with 1.</li></ul>
+</section>
+<h2 id="registers">Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>162</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">162 of 162 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-40002"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40002<small>doc 40003</small></td><td class="n">Common ID</td><td class="d">Model ID of this block.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40003"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40003<small>doc 40004</small></td><td class="n">Common L</td><td class="d">Length of this block in registers.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Registers</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40004"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40004<small>doc 40005</small></td><td class="n">Mn</td><td class="d">Manufacturer name, reads Fronius.</td><td class="f">STRING[32]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40020"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40020<small>doc 40021</small></td><td class="n">Md</td><td class="d">Inverter model name.</td><td class="f">STRING[32]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40044"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40044<small>doc 40045</small></td><td class="n">Vr</td><td class="d">Inverter software version.</td><td class="f">STRING[16]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40052"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40052<small>doc 40053</small></td><td class="n">SN</td><td class="d">Serial number (may fall back to a controller ID).</td><td class="f">STRING[32]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40068"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40068<small>doc 40069</small></td><td class="n">DA</td><td class="d">Modbus device address (unit ID).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40069"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40069<small>doc 40070</small></td><td class="n">Inverter ID</td><td class="d">Model ID of this block.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">101 = Single phase; 103 = Three phase</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40070"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40070<small>doc 40071</small></td><td class="n">Inverter L</td><td class="d">Length of this block in registers.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Registers</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40071"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40071<small>doc 40072</small></td><td class="n">A</td><td class="d">Total AC current.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40075)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40072"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40072<small>doc 40073</small></td><td class="n">AphA</td><td class="d">Phase A AC current.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40075)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40073"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40073<small>doc 40074</small></td><td class="n">AphB</td><td class="d">Phase B AC current.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40075)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40074"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40074<small>doc 40075</small></td><td class="n">AphC</td><td class="d">Phase C AC current.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40075)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40075"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40075<small>doc 40076</small></td><td class="n">A_SF</td><td class="d">Scale factor (power of ten) for A.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40076"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40076<small>doc 40077</small></td><td class="n">PPVphAB</td><td class="d">Line voltage A-B.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40082)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40077"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40077<small>doc 40078</small></td><td class="n">PPVphBC</td><td class="d">Line voltage B-C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40082)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40078"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40078<small>doc 40079</small></td><td class="n">PPVphCA</td><td class="d">Line voltage C-A.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40082)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40079"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40079<small>doc 40080</small></td><td class="n">PhVphA</td><td class="d">Phase A to neutral voltage.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40082)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40080"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40080<small>doc 40081</small></td><td class="n">PhVphB</td><td class="d">Phase B to neutral voltage.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40082)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40081"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40081<small>doc 40082</small></td><td class="n">PhVphC</td><td class="d">Phase C to neutral voltage.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40082)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40082"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40082<small>doc 40083</small></td><td class="n">V_SF</td><td class="d">Scale factor (power of ten) for V.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40083"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40083<small>doc 40084</small></td><td class="n">W</td><td class="d">AC active power.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40084)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40084"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40084<small>doc 40085</small></td><td class="n">W_SF</td><td class="d">Scale factor (power of ten) for W.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40085"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40085<small>doc 40086</small></td><td class="n">Hz</td><td class="d">Grid frequency.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40086)</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40086"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40086<small>doc 40087</small></td><td class="n">Hz_SF</td><td class="d">Scale factor (power of ten) for Hz.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40087"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40087<small>doc 40088</small></td><td class="n">VA</td><td class="d">AC apparent power.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40088)</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40088"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40088<small>doc 40089</small></td><td class="n">VA_SF</td><td class="d">Scale factor (power of ten) for VA.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40089"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40089<small>doc 40090</small></td><td class="n">VAr</td><td class="d">AC reactive power.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40090)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40090"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40090<small>doc 40091</small></td><td class="n">VAr_SF</td><td class="d">Scale factor (power of ten) for VAr.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40091"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40091<small>doc 40092</small></td><td class="n">PF</td><td class="d">Power factor.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40092)</td><td>Pct</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40092"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40092<small>doc 40093</small></td><td class="n">PF_SF</td><td class="d">Scale factor (power of ten) for PF.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40095"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40095<small>doc 40096</small></td><td class="n">WH_SF</td><td class="d">Scale factor (power of ten) for WH.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40100"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40100<small>doc 40101</small></td><td class="n">DCW</td><td class="d">Total DC input power.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40101)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40101"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40101<small>doc 40102</small></td><td class="n">DCW_SF</td><td class="d">Scale factor (power of ten) for DCW.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40102"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40102<small>doc 40103</small></td><td class="n">TmpCab</td><td class="d">Cabinet temperature.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40106)</td><td>C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40106"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40106<small>doc 40107</small></td><td class="n">Tmp_SF</td><td class="d">Scale factor (power of ten) for Tmp.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40107"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40107<small>doc 40108</small></td><td class="n">St</td><td class="d">SunSpec operating state.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Off; 2 = Sleeping (auto shutdown); 3 = Starting; 4 = Producing normally (MPPT); 5 = Throttled (power reduction); 6 = Shutting down; 7 = Fault; 8 = Standby</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40108"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40108<small>doc 40109</small></td><td class="n">StVnd</td><td class="d">Vendor operating state; the map says it mirrors St.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Off; 2 = Sleeping (auto shutdown); 3 = Starting; 4 = Producing normally (MPPT); 5 = Throttled (power reduction); 6 = Shutting down; 7 = Fault; 8 = Standby</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40121"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40121<small>doc 40122</small></td><td class="n">Nameplate ID</td><td class="d">Model ID of this block.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40122"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40122<small>doc 40123</small></td><td class="n">Nameplate L</td><td class="d">Length of this block in registers.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Registers</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40123"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40123<small>doc 40124</small></td><td class="n">DERTyp</td><td class="d">Device type; this storage map lists 82 (PV with storage).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40124"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40124<small>doc 40125</small></td><td class="n">WRtg</td><td class="d">Rated continuous active power.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40125)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40125"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40125<small>doc 40126</small></td><td class="n">WRtg_SF</td><td class="d">Scale factor (power of ten) for WRtg.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40126"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40126<small>doc 40127</small></td><td class="n">VARtg</td><td class="d">Rated apparent power.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40127)</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40127"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40127<small>doc 40128</small></td><td class="n">VARtg_SF</td><td class="d">Scale factor (power of ten) for VARtg.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40128"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40128<small>doc 40129</small></td><td class="n">VArRtgQ1</td><td class="d">Rated reactive power, quadrant 1.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40132)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40129"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40129<small>doc 40130</small></td><td class="n">VArRtgQ2</td><td class="d">Rated reactive power, quadrant 2.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40132)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40130"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40130<small>doc 40131</small></td><td class="n">VArRtgQ3</td><td class="d">Rated reactive power, quadrant 3.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40132)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40131"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40131<small>doc 40132</small></td><td class="n">VArRtgQ4</td><td class="d">Rated reactive power, quadrant 4.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40132)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40132"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40132<small>doc 40133</small></td><td class="n">VArRtg_SF</td><td class="d">Scale factor (power of ten) for VArRtg.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40133"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40133<small>doc 40134</small></td><td class="n">ARtg</td><td class="d">Rated AC current.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40134)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40134"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40134<small>doc 40135</small></td><td class="n">ARtg_SF</td><td class="d">Scale factor (power of ten) for ARtg.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40135"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40135<small>doc 40136</small></td><td class="n">PFRtgQ1</td><td class="d">Minimum power factor capability, quadrant 1.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40139)</td><td>cos()</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40136"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40136<small>doc 40137</small></td><td class="n">PFRtgQ2</td><td class="d">Minimum power factor capability, quadrant 2.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40139)</td><td>cos()</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40137"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40137<small>doc 40138</small></td><td class="n">PFRtgQ3</td><td class="d">Minimum power factor capability, quadrant 3.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40139)</td><td>cos()</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40138"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40138<small>doc 40139</small></td><td class="n">PFRtgQ4</td><td class="d">Minimum power factor capability, quadrant 4.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40139)</td><td>cos()</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40139"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40139<small>doc 40140</small></td><td class="n">PFRtg_SF</td><td class="d">Scale factor (power of ten) for PFRtg.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40140"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40140<small>doc 40141</small></td><td class="n">WHRtg</td><td class="d">Rated storage energy.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40141)</td><td>Wh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40141"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40141<small>doc 40142</small></td><td class="n">WHRtg_SF</td><td class="d">Scale factor (power of ten) for WHRtg.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40144"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40144<small>doc 40145</small></td><td class="n">MaxChaRte</td><td class="d">Maximum battery charge power.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40145)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40145"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40145<small>doc 40146</small></td><td class="n">MaxChaRte_SF</td><td class="d">Scale factor (power of ten) for MaxChaRte.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40146"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40146<small>doc 40147</small></td><td class="n">MaxDisChaRte</td><td class="d">Maximum battery discharge power.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40147)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40147"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40147<small>doc 40148</small></td><td class="n">MaxDisChaRte_SF</td><td class="d">Scale factor (power of ten) for MaxDisChaRte.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40149"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40149<small>doc 40150</small></td><td class="n">Settings ID</td><td class="d">Model ID of this block.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40150"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40150<small>doc 40151</small></td><td class="n">Settings L</td><td class="d">Length of this block in registers.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Registers</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40151"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40151<small>doc 40152</small></td><td class="n">WMax</td><td class="d">Maximum active power setting.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40171)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40152"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40152<small>doc 40153</small></td><td class="n">VRef</td><td class="d">Reference voltage at the grid connection point.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40172)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40153"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40153<small>doc 40154</small></td><td class="n">VRefOfs</td><td class="d">Voltage offset between grid connection point and inverter.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40173)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40156"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40156<small>doc 40157</small></td><td class="n">VAMax</td><td class="d">Maximum apparent power setting.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40175)</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40157"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40157<small>doc 40158</small></td><td class="n">VArMaxQ1</td><td class="d">Reactive power limit, quadrant 1.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40176)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40158"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40158<small>doc 40159</small></td><td class="n">VArMaxQ2</td><td class="d">Reactive power limit, quadrant 2.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40176)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40159"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40159<small>doc 40160</small></td><td class="n">VArMaxQ3</td><td class="d">Reactive power limit, quadrant 3.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40176)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40160"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40160<small>doc 40161</small></td><td class="n">VArMaxQ4</td><td class="d">Reactive power limit, quadrant 4.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40176)</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40162"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40162<small>doc 40163</small></td><td class="n">PFMinQ1</td><td class="d">Minimum power factor setting, quadrant 1.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40178)</td><td>cos()</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40163"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40163<small>doc 40164</small></td><td class="n">PFMinQ2</td><td class="d">Minimum power factor setting, quadrant 2.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40178)</td><td>cos()</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40164"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40164<small>doc 40165</small></td><td class="n">PFMinQ3</td><td class="d">Minimum power factor setting, quadrant 3.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40178)</td><td>cos()</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40165"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40165<small>doc 40166</small></td><td class="n">PFMinQ4</td><td class="d">Minimum power factor setting, quadrant 4.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40178)</td><td>cos()</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40171"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40171<small>doc 40172</small></td><td class="n">WMax_SF</td><td class="d">Scale factor (power of ten) for WMax.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40172"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40172<small>doc 40173</small></td><td class="n">VRef_SF</td><td class="d">Scale factor (power of ten) for VRef.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40173"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40173<small>doc 40174</small></td><td class="n">VRefOfs_SF</td><td class="d">Scale factor (power of ten) for VRefOfs.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40175"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40175<small>doc 40176</small></td><td class="n">VAMax_SF</td><td class="d">Scale factor (power of ten) for VAMax.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40176"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40176<small>doc 40177</small></td><td class="n">VArMax_SF</td><td class="d">Scale factor (power of ten) for VArMax.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40178"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40178<small>doc 40179</small></td><td class="n">PFMin_SF</td><td class="d">Scale factor (power of ten) for PFMin.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40181"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40181<small>doc 40182</small></td><td class="n">Status ID</td><td class="d">Model ID of this block.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40182"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40182<small>doc 40183</small></td><td class="n">Status L</td><td class="d">Length of this block in registers.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Registers</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40183"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40183<small>doc 40184</small></td><td class="n">PVConn</td><td class="d">PV inverter connection status bits.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Connected; bit 1 = Available; bit 2 = Operating</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40184"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40184<small>doc 40185</small></td><td class="n">StorConn</td><td class="d">Storage connection status bits.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Connected; bit 1 = Available; bit 2 = Operating</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40185"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40185<small>doc 40186</small></td><td class="n">ECPConn</td><td class="d">Grid feed-in status.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Connected to grid (feeding)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40218"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40218<small>doc 40219</small></td><td class="n">TmSrc</td><td class="d"></td><td class="f">STRING[8]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40225"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40225<small>doc 40226</small></td><td class="n">Ris</td><td class="d">Insulation resistance.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40226)</td><td>ohms</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40226"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40226<small>doc 40227</small></td><td class="n">Ris_SF</td><td class="d">Scale factor (power of ten) for Ris.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40227"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40227<small>doc 40228</small></td><td class="n">Controls ID</td><td class="d">Model ID of this block.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40228"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40228<small>doc 40229</small></td><td class="n">Controls L</td><td class="d">Length of this block in registers.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Registers</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40229"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40229<small>doc 40230</small></td><td class="n">Conn_WinTms</td><td class="d">Random start window for connect/disconnect commands.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40230"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40230<small>doc 40231</small></td><td class="n">Conn_RvrtTms</td><td class="d">Fallback timer for the connect/disconnect command; 0 = no fallback.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40231"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40231<small>doc 40232</small></td><td class="n">Conn</td><td class="d">Write 0 for standby (no feed-in), 1 to resume feed-in.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Disconnected (standby); 1 = Connected (feeding grid)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40232"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40232<small>doc 40233</small></td><td class="n">WMaxLimPct</td><td class="d">Active power limit as percent of WMax.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40250)</td><td>% WMax</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40233"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40233<small>doc 40234</small></td><td class="n">WMaxLimPct_WinTms</td><td class="d">Random start window for the power limit.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40234"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40234<small>doc 40235</small></td><td class="n">WMaxLimPct_RvrtTms</td><td class="d">Fallback timer for the power limit; restarts on every Modbus message, 0 = none.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40235"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40235<small>doc 40236</small></td><td class="n">WMaxLimPct_RmpTms</td><td class="d">Ramp time to the new power limit.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40236"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40236<small>doc 40237</small></td><td class="n">WMaxLim_Ena</td><td class="d">Starts (1) or ends (0) the power limit.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Disabled; 1 = Enabled</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40237"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40237<small>doc 40238</small></td><td class="n">OutPFSet</td><td class="d">Fixed power factor setpoint (signed, see sign convention).</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40251)</td><td>cos()</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40238"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40238<small>doc 40239</small></td><td class="n">OutPFSet_WinTms</td><td class="d">Random start window for the power factor setpoint.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40239"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40239<small>doc 40240</small></td><td class="n">OutPFSet_RvrtTms</td><td class="d">Fallback timer for the power factor setpoint; 0 = none.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40240"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40240<small>doc 40241</small></td><td class="n">OutPFSet_RmpTms</td><td class="d">Ramp time to the new power factor.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40241"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40241<small>doc 40242</small></td><td class="n">OutPFSet_Ena</td><td class="d">Starts (1) or ends (0) the fixed power factor mode.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Disabled; 1 = Enabled</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40243"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40243<small>doc 40244</small></td><td class="n">VArMaxPct</td><td class="d">Fixed reactive power as percent of VArMax.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40252)</td><td>% VArMax</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40245"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40245<small>doc 40246</small></td><td class="n">VArPct_WinTms</td><td class="d">Random start window for the reactive power setpoint.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40246"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40246<small>doc 40247</small></td><td class="n">VArPct_RvrtTms</td><td class="d">Fallback timer for the reactive power setpoint; 0 = none.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40247"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40247<small>doc 40248</small></td><td class="n">VArPct_RmpTms</td><td class="d">Ramp time to the new reactive power value.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40248"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40248<small>doc 40249</small></td><td class="n">VArPct_Mod</td><td class="d">Reactive power limit mode (read-only).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">2 = VAr limit as % of VArMax</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40249"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40249<small>doc 40250</small></td><td class="n">VArPct_Ena</td><td class="d">Starts (1) or ends (0) the fixed reactive power mode.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Disabled; 1 = Enabled</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40250"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40250<small>doc 40251</small></td><td class="n">WMaxLimPct_SF</td><td class="d">Scale factor (power of ten) for WMaxLimPct.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40251"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40251<small>doc 40252</small></td><td class="n">OutPFSet_SF</td><td class="d">Scale factor (power of ten) for OutPFSet.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40252"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40252<small>doc 40253</small></td><td class="n">VArPct_SF</td><td class="d">Scale factor (power of ten) for VArPct.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40253"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40253<small>doc 40254</small></td><td class="n">MPPT ID</td><td class="d">Model ID of this block.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40254"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40254<small>doc 40255</small></td><td class="n">MPPT L</td><td class="d">Length of this block in registers.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Registers</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40255"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40255<small>doc 40256</small></td><td class="n">MPPT DCA_SF</td><td class="d">Scale factor (power of ten) for DCA.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40256"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40256<small>doc 40257</small></td><td class="n">MPPT DCV_SF</td><td class="d">Scale factor (power of ten) for DCV.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40257"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40257<small>doc 40258</small></td><td class="n">MPPT DCW_SF</td><td class="d">Scale factor (power of ten) for DCW.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40258"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40258<small>doc 40259</small></td><td class="n">MPPT DCWH_SF</td><td class="d">Scale factor (power of ten) for DCWH.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40261"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40261<small>doc 40262</small></td><td class="n">N</td><td class="d">Number of DC inputs reported in this model.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40263"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40263<small>doc 40264</small></td><td class="n">module/1/ID</td><td class="d">Input number 1.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40264"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40264<small>doc 40265</small></td><td class="n">module/1/IDStr</td><td class="d">Label of DC input 1.</td><td class="f">STRING[16]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40272"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40272<small>doc 40273</small></td><td class="n">module/1/DCA</td><td class="d">DC current of input 1.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40255)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40273"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40273<small>doc 40274</small></td><td class="n">module/1/DCV</td><td class="d">DC voltage of input 1.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40256)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40274"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40274<small>doc 40275</small></td><td class="n">module/1/DCW</td><td class="d">DC power of input 1.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40257)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40283"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40283<small>doc 40284</small></td><td class="n">module/2/ID</td><td class="d">Input number 2.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40284"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40284<small>doc 40285</small></td><td class="n">module/2/IDStr</td><td class="d">Label of DC input 2.</td><td class="f">STRING[16]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40292"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40292<small>doc 40293</small></td><td class="n">module/2/DCA</td><td class="d">DC current of input 2.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40255)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40293"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40293<small>doc 40294</small></td><td class="n">module/2/DCV</td><td class="d">DC voltage of input 2.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40256)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40294"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40294<small>doc 40295</small></td><td class="n">module/2/DCW</td><td class="d">DC power of input 2.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40257)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40303"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40303<small>doc 40304</small></td><td class="n">module/3/ID</td><td class="d">Input number 3.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40304"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40304<small>doc 40305</small></td><td class="n">module/3/IDStr</td><td class="d">Label of input 3, reads StCha 3 (battery charge path).</td><td class="f">STRING[16]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40312"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40312<small>doc 40313</small></td><td class="n">module/3/DCA</td><td class="d">Battery charge current; 0 while discharging.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40255)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40313"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40313<small>doc 40314</small></td><td class="n">module/3/DCV</td><td class="d">Battery port voltage (since fw 1.31; earlier 0 while discharging).</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40256)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40314"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40314<small>doc 40315</small></td><td class="n">module/3/DCW</td><td class="d">Battery charge power; 0 while discharging.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40257)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40323"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40323<small>doc 40324</small></td><td class="n">module/4/ID</td><td class="d">Input number 4.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40324"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40324<small>doc 40325</small></td><td class="n">module/4/IDStr</td><td class="d">Label of input 4, reads StDisCha 4 (battery discharge path).</td><td class="f">STRING[16]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40332"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40332<small>doc 40333</small></td><td class="n">module/4/DCA</td><td class="d">Battery discharge current; 0 while charging.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40255)</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40333"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40333<small>doc 40334</small></td><td class="n">module/4/DCV</td><td class="d">Battery port voltage (since fw 1.31; earlier 0 while charging).</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40256)</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40334"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40334<small>doc 40335</small></td><td class="n">module/4/DCW</td><td class="d">Battery discharge power; 0 while charging.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40257)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40343"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40343<small>doc 40344</small></td><td class="n">Storage ID</td><td class="d">Model ID of this block.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40344"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40344<small>doc 40345</small></td><td class="n">Storage L</td><td class="d">Length of this block in registers.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Registers</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40345"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40345<small>doc 40346</small></td><td class="n">WChaMax</td><td class="d">Reference power for InWRte/OutWRte: max of charge and discharge rating; 0 without battery.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40361)</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40346"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40346<small>doc 40347</small></td><td class="n">WChaGra</td><td class="d">Maximum charge ramp.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40362)</td><td>% WChaMax/sec</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40347"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40347<small>doc 40348</small></td><td class="n">WDisChaGra</td><td class="d">Maximum discharge ramp.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40362)</td><td>% WChaMax/sec</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40348"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40348<small>doc 40349</small></td><td class="n">StorCtl_Mod</td><td class="d">Activates the charge and/or discharge limit window.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">bit 0 = Charge limit (InWRte) active; bit 1 = Discharge limit (OutWRte) active</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40350"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40350<small>doc 40351</small></td><td class="n">MinRsvPct</td><td class="d">Minimum battery reserve, percent of capacity.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40364)</td><td>% WChaMax</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40351"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40351<small>doc 40352</small></td><td class="n">ChaState</td><td class="d">Battery state of charge.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40365)</td><td>% AhrRtg</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40354"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40354<small>doc 40355</small></td><td class="n">ChaSt</td><td class="d">Battery operating status.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Off; 2 = Empty; 3 = Discharging; 4 = Charging; 5 = Full; 6 = Holding; 7 = Testing</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40355"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40355<small>doc 40356</small></td><td class="n">OutWRte</td><td class="d">Discharge limit, percent of WChaMax; negative forces charging.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40368)</td><td>% WChaMax</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40356"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40356<small>doc 40357</small></td><td class="n">InWRte</td><td class="d">Charge limit, percent of WChaMax; negative forces discharging.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 10^SF (HR 40368)</td><td>% WChaMax</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40358"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40358<small>doc 40359</small></td><td class="n">InOutWRte_RvrtTms</td><td class="d">Fallback timer for the charge/discharge window (0-28800 s).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Secs</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40360"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40360<small>doc 40361</small></td><td class="n">ChaGriSet</td><td class="d">Allows or blocks battery charging from the grid.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = PV only (grid charging disabled); 1 = Grid charging enabled</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40361"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40361<small>doc 40362</small></td><td class="n">WChaMax_SF</td><td class="d">Scale factor (power of ten) for WChaMax.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40362"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40362<small>doc 40363</small></td><td class="n">WChaDisChaGra_SF</td><td class="d">Scale factor (power of ten) for WChaDisChaGra.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40364"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40364<small>doc 40365</small></td><td class="n">MinRsvPct_SF</td><td class="d">Scale factor (power of ten) for MinRsvPct.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40365"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40365<small>doc 40366</small></td><td class="n">ChaState_SF</td><td class="d">Scale factor (power of ten) for ChaState.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40368"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40368<small>doc 40369</small></td><td class="n">InOutWRte_SF</td><td class="d">Scale factor (power of ten) for InOutWRte.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40369"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40369<small>doc 40370</small></td><td class="n">End ID</td><td class="d">End-of-map marker, reads 0xFFFF.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40370"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40370<small>doc 40371</small></td><td class="n">End L</td><td class="d">End block length, reads 0.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>Register table from Fronius&#x27; official GEN24 XLSX (gen24-modbus-api-external-docs.zip, linked from the Fronius Modbus TCP open-interfaces page); behaviour and settings from the PDF.</li><li>Addresses assume SunSpec Model Type = int+SF and a battery configured. With float the inverter model is 111/113 and later models move by +10. Without a battery the MPPT model has only inputs 1-2 and the end block follows at 40304. Fronius advises walking the model chain from 40001 rather than hard-coding addresses.</li><li>Word order: neither the PDF nor the XLSX states the order of 32/64-bit values, so they are left out: SID 40001-40002, WH 40094-40095, Evt1/Evt2/EvtVnd1-2 40110-40117, ActWh 40187-40190, StActCtl 40217-40218, Tms 40223-40224, and DCWH/Tms of every MPPT input. The SID is documented as 0x53756E53 &#x27;SunS&#x27;, which suggests high word first, but this is not stated.</li><li>DCA/DCV in the inverter model are left out: GEN24 has several DC inputs, their scale factors are marked not supported, and per-input values are in model 160.</li><li>Registers marked &#x27;not supported&#x27; in the XLSX are left out (Opt, other temperatures, VMax/VMin, ramp settings, model 160 Tmp/DCSt/DCEvt, StorAval, InBatV and similar). VAChaMax (40350) is listed as writable but its scale factor VAChaMax_SF is marked not supported, so it is left out too.</li><li>Many scale factors are &#x27;auto-scaled&#x27; (A, W, VA, VAr, WH, DCW, Ris, model 160): they change at runtime, so read a value and its SF in the same request.</li><li>Unsupported values read as: int16 0x8000, uint16/enum16/bitfield16 0xFFFF, sunssf 0x8000. Phase B/C and line-line points depend on the grid connection.</li><li>Settings model 121 registers are all read-only in the GEN24 map (the Datamanager map marks some writable).</li><li>StVnd is documented as identical to St; the PDF lists SunSpec states 1-8.</li><li>The Smart Meter is published at its own unit ID (default 200, then 201-204) with a separate common block and meter model starting at 40001; not part of this map.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
+Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
+decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF</h2><div class="faq"><details open><summary>What Modbus registers does the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF have?</summary><p>This map lists 162 registers: 162 holding registers. 24 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Fronius numbers SunSpec registers from 40001 and says to send the register number minus one: register 40001 is read at address 40000 (0x9C40). The manual&#x27;s RTU example reads register 40005 (Mn) with address bytes 9C 44 (40004).</p></details><details><summary>What are the minimum Modbus registers to integrate the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF?</summary><p>Start with HR 40069 Inverter ID (Inverter model ID (101/103) - confirms int+SF layout); HR 40083 W (AC power); HR 40084 W_SF (AC power scale factor (auto-scaled)); HR 40107 St (Operating state); HR 40351 ChaState (Battery state of charge); HR 40365 ChaState_SF (SoC scale factor); HR 40232 WMaxLimPct (Active power limit %); HR 40236 WMaxLim_Ena (Enable/disable the power limit); HR 40250 WMaxLimPct_SF (Power limit scale factor).</p></details><details><summary>How do I enable Modbus control of the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF?</summary><p>Inverter web interface &gt; Communication &gt; Modbus: choose TCP Server and/or RTU Server, set SunSpec Model Type (int+SF for this map), and activate &#x27;Allow Control&#x27; for on/off, power reduction, power factor, reactive power and battery commands. &#x27;Restrict Control&#x27; limits control to fixed IP addresses. Writes to models 123/124 raise an exception when control is not allowed.</p></details><details><summary>What happens when the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF loses Modbus communication?</summary><p>Model 123 controls have *_RvrtTms fallback timers (0-28800 s) that restart with every Modbus message; on expiry the control ends and the next-priority mode takes over. 0 (default) keeps the setting until disabled. Model 124 has InOutWRte_RvrtTms (0-28800 s) for the battery window.</p></details><details><summary>Where is the official Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus documentation?</summary><p>The source is Fronius GEN24 Modbus TCP &amp; RTU (operating instructions) + Gen24_Primo_Symo_Inverter_Register_Map_Int&amp;SF_storage_ROW.xlsx (42,0410,2649 (034-28092026)), revision 2026-09, published free by Fronius at https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf.</p></details></div>
+<h2>More Fronius Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/fronius/datamanager-sunspec-int-sf" data-row><span class="k">Solar inverter</span><h3>Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF)</h3><p>Fronius inverters read through a Fronius Datamanager (1.0/2.0 card or Hybridmanager) with SunSpec Model Type set to int+SF; model 124 present on Symo Hybrid.</p><div class="meta">152 registers &middot; 31 writable &middot; TCP/RTU</div><span class="sr-only"> Also known as: Fronius Symo, Fronius Primo, Fronius Galvo, Fronius Symo Hybrid, Fronius IG Plus, Datamanager 2.0</span></a></li></ul>
+<p class="updated">Source: <a href="https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf" rel="nofollow noopener" target="_blank">Fronius GEN24 Modbus TCP &amp; RTU (operating instructions) + Gen24_Primo_Symo_Inverter_Register_Map_Int&amp;SF_storage_ROW.xlsx &middot; 42,0410,2649 (034-28092026) &middot; rev. 2026-09</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:Firstimpactdevelopment@gmail.com">Firstimpactdevelopment@gmail.com</a>.</p>
+  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+  var cp=document.getElementById('copy-em');
+  if(cp){cp.addEventListener('click',function(){
+    var msg=document.getElementById('copy-msg');
+    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
+      return navigator.clipboard.writeText(t);
+    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, then Import map, and paste.';},
+      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
+  });}
+})();
+</script>
+</body>
+</html>

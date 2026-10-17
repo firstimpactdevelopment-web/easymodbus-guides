@@ -1,0 +1,104 @@
+﻿# Accuenergy Acuvim II Series Modbus register map - easymodbus.com - source: https://www.accuenergy.com/wp-content/uploads/Acuvim-II-Power-Meter-User-Manual-1040E1303.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,0000H,00001,Relay 1,"Requires an I/O module with relays. FF00H on, 0000H off.",BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",1,0001H,00002,Relay 2,Requires an I/O module with relays.,BIT,1,,1,0,,Read/write,
+Discrete input,FC02 read,0,0000H,10001,DI1,Requires an I/O module with digital inputs.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,1,0001H,10002,DI2,Requires an I/O module with digital inputs.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,2,0002H,10003,DI3,Requires an I/O module with digital inputs.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,3,0003H,10004,DI4,Requires an I/O module with digital inputs.,BIT,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4093,0FFDH,44094,Frequency selection,,UINT16,1,,1,0,,Read/write,0 = 50 Hz; 1 = 60 Hz
+Holding register,"FC03 read / FC06, FC16 write",4094,0FFEH,44095,Channel 1 communication protocol,0 = Modbus. The BACnet code is printed inconsistently (see notes).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4095,0FFFH,44096,Channel 1 parity,Default 3.,UINT16,1,,1,0,,Read/write,"0 = Even; 1 = Odd; 2 = None, 2 stop bits; 3 = None, 1 stop bit"
+Holding register,"FC03 read / FC06, FC16 write",4096,1000H,44097,Password,0 to 9999.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4097,1001H,44098,Channel 1 address,Modbus address 1 to 247. Default 1.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4099,1003H,44100,Voltage input wiring type,,UINT16,1,,1,0,,Read/write,0 = 3LN; 1 = 1LN; 2 = 2LL; 3 = 3LL; 4 = 1LL
+Holding register,"FC03 read / FC06, FC16 write",4100,1004H,44101,Current input wiring type,,UINT16,1,,1,0,,Read/write,0 = 3CT; 1 = 1CT; 2 = 2CT
+Holding register,"FC03 read / FC06, FC16 write",4104,1008H,44105,CT1,CT primary current in A; range depends on CT type.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4105,1009H,44106,CT2,CT secondary rating; allowed codes depend on meter CT option.,UINT16,1,,1,0,,Read/write,1 = 1 A; 5 = 5 A; 80 = 80 mA; 100 = 100 mV/50 Hz or 100 mA; 200 = 200 mA; 333 = 333 mV
+Holding register,"FC03 read / FC06, FC16 write",4106,100AH,44107,kWh pulse constant,1 to 60000. Default 5000.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4107,100BH,44108,kvarh pulse constant,1 to 60000. Default 5000.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4108,100CH,44109,LCD backlight time,0 to 120.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4109,100DH,44110,Demand interval,1 to 30. Default 15.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4110,100EH,44111,Demand method,,UINT16,1,,1,0,,Read/write,0 = Fixed window; 1 = Sliding window; 2 = Thermal; 3 = Rolling window
+Holding register,"FC03 read / FC06, FC16 write",4111,100FH,44112,Clear demand,Write 1 to clear demand.,UINT16,1,,1,0,,Read/write,1 = Clear
+Holding register,"FC03 read / FC06, FC16 write",4112,1010H,44113,Clear max/min,Write 1 to clear max/min records.,UINT16,1,,1,0,,Read/write,1 = Clear
+Holding register,"FC03 read / FC06, FC16 write",4113,1011H,44114,Clear run hours,Write 1 to clear the run-time counter.,UINT16,1,,1,0,,Read/write,1 = Clear
+Holding register,"FC03 read / FC06, FC16 write",4114,1012H,44115,Current I1 direction,,UINT16,1,,1,0,,Read/write,0 = Positive; 1 = Negative
+Holding register,"FC03 read / FC06, FC16 write",4115,1013H,44116,Current I2 direction,,UINT16,1,,1,0,,Read/write,0 = Positive; 1 = Negative
+Holding register,"FC03 read / FC06, FC16 write",4116,1014H,44117,Current I3 direction,,UINT16,1,,1,0,,Read/write,0 = Positive; 1 = Negative
+Holding register,"FC03 read / FC06, FC16 write",4117,1015H,44118,VAR/PF convention,,UINT16,1,,1,0,,Read/write,0 = IEC; 1 = IEEE
+Holding register,"FC03 read / FC06, FC16 write",4118,1016H,44119,Clear energy,Write 1 to clear energy counters.,UINT16,1,,1,0,,Read/write,1 = Clear
+Holding register,"FC03 read / FC06, FC16 write",4121,1019H,44122,Energy display mode,Changes energy register resolution; see notes.,UINT16,1,,1,0,,Read/write,0 = Primary; 1 = Secondary; 2 = Primary in 0.01 kWh
+Holding register,"FC03 read / FC06, FC16 write",4125,101DH,44126,Basic parameter mode,Selects primary- or secondary-side values in float registers.,UINT16,1,,1,0,,Read/write,0 = Secondary; 1 = Primary
+Holding register,"FC03 read / FC06, FC16 write",4127,101FH,44128,Seal status,0x0A means sealed; anything else unsealed.,UINT16,1,,1,0,,Read,10 = Sealed
+Holding register,"FC03 read / FC06, FC16 write",4142,102EH,44143,System status,New-record flags; clear after reading.,BITMAP16,1,,1,0,,Read,bit 0 = New alarm record; bit 1 = New SOE record
+Holding register,"FC03 read / FC06, FC16 write",4144,1030H,44145,Channel 2 parity,Second port (RS485 or Ethernet module).,UINT16,1,,1,0,,Read/write,"0 = Even; 1 = Odd; 2 = None, 2 stop bits; 3 = None, 1 stop bit"
+Holding register,"FC03 read / FC06, FC16 write",4145,1031H,44146,Channel 2 address,1 to 247. Default 1.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4146,1032H,44147,Alarm record number,0 = none; 1 to 16 = latest alarm record.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4148,1034H-1035H,44149,Run time,"Meter running hours, 0.01 h resolution.",UINT32,2,ABCD,0.01,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",4150,1036H,44151,Modules connection status,1 = I/O module connected.,BITMAP16,1,,1,0,,Read,bit 0 = AXM-IO11; bit 1 = AXM-IO12; bit 2 = AXM-IO21; bit 3 = AXM-IO22; bit 4 = AXM-IO31; bit 5 = AXM-IO32
+Holding register,"FC03 read / FC06, FC16 write",4159,103FH,44160,Clock week,0 to 6.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4160,1040H,44161,Clock year,2000 to 2099.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4161,1041H,44162,Clock month,1 to 12.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4162,1042H,44163,Clock day,1 to 31.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4163,1043H,44164,Clock hour,0 to 23.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4164,1044H,44165,Clock minute,0 to 59.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4165,1045H,44166,Clock second,0 to 59.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16384,4000H-4001H,416385,Frequency,,FLOAT32,2,ABCD,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",16386,4002H-4003H,416387,Phase 1 voltage,"Primary volts only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16388,4004H-4005H,416389,Phase 2 voltage,"Primary volts only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16390,4006H-4007H,416391,Phase 3 voltage,"Primary volts only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16392,4008H-4009H,416393,Average phase voltage,"Primary volts only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16394,400AH-400BH,416395,Line voltage 1-2,"Primary volts only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16396,400CH-400DH,416397,Line voltage 2-3,"Primary volts only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16398,400EH-400FH,416399,Line voltage 3-1,"Primary volts only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16400,4010H-4011H,416401,Average line voltage,"Primary volts only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16402,4012H-4013H,416403,Phase A current,"Primary amps only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",16404,4014H-4015H,416405,Phase B current,"Primary amps only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",16406,4016H-4017H,416407,Phase C current,"Primary amps only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",16408,4018H-4019H,416409,Average phase current,"Primary amps only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",16410,401AH-401BH,416411,Neutral current,"Primary amps only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",16412,401CH-401DH,416413,Phase A power,"Value/1000 = primary kW only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",16414,401EH-401FH,416415,Phase B power,"Value/1000 = primary kW only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",16416,4020H-4021H,416417,Phase C power,"Value/1000 = primary kW only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",16418,4022H-4023H,416419,Total system power,"Value/1000 = primary kW only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",16420,4024H-4025H,416421,Phase A reactive power,"Value/1000 = primary kvar only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kvar,Read,
+Holding register,"FC03 read / FC06, FC16 write",16422,4026H-4027H,416423,Phase B reactive power,"Value/1000 = primary kvar only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kvar,Read,
+Holding register,"FC03 read / FC06, FC16 write",16424,4028H-4029H,416425,Phase C reactive power,"Value/1000 = primary kvar only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kvar,Read,
+Holding register,"FC03 read / FC06, FC16 write",16426,402AH-402BH,416427,Total reactive power,"Value/1000 = primary kvar only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kvar,Read,
+Holding register,"FC03 read / FC06, FC16 write",16428,402CH-402DH,416429,Phase A apparent power,"Value/1000 = primary kVA only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kVA,Read,
+Holding register,"FC03 read / FC06, FC16 write",16430,402EH-402FH,416431,Phase B apparent power,"Value/1000 = primary kVA only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kVA,Read,
+Holding register,"FC03 read / FC06, FC16 write",16432,4030H-4031H,416433,Phase C apparent power,"Value/1000 = primary kVA only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kVA,Read,
+Holding register,"FC03 read / FC06, FC16 write",16434,4032H-4033H,416435,Total apparent power,"Value/1000 = primary kVA only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kVA,Read,
+Holding register,"FC03 read / FC06, FC16 write",16436,4034H-4035H,416437,Phase A power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",16438,4036H-4037H,416439,Phase B power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",16440,4038H-4039H,416441,Phase C power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",16442,403AH-403BH,416443,Total power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",16444,403CH-403DH,416445,Voltage unbalance,Raw value is a fraction; x100 gives percent.,FLOAT32,2,ABCD,100,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16446,403EH-403FH,416447,Current unbalance,Raw value is a fraction; x100 gives percent.,FLOAT32,2,ABCD,100,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16448,4040H-4041H,416449,Load characteristic,Character code of load type.,FLOAT32,2,ABCD,1,0,,Read,67 = C (capacitive); 76 = L (inductive); 82 = R (resistive)
+Holding register,"FC03 read / FC06, FC16 write",16450,4042H-4043H,416451,Power demand,"Value/1000 = primary kW only if 101DH = 1; secondary mode needs PT/CT ratios, see notes.",FLOAT32,2,ABCD,0.001,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",16456,4048H-4049H,416457,Import active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16458,404AH-404BH,416459,Export active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16460,404CH-404DH,416461,Import reactive energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kvarh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16462,404EH-404FH,416463,Export reactive energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kvarh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16464,4050H-4051H,416465,Total active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16468,4054H-4055H,416469,Total reactive energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kvarh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16472,4058H-4059H,416473,Apparent energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kVAh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16474,405AH,416475,THD V1 (V12),,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16475,405BH,416476,THD V2 (V31),,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16476,405CH,416477,THD V3 (V23),,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16477,405DH,416478,THD voltage average,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16478,405EH,416479,THD I1,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16479,405FH,416480,THD I2,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16480,4060H,416481,THD I3,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",16481,4061H,416482,THD current average,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",17920,4600H-4601H,417921,Phase A current demand,"Primary amps only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",17922,4602H-4603H,417923,Phase B current demand,"Primary amps only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",17924,4604H-4605H,417925,Phase C current demand,"Primary amps only if 101DH = 1; default 0 gives secondary-mode values, see notes.",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",17952,4620H-4621H,417953,Phase A import active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17954,4622H-4623H,417955,Phase A export active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17956,4624H-4625H,417957,Phase B import active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17958,4626H-4627H,417959,Phase B export active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17960,4628H-4629H,417961,Phase C import active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17962,462AH-462BH,417963,Phase C export active energy,Scale 0.1 only with energy display mode 1019H = 0 (default); mode 1 is Rx/1000.,UINT32,2,ABCD,0.1,0,kWh,Read/write,

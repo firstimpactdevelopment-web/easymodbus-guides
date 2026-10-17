@@ -1,0 +1,45 @@
+﻿# Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board) Modbus register map - easymodbus.com - source: https://assets.lochinvar.com/damroot/Original/10014/MODB-I-O_100161545_2000014822_Rev_T_(54850).pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,00001,00001,Room Thermostat 1,Enable/heat demand input 1 written by the BAS.,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",1,00002,00002,Room Thermostat 2,,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",2,00003,00003,Room Thermostat 3,,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",4,00005,00005,Tank Thermostat,DHW tank thermostat demand written by the BAS.,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Discrete input,FC02 read,1,10002,10002,Flow Switch,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,2,10003,10003,Gas Pressure Switch,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,3,10004,10004,Louver Proving Switch,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,4,10005,10005,Air Pressure Switch,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,5,10006,10006,Blocked Drain Switch,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,6,10007,10007,Auto Reset High Limit,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,7,10008,10008,Flame,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,8,10009,10009,Room Thermostat 1,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,9,10010,10010,Tank Thermostat,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,23,10024,10024,Room Thermostat 2,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,32,10033,10033,Run-time Contacts,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,33,10034,10034,Alarm Contacts,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,34,10035,10035,CH Pump,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,35,10036,10036,DHW Pump,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,36,10037,10037,Louver Relay,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,37,10038,10038,Gas Valve,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,38,10039,10039,System Pump,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,43,10044,10044,DHW Recirculation Pump,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,0,30001,30001,Discrete Inputs 1-16,Packed copy of discrete inputs 1-16.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,1,30002,30002,Discrete Inputs 17-32,Packed copy of discrete inputs 17-32.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,2,30003,30003,Discrete Inputs 33-48,Packed copy of discrete inputs 33-48.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,4,30005,30005,System Pump Speed,,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,5,30006,30006,Cascade Total Power,Total cascade capacity (100-800 %).,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,6,30007,30007,Cascade Current Power,Current cascade output (0-800 %).,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,8,30009,30009,Outlet Temperature,Raw is degrees C x 10 (manual example: 683 = 68.3 C).,UINT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,9,30010,30010,Inlet Temperature,,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,10,30011,30011,Flue Temperature,,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,11,30012,30012,Firing Rate,,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,12,30013,30013,Boiler Pump Speed,,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,13,30014,30014,Boiler Status Code,What the appliance is doing; 40 = lockout.,UINT16,1,,1,0,,Read,2 = Heat demand blocked: high absolute outlet temperature; 3 = Heat demand blocked: high absolute flue temperature; 4 = Heat demand blocked: high absolute delta T; 8 = Heat demand blocked: low 24 VAC; 9 = Outdoor shutdown; 10 = Blocked: boiler switched off at display; 12 = Blocked: no correct cascade communication; 16 = Service function; 19 = DHW function storage tank; 21 = SH heat demand from room thermostat; 22 = SH heat demand from BMS; 23 = SH heat demand from cascade; 30 = Heat demand from freeze protection; 32 = DHW pump delay; 33 = SH pump delay; 34 = No heat function (after pump delay); 40 = Lockout; 32764 = Busy updating status; 32765 = DHW blocked: no tank sensor; 32766 = Burner control(s) manually shut down; 32767 = Code not present
+Input register,FC04 read,14,30015,30015,Boiler Blocking Code,Reason heat demand is blocked or limited.,UINT16,1,,1,0,,Read,"0 = No blocking; 1 = SH blocking; 2 = Low 24 VAC supply; 3 = General block; 4 = MRHL open; 5 = Boiler switched off (display); 6 = Wrong cascade communication; 7 = High delta T; 8 = High flue temperature; 9 = High outlet temperature; 10 = Service blocking; 12 = DHW blocking, high outlet temperature; 13 = Anti-cycling time; 14 = Storage tank demand blocked, fan problem; 15 = No system sensor with leader control present; 16 = Fan speed limited, high outlet temperature; 17 = Fan min decreased, low flame current; 18 = Max fan speed limited, high delta T; 19 = Max fan speed limited, high flue temperature; 32767 = Code not present"
+Input register,FC04 read,15,30016,30016,Boiler Lockout Code,Lockout reason; only valid while status code is 40.,UINT16,1,,1,0,,Read,161 = Parameters not re-programmed by Lochinvar; 164 = No reset allowed (> 15 minutes); 166 = Auto reset high limit; 167 = Blocked drain; 168 = Louver proving; 169 = Gas pressure switch; 170 = Flow switch; 177 = Flue sensor short; 178 = Flue sensor open; 179 = Inlet sensor short; 180 = Inlet sensor open; 192 = Outlet sensor short; 193 = Outlet sensor open; 204 = CRC EEPROM failed; 205 = EEPROM programmed; 206 = EEPROM programming error; 207 = EEPROM write error; 229 = Watchdog; 230 = Fan low (should be high); 231 = Fan high (should be low); 232 = No flame when running; 233 = No flame after ignition; 234 = Simultaneous output APS and fan; 235 = APS active not closed; 236 = APS active not open; 237 = Flame out of sequence; 239 = Gas valve relay test failed; 240 = MRHL; 32767 = Code not present
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Configuration,Selects which values the BAS supplies instead of the boiler's own inputs.,BITMAP16,1,,1,0,,Read/write,bit 0 = Boiler Enable from BAS; bit 1 = Tank Thermostat from BAS; bit 2 = Rate Command / 0-10V Input / Setpoint Command from BAS; bit 3 = Tank Setpoint from BAS; bit 4 = System Supply Temperature from BAS; bit 5 = Outdoor Temperature from BAS; bit 6 = Tank Temperature from BAS; bit 7 = System Return Temperature from BAS
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Coils,Command word written by the BAS; write the values given in the manual's control-mode tables.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,0-10 Volt Input / Rate Command / Setpoint Command,"Modulation % or setpoint, per the BMS Type setting (0-100).",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Tank Temperature,Tank temperature supplied by the BAS.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Outdoor Temperature,Outdoor temperature supplied by the BAS (-40 to 60 C).,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,System Supply Temperature,System supply temperature supplied by the BAS.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7,40008,40008,DHW Recirculation Temperature,DHW recirculation temperature supplied by the BAS.,INT16,1,,0.1,0,°C,Read/write,

@@ -1,0 +1,611 @@
+{
+ "manufacturer": "Armstrong Fluid Technology",
+ "manufacturer_slug": "armstrong",
+ "model": "Design Envelope 4300 / 4380 with DEPM IVS / DE IVS drive (map v2)",
+ "model_slug": "design-envelope-4300-4380-ivs",
+ "short_model": "Design Envelope 4300/4380",
+ "aliases": [
+  "Design Envelope 4300",
+  "Design Envelope 4380",
+  "DEPM IVS",
+  "DE IVS",
+  "Design Envelope pump controller",
+  "DEPC"
+ ],
+ "equipment_type": "Pump (vertical in-line with integrated VFD)",
+ "applies_to": "Armstrong Design Envelope 4300 and 4380 vertical in-line pumps with DEPM IVS or DE IVS drive, controller firmware v1.17 and newer (Modbus register map version 2).",
+ "summary": "Armstrong's Design Envelope in-line pumps carry an integrated drive and pump controller that speaks Modbus RTU on RS-485 or Modbus TCP over Ethernet. The register map gives speed, voltage, run status and I/O, the engineering units in use, control mode, hand/off/auto, speed limits, a BMS speed command and start/stop. Power, flow, head, current, counters and alarm words are 32-bit in the manual and are left out here because their word order is not documented.",
+ "transport": [
+  "RTU",
+  "TCP"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "1-based",
+  "note": "The manual prints both a 0-based 'start address' and a 1-based 'Modbus register' for every entry (e.g. Actual Speed start address 100, Modbus register 101). The register number is kept as 'documented'; the start address is the wire address."
+ },
+ "default_word_order": null,
+ "firmware": "Controller firmware v1.17 and newer",
+ "source": {
+  "title": "Design Envelope 4300 & 4380 Vertical In-line pumping unit with DEPM IVS and DE IVS drive - Installation and operating instructions",
+  "doc_number": "101.82iec",
+  "revision_date": "2025-11-10",
+  "url": "https://armstrongfluidtechnology.com/~/media/documents/installation_maintenance_parts/installation-and-operating-instructions/101-82_de_4300-4380_vil_withivsdrive_io.pdf?la=en-gb",
+  "pages": "p. 23 (networking setup), pp. 27-29 (Modbus register map version 2)"
+ },
+ "notes": [
+  "Only function codes 03 (read) and 06 (write single) are listed in the map.",
+  "Left out because the manual does not state the 32-bit word order: Motor Power, Motor Input Current, Sensorless Head/Flow, Total Flow/Power, Max Sensorless Flow/Head, Analog In 1/2, the running-hour and kWh counters, the Alarms/Warnings/Acknowledge Warnings bit fields, the mode parameter sets (500-523) and Control Setpoint (539). All are 2-register UINT32 values in the manual; add them only once the word order is confirmed.",
+  "Firmware v1.16 and older use a different register map (version 1, manual p. 24-25); it is not covered here.",
+  "Hand Mode Speed and BMS Set Speed have 0.1 resolution in the unit configured on the controller; the Speed Units register (254) reports whether that is rpm or %. Minimum/Maximum Speed Limit are plain rpm.",
+  "Strings: Pump Name occupies 8 registers and Serial Number 7 registers of ASCII; byte order within each register is not stated."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 100,
+   "documented": "101",
+   "name": "Actual Speed (rpm)",
+   "description": "Current VFD speed.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "rpm",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 101,
+   "documented": "102",
+   "name": "Actual Speed (%)",
+   "description": "Current speed as % of nominal motor speed.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "scale_factor_ref": null,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 104,
+   "documented": "105",
+   "name": "Motor Input Voltage",
+   "description": "Voltage the drive delivers to the motor.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "scale_factor_ref": null,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 115,
+   "documented": "116",
+   "name": "Number of Running Pumps",
+   "description": "Parallel sensorless mode.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 122,
+   "documented": "123",
+   "name": "Status",
+   "description": "Pump run status.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Pump rotating"
+   }
+  },
+  {
+   "table": "holding_register",
+   "address": 200,
+   "documented": "201",
+   "name": "Digital In",
+   "description": "Digital input states.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Digital input 1",
+    "1": "Digital input 2"
+   }
+  },
+  {
+   "table": "holding_register",
+   "address": 205,
+   "documented": "206",
+   "name": "Analog Out 1",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "scale_factor_ref": null,
+   "units": "mA",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 206,
+   "documented": "207",
+   "name": "Digital Out",
+   "description": "Digital output states.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Digital output 1",
+    "1": "Digital output 2"
+   }
+  },
+  {
+   "table": "holding_register",
+   "address": 207,
+   "documented": "208",
+   "name": "Relays",
+   "description": "Relay states.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Relay 1",
+    "1": "Relay 2"
+   }
+  },
+  {
+   "table": "holding_register",
+   "address": 250,
+   "documented": "251",
+   "name": "Flow Units",
+   "description": "Unit used by flow values.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "l/s",
+    "2": "m³/h",
+    "3": "g/m"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 251,
+   "documented": "252",
+   "name": "Pressure Units",
+   "description": "Unit used by head/pressure values.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "bar",
+    "2": "kPa",
+    "3": "psi",
+    "4": "ft",
+    "5": "m"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 252,
+   "documented": "253",
+   "name": "Power Units",
+   "description": "Unit used by power values.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "kW",
+    "2": "hp"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 253,
+   "documented": "254",
+   "name": "Speed Units",
+   "description": "Unit used by hand-mode and BMS speed.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "rpm",
+    "2": "%"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 254,
+   "documented": "255",
+   "name": "Temperature Units",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Degrees Celsius",
+    "2": "Degrees Fahrenheit"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 300,
+   "documented": "301",
+   "name": "Control Mode",
+   "description": "Active control mode (read only).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Parallel",
+    "2": "Inputs",
+    "3": "Remote",
+    "4": "Constant Flow",
+    "5": "Constant Pressure",
+    "6": "Linear Pressure",
+    "7": "Quadratic Pressure",
+    "8": "Quad Pressure Maximum",
+    "9": "Quad Pressure Minimum",
+    "10": "Quadratic Pressure Max/Min"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 301,
+   "documented": "302",
+   "name": "HOA State",
+   "description": "Hand / off / auto selection.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "Hand",
+    "2": "Auto"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 302,
+   "documented": "303",
+   "name": "Active Parameters",
+   "description": "Which parameter set is active.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Standard",
+    "2": "Mode 1 (heating)",
+    "3": "Mode 2 (cooling)"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 303,
+   "documented": "304",
+   "name": "Minimum Speed Limit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "rpm",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 304,
+   "documented": "305",
+   "name": "Maximum Speed Limit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "rpm",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 305,
+   "documented": "306",
+   "name": "Hand Mode Speed",
+   "description": "Hand-mode speed, 0.1 resolution, in the controller's configured speed unit (see register 254).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 306,
+   "documented": "307",
+   "name": "BMS Set Speed",
+   "description": "Speed command from the BMS, 0.1 resolution, in the configured speed unit (see register 254).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 308,
+   "documented": "309",
+   "name": "Start/Stop",
+   "description": "Start or stop the pump.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Stop",
+    "1": "Start"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 900,
+   "documented": "901",
+   "name": "Pump Name / Tag name",
+   "description": "Pump tag as ASCII text.",
+   "data_type": "STRING",
+   "length": 8,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 908,
+   "documented": "909",
+   "name": "Serial Number",
+   "description": "Pump serial number as ASCII text.",
+   "data_type": "STRING",
+   "length": 7,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 915,
+   "documented": "916",
+   "name": "Firmware Version",
+   "description": "Controller firmware major.minor (divide by 100).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 916,
+   "documented": "917",
+   "name": "Hardware Version",
+   "description": "Pump Control Module hardware version.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 917,
+   "documented": "918",
+   "name": "BMS Modbus Version",
+   "description": "Version of the Armstrong Modbus register map.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 918,
+   "documented": "919",
+   "name": "Firmware Patch Version",
+   "description": "Firmware patch number, appended to the firmware version.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  }
+ ],
+ "integration": {
+  "summary": "Select Modbus RTU or TCP/IP on the controller (touchscreen or web server) and set address, baud and parity/stop bits. Control is through HOA State (start address 301), BMS Set Speed (306) and Start/Stop (308); read actual speed (100/101), status (122) and control mode (300). Make sure the controller is set to BMS map version 2.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 308,
+    "why": "Start/stop"
+   },
+   {
+    "table": "holding_register",
+    "address": 306,
+    "why": "BMS speed command"
+   },
+   {
+    "table": "holding_register",
+    "address": 301,
+    "why": "Hand/Off/Auto"
+   },
+   {
+    "table": "holding_register",
+    "address": 100,
+    "why": "Actual speed (rpm)"
+   },
+   {
+    "table": "holding_register",
+    "address": 122,
+    "why": "Run status"
+   },
+   {
+    "table": "holding_register",
+    "address": 300,
+    "why": "Control mode"
+   }
+  ],
+  "enable": "From the touchscreen or the web server (firmware v1.36), choose Modbus RTU or Modbus TCP/IP and enter the Modbus address, baud rate and parity/stop bits. In the web server's Remote mode setting, pick BMS map version 2 to match this register list.",
+  "watchdog": null,
+  "quirks": [
+   "The manual lists a 0-based start address next to a 1-based register number; use the start address on the wire.",
+   "Many values are in the units chosen on the Pump Control Module; read the unit registers (start 250-254) before interpreting them.",
+   "32-bit values are not in this map because their word order is undocumented."
+  ],
+  "setup": [
+   "RS-485: connect the BMS cable to the controller board RS-485 port (A = +, B = -, G = ground); set the terminating-resistor switch to Enabled only on the first and last device of the daisy chain.",
+   "Ethernet: connect the RJ-45 cable to the controller board.",
+   "Select the protocol and enter address, baud and parity/stop bits on the touchscreen or web server."
+  ],
+  "gotchas": [
+   "Check controller firmware first: the register map changed at v1.17.",
+   "Control Mode (300) is read-only over Modbus in map version 2.",
+   "The web server can switch the BMS register map between version 1 and version 2; the addresses here are version 2 only."
+  ]
+ },
+ "verified": {
+  "date": "2026-10-16",
+  "method": "independent re-check of every register against the source PDF",
+  "pages": "pp. 1, 22-23 (RS-485 wiring, networking setup), 27-29 (Modbus register map version 2), 43 (web server BMS version setting)",
+  "corrections": 8,
+  "removed": 0
+ }
+}

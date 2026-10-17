@@ -1,0 +1,554 @@
+{
+ "manufacturer": "Intesis (HMS Networks)",
+ "manufacturer_slug": "intesis",
+ "model": "INMBSDAI001R000 Daikin VRV / Sky Air to Modbus RTU gateway",
+ "model_slug": "inmbsdai001r000",
+ "short_model": "INMBSDAI001R000 Daikin VRV",
+ "aliases": [
+  "INMBSDAI001R000",
+  "Intesis Daikin VRV Modbus"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "One Daikin VRV or Sky Air indoor unit (or group) on the P1P2 bus via INMBSDAI001R000, user manual v1.0.1.",
+ "summary": "Modbus RTU server that connects to the P1P2 remote-controller bus of a Daikin VRV or Sky Air indoor unit. All points are 16-bit holding registers covering on/off, mode, fan, vanes, setpoint, room temperature, alarm and Daikin error code, plus window-contact and virtual-temperature features.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 2,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Tables list a 'protocol address' (base 0) and a 'PLC address' (base 1). The protocol address is the wire address and is what 'documented' holds; PLC tools that add 1 should use the PLC column."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "INMBSDAI001R000 Modbus RTU Gateway - Compatible with VRV and Sky air conditioning systems commercialized by Daikin - User Manual",
+  "doc_number": "User Manual Version 1.0.1",
+  "revision_date": "2024-03-01",
+  "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-inmbsdai001r000.pdf",
+  "pages": "printed pp. 6-12 (PDF pp. 9-15); error codes printed p. 16 onward"
+ },
+ "notes": [
+  "Every register is documented as a 16-bit unsigned holding register and no temperature range in the manual goes below zero, so temperatures are UINT16. The 'no value' marker the manual writes as -32768 is raw 0x8000 (32768) and is listed as an enum entry. Register 5 prints the marker as -32678, an apparent typo, so no enum is given there.",
+  "Temperature scale follows DIP SW4: x1 °C (factory default, stated consistently in this manual), x10 °C or °F (no °F x10). Scale 1 / °C here matches the default only; use 0.1 if x10 is selected.",
+  "Baud rate register 14 lists the selectable rates but not the numeric code for each, so no enum is given.",
+  "The error-code enum (Daikin remote-controller codes) is not reproduced; see the manual's error code table."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0",
+   "name": "AC unit On/Off",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1",
+   "name": "AC unit mode",
+   "description": "Available modes depend on the indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Dry",
+    "3": "Fan",
+    "4": "Cool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "AC unit fan speed",
+   "description": "Available speeds depend on the indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Low",
+    "2": "Mid",
+    "3": "High"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "AC unit up/down vane position",
+   "description": "Available positions depend on the indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Position 1 (Horizontal)",
+    "2": "Position 2 (Horizontal)",
+    "3": "Position 3 (Medium)",
+    "4": "Position 4 (Vertical)",
+    "5": "Position 5 (Vertical)",
+    "10": "Swing"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4",
+   "name": "AC unit temperature setpoint",
+   "description": "Setpoint 16..31 °C (61..88 °F). SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": {
+    "32768": "Not initialised / no value (0x8000; manual writes -32768)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "5",
+   "name": "AC unit temperature reference",
+   "description": "Unit room temperature, 10..38 °C. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6",
+   "name": "Window contact",
+   "description": "Virtual window contact written from Modbus.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Closed",
+    "1": "Open"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Gateway disablement",
+   "description": "Stops the gateway passing commands; stored in NVM.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Gateway enabled",
+    "1": "Gateway disabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "8",
+   "name": "AC remote control disablement",
+   "description": "Blocks the wired remote on the bus; stored in NVM.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Remote control enabled",
+    "1": "Remote control disabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "9",
+   "name": "AC unit operation time",
+   "description": "Hours the unit has been on; stored in NVM.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "h",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "10",
+   "name": "AC unit alarm status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No alarm condition",
+    "1": "Alarm condition"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "11",
+   "name": "Error code",
+   "description": "Daikin error number (manual error table); 65535 = no comms with AC unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error present",
+    "65535": "Communication error with the AC unit"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "13",
+   "name": "Open window switch-off timeout",
+   "description": "Countdown after window opens before unit switches off (0..30, default 30).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "min",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "14",
+   "name": "Modbus RTU baud rate",
+   "description": "Baud rate in use (set on DIP switches).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "15",
+   "name": "Device Modbus server address",
+   "description": "Range 1..63.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 21,
+   "documented": "21",
+   "name": "Maximum number of fan speeds",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "22",
+   "name": "External ambient temperature (Modbus)",
+   "description": "Room temperature written from Modbus (virtual temperature). SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": {
+    "32768": "Not initialised / no value (0x8000; manual writes -32768)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "23",
+   "name": "AC real temperature setpoint",
+   "description": "Setpoint actually applied in the indoor unit. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 26,
+   "documented": "26",
+   "name": "AC unit left/right vane position",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "10": "Swing"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 48,
+   "documented": "48",
+   "name": "Switch value",
+   "description": "Current DIP switch settings.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 49,
+   "documented": "49",
+   "name": "Device ID",
+   "description": "Reads 0x0801.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 50,
+   "documented": "50",
+   "name": "Software version",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 55,
+   "documented": "55",
+   "name": "Under voltage counter",
+   "description": "Range 0..300.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 81,
+   "documented": "81",
+   "name": "Error address",
+   "description": "Address of the indoor unit reporting the error.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 97,
+   "documented": "97",
+   "name": "Block periodic sendings",
+   "description": "1 = only forward Modbus writes that change the value (FW 1.5+).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Non-blocked",
+    "1": "Blocked"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Wire RS-485 A/B, set the address on SW3 and the baud on SW3/SW4, reboot, then read holding registers 0-11 with function 03 and write with function 06. Check SW1: without a Daikin wired remote on the P1P2 bus the gateway must be set as header.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "On/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Fan speed"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Room temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 10,
+    "why": "Alarm flag"
+   },
+   {
+    "table": "holding_register",
+    "address": 11,
+    "why": "Error code"
+   }
+  ],
+  "enable": "No enable step. Set a slave address on SW3 and keep register 7 (gateway disablement) at 0 so Modbus commands reach the unit.",
+  "watchdog": null,
+  "quirks": [
+   "Temperature scale changes with DIP SW4 (x1 °C, x10 °C or °F).",
+   "Function 16 is accepted only with a quantity of one register.",
+   "At most 50 registers per read request.",
+   "8-N-2 by default; 8-N-1 is auto-detected."
+  ],
+  "setup": [
+   "SW1: header/follower role on the P1P2 bus, VRV operation-mode master/slave, and which sensor is the room reference.",
+   "SW3 positions 1-6: slave address (binary). Baud on SW3/SW4 (9600 default).",
+   "SW4: temperature scale and 120 Ω termination.",
+   "DIP changes need a reboot."
+  ],
+  "gotchas": [
+   "Factory SW1 setting is follower, which needs a Daikin wired remote acting as header on P1P2.",
+   "Writing an external temperature to register 22 turns on virtual temperature: the wired remote can no longer change the setpoint and register 23 may differ from register 4.",
+   "Error code 65535 means the gateway lost the indoor unit."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/intesis/inmbsdai001r000",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

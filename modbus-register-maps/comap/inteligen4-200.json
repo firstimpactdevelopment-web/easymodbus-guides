@@ -1,0 +1,283 @@
+{
+ "manufacturer": "ComAp",
+ "manufacturer_slug": "comap",
+ "model": "InteliGen4 200",
+ "model_slug": "inteligen4-200",
+ "short_model": "IG4-200",
+ "aliases": [
+  "InteliGen 4 200",
+  "IG4 200"
+ ],
+ "equipment_type": "Generator controller",
+ "applies_to": "InteliGen4 200 with firmware 2.2.0: the fixed (reserved) registers only; measurement registers depend on the configuration.",
+ "summary": "ComAp's InteliGen4 200 is a gen-set controller for multiple-set (MINT) and single parallel-to-mains (SPtM) applications. Its Modbus RTU and Modbus TCP map is generated per configuration, so values and setpoints must be exported from InteliConfig for each controller. This page covers only the registers ComAp fixes in every controller: the command interface used to start/stop the engine, reset faults and operate breakers, the password and error registers, the alarm list count, and the remote-control data registers.",
+ "transport": [
+  "RTU",
+  "TCP"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": 502
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The guide prints 'register addresses' that go straight into the request: its engine-start example writes register 4207 as 0x106F. It sometimes also gives the Modicon number (44208 for address 4207). Reserved registers can be read with FC03 or FC04 and written with FC06 or FC16."
+ },
+ "default_word_order": "ABCD",
+ "firmware": "2.2.0",
+ "source": {
+  "title": "InteliGen4 200 Global Guide (SW version 2.2.0)",
+  "doc_number": null,
+  "revision_date": "2024-10-03 (revision 3)",
+  "url": "https://www.comap-control.com/productfile/4aa6341a-0ba7-4064-8404-3d048728c9bd",
+  "pages": "pp. 7 and 9 (remote-control warning, document history), 205-207 (user button commands), 232-243 (Modbus chapter: address space, data types, reserved registers, commands, examples), 296-299, 494-497 and 529 (communication setpoints), 595 (remote control values)"
+ },
+ "notes": [
+  "Everything else (measurements, binary I/O, setpoints) is placed by the controller configuration and must be exported from InteliConfig; the guide's examples show such exported addresses but they are not fixed and are not listed here.",
+  "32-bit values are high word first: the guide maps byte 3 (MSB) to the first register, and its engine-start example sends argument 0x01FE0000 as 01FE then 0000.",
+  "Command arguments (write to 4207-4208, then code to 4209): code 1 with 0x01FE0000 = engine start, 0x02FD0000 = engine stop, 0x08F70000 = fault reset, 0x04FB0000 = horn reset. Code 2 with 0x11EE0000 = GCB toggle, 0x11EF0000 = GCB on, 0x11F00000 = GCB off, 0x12ED0000 = MCB toggle, 0x12EE0000 = MCB on, 0x12EF0000 = MCB off.",
+  "A successful command returns a fixed value in 4207-4208 (e.g. 0x000001FF after engine start); 0x00000001 means invalid argument and 0x00000002 means refused (wrong mode, breaker cannot be closed now, etc.).",
+  "User buttons 1-16: code 0x47 (buttons 1-8) or 0x48 (buttons 9-16) with argument 0x00nn0000, where nn = 10 x button number for PULSE, +1 for TOGGLE, +2 for ON, +3 for OFF (e.g. button 1 PULSE = 0x000A0000, button 16 OFF = 0x00A30000; table on p. 206). The button setpoint must be in COMMAND mode.",
+  "Left out: RTC time and date (4200-4203, BCD-coded pairs), the 16 alarm-list records at 4215-4646 (27-register structures holding level, status and a UTF-8 text), and RemoteControlBin_1..16 at 5210-5225 (no data type given).",
+  "The reserved-register table prints '4010' for the 'Not implemented' row between 4209 and 4211; from its position this is 4210.",
+  "The same reserved-register scheme appears in other ComAp controller guides, but only the InteliGen4 200 guide was checked for this page."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 4204,
+   "documented": "4204",
+   "name": "Language Index",
+   "description": "Language used for text over Modbus, e.g. alarm list texts (Unsigned8).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4205,
+   "documented": "4205 - 4206",
+   "name": "Last Application Error",
+   "description": "Detail code to read after the controller answers with exception 04.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4207,
+   "documented": "4207 - 4208",
+   "name": "Command Argument / Return Value",
+   "description": "Write the command argument here; read back the command result.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4209,
+   "documented": "4209",
+   "name": "Command Code",
+   "description": "Writing this register executes the command using the argument in 4207-4208.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Engine / alarm command (start, stop, fault reset, horn reset; chosen by argument)",
+    "2": "Breaker command (GCB/MCB on, off, toggle; chosen by argument)",
+    "71": "User Button 1-8 command (0x47)",
+    "72": "User Button 9-16 command (0x48)"
+   },
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4211,
+   "documented": "4211",
+   "name": "Password",
+   "description": "Write the controller password before commands if the controller requires it.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "W",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4212,
+   "documented": "4212 - 4213",
+   "name": "Communication Status",
+   "description": "Bit meanings are not given in the document.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 4214,
+   "documented": "4214",
+   "name": "Alarm List Item Count",
+   "description": "Number of entries in the alarm list (Unsigned8).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 5000,
+   "documented": "5000",
+   "name": "RemoteControl2B 1",
+   "description": "Free 16-bit value for PLC logic or Force Value.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 5001,
+   "documented": "5001",
+   "name": "RemoteControl2B 2",
+   "description": "Free 16-bit value for PLC logic or Force Value.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  },
+  {
+   "table": "holding_register",
+   "address": 5200,
+   "documented": "5200",
+   "name": "RemoteControlBin",
+   "description": "16 user-defined binary flags for PLC logic.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "offset": 0,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null
+  }
+ ],
+ "integration": {
+  "summary": "Export the configuration-specific Modbus table from InteliConfig for measurements. For control, write the password to 4211 if required, then write the 32-bit argument to 4207-4208 and the command code to 4209 (or all three in one FC16 write), and read 4207-4208 to confirm.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 4207,
+    "why": "Command argument / result"
+   },
+   {
+    "table": "holding_register",
+    "address": 4209,
+    "why": "Command code"
+   },
+   {
+    "table": "holding_register",
+    "address": 4211,
+    "why": "Password for protected commands"
+   },
+   {
+    "table": "holding_register",
+    "address": 4205,
+    "why": "Error detail after exception 04"
+   },
+   {
+    "table": "holding_register",
+    "address": 4214,
+    "why": "Number of active alarm list entries"
+   },
+   {
+    "table": "holding_register",
+    "address": 5000,
+    "why": "Remote analog value into PLC logic"
+   }
+  ],
+  "enable": "RS485 on board: set RS485 Mode to MODBUS (default is Direct) and set RS485 Modbus Speed and RS485 Modbus Mode. CM-RS232-485 module: set COM1 Mode or COM2 Mode to MODBUS plus the matching speed. Ethernet (CM3-Ethernet module required): set MODBUS Server to ENABLED (default disabled). Modbus Server Address (1-247, default 1) sets the unit ID.",
+  "watchdog": "No control watchdog is documented. On Modbus TCP the controller closes a client socket that has been silent longer than MODBUS Client Inactivity Timeout (0-600 s, default 60 s).",
+  "quirks": [
+   "Most of the register map is configuration-dependent; two controllers with different configurations or firmware have different maps.",
+   "32-bit registers are high word first (ABCD).",
+   "Reading an address inside a multi-register object returns exception 02; error 04 details are in 4205-4206.",
+   "Command and argument can be sent as one FC16 write of three registers starting at 4207, or as FC16 (argument) followed by FC06 (code)."
+  ],
+  "setup": [
+   "RS485 Modbus: 9600 bps default (9600-115200), 8N1 default (8N2 and 8E1 selectable), unit ID from Modbus Server Address.",
+   "Modbus TCP: port 502, up to 2 clients at once, needs the CM3-Ethernet module; can run alongside web and direct Ethernet / AirGate connections.",
+   "Use Modbus TCP only on a closed private network; the guide warns it has no authentication or encryption."
+  ],
+  "gotchas": [
+   "Engine start, stop, fault reset and breaker commands act on a real gen-set and switchgear. Disconnect remote control before maintenance and make sure the site is safe before writing 4209.",
+   "Write the argument and code exactly as listed: a different argument with code 1 or 2 is a different action. A refused command (for example when the controller is not in MAN) returns 0x00000002 in 4207-4208.",
+   "Engine start/stop, fault and horn reset and the GCB/MCB toggle commands behave like the front-panel buttons; a toggle acts on whatever state the breaker is in, so prefer the explicit on/off arguments.",
+   "Do not use setpoints for continuous regulation or rewrite them rapidly; ComAp asks for the RemoteControl registers (5000/5001/5200) to be used instead."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/comap/inteligen4-200",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

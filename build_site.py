@@ -21,10 +21,23 @@ between pages is relative.
 
 import html as html_module
 import io
+import json
 import os
 import re
+import sys
+import urllib.error
+import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import register_library
 
 BASE_URL = "https://easymodbus.com"
+
+# IndexNow (Bing, Yandex, Seznam, Naver, ...) instant-recrawl key. The key file
+# is served at BASE_URL/<key>.txt and IS the ownership proof - its contents
+# must equal the key. Google does not consume IndexNow, so this supplements the
+# sitemap. Ping AFTER a deploy is live:  python build_site.py --ping
+INDEXNOW_KEY = "04c386653e0efc62f1f8fdfb5f466541"
 
 # Freshness signal. Bump when guide content is meaningfully revised.
 UPDATED = "2026-09-30"              # ISO, for JSON-LD and sitemap <lastmod>
@@ -231,6 +244,9 @@ def page(slug, title, question, answer_html, body_html, related, description):
 </article>%(rel)s
 
 <footer>
+  <p>Need a device&rsquo;s registers? Browse the free
+  <a href="/modbus-register-maps/index.html">Modbus register-map library</a> &mdash; verified addresses, data types,
+  word order and scaling by manufacturer and model.</p>
   <p>Published alongside <a href="%(prefix)sindex.html">Easy Modbus</a>, a free
   Android app that finds Modbus TCP equipment on a network, helps you work out
   what its registers mean, and exports the result as a CSV.</p>
@@ -463,6 +479,10 @@ GUIDES.append(dict(
     no units and no data types. It is the single most important document in any
     Modbus integration, and it comes from the equipment manufacturer.</p>""",
     body_html="""
+  <p>Verified maps for many common devices are in the free
+  <a href="../modbus-register-maps/index.html">Modbus register-map library</a>,
+  organised by manufacturer and equipment type.</p>
+
   <h2>What a usable register map contains</h2>
   <p>A map that someone can actually work from has at least these columns. If a
   vendor sends you one missing the middle three, send it back.</p>
@@ -534,7 +554,11 @@ GUIDES.append(dict(
     for the submittal documents, or connect to the device and work backwards from
     the values it reports. The last one sounds hardest but is often fastest,
     because it is the only method that does not depend on someone else answering an
-    email.</p>""",
+    email.</p>
+    <p>Before any of that, check the free
+    <a href="../modbus-register-maps/index.html">Modbus register-map library</a>: it has
+    verified maps for common meters, drives, generator controllers, inverters and HVAC
+    equipment, ready to import into Easy Modbus.</p>""",
     body_html="""
   <h2>1. The manufacturer's website</h2>
   <p>Search for the exact model number from the equipment label plus the word
@@ -3396,6 +3420,16 @@ footer a{color:var(--mut); text-decoration:underline}
 
 <section class="band">
   <div class="wrap">
+    <h2>Register maps</h2>
+    <p>A device&rsquo;s Modbus registers are useless without its register map. The
+    <a href="modbus-register-maps/index.html">free Modbus register-map library</a> has verified maps for
+    power meters, generator controllers, drives, solar inverters, boilers, pumps and HVAC equipment
+    &mdash; each with 0-based addresses, data types, word order and scaling, ready to open in Easy Modbus.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
     <h2>Free tools</h2>
     <p>Quick browser calculators &mdash; nothing is uploaded, and they do the same
     arithmetic the app does on the phone.</p>
@@ -3974,7 +4008,31 @@ NOT_FOUND = """<!doctype html>
 """
 
 
-def main():
+def ping_indexnow(urls):
+    """Tell IndexNow-consuming engines (Bing/Yandex/Seznam/Naver) to recrawl.
+    Safe to call repeatedly; run it after a deploy is live."""
+    payload = json.dumps({
+        "host": "easymodbus.com",
+        "key": INDEXNOW_KEY,
+        "keyLocation": "%s/%s.txt" % (BASE_URL, INDEXNOW_KEY),
+        "urlList": urls,
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        "https://api.indexnow.org/indexnow", data=payload,
+        headers={"Content-Type": "application/json; charset=utf-8"}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            print("IndexNow: submitted %d URLs -> HTTP %d (200/202 = accepted)" % (len(urls), resp.status))
+    except urllib.error.HTTPError as e:
+        print("IndexNow: HTTP %d %s (422 = key/URL mismatch; ensure %s.txt is deployed)" % (e.code, e.reason, INDEXNOW_KEY))
+    except Exception as e:  # never fail the build over a ping
+        print("IndexNow: ping skipped/failed - %s" % e)
+
+
+def main(ping=False):
+    # Modbus register-map library (register_library.py, data in register_data/).
+    lib_paths, lib_llms = register_library.build(write)
+
     for g in GUIDES:
         write(
             g["slug"] + ".html",
@@ -4039,7 +4097,8 @@ def main():
     # sitemap + robots so crawlers and agents can enumerate the whole set
     urls = (["index.html", "privacy.html", "pc-privacy.html", "terms.html"]
             + [t["slug"] + ".html" for t in TOOLS]
-            + [g["slug"] + ".html" for g in GUIDES])
+            + [g["slug"] + ".html" for g in GUIDES]
+            + lib_paths)
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
@@ -4062,7 +4121,13 @@ def main():
         "- [%s](%s/%s): %s" % (t["question"], BASE_URL, t["slug"], t["description"])
         for t in TOOLS
     )
-    write("llms.txt", LLMS % {"guides": llm_links, "tools": tool_llm_links})
+    write("llms.txt", LLMS % {"guides": llm_links, "tools": tool_llm_links} + "\n".join(lib_llms) + "\n")
+
+    # IndexNow key file (its contents ARE the ownership proof) + optional ping.
+    write(INDEXNOW_KEY + ".txt", INDEXNOW_KEY + "\n")
+    if ping:
+        ping_indexnow([BASE_URL + "/" if _to_clean_url(u) == "/" else BASE_URL + "/" + _to_clean_url(u)
+                       for u in urls])
 
     # Custom-domain and hosting files for GitHub Pages.
     write("CNAME", "easymodbus.com\n")
@@ -4078,4 +4143,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(ping="--ping" in sys.argv)

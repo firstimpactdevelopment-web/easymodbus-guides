@@ -1,0 +1,59 @@
+﻿# AERCO C-More Boiler Controller (Benchmark / KC series) Modbus register map - easymodbus.com - source: https://www.aerco.com/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/58215-source/639112726810000000/omm-0035-0b-gf-114-modbus-communications-manual-05-18-12-0.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,0 (0x0000),30001,Default Message Display Code,Current display status/fault message (codes 1-64).,UINT16,1,,1,0,,Read,1 = DISABLED; 2 = STANDBY; 3 = DEMAND DELAY; 4 = PURGING; 5 = IGNITION TRIAL; 6 = FLAME PROVEN; 7 = WARMUP; 8 = HIGH WATER TEMP SWITCH OPEN; 9 = LOW WATER LEVEL; 10 = LOW GAS PRESSURE; 11 = HIGH GAS PRESSURE; 12 = INTERLOCK OPEN; 13 = DELAYED INTERLOCK OPEN; 14 = AIRFLOW FAULT DURING PURGE; 15 = SSOV FAULT DURING PURGE; 16 = PRG SWTCH OPEN DURING PURGE; 17 = IGN SWTCH OPEN DURING IGNITION; 18 = AIRFLOW FAULT DURING IGN; 19 = AIRFLOW FAULT DURING RUN; 20 = SSOV FAULT DURING IGN; 21 = SSOV FAULT DURING RUN; 22 = FLAME LOSS DURING IGN; 23 = FLAME LOSS DURING RUN; 24 = HIGH EXHAUST TEMPERATURE; 25 = LOSS OF POWER; 26 = LOSS OF SENSOR; 27 = LOSS OF SIGNAL; 28 = HIGH O2 LEVEL; 29 = LOW O2 LEVEL; 30 = HIGH CO LEVEL; 31 = SSOV RELAY FAILURE; 32 = RESIDUAL FLAME; 33 = HEAT DEMAND FAILURE; 34 = IGN SWTCH CLOSED DURING PURGE; 35 = PRG SWTCH CLOSED DURING IGNITION; 36 = SSOV SWITCH OPEN; 37 = IGNITION BOARD COMM FAULT; 38 = WAIT; 39 = DIRECT DRIVE SIGNAL FAULT; 40 = REMOTE SETPT SIGNAL FAULT; 41 = OUTDOOR TEMP SENSOR FAULT; 42 = OUTLET TEMP SENSOR FAULT; 43 = FFWD TEMP SENSOR FAULT; 44 = HIGH WATER TEMPERATURE; 45 = LINE VOLTAGE OUT OF PHASE; 46 = STEPPER MOTOR FAILURE; 47 = SETPT LIMITING ACTIVE; 48 = MODBUS COMM FAULT; 49 = WAIT IGNITION RETRY; 50 = WAIT FAULT PURGE; 51 = WAIT RETRY PAUSE; 52 = EXHAUST TEMP SENSOR SHORT; 53 = EXHAUST TEMP SENSOR OPEN; 54 = WARNING EXHAUST TEMP HIGH; 55 = EXHAUST TEMP HIGH; 56 = INLET WATER TEMP SENSOR SHORT; 57 = INLET WATER TEMP SENSOR OPEN; 58 = WARNING IN WATER TEMP HIGH; 59 = WARNING IN WATER TEMP LOW; 60 = INLET GAS PRESS SENSOR OPEN; 61 = GAS PLATE DP SENSOR OPEN; 62 = INLET WATER FLOW SENSOR OPEN; 63 = WARNING IN WTR FLOW LOW; 64 = INLET WATER HIGH FLOW
+Input register,FC04 read,1,1 (0x0001),30002,Unit Status,,UINT16,1,,1,0,,Read,0 = Disabled; 1 = Standby; 2 = Manual; 3 = Remote; 4 = Auto; 5 = Fault
+Input register,FC04 read,2,2 (0x0002),30003,Outlet Temp,Outlet temperature as DEGREES_1 counts (0-1000); °F = floor((counts×230+500)/1000)+20.,UINT16,1,,1,0,counts,Read,
+Input register,FC04 read,3,3 (0x0003),30004,Inlet Temp,"Inlet temperature, DEGREES_1 counts; °F = floor((counts×230+500)/1000)+20.",UINT16,1,,1,0,counts,Read,
+Input register,FC04 read,4,4 (0x0004),30005,Aux Temp,"Aux temperature, DEGREES_1 counts; °F = floor((counts×230+500)/1000)+20.",UINT16,1,,1,0,counts,Read,
+Input register,FC04 read,5,5 (0x0005),30006,Outdoor Temp,"Outdoor temperature, DEGREES_2 counts; °F = floor((counts×330+500)/1000)-80.",UINT16,1,,1,0,counts,Read,
+Input register,FC04 read,6,6 (0x0006),30007,Exhaust Temp,Printed as DEGREES_2 (exhaust log uses DEGREES_3); °F = floor((counts×330+500)/1000)-80.,UINT16,1,,1,0,counts,Read,
+Input register,FC04 read,7,7 (0x0007),30008,FFWD Temp,"Feed-forward (header) temperature, DEGREES_1 counts; °F = floor((counts×230+500)/1000)+20.",UINT16,1,,1,0,counts,Read,
+Input register,FC04 read,8,8 (0x0008),30009,Fire Rate Out,Firing rate output (0-100).,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,9,9 (0x0009),30010,O2 Level,0-25 %.,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,10,10 (0x000A),30011,CO Level,0-500 ppm.,UINT16,1,,1,0,ppm,Read,
+Input register,FC04 read,11,11 (0x000B),30012,Run Cycles,"Low word at 11, high word (0-15) at 12; range 0-999,999.",UINT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,13,13 (0x000D),30014,Run Hours,"Low word at 13, high word (0-15) at 14; range 0-999,999.",UINT32,2,CDAB,1,0,h,Read,
+Input register,FC04 read,15,15 (0x000F),30016,Flame Strength,,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,16,16 (0x0010),30017,Active Set point,DEGREES_1 counts; °F = floor((counts×230+500)/1000)+20.,UINT16,1,,1,0,counts,Read,
+Input register,FC04 read,17,17 (0x0011),30018,Fire Rate In,,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,18,18 (0x0012),30019,Manual Fire Rate,Only meaningful in Manual mode from the front panel.,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,19,19 (0x0013),30020,Comm Address,Modbus address 0-127; 0 (default) disables Modbus on the controller.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,20,20 (0x0014),30021,Software Version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,23,23 (0x0017),30024,Fault Log Code,Fault code of the selected fault-log entry.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,24,24 (0x0018),30025,Fault Log Cycle,Cycle count of the selected fault-log entry (low word first).,UINT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,26,26 (0x001A),30027,Fault Log Date,"Date of the selected fault-log entry, 1 count per day.",UINT16,1,,1,0,days,Read,
+Input register,FC04 read,27,27 (0x001B),30028,Fault Log Time,Minutes since midnight (0-1439).,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,0 (0x0000),40001,Net Remote Set Point,Remote Setpoint mode only; DEGREES_1 counts; °F = floor((counts×230+500)/1000)+20.,UINT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,1 (0x0001),40002,Net Direct Drive,Fire rate from the network; writable only in Direct Drive mode.,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,2 (0x0002),40003,Modbus Password,Security password for the RS-485 Modbus port (default 0).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,3 (0x0003),40004,Password,Security password for the RS-232 front-panel port (default 0).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,4 (0x0004),40005,Internal Set Point,DEGREES_1 counts (default 130 °F); °F = floor((counts×230+500)/1000)+20.,UINT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,6 (0x0006),40007,Time,"Controller clock, minutes since midnight (0-1439).",UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7,7 (0x0007),40008,Date,"Controller date, days since 1 Jan 2000.",UINT16,1,,1,0,days,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8,8 (0x0008),40009,Unit of Temp,Display unit (default °F).,UINT16,1,,1,0,,Read/write,0 = Degrees Fahrenheit; 1 = Degrees Celsius
+Holding register,"FC03 read / FC06, FC16 write",9,9 (0x0009),40010,Baud Rate,RS-232 front-panel port only (default 9.6k).,UINT16,1,,1,0,,Read/write,0 = 2400; 1 = 4800; 2 = 9600; 3 = 19200
+Holding register,"FC03 read / FC06, FC16 write",10,10 (0x000A),40011,Unit Type,,UINT16,1,,1,0,,Read/write,0 = Boiler; 1 = Water Heater
+Holding register,"FC03 read / FC06, FC16 write",11,11 (0x000B),40012,Unit Size,,UINT16,1,,1,0,,Read/write,0 = 0.5 MBTU; 1 = 1 MBTU; 2 = 1.5 MBTU; 3 = 2 MBTU; 4 = 2.5 MBTU; 5 = 3 MBTU
+Holding register,"FC03 read / FC06, FC16 write",12,12 (0x000C),40013,Boiler Mode,Control mode (default Constant Setpt).,UINT16,1,,1,0,,Read/write,0 = Constant Setpt; 1 = Remote Setpt; 2 = Direct Drive; 3 = Combo Unit; 4 = Outdoor Reset
+Holding register,"FC03 read / FC06, FC16 write",13,13 (0x000D),40014,Remote Signal,Source of the remote signal; Network = Modbus.,UINT16,1,,1,0,,Read/write,0 = 4-20 mA / 1-5 V; 1 = 0-20 mA / 0-5 V; 2 = PWM Input; 3 = Network
+Holding register,"FC03 read / FC06, FC16 write",14,14 (0x000E),40015,Bldg Ref Temp,"Outdoor-reset reference, DEGREES_1 counts; °F = floor((counts×230+500)/1000)+20.",UINT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",15,15 (0x000F),40016,Reset Ratio,Outdoor-reset ratio 0.1-9.9 (counts = ratio x 10; default 1.2).,UINT16,1,,0.1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16,16 (0x0010),40017,Outdoor Sensor Enable,,UINT16,1,,1,0,,Read/write,0 = False; 1 = True
+Holding register,"FC03 read / FC06, FC16 write",17,17 (0x0011),40018,System Start Temp,DEGREES_2 counts (default 60 °F); °F = floor((counts×330+500)/1000)-80.,UINT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",18,18 (0x0012),40019,Set Point Lo Limit,DEGREES_1 counts (default 60 °F); °F = floor((counts×230+500)/1000)+20.,UINT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",19,19 (0x0013),40020,Set Point Hi Limit,DEGREES_1 counts (default 200 °F); °F = floor((counts×230+500)/1000)+20.,UINT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20,20 (0x0014),40021,Temp Hi Limit,"Outlet limit, DEGREES_1 counts (default 210 °F); °F = floor((counts×230+500)/1000)+20.",UINT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",21,21 (0x0015),40022,Max Fire Rate,40-100 % (default 100).,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",22,22 (0x0016),40023,Pump Delay Timer,0-30 min.,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",23,23 (0x0017),40024,Aux Start On Delay,0-120 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",24,24 (0x0018),40025,Failsafe Mode,Action on loss of the remote/Modbus signal.,UINT16,1,,1,0,,Read/write,0 = Shutdown; 1 = Constant Setpoint
+Holding register,"FC03 read / FC06, FC16 write",25,25 (0x0019),40026,Low Fire Timer,2-60 s (default 2).,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",26,26 (0x001A),40027,Prop Band,"Proportional band, ABS_DEG_1 counts (a temperature difference); see notes for conversion.",INT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",27,27 (0x001B),40028,Integral Gain,0.00-2.00.,UINT16,1,,0.01,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28,28 (0x001C),40029,Derivative Time,0.00-2.00 min.,UINT16,1,,0.01,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",29,29 (0x001D),40030,Min Load Adjust,Water heater only; ABS_DEG_1 counts (temperature difference); see notes for conversion.,INT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",30,30 (0x001E),40031,Max Load Adjust,Water heater only; ABS_DEG_1 counts (temperature difference); see notes for conversion.,INT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",31,31 (0x001F),40032,Outlet Feedback,Water heater only (default On).,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",60,60 (0x003C),40061,Set Point Limiting,,UINT16,1,,1,0,,Read/write,0 = Disabled; 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",61,61 (0x003D),40062,Set Point Limit Band,ABS_DEG_1 counts (temperature difference); see notes for conversion.,INT16,1,,1,0,counts,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",67,67 (0x0043),40068,Sensor Log Interval,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = 1 min; 2 = 5 min; 3 = 15 min; 4 = 30 min; 5 = 1 h; 6 = 6 h; 7 = 12 h; 8 = 24 h

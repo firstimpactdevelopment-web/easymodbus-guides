@@ -1,0 +1,129 @@
+﻿"# Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500 Modbus register map - easymodbus.com - source: https://api.grundfos.com/literature/Grundfosliterature-6012934.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,00001,40001,SlaveMinimumReplyDelay,Extra reply delay added by the CIM 200 (0-10000 ms).,UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,00003,40003,SoftwareDefinedModbusAddress,Slave address used only in software-defined mode (CIM 200).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,00004,40004,SoftwareDefinedBitRate,Baud rate used only in software-defined mode (CIM 200).,UINT16,1,,1,0,,Read/write,0 = 1200; 1 = 2400; 2 = 4800; 3 = 9600; 4 = 19200; 5 = 38400
+Holding register,"FC03 read / FC06, FC16 write",4,00005,40005,AutoAckControlBits,1 = CIM lowers triggered control bits automatically.,UINT16,1,,1,0,,Read/write,0 = Disabled; 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",8,00009,40009,SoftwareDefinedParity,Parity used only in software-defined mode (CIM 200).,UINT16,1,,1,0,,Read/write,0 = None; 1 = Even; 2 = Odd
+Holding register,"FC03 read / FC06, FC16 write",9,00010,40010,SoftwareDefinedStopBit,Stop bits used only in software-defined mode (CIM 200).,UINT16,1,,1,0,,Read/write,0 = No stop bit; 1 = 1 stop bit; 2 = 2 stop bits
+Holding register,"FC03 read / FC06, FC16 write",11,00012,40012,Watchdog,Comm-loss timeout; 0 disables. On timeout the booster reverts to Local mode.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",23,00024,40024,ActualModbusAddress,Slave address currently in use.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,00030,40030,UnitFamily,Product family code (e.g. 21 = Hydro/Control MPC).,UINT16,1,,1,0,,Read,17 = Hydro Multi-E; 21 = Hydro/Control MPC; 38 = Circulator twin pump; 39 = Multi pump
+Holding register,"FC03 read / FC06, FC16 write",30,00031,40031,UnitType,Product type within the family (see manual).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",100,00101,40101,ControlRegister,"Remote/local, start/stop, reset and counter-reset command bits.",BITMAP16,1,,1,0,,Read/write,"bit 0 = RemoteAccessReq (1 = remote); bit 1 = OnOffReq (1 = start, 0 = stop); bit 2 = ResetAlarm (rising edge); bit 4 = CopyToLocal (Multi-E/TPED model H+, MAGNA3-D); bit 5 = ResetAccCounters (volume and energy)"
+Holding register,"FC03 read / FC06, FC16 write",101,00102,40102,ControlMode,Requested control mode; support varies by booster type.,UINT16,1,,1,0,,Read/write,0 = Constant speed; 1 = Constant frequency; 3 = Constant head; 4 = Constant pressure; 5 = Constant differential pressure; 6 = Proportional pressure; 7 = Constant flow; 8 = Constant temperature; 9 = Constant temp. difference; 10 = Constant level; 128 = AUTOadapt (automatic adaption for DDD); 129 = FLOWadapt; 130 = Closed-loop sensor
+Holding register,"FC03 read / FC06, FC16 write",102,00103,40103,OperationMode,Requested operating mode; only acts when OnOffReq is On.,UINT16,1,,1,0,,Read/write,0 = Auto-control; 4 = OpenLoopMin; 6 = OpenLoopMax
+Holding register,"FC03 read / FC06, FC16 write",103,00104,40104,Setpoint,Closed loop: % of sensor max or setpoint range; open loop: % of performance or nominal frequency.,UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",104,00105,40105,ControlPump1,"Force pump 1 (Multi-B, MPC, GENIECON, DDD).",UINT16,1,,1,0,,Read/write,0 = Auto-control (by booster system); 1 = Forced start; 2 = Forced stop
+Holding register,"FC03 read / FC06, FC16 write",105,00106,40106,ControlPump2,Force pump 2.,UINT16,1,,1,0,,Read/write,0 = Auto-control (by booster system); 1 = Forced start; 2 = Forced stop
+Holding register,"FC03 read / FC06, FC16 write",106,00107,40107,ControlPump3,Force pump 3.,UINT16,1,,1,0,,Read/write,0 = Auto-control (by booster system); 1 = Forced start; 2 = Forced stop
+Holding register,"FC03 read / FC06, FC16 write",107,00108,40108,ControlPump4,Force pump 4.,UINT16,1,,1,0,,Read/write,0 = Auto-control (by booster system); 1 = Forced start; 2 = Forced stop
+Holding register,"FC03 read / FC06, FC16 write",108,00109,40109,ControlPump5,"Force pump 5 (MPC, GENIECON, DDD).",UINT16,1,,1,0,,Read/write,0 = Auto-control (by booster system); 1 = Forced start; 2 = Forced stop
+Holding register,"FC03 read / FC06, FC16 write",109,00110,40110,ControlPump6,"Force pump 6 (MPC, GENIECON, DDD).",UINT16,1,,1,0,,Read/write,0 = Auto-control (by booster system); 1 = Forced start; 2 = Forced stop
+Holding register,"FC03 read / FC06, FC16 write",114,00115,40115,SetPropControlReduction,Reduction in proportional-pressure mode.,UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",115,00116,40116,SetPropControlFlowMax,Manual max flow in proportional-pressure mode.,UINT16,1,,0.1,0,m³/h,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",116,00117,40117,ControlPilotpump,"Force the pilot pump (MPC, GENIECON).",UINT16,1,,1,0,,Read/write,0 = Auto-control (by booster system); 1 = Forced start; 2 = Forced stop
+Holding register,"FC03 read / FC06, FC16 write",117,00118,40118,ControlBackuppump,"Force the backup pump (MPC, GENIECON).",UINT16,1,,1,0,,Read/write,0 = Auto-control (by booster system); 1 = Forced start; 2 = Forced stop
+Holding register,"FC03 read / FC06, FC16 write",129,00130,40130,Control.RemoteSensor1,Remote sensor 1 value written to MPC.,UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",130,00131,40131,Control.RemoteSensor2,Remote sensor 2 value written to MPC.,UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",200,00201,40201,SystemStatus,Booster mode and state flags.,BITMAP16,1,,1,0,,Read,bit 1 = CopyToLocal enabled; bit 2 = ResetAccCountersAck; bit 3 = ResetAlarmAck; bit 4 = SetpointInfluence active; bit 5 = AtMaxPower; bit 6 = Rotation (any pump running); bit 8 = AccessMode (1 = remote); bit 9 = OnOff (1 = on); bit 10 = Alarm; bit 11 = Warning; bit 13 = AtMaxSpeed; bit 15 = AtMinSpeed
+Holding register,"FC03 read / FC06, FC16 write",201,00202,40202,ProcessFeedback,"Actual feedback, % of sensor max (closed loop) or of performance (open loop).",UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",202,00203,40203,ControlMode (actual),Active control mode.,UINT16,1,,1,0,,Read,0 = Constant speed; 1 = Constant frequency; 3 = Constant head; 4 = Constant pressure; 5 = Constant differential pressure; 6 = Proportional pressure; 7 = Constant flow; 8 = Constant temperature; 9 = Constant temp. difference; 10 = Constant level; 128 = AUTOadapt (automatic adaption for DDD); 129 = FLOWadapt; 130 = Closed-loop sensor
+Holding register,"FC03 read / FC06, FC16 write",203,00204,40204,OperationMode (actual),Active operating mode.,UINT16,1,,1,0,,Read,0 = Auto-control; 4 = OpenLoopMin; 6 = OpenLoopMax
+Holding register,"FC03 read / FC06, FC16 write",204,00205,40205,AlarmCode,Active booster system alarm code; pump alarms are passed through from the device.,UINT16,1,,1,0,,Read,"3 = External fault signal; 10 = Communication fault, pump; 25 = Setup conflict; 28 = Battery low; 68 = Media temperature too high in pipe; 80 = Hardware fault, IO 351 pump module / I/O module; 83 = Verification error, EEPROM parameter area; 87 = Multi sensor value exceeds limit (min/max); 88 = Sensor fault, general measuring sensor; 89 = Signal fault, closed-loop feedback sensor; 91 = Signal fault, temperature sensor 1; 93 = Fall-back sensor signal fault; 133 = Controlled I/O conflict; 143 = Multi sensor sensor signal fault; 157 = Real-time clock error; 159 = CIM module connection to product lost; 161 = Sensor supply fault, 5 V; 162 = Sensor supply fault, 24 V; 165 = Signal fault, analog input 1; 166 = Signal fault, analog input 2; 167 = Signal fault, analog input 3; 175 = Signal fault, temperature sensor 2; 190 = Limit exceeded, supervised item 1; 191 = Limit exceeded, supervised item 2; 193 = Sensor limit 4 exceeded / Low level; 203 = Alarm on all pumps; 204 = Inconsistency between sensors; 205 = Level/float switch sequence inconsistency; 208 = Operation outside performance range; 210 = Overpressure; 211 = Underpressure; 213 = VFD not ready; 214 = Water shortage; 215 = Soft pressure buildup time-out; 216 = Pilot pump alarm; 219 = Pressure relief not adequate; 231 = Ethernet: No IP address from DHCP server; 232 = Ethernet: Auto-disabled due to misuse; 236 = Pump fault; 248 = Fault, battery/UPS; 249 = User defined event 1 triggered; 250 = User defined event 2 triggered; 253 = SMS data not received within time; 254 = Water pipe system model data inconsistency"
+Holding register,"FC03 read / FC06, FC16 write",205,00206,40206,WarningCode,Active booster system warning code.,UINT16,1,,1,0,,Read,"3 = External fault signal; 10 = Communication fault, pump; 25 = Setup conflict; 28 = Battery low; 68 = Media temperature too high in pipe; 80 = Hardware fault, IO 351 pump module / I/O module; 83 = Verification error, EEPROM parameter area; 87 = Multi sensor value exceeds limit (min/max); 88 = Sensor fault, general measuring sensor; 89 = Signal fault, closed-loop feedback sensor; 91 = Signal fault, temperature sensor 1; 93 = Fall-back sensor signal fault; 133 = Controlled I/O conflict; 143 = Multi sensor sensor signal fault; 157 = Real-time clock error; 159 = CIM module connection to product lost; 161 = Sensor supply fault, 5 V; 162 = Sensor supply fault, 24 V; 165 = Signal fault, analog input 1; 166 = Signal fault, analog input 2; 167 = Signal fault, analog input 3; 175 = Signal fault, temperature sensor 2; 190 = Limit exceeded, supervised item 1; 191 = Limit exceeded, supervised item 2; 193 = Sensor limit 4 exceeded / Low level; 203 = Alarm on all pumps; 204 = Inconsistency between sensors; 205 = Level/float switch sequence inconsistency; 208 = Operation outside performance range; 210 = Overpressure; 211 = Underpressure; 213 = VFD not ready; 214 = Water shortage; 215 = Soft pressure buildup time-out; 216 = Pilot pump alarm; 219 = Pressure relief not adequate; 231 = Ethernet: No IP address from DHCP server; 232 = Ethernet: Auto-disabled due to misuse; 236 = Pump fault; 248 = Fault, battery/UPS; 249 = User defined event 1 triggered; 250 = User defined event 2 triggered; 253 = SMS data not received within time; 254 = Water pipe system model data inconsistency"
+Holding register,"FC03 read / FC06, FC16 write",207,00208,40208,PumpsPresent,Which pumps are present.,BITMAP16,1,,1,0,,Read,bit 0 = Pump 1; bit 1 = Pump 2; bit 2 = Pump 3; bit 3 = Pump 4; bit 4 = Pump 5; bit 5 = Pump 6; bit 6 = Pilot pump; bit 7 = Backup pump
+Holding register,"FC03 read / FC06, FC16 write",208,00209,40209,PumpsRunning,Which pumps are running.,BITMAP16,1,,1,0,,Read,bit 0 = Pump 1; bit 1 = Pump 2; bit 2 = Pump 3; bit 3 = Pump 4; bit 4 = Pump 5; bit 5 = Pump 6; bit 6 = Pilot pump; bit 7 = Backup pump
+Holding register,"FC03 read / FC06, FC16 write",209,00210,40210,PumpsAlarm,Which pumps have an alarm.,BITMAP16,1,,1,0,,Read,bit 0 = Pump 1; bit 1 = Pump 2; bit 2 = Pump 3; bit 3 = Pump 4; bit 4 = Pump 5; bit 5 = Pump 6; bit 6 = Pilot pump; bit 7 = Backup pump
+Holding register,"FC03 read / FC06, FC16 write",210,00211,40211,PumpsCommFault,Which pumps have lost communication.,BITMAP16,1,,1,0,,Read,bit 0 = Pump 1; bit 1 = Pump 2; bit 2 = Pump 3; bit 3 = Pump 4; bit 4 = Pump 5; bit 5 = Pump 6; bit 6 = Pilot pump; bit 7 = Backup pump
+Holding register,"FC03 read / FC06, FC16 write",211,00212,40212,SystemActiveFunctions,Active system functions (MPC/GENIECON all bits; Multi-B bits 7 and 12).,BITMAP16,1,,1,0,,Read,bit 1 = Emergency Run active; bit 2 = Standby pumps active; bit 3 = Pump test run active; bit 4 = Alternative setpoint active; bit 5 = Clock program active; bit 6 = Remote VNC active; bit 7 = Remote bus active; bit 8 = Remote service port active; bit 9 = Pressure relief function active; bit 10 = Soft pressure function active; bit 11 = Low-flow boost active; bit 12 = Low-flow stop active; bit 13 = Proportional pressure active
+Holding register,"FC03 read / FC06, FC16 write",212,00213,40213,PumpsAutoMode,"1 = pump in auto-control, 0 = forced start/stop.",BITMAP16,1,,1,0,,Read,bit 0 = Pump 1; bit 1 = Pump 2; bit 2 = Pump 3; bit 3 = Pump 4; bit 4 = Pump 5; bit 5 = Pump 6; bit 6 = Pilot pump; bit 7 = Backup pump
+Holding register,"FC03 read / FC06, FC16 write",213,00214,40214,ApplicationType,"Configured application (MPC, Multi-B).",UINT16,1,,1,0,,Read,0 = Unknown; 1 = Pressure boosting; 2 = Heating pumps on hot side; 3 = Heating pumps on cold side; 4 = AirCon pumps on hot side; 5 = AirCon pumps on cold side; 6 = MPC S2000 heating pumps on hot side; 7 = MPC S2000 heating pumps on cold side; 8 = MPC S2000 AirCon pumps on hot side; 9 = MPC S2000 AirCon pumps on cold side; 10 = Tank filling (level sensor); 11 = Tank filling (float switches)
+Holding register,"FC03 read / FC06, FC16 write",219,00220,40220,FeedBackSensorUnit,Unit of the feedback sensor.,UINT16,1,,1,0,,Read,0 = bar; 1 = mbar; 2 = m; 3 = kPa; 4 = psi; 5 = ft; 6 = m³/h; 7 = m³/s; 8 = l/s; 9 = gpm; 10 = °C; 11 = °F; 12 = %; 13 = K; 14 = l/h; 255 = -
+Holding register,"FC03 read / FC06, FC16 write",222,00223,40223,SystemFeedbackSensor,Feedback sensor type (MPC).,UINT16,1,,1,0,,Read,3 = Flow sensor; 6 = Pressure sensor
+Holding register,"FC03 read / FC06, FC16 write",300,00301,40301,Head,Actual system head/pressure (sensor required).,UINT16,1,,0.001,0,bar,Read,
+Holding register,"FC03 read / FC06, FC16 write",301,00302,40302,VolumeFlow,Actual system flow (sensor required).,UINT16,1,,0.1,0,m³/h,Read,
+Holding register,"FC03 read / FC06, FC16 write",302,00303,40303,RelativePerformance,Performance relative to maximum.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",305,00306,40306,DigitalInput,"External digital input states, one bit per input.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",306,00307,40307,DigitalOutput,"External digital output states, one bit per output.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",307,00308,40308,ActualSetpoint,"Setpoint actually used, after limits; same scaling as 00104.",UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",308,00309,40309,MotorCurrent,Motor current (Hydro Multi-E model G only).,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",311,00312,40312,Power,Total power consumption of the system (HI/LO pair).,UINT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",314,00315,40315,InletPressure,Inlet pressure relative to atmosphere; raw includes -1.000 bar offset.,UINT16,1,,0.001,-1,bar,Read,
+Holding register,"FC03 read / FC06, FC16 write",315,00316,40316,RemotePressure1,External pressure sensor 1.,UINT16,1,,0.001,0,bar,Read,
+Holding register,"FC03 read / FC06, FC16 write",316,00317,40317,StorageTankLevel,Storage tank level; raw includes -100 m offset.,UINT16,1,,0.01,-100,m,Read,
+Holding register,"FC03 read / FC06, FC16 write",319,00320,40320,RemoteTemp1,External temperature sensor 1 (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",324,00325,40325,AuxSensorInput,,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",326,00327,40327,OperationTime,Total operating hours (HI/LO pair).,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",328,00329,40329,TotalPoweredTime,Total powered hours (Multi-E model G only).,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",331,00332,40332,Energy,Total energy consumption (HI/LO pair).,UINT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",336,00337,40337,AmbientTemp,Ambient temperature (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",337,00338,40338,InletTemp,Inlet water temperature (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",338,00339,40339,OutletTemp,Outlet water temperature (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",339,00340,40340,TempDifference,Differential temperature.,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",340,00341,40341,OutletPressure,System outlet pressure.,UINT16,1,,0.001,0,bar,Read,
+Holding register,"FC03 read / FC06, FC16 write",341,00342,40342,FeedTankLevel,Feed tank level; raw includes -100 m offset.,UINT16,1,,0.01,-100,m,Read,
+Holding register,"FC03 read / FC06, FC16 write",342,00343,40343,UserSetpoint,Setpoint before modifications.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",343,00344,40344,AnalogueInfluence,Setpoint attenuator.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",344,00345,40345,NumberOfPowerOns,Number of times the system has been powered on.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",345,00346,40346,SpecificEnergy,,UINT16,1,,0.1,0,Wh/m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",346,00347,40347,SpecificEnergyAverage,,UINT16,1,,0.1,0,Wh/m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",350,00351,40351,PropControlReduction,Proportional control reduction.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",351,00352,40352,PropControlFlowMax,Proportional control maximum flow point.,UINT16,1,,0.1,0,m³/h,Read,
+Holding register,"FC03 read / FC06, FC16 write",352,00353,40353,RemotePressure2,,UINT16,1,,0.001,0,bar,Read,
+Holding register,"FC03 read / FC06, FC16 write",353,00354,40354,RemoteTemp2,External temperature sensor 2 (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",354,00355,40355,MediumTemp,Medium temperature (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",355,00356,40356,DifferentialPressure,,UINT16,1,,0.001,0,bar,Read,
+Holding register,"FC03 read / FC06, FC16 write",359,00360,40360,RemoteFlow,Flow from a remote sensor.,UINT16,1,,0.1,0,m³/h,Read,
+Holding register,"FC03 read / FC06, FC16 write",362,00363,40363,Volume,Pumped volume (HI/LO pair).,UINT32,2,ABCD,0.1,0,m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",364,00365,40365,HeatingEnergyCounter,Lifetime heat energy (external temperature sensor required).,UINT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",366,00367,40367,HeatPower,Current heat power (external temperature sensor required).,UINT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",368,00369,40369,HeatDiffTemp,Forward/return delta-T (published in 0.01 °C).,UINT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",400,00401,40401,Pump1.Status,"Pump 1 mode, on/off and alarm bits.",BITMAP16,1,,1,0,,Read,bit 0 = AccessMode (1 = remote via booster); bit 1 = OnOff; bit 2 = Alarm
+Holding register,"FC03 read / FC06, FC16 write",401,00402,40402,Pump1.AlarmCode,Grundfos alarm code of pump 1.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",402,00403,40403,Pump1.OperationTime,Operating hours of pump 1 (HI/LO pair).,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",404,00405,40405,Pump1.Speed,Pump 1 motor speed.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",405,00406,40406,Pump1.LineCurrent,Average line current of pump 1.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",406,00407,40407,Pump1.Power,Power consumption of pump 1 (10 W steps).,UINT16,1,,10,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",407,00408,40408,Pump1.MotorTemperature,Motor temperature of pump 1 (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",410,00411,40411,Pump2.Status,"Pump 2 mode, on/off and alarm bits.",BITMAP16,1,,1,0,,Read,bit 0 = AccessMode (1 = remote via booster); bit 1 = OnOff; bit 2 = Alarm
+Holding register,"FC03 read / FC06, FC16 write",411,00412,40412,Pump2.AlarmCode,Grundfos alarm code of pump 2.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",412,00413,40413,Pump2.OperationTime,Operating hours of pump 2 (HI/LO pair).,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",414,00415,40415,Pump2.Speed,Pump 2 motor speed.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",415,00416,40416,Pump2.LineCurrent,Average line current of pump 2.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",416,00417,40417,Pump2.Power,Power consumption of pump 2 (10 W steps).,UINT16,1,,10,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",417,00418,40418,Pump2.MotorTemperature,Motor temperature of pump 2 (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",420,00421,40421,Pump3.Status,"Pump 3 mode, on/off and alarm bits.",BITMAP16,1,,1,0,,Read,bit 0 = AccessMode (1 = remote via booster); bit 1 = OnOff; bit 2 = Alarm
+Holding register,"FC03 read / FC06, FC16 write",421,00422,40422,Pump3.AlarmCode,Grundfos alarm code of pump 3.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",422,00423,40423,Pump3.OperationTime,Operating hours of pump 3 (HI/LO pair).,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",424,00425,40425,Pump3.Speed,Pump 3 motor speed.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",425,00426,40426,Pump3.LineCurrent,Average line current of pump 3.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",426,00427,40427,Pump3.Power,Power consumption of pump 3 (10 W steps).,UINT16,1,,10,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",427,00428,40428,Pump3.MotorTemperature,Motor temperature of pump 3 (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",430,00431,40431,Pump4.Status,"Pump 4 mode, on/off and alarm bits.",BITMAP16,1,,1,0,,Read,bit 0 = AccessMode (1 = remote via booster); bit 1 = OnOff; bit 2 = Alarm
+Holding register,"FC03 read / FC06, FC16 write",431,00432,40432,Pump4.AlarmCode,Grundfos alarm code of pump 4.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",432,00433,40433,Pump4.OperationTime,Operating hours of pump 4 (HI/LO pair).,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",434,00435,40435,Pump4.Speed,Pump 4 motor speed.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",435,00436,40436,Pump4.LineCurrent,Average line current of pump 4.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",436,00437,40437,Pump4.Power,Power consumption of pump 4 (10 W steps).,UINT16,1,,10,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",437,00438,40438,Pump4.MotorTemperature,Motor temperature of pump 4 (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",440,00441,40441,Pump5.Status,"Pump 5 mode, on/off and alarm bits.",BITMAP16,1,,1,0,,Read,bit 0 = AccessMode (1 = remote via booster); bit 1 = OnOff; bit 2 = Alarm
+Holding register,"FC03 read / FC06, FC16 write",441,00442,40442,Pump5.AlarmCode,Grundfos alarm code of pump 5.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",442,00443,40443,Pump5.OperationTime,Operating hours of pump 5 (HI/LO pair).,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",444,00445,40445,Pump5.Speed,Pump 5 motor speed.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",445,00446,40446,Pump5.LineCurrent,Average line current of pump 5.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",446,00447,40447,Pump5.Power,Power consumption of pump 5 (10 W steps).,UINT16,1,,10,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",447,00448,40448,Pump5.MotorTemperature,Motor temperature of pump 5 (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",450,00451,40451,Pump6.Status,"Pump 6 mode, on/off and alarm bits.",BITMAP16,1,,1,0,,Read,bit 0 = AccessMode (1 = remote via booster); bit 1 = OnOff; bit 2 = Alarm
+Holding register,"FC03 read / FC06, FC16 write",451,00452,40452,Pump6.AlarmCode,Grundfos alarm code of pump 6.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",452,00453,40453,Pump6.OperationTime,Operating hours of pump 6 (HI/LO pair).,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",454,00455,40455,Pump6.Speed,Pump 6 motor speed.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",455,00456,40456,Pump6.LineCurrent,Average line current of pump 6.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",456,00457,40457,Pump6.Power,Power consumption of pump 6 (10 W steps).,UINT16,1,,10,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",457,00458,40458,Pump6.MotorTemperature,Motor temperature of pump 6 (kelvin).,UINT16,1,,0.01,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",480,00481,40481,Pump1.Energy,Energy consumption of pump 1.,UINT16,1,,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",481,00482,40482,Pump2.Energy,Energy consumption of pump 2.,UINT16,1,,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",482,00483,40483,Pump3.Energy,Energy consumption of pump 3.,UINT16,1,,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",483,00484,40484,Pump4.Energy,Energy consumption of pump 4.,UINT16,1,,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",484,00485,40485,Pump5.Energy,Energy consumption of pump 5.,UINT16,1,,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",485,00486,40486,Pump6.Energy,Energy consumption of pump 6.,UINT16,1,,1,0,kWh,Read,

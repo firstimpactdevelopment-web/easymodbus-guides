@@ -1,0 +1,30 @@
+﻿# Wilo Para MAXO (built-in Modbus RTU) Modbus register map - easymodbus.com - source: https://cms.media.wilo.com/cdndoc/wilo458422/9310881/wilo458422.html
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,1,1,30002,Pressure,Actual (differential) pressure; 65535 = error/not available.,UINT16,1,,10,0,cm H2O,Read,
+Input register,FC04 read,2,2,30003,Flow (calculated),"Calculated estimate, not for closed-loop control; error value 9999 (list) or 65535 (guide).",UINT16,1,,0.1,0,m³/h,Read,
+Input register,FC04 read,3,3,30004,Energy Consumption,Total consumed electrical energy; 65535 = error.,UINT16,1,,1,0,kWh,Read,
+Input register,FC04 read,4,4,30005,power input,Actual electrical input power; 65535 = error.,UINT16,1,,1,0,W,Read,
+Input register,FC04 read,5,5,30006,Operation Time,Total running time (motor turning); 65535 = error.,UINT16,1,,10,0,h,Read,
+Input register,FC04 read,7,7,30008,Speed,Rotational speed; 65535 = error.,INT16,1,,1,0,rpm,Read,
+Input register,FC04 read,10,10,30011,Control Function (active),Active control mode.,UINT16,1,,1,0,,Read,1 = Gen_Spd (constant speed); 3 = Gen_PHdConst (constant differential pressure); 4 = Gen_PHdVar (variable differential pressure); 140 = Gen_UsrDfd (user-configurable PID)
+Input register,FC04 read,18,18,30019,Speed max-pres-value,Maximum speed value.,UINT16,1,,1,0,rpm,Read,
+Input register,FC04 read,19,19,30020,Speed min-pres-value,Minimum speed value.,UINT16,1,,1,0,rpm,Read,
+Input register,FC04 read,24,24,30025,Flow (calculated) max-pres-value,,UINT16,1,,0.1,0,m³/h,Read,
+Input register,FC04 read,200,200,30201,duty point (rel.) (active),Setpoint currently in effect.,INT16,1,,0.5,0,%,Read,
+Input register,FC04 read,202,202,30203,duty point (rel.) maximum-output,Highest duty point the pump accepts in this mode.,INT16,1,,0.5,0,%,Read,
+Input register,FC04 read,204,204,30205,duty point (rel.) minimum-output,Lowest duty point the pump accepts; lower writes are clamped.,INT16,1,,0.5,0,%,Read,
+Input register,FC04 read,208,208,30209,duty point (rel.) units,Unit code of the duty-point reference.,UINT16,1,,1,0,,Read,19 = kWh; 47 = W; 73 = s; 104 = rpm (min-1); 135 = m³/h
+Input register,FC04 read,400,400,30401,duty point (rel.) (output),Actual operating point as % of the duty-point range.,INT16,1,,0.5,0,%,Read,
+Input register,FC04 read,402,402,30403,Pump Command active,Command currently in effect.,BITMAP16,1,,1,0,,Read,bit 0 = Pump on; bit 3 = TRUE (static 1)
+Input register,FC04 read,404,404,30405,Operation Status,Pump operating state flags.,BITMAP16,1,,1,0,,Read,bit 0 = Ready for Operation; bit 1 = Pump on; bit 3 = Warning Present; bit 4 = Error Present (will retry); bit 5 = Final Error present (no retry)
+Input register,FC04 read,940,940,30941,Warning/Error Message,Current Wilo warning/error code (E000-E255).,UINT16,1,,1,0,,Read,0 = No error; 4 = Mains undervoltage; 7 = Generator operation; 10 = Blocked rotor; 11 = Dry running; 19 = Pump flow error; 21 = Motor overload (torque); 23 = Short circuit; 25 = Motor/winding contact missing; 30 = Module overtemperature; 31 = Power bridge/component overtemperature; 32 = DC link undervoltage; 33 = DC link overvoltage; 38 = Fluid temperature sensor defect; 50 = BMS communication timeout; 111 = Overcurrent; 112 = Speed above synchronous value; 119 = Turbine operation; 252 = Extended code
+Holding register,"FC03 read / FC06, FC16 write",1,1,40002,duty point (rel.),Setpoint as % of the duty-point range (200 = 100 %); 32767 = error.,INT16,1,,0.5,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40,40,40041,Pump Command in,Pump on/off command.,BITMAP16,1,,1,0,,Read/write,bit 0 = Pump on
+Holding register,"FC03 read / FC06, FC16 write",42,42,40043,Control Function,Control mode; an unsupported value leaves the previous mode active.,UINT16,1,,1,0,,Read/write,1 = Gen_Spd (constant speed); 3 = Gen_PHdConst (constant differential pressure); 4 = Gen_PHdVar (variable differential pressure); 140 = Gen_UsrDfd (user-configurable PID)
+Holding register,"FC03 read / FC06, FC16 write",300,300,40301,Bus Command Timer,Local-lockout / fallback timer state machine (write SET or SET_PRESET periodically).,UINT16,1,,1,0,,Read/write,1 = OFF; 2 = SET; 3 = ACTIVE; 4 = RESET; 5 = MANUAL; 6 = SET_PRESET; 7 = ACTIVE_PRESET; 8 = RESET_PRESET; 9 = MANUAL_PRESET
+Holding register,"FC03 read / FC06, FC16 write",400,400,40401,Bus Command Timer Timeout,"Fallback timeout, 20-65534 s (factory 300 s).",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",402,402,40403,duty point (rel.) preset,Fallback setpoint used after the bus command timer elapses.,INT16,1,,0.5,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",404,404,40405,Pump Command preset,Fallback on/off command.,BITMAP16,1,,1,0,,Read/write,bit 0 = Pump on preset
+Holding register,"FC03 read / FC06, FC16 write",61440,61440,461441,interface device identifier,"Modbus slave address, 1-247 (default 101).",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",61441,61441,461442,transmission serial speed,Baud rate (default 19200).,UINT16,1,,1,0,,Read/write,0 = 300; 1 = 600; 2 = 1200; 3 = 2400; 4 = 4800; 5 = 9600; 6 = 19200; 7 = 38400; 8 = 57600; 9 = 115200; 10 = 76800; 12 = Invalid
+Holding register,"FC03 read / FC06, FC16 write",61442,61442,461443,transmission serial frame,Data bits / parity / stop bits (default 8E1).,UINT16,1,,1,0,,Read/write,2 = 8N1; 3 = 8N2; 6 = 8E1; 10 = 8O1; 15 = Invalid

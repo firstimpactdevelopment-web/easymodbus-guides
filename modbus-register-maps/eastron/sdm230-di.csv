@@ -1,0 +1,43 @@
+﻿# Eastron SDM230-DI Modbus register map - easymodbus.com - source: https://www.eastrongroup.com/eastrongroup/2025/06/17/eastronsdm230-diusermanualv1.00.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,30001,30001,Voltage,Line-to-neutral RMS voltage.,FLOAT32,2,ABCD,1,0,V,Read,
+Input register,FC04 read,6,30007,30007,Current,,FLOAT32,2,ABCD,1,0,A,Read,
+Input register,FC04 read,12,30013,30013,Active power,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,18,30019,30019,Apparent power,,FLOAT32,2,ABCD,1,0,VA,Read,
+Input register,FC04 read,24,30025,30025,Reactive power,,FLOAT32,2,ABCD,1,0,VAr,Read,
+Input register,FC04 read,30,30031,30031,Power factor,Sign follows current direction: negative means reverse flow.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,36,30037,30037,Phase angle,,FLOAT32,2,ABCD,1,0,Degrees,Read,
+Input register,FC04 read,70,30071,30071,Frequency,,FLOAT32,2,ABCD,1,0,Hz,Read,
+Input register,FC04 read,72,30073,30073,Import active energy,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Input register,FC04 read,74,30075,30075,Export active energy,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Input register,FC04 read,76,30077,30077,Import reactive energy,,FLOAT32,2,ABCD,1,0,kVArh,Read,
+Input register,FC04 read,78,30079,30079,Export reactive energy,,FLOAT32,2,ABCD,1,0,kVArh,Read,
+Input register,FC04 read,80,30081,30081,Apparent energy,,FLOAT32,2,ABCD,1,0,kVAh,Read,
+Input register,FC04 read,82,30083,30083,Ah,Accumulated ampere-hours.,FLOAT32,2,ABCD,1,0,Ah,Read,
+Input register,FC04 read,84,30085,30085,Total active power demand,Footnoted as 'import – export' in the manual; see notes.,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,86,30087,30087,Max total active power demand,Footnoted as 'import – export' in the manual; see notes.,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,88,30089,30089,Import active power demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,90,30091,30091,Import active power max demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,92,30093,30093,Export active power demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,94,30095,30095,Export active power max demand,,FLOAT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,258,30259,30259,Current demand,,FLOAT32,2,ABCD,1,0,A,Read,
+Input register,FC04 read,264,30265,30265,Max current demand,,FLOAT32,2,ABCD,1,0,A,Read,
+Input register,FC04 read,342,30343,30343,Total kWh,Import plus export active energy.,FLOAT32,2,ABCD,1,0,kWh,Read,
+Input register,FC04 read,344,30345,30345,Total kVArh,Import plus export reactive energy.,FLOAT32,2,ABCD,1,0,kVArh,Read,
+Input register,FC04 read,384,30385,30385,Resettable total active energy,Partial counter.,FLOAT32,2,ABCD,1,0,kWh,Read,
+Input register,FC04 read,386,30387,30387,Resettable total reactive energy,Partial counter.,FLOAT32,2,ABCD,1,0,kVArh,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Demand period,0 to 60 minutes; 0 updates demand every second. Default 60.,FLOAT32,2,ABCD,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",14,40015,40015,Key parameter programming authorization (KPPA),Read 0/1 authorization state; write the password to unlock key settings.,FLOAT32,2,ABCD,1,0,,Read/write,0 = Not authorized; 1 = Authorized
+Holding register,"FC03 read / FC06, FC16 write",18,40019,40019,Parity / stop bits,"RS485 framing. Default one stop bit, no parity.",FLOAT32,2,ABCD,1,0,,Read/write,"0 = 1 stop bit, no parity; 1 = 1 stop bit, even parity; 2 = 1 stop bit, odd parity; 3 = 2 stop bits, no parity"
+Holding register,"FC03 read / FC06, FC16 write",20,40021,40021,Modbus address,Node address 1 to 247. Default 1.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",24,40025,40025,Password,Range 0000 to 9999. Default 1000.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28,40029,40029,Baud rate,Default 9600.,FLOAT32,2,ABCD,1,0,,Read/write,0 = 2400; 1 = 4800; 2 = 9600; 3 = 19200; 4 = 38400; 6 = 115200
+Holding register,"FC03 read / FC06, FC16 write",58,40059,40059,Automatic scrolling display,0 to 30 s; 0 disables scrolling. Default 0.,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",60,40061,40061,Backlight time,"0 to 121; 0 keeps backlight on, 121 keeps it off. Default 60.",FLOAT32,2,ABCD,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",768,40769,40769,DI filter time,"Digital input debounce time, 0 to 255 ms. Default 100.",UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",61456,461457,461457,Reset,Write a code to clear stored values.,UINT16,1,,1,0,,Write,0 = Reset maximum demand; 6 = Reset DI counts
+Holding register,"FC03 read / FC06, FC16 write",63776,463777,463777,Measurement mode,How the meter forms its total energy.,UINT16,1,,1,0,,Read/write,1 = Total = import; 2 = Total = import + export; 3 = Total = import - export
+Holding register,"FC03 read / FC06, FC16 write",63792,463793,463793,Running time,Accumulated operating time in hours.,FLOAT32,2,ABCD,1,0,h,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64514,464515,464515,Meter code,Model identification code (hex).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64644,464645,464645,Software version,High byte and low byte form version XX.YY.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64646,464647,464647,Program number,Firmware program identifier (hex).,UINT16,1,,1,0,,Read,
