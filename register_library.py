@@ -380,7 +380,7 @@ PAGE_JS = """<script>
     var msg=document.getElementById('copy-msg');
     fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
       return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, then Import map, and paste.';},
+    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
       function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
   });}
 })();
@@ -801,15 +801,16 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 %(mfr)s&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 %(facts)s
 <div class="dl">
-  <a class="btn primary" href="%(base)s-easymodbus.csv" download>Open in Easy Modbus <small>%(napp)d rows</small></a>
-  <button type="button" class="btn" id="copy-em" data-src="%(base)s-easymodbus.csv">Copy for the phone app</button>
+  <button type="button" class="btn primary" id="copy-em" data-src="%(base)s-easymodbus.csv">Copy for the phone app <small>%(napp)d rows</small></button>
+  <a class="btn" href="%(base)s-easymodbus.csv" download>Download Easy Modbus CSV</a>
   <a class="btn" href="%(base)s.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="%(base)s.json">JSON</a>
   <a class="btn" href="%(src)s" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
   <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Easy Modbus PC: Explorer &rarr; Import, pick the downloaded file. Phone app: open the device &rarr;
-Import map &rarr; paste. Addresses import as wire addresses whatever your address style is.</p>
+<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
+&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
+Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 %(integ)s
 <h2 id="registers">%(mfr)s %(model)s Modbus registers</h2>
 <p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
@@ -987,7 +988,7 @@ def hub_page(groups):
     body = """
 <p class="lede"><strong>%(nm)d models from %(ng)d manufacturers</strong> &mdash; %(total)s registers &mdash; each with
 the 0-based address, data type, word order, scale, units and access, checked against the manufacturer&rsquo;s own
-document and ready to open in Easy Modbus or download as CSV.</p>
+document and ready to paste into Easy Modbus or download as CSV.</p>
 <form class="tools" action="#" onsubmit="return false" aria-label="Choose a manufacturer">
   <label class="mono count" for="mfr-pick">Select manufacturer</label>
   <select class="pick" id="mfr-pick"><option value="">Choose a manufacturer&hellip;</option>%(options)s</select>

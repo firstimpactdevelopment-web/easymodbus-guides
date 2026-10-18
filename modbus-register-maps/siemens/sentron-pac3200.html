@@ -350,15 +350,16 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Siemens&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/siemens/">Siemens</a></dd></div><div><dt>Model</dt><dd>SENTRON PAC3200</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter</a></dd></div><div><dt>Registers</dt><dd>179 (40 writable)</dd></div><div><dt>Transport</dt><dd>Modbus TCP, Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>126</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8N2</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>7KM2112-0BA00-2AA0, 7KM2112-0BA00-3AA0, 7KM2111-1BA00-3AA0, 7KM PAC3200</dd></div><div><dt>Source document</dt><dd><a href="https://cache.industry.siemens.com/dl/files/150/26504150/att_906558/v1/A5E01168664B-04_EN-US_122016_201612221316360495.pdf" rel="nofollow noopener" target="_blank">SENTRON PAC3200 Power Monitoring Device Manual &middot; A5E01168664B-04 &middot; rev. 2008-02</a></dd></div></dl>
 <div class="dl">
-  <a class="btn primary" href="/modbus-register-maps/siemens/sentron-pac3200-easymodbus.csv" download>Open in Easy Modbus <small>179 rows</small></a>
-  <button type="button" class="btn" id="copy-em" data-src="/modbus-register-maps/siemens/sentron-pac3200-easymodbus.csv">Copy for the phone app</button>
+  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/siemens/sentron-pac3200-easymodbus.csv">Copy for the phone app <small>179 rows</small></button>
+  <a class="btn" href="/modbus-register-maps/siemens/sentron-pac3200-easymodbus.csv" download>Download Easy Modbus CSV</a>
   <a class="btn" href="/modbus-register-maps/siemens/sentron-pac3200.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/siemens/sentron-pac3200.json">JSON</a>
   <a class="btn" href="https://cache.industry.siemens.com/dl/files/150/26504150/att_906558/v1/A5E01168664B-04_EN-US_122016_201612221316360495.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
   <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Easy Modbus PC: Explorer &rarr; Import, pick the downloaded file. Phone app: open the device &rarr;
-Import map &rarr; paste. Addresses import as wire addresses whatever your address style is.</p>
+<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
+&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
+Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Siemens SENTRON PAC3200</h2>
 <div class="answer"><b>Integration in brief</b><p>Set the IP address, subnet and gateway on the device, switch the Ethernet protocol to MODBUS TCP and restart. Then read floats from offset 1 upward with FC 0x03 or 0x04, two registers per value, high word first.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Voltage Va-n</td><td class="f">FLOAT32 ABCD</td><td>Voltage L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-13">HR 13</a></td><td class="n">Current a</td><td class="f">FLOAT32 ABCD</td><td>Current L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-55">HR 55</a></td><td class="n">Frequency</td><td class="f">FLOAT32 ABCD</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-65">HR 65</a></td><td class="n">Total Active Power</td><td class="f">FLOAT32 ABCD</td><td>Total active power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-69">HR 69</a></td><td class="n">Total Power Factor</td><td class="f">FLOAT32 ABCD</td><td>Total power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-801">HR 801</a></td><td class="n">Active Energy Import Tariff 1</td><td class="f">FLOAT64 ABCD</td><td>Active energy import tariff 1 (double)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-205">HR 205</a></td><td class="n">Device Diagnostics and Device Status</td><td class="f">UINT32 ABCD</td><td>Device diagnostics and status</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -604,7 +605,7 @@ Register numbers, types, scaling and units are reproduced as published; descript
     var msg=document.getElementById('copy-msg');
     fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
       return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, then Import map, and paste.';},
+    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
       function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
   });}
 })();

@@ -348,15 +348,16 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 ABB&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/abb/">ABB</a></dd></div><div><dt>Model</dt><dd>EQ meter B21 (Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>95 (19 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>B21, EQ B21</dd></div><div><dt>Source document</dt><dd><a href="https://search.abb.com/library/Download.aspx?DocumentID=2CMC485004M0201&amp;LanguageCode=en&amp;DocumentPartId=&amp;Action=Launch" rel="nofollow noopener" target="_blank">B21 User Manual &middot; 2CMC485004M0201 Revision D &middot; rev. 2025-11-07</a></dd></div></dl>
 <div class="dl">
-  <a class="btn primary" href="/modbus-register-maps/abb/b21-easymodbus.csv" download>Open in Easy Modbus <small>93 rows</small></a>
-  <button type="button" class="btn" id="copy-em" data-src="/modbus-register-maps/abb/b21-easymodbus.csv">Copy for the phone app</button>
+  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/abb/b21-easymodbus.csv">Copy for the phone app <small>93 rows</small></button>
+  <a class="btn" href="/modbus-register-maps/abb/b21-easymodbus.csv" download>Download Easy Modbus CSV</a>
   <a class="btn" href="/modbus-register-maps/abb/b21.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/abb/b21.json">JSON</a>
   <a class="btn" href="https://search.abb.com/library/Download.aspx?DocumentID=2CMC485004M0201&amp;LanguageCode=en&amp;DocumentPartId=&amp;Action=Launch" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
   <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Easy Modbus PC: Explorer &rarr; Import, pick the downloaded file. Phone app: open the device &rarr;
-Import map &rarr; paste. Addresses import as wire addresses whatever your address style is.</p>
+<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
+&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
+Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: ABB EQ meter B21 (Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Switch the RS485 port to Modbus in the meter menu, then poll holding registers with function 3 at their hex addresses. Energy is 64-bit (4 registers) with 0.01 resolution, high word first.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-20480">HR 20480</a></td><td class="n">Active import energy</td><td class="f">UINT64 ABCD</td><td>Total active import energy</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-20484">HR 20484</a></td><td class="n">Active export energy</td><td class="f">UINT64 ABCD</td><td>Total active export energy</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23296">HR 23296</a></td><td class="n">Voltage L1-N</td><td class="f">UINT32 ABCD</td><td>Voltage L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23308">HR 23308</a></td><td class="n">Current L1</td><td class="f">UINT32 ABCD</td><td>Current L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23316">HR 23316</a></td><td class="n">Active power Total</td><td class="f">INT32 ABCD</td><td>Total active power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23340">HR 23340</a></td><td class="n">Frequency</td><td class="f">UINT16</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-35072">HR 35072</a></td><td class="n">Serial number</td><td class="f">UINT32 ABCD</td><td>Serial number</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -518,7 +519,7 @@ Register numbers, types, scaling and units are reproduced as published; descript
     var msg=document.getElementById('copy-msg');
     fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
       return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, then Import map, and paste.';},
+    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
       function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
   });}
 })();

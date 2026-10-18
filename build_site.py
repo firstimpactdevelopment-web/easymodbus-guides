@@ -887,6 +887,15 @@ GUIDES.append(dict(
   knock the BMS off. Close other software first, and be aware of what you might be
   interrupting.</p>
 
+  <h2>Checking from Easy Modbus</h2>
+  <p>The network card on the main screen shows the <strong>Phone IP</strong> and
+  <strong>Subnet</strong> the phone is on, with <strong>Copy</strong> and
+  <strong>Open Wi-Fi settings</strong>. Compare that IP with the device's. If a
+  scan finds nothing, the <em>No devices found</em> page has a short checklist and
+  a <strong>Device IP (or IP:port)</strong> field: type the address, tap
+  <strong>Test</strong>, and it tells you whether the port is open, refused or not
+  answering.</p>
+
   <h2>What an error message is telling you</h2>
   <table>
     <tr><th>What you see</th><th>What it means</th></tr>
@@ -1049,8 +1058,9 @@ GUIDES.append(dict(
     <li><strong>0</strong> is a broadcast address in the specification: every device
     acts on the command and none replies. Some gateways also use 0 to mean
     &ldquo;whatever is there&rdquo;. Not something to rely on.</li>
-    <li><strong>255</strong> is used by some Modbus TCP devices to mean &ldquo;this
-    device, no serial side involved&rdquo;. Worth trying if 1 gets nothing.</li>
+    <li><strong>255</strong> is used by some Modbus TCP devices and other tools to mean
+    &ldquo;this device, no serial side involved&rdquo;. Easy Modbus takes unit IDs
+    0&ndash;247 only, so if 1 gets nothing, try 0 there.</li>
     <li><strong>248&ndash;254</strong> are reserved and should not be used.</li>
   </ul>
 
@@ -1458,8 +1468,9 @@ GUIDES.append(dict(
     total cable length.</li>
     <li>If values look shuffled rather than wrong, reconnect.</li>
   </ol>
-  <p>All four of the first three settings are adjustable per device in
-  <a href="../index.html">Easy Modbus</a>, which also groups nearby readings into
+  <p>Block size, timeout and gap are adjustable per device in Pro mode in
+  <a href="../index.html">Easy Modbus</a> (device &#8942; &rarr; <strong>Device
+  settings</strong>), which also groups nearby readings into
   single block requests automatically.</p>
 """,
     related=[
@@ -1506,6 +1517,9 @@ GUIDES.append(dict(
   a USB-Ethernet adapter. Modbus TCP normally uses port 502; if the equipment
   has an Ethernet socket that is almost certainly what it speaks. Serial
   equipment behind a gateway box is covered below.</p>
+  <p>The network card on the main screen shows the <strong>Phone IP</strong> and
+  <strong>Subnet</strong>, with <strong>Copy</strong> and <strong>Open Wi-Fi
+  settings</strong>. Check the phone is on the same subnet as the equipment.</p>
 
   <h2>Step 2 &mdash; Find or add the device</h2>
   <ul>
@@ -1517,8 +1531,12 @@ GUIDES.append(dict(
     equipment is on another subnet the sweep cannot reach. This is the normal
     route in practice.</li>
   </ul>
+  <p>If a scan finds nothing, the <em>No devices found</em> page lists what to
+  check. Type an address in <strong>Device IP (or IP:port)</strong> and tap
+  <strong>Test</strong> to see whether the port is open.</p>
   <p>In Pro mode the scan settings (port, framing, unit IDs) have a
-  <strong>Thorough scan</strong> option. A normal
+  <strong>Thorough scan</strong> option. In Easy mode, the <strong>Thorough
+  scan&hellip;</strong> button on the <em>No devices found</em> page gets you there. A normal
   sweep speaks plain Modbus TCP. Some serial gateways open port 502 but only
   answer Modbus RTU over TCP, so a normal sweep never sees them; with Thorough
   scan on, any address that accepts the connection but stays silent to the first
@@ -1778,8 +1796,8 @@ GUIDES.append(dict(
     <em>Toggle large value text</em> and <em>Delete control</em>.</li>
     <li>Use <strong>Value limits</strong> to narrow what this remote may write &mdash; it
     can be tighter than the reading's own limits, which still apply.</li>
-    <li>&#8942; menu &rarr; <strong>Rename remote</strong> gives it a name;
-    <strong>Delete remote</strong> removes it from the phone (nothing on the
+    <li>While editing, the &#8942; menu has <strong>Rename remote</strong> to name it and
+    <strong>Delete remote</strong> to remove it from the phone (nothing on the
     equipment changes).</li>
   </ul>
   <figure class="shot">
@@ -1883,8 +1901,10 @@ GUIDES.append(dict(
     <em>Enter a device by hand</em> (IP address or hostname, port, unit ID, framing,
     optional name). A device entered by hand is also added to your device list, so you
     can build readings for it.</li>
-    <li>To take a device off the panel, tap it in the list. Its controls move to the
-    primary device &mdash; the app tells you how many first. The primary itself stays.</li>
+    <li>To take a device off the panel, tap it in the list. The app tells you how many
+    controls use it first. Those controls are then disconnected and command nothing
+    until you reassign them: in Edit mode, tap the control and choose <em>Change
+    device</em>. The primary itself stays.</li>
   </ol>
 
   <h2>Step 3 &mdash; Add controls</h2>
@@ -1943,10 +1963,11 @@ GUIDES.append(dict(
     <tr><th></th><th>Free</th><th>After the one-time unlock</th></tr>
     <tr><td>Panels</td><td>1</td><td>Unlimited</td></tr>
     <tr><td>Devices per panel</td><td>1 (the primary)</td><td>Up to 32</td></tr>
-    <tr><td>Ads</td><td>None when opening a panel</td><td>None anywhere</td></tr>
+    <tr><td>Ads</td><td>Opening a saved panel asks to show one short optional ad (skipped if none loads)</td><td>None anywhere</td></tr>
   </table>
-  <p>Importing a multi-device panel on the free version keeps the primary device and
-  moves every control onto it.</p>
+  <p>Importing a multi-device panel on the free version keeps the primary device.
+  Controls for the other devices are disconnected and command nothing until you
+  reassign them with <em>Change device</em>.</p>
 """,
     related=[
         ("guides/how-to-build-a-modbus-remote", "How do I build a custom remote for a Modbus device in Easy Modbus?"),
@@ -1989,7 +2010,8 @@ GUIDES.append(dict(
   <ol>
     <li>Back on the main screen, tap <strong>Export Report</strong>.</li>
     <li>Free version: you are asked <em>Watch a short ad?</em> &mdash; choose
-    <em>Watch ad</em>, <em>Remove ads</em> (the one-time unlock) or <em>Cancel</em>. With
+    <em>Watch ad</em>, <em>Remove ads</em> (the one-time unlock, shown when the purchase
+    is available) or <em>Cancel</em>. With
     no signal, no ad loads and the export simply goes ahead.</li>
     <li>The app reads every device again, so the values are current, then opens the
     share sheet with <code>EasyModbus_YYYYMMDD_HHMM.csv</code> attached. Pick email,
@@ -2065,9 +2087,9 @@ GUIDES.append(dict(
   <table>
     <tr><th></th><th>Modbus Poll</th><th>Easy Modbus</th></tr>
     <tr><td>Platform</td><td>Windows desktop</td><td>Android phone or tablet, plus a Windows version</td></tr>
-    <tr><td>Price</td><td>Paid licence, master and slave sold separately</td><td>Free; an optional one-time purchase removes ads and unlocks unlimited saved control panels</td></tr>
+    <tr><td>Price</td><td>Paid licence, master and slave sold separately</td><td>Free; an optional one-time purchase unlocks unlimited custom remotes and control panels and removes ads</td></tr>
     <tr><td>Reads</td><td>Yes, mature and fast</td><td>Yes &mdash; TCP and RTU-over-TCP, function codes 1&ndash;4</td></tr>
-    <tr><td>Writes</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with a one-tap <em>Put it back</em></td></tr>
+    <tr><td>Writes</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with a <em>Put It Back</em> action</td></tr>
     <tr><td>Works out data types for you</td><td>You set type and word order yourself</td><td>Yes &mdash; ranks the plausible readings of a raw register and explains each</td></tr>
     <tr><td>Saves what a register means</td><td>Saves a poll definition</td><td>Yes &mdash; names, scaling and units per register, exported as CSV</td></tr>
     <tr><td>Simulates a slave for the bench</td><td>Separate product (Modbus Slave)</td><td>Built-in device emulator in the Windows version</td></tr>
@@ -2214,7 +2236,8 @@ GUIDES.append(dict(
   <h3>2. Wrong unit ID</h3>
   <p>Behind a gateway, the unit ID selects which device on the serial chain
   answers. The wrong one gives either total silence or a gateway exception. Try 1
-  first, then 255, then sweep. See <a href="modbus-unit-id-slave-id.html">what is a
+  first, then 0, then sweep. (Some tools and gateways use 255; Easy Modbus takes
+  0&ndash;247.) See <a href="modbus-unit-id-slave-id.html">what is a
   Modbus unit ID?</a></p>
 
   <h3>3. No route to the device</h3>
@@ -2255,7 +2278,8 @@ GUIDES.append(dict(
     (causes 1, 2), or a connection limit (cause 4).</li>
     <li><strong>Switch to RTU-over-TCP and retry.</strong> This one move fixes more
     timeouts than any other.</li>
-    <li><strong>Try unit ID 1, then 255, then sweep a small range.</strong></li>
+    <li><strong>Try unit ID 1, then 0, then sweep a small range.</strong> Some tools and
+    gateways use 255; Easy Modbus takes 0&ndash;247.</li>
     <li><strong>Ask for one register instead of a block.</strong></li>
   </ol>
   <div class="callout">
@@ -2450,11 +2474,11 @@ GUIDES.append(dict(
     <tr><th></th><th>Modbus Poll</th><th>Easy Modbus</th></tr>
     <tr><td>Made by</td><td>Witte Software</td><td>First Impact Development</td></tr>
     <tr><td>Platform</td><td>Windows desktop</td><td>Android, plus a Windows version</td></tr>
-    <tr><td>Price</td><td>Paid licence; Modbus Slave is a separate purchase</td><td>Free; optional rewarded ads on export and on opening a saved remote; a one-time purchase removes ads and unlocks unlimited custom remotes and control panels</td></tr>
+    <tr><td>Price</td><td>Paid licence; Modbus Slave is a separate purchase</td><td>Free; optional rewarded ads on export and on opening a saved remote or control panel; a one-time purchase removes ads and unlocks unlimited custom remotes and control panels</td></tr>
     <tr><td>Transports</td><td>TCP, RTU, ASCII, RTU-over-TCP</td><td>Modbus TCP and RTU-over-TCP</td></tr>
     <tr><td>Direct serial (USB&ndash;RS485)</td><td>Yes, with a COM port</td><td>No &mdash; reaches serial through a gateway</td></tr>
     <tr><td>Reading</td><td>Fast, mature, many concurrent windows</td><td>Block reads, live values, hex and decimal</td></tr>
-    <tr><td>Writing</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with one-tap <em>Put it back</em></td></tr>
+    <tr><td>Writing</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with a <em>Put It Back</em> action</td></tr>
     <tr><td>Works out data type &amp; word order</td><td>You choose them</td><td>Ranks the plausible readings and explains each &mdash; the standout feature</td></tr>
     <tr><td>Saves what a register means</td><td>Saves poll definitions</td><td>Named, scaled register map exported as CSV</td></tr>
     <tr><td>Simulate a slave</td><td>Yes, via Modbus Slave (separate)</td><td>Built-in emulator in the Windows version</td></tr>
@@ -2816,7 +2840,7 @@ GUIDES.append(dict(
     <tr><td>Time limit</td><td>~10 minutes per session until licensed</td><td>None &mdash; free, no timer</td></tr>
     <tr><td>Cost to use fully</td><td>Paid licence (Slave sold separately)</td><td>Free; a one-time purchase removes the optional ads and unlocks unlimited custom remotes and control panels</td></tr>
     <tr><td>Platform</td><td>Windows desktop</td><td>Android phone/tablet, plus a Windows version</td></tr>
-    <tr><td>Reads &amp; writes registers</td><td>Yes</td><td>Yes, with guard rails and a one-tap <em>Put it back</em></td></tr>
+    <tr><td>Reads &amp; writes registers</td><td>Yes</td><td>Yes, with guard rails and a <em>Put It Back</em> action</td></tr>
     <tr><td>Works out data type for you</td><td>You set it</td><td>Yes &mdash; ranks the plausible readings</td></tr>
     <tr><td>Direct USB&ndash;RS485 serial</td><td>Yes</td><td>No &mdash; reaches serial through a gateway</td></tr>
   </table>
@@ -3424,7 +3448,7 @@ footer a{color:var(--mut); text-decoration:underline}
     <p>A device&rsquo;s Modbus registers are useless without its register map. The
     <a href="modbus-register-maps/index.html">free Modbus register-map library</a> has verified maps for
     power meters, generator controllers, drives, solar inverters, boilers, pumps and HVAC equipment
-    &mdash; each with 0-based addresses, data types, word order and scaling, ready to open in Easy Modbus.</p>
+    &mdash; each with 0-based addresses, data types, word order and scaling, ready to import into Easy Modbus.</p>
   </div>
 </section>
 
@@ -3552,9 +3576,10 @@ move it.</p>
 
 <h2>Advertising (Google AdMob)</h2>
 <p>The free version offers short <strong>rewarded video ads</strong>, supplied by
-Google AdMob, before exporting a report and before opening a saved custom remote.
-The app always asks first &mdash; <em>Watch ad</em>, <em>Remove ads</em> or
-<em>Cancel</em> &mdash; and never starts an ad on its own. If no ad can be loaded
+Google AdMob, before exporting a report and before opening a saved custom remote
+or a saved control panel.
+The app always asks first &mdash; <em>Watch ad</em>, <em>Remove ads</em> (shown when
+the purchase is available) or <em>Cancel</em> &mdash; and never starts an ad on its own. If no ad can be loaded
 (no signal, no consent, nothing to show) the action simply goes ahead.</p>
 <p>To serve ads, Google's Mobile Ads SDK may collect your device's
 <strong>advertising ID</strong> (the app declares the <code>AD_ID</code>
@@ -3586,7 +3611,8 @@ purchase data is covered by Google Play's own terms and privacy policy.</p>
 <ul>
   <li><strong>Modbus requests</strong> to the equipment you point the app at, on
   your local network (or over a VPN you set up). Finding devices sweeps your own
-  subnet for port 502 &mdash; the app explains this before every scan.</li>
+  subnet for port 502 (or the port you set) &mdash; the app explains this before the
+  first scan of a session.</li>
   <li><strong>Exports you ask for</strong>, handed to whichever app you choose
   (email, Drive, and so on): the <em>Export Report</em> CSV of every device and
   reading with live values; a single device's register map as CSV (<em>Export
@@ -3943,7 +3969,7 @@ are free to quote with attribution.
 
 ## About the app
 
-- Platform: Android 8.0 or later. Free; optional opt-in rewarded ads (AdMob) before an export or opening a saved remote, removable by a one-time purchase that also unlocks unlimited custom remotes and control panels; no account, no analytics.
+- Platform: Android 8.0 or later. Free; optional opt-in rewarded ads (AdMob) before an export or opening a saved remote or control panel, removable by a one-time purchase that also unlocks unlimited custom remotes and control panels; no account, no analytics.
 - Custom Remotes: drag-and-drop control screens for one device. Control Panel Builder (beta): one screen for up to 32 devices.
 - Protocols: Modbus TCP and Modbus RTU over TCP, function codes 1, 2, 3, 4, 5, 6,
   15, 16, and 43/14 device identification.

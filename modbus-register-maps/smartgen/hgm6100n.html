@@ -343,15 +343,16 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 SmartGen&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/smartgen/">SmartGen</a></dd></div><div><dt>Model</dt><dd>HGM6100N / HGM6100CAN Series</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/generator-controllers/">Generator controller</a></dd></div><div><dt>Registers</dt><dd>145 (7 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Also known as</dt><dd>HGM6100CAN, HGM6110N, HGM6120N, HGM6110CAN, HGM6120CAN</dd></div><div><dt>Source document</dt><dd><a href="https://www.smartgen.cn/yun/data/download/HGM6100N_HGM6100CAN_Protocol_en.pdf" rel="nofollow noopener" target="_blank">HGM6100N/HGM6100CAN Genset Controller Communication Protocol &middot; rev. 2025-07-01 (v1.7)</a></dd></div></dl>
 <div class="dl">
-  <a class="btn primary" href="/modbus-register-maps/smartgen/hgm6100n-easymodbus.csv" download>Open in Easy Modbus <small>145 rows</small></a>
-  <button type="button" class="btn" id="copy-em" data-src="/modbus-register-maps/smartgen/hgm6100n-easymodbus.csv">Copy for the phone app</button>
+  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/smartgen/hgm6100n-easymodbus.csv">Copy for the phone app <small>145 rows</small></button>
+  <a class="btn" href="/modbus-register-maps/smartgen/hgm6100n-easymodbus.csv" download>Download Easy Modbus CSV</a>
   <a class="btn" href="/modbus-register-maps/smartgen/hgm6100n.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/smartgen/hgm6100n.json">JSON</a>
   <a class="btn" href="https://www.smartgen.cn/yun/data/download/HGM6100N_HGM6100CAN_Protocol_en.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
   <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Easy Modbus PC: Explorer &rarr; Import, pick the downloaded file. Phone app: open the device &rarr;
-Import map &rarr; paste. Addresses import as wire addresses whatever your address style is.</p>
+<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
+&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
+Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: SmartGen HGM6100N / HGM6100CAN Series</h2>
 <div class="answer"><b>Integration in brief</b><p>Wire to RS485 A/B, set the controller&#x27;s Module Address, then poll holding registers 0000-0054 with FC03 and coils 0000-0081 with FC01. Remote commands are single FC05 writes of FF00 to coils 0000-0006, the same addresses that read back as status bits.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-co-0">CO 0</a></td><td class="n">Common Alarm (read) / WRITE = REMOTE START ENGINE</td><td class="f">BIT</td><td>Common alarm (read) / remote start (write)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-co-41">CO 41</a></td><td class="n">Auto Mode</td><td class="f">BIT</td><td>Auto mode active</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-34">HR 34</a></td><td class="n">Controller Running Status</td><td class="f">UINT16</td><td>Genset running state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-7">HR 7</a></td><td class="n">Gen UA</td><td class="f">UINT16</td><td>Generator phase A voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-14">HR 14</a></td><td class="n">A Phase Current</td><td class="f">UINT16</td><td>Phase A current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-26">HR 26</a></td><td class="n">Active Power</td><td class="f">INT16</td><td>Total active power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23">HR 23</a></td><td class="n">Engine Speed</td><td class="f">UINT16</td><td>Engine speed</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-24">HR 24</a></td><td class="n">Battery Voltage</td><td class="f">UINT16</td><td>Battery voltage</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -563,7 +564,7 @@ Register numbers, types, scaling and units are reproduced as published; descript
     var msg=document.getElementById('copy-msg');
     fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
       return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, then Import map, and paste.';},
+    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
       function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
   });}
 })();

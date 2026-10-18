@@ -352,15 +352,16 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Carlo Gavazzi&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></dd></div><div><dt>Model</dt><dd>EM24-IS (SFA and SFB models)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>30 (8 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>EM24DINAV23XISSFA, EM24DINAV53XISSFA, EM24DINAV23XISSFB, EM24DINAV53XISSFB, EM24 SFA, EM24 SFB</dd></div><div><dt>Source document</dt><dd><a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM24_IS_SFA_SFB.pdf" rel="nofollow noopener" target="_blank">EM24-IS SFA and SFB versions Communication Protocol &middot; Revision 2.0</a></dd></div></dl>
 <div class="dl">
-  <a class="btn primary" href="/modbus-register-maps/carlo-gavazzi/em24-is-sfa-sfb-easymodbus.csv" download>Open in Easy Modbus <small>30 rows</small></a>
-  <button type="button" class="btn" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/em24-is-sfa-sfb-easymodbus.csv">Copy for the phone app</button>
+  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/em24-is-sfa-sfb-easymodbus.csv">Copy for the phone app <small>30 rows</small></button>
+  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em24-is-sfa-sfb-easymodbus.csv" download>Download Easy Modbus CSV</a>
   <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em24-is-sfa-sfb.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em24-is-sfa-sfb.json">JSON</a>
   <a class="btn" href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM24_IS_SFA_SFB.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
   <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Easy Modbus PC: Explorer &rarr; Import, pick the downloaded file. Phone app: open the device &rarr;
-Import map &rarr; paste. Addresses import as wire addresses whatever your address style is.</p>
+<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
+&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
+Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Carlo Gavazzi EM24-IS (SFA and SFB models)</h2>
 <div class="answer"><b>Integration in brief</b><p>Read input registers (04 or 03) in blocks of up to 11; decode INT32 low word first. Energy is only kWh(+) total at 003Eh, x10.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">V L1-N</td><td class="f">INT32 CDAB</td><td>V L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-12">IR 12</a></td><td class="n">A L1</td><td class="f">INT32 CDAB</td><td>A L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-53">IR 53</a></td><td class="n">PF system</td><td class="f">INT16</td><td>PF system</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-55">IR 55</a></td><td class="n">Frequency</td><td class="f">INT16</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-62">IR 62</a></td><td class="n">kWh(+) total</td><td class="f">INT32 CDAB</td><td>kWh(+) total</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -457,7 +458,7 @@ Register numbers, types, scaling and units are reproduced as published; descript
     var msg=document.getElementById('copy-msg');
     fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
       return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, then Import map, and paste.';},
+    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
       function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
   });}
 })();
