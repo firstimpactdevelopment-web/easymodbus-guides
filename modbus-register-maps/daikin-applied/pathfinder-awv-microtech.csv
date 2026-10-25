@@ -1,0 +1,98 @@
+﻿# Daikin Applied Pathfinder AWV air-cooled screw chiller (MicroTech controller) Modbus register map - easymodbus.com - source: https://tahoeweb.daikinapplied.com/api/general/DownloadDocumentByName/media/ED15121-13.pdf/
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Chiller Local/Remote,Set at the keypad only; Local makes the controller ignore network commands.,UINT16,1,,1,0,,Read,0 = Remote; 1 = Local
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Chiller Enable Output,,UINT16,1,,1,0,,Read,0 = Disable; 1 = Enable
+Holding register,"FC03 read / FC06, FC16 write",2,3,40003,Run Enabled,Chiller may start if operating conditions allow.,UINT16,1,,1,0,,Read,0 = Off; 1 = Run allowed
+Holding register,"FC03 read / FC06, FC16 write",3,4,40004,Chiller Capacity Limited,,UINT16,1,,1,0,,Read,0 = Not limited; 1 = Limited
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,Alarm Digital Output,Poll this for any active alarm.,UINT16,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Holding register,"FC03 read / FC06, FC16 write",5,6,40006,Evaporator Flow Switch Status,,UINT16,1,,1,0,,Read,0 = No flow; 1 = Flow
+Holding register,"FC03 read / FC06, FC16 write",7,8,40008,Chiller On/Off,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",8,9,40009,Chiller Enable Setpoint,Network enable; Null behaves as Disable.,UINT16,1,,1,0,,Read/write,0 = Disable; 1 = Enable; 2 = Null
+Holding register,"FC03 read / FC06, FC16 write",9,10,40010,Clear Alarms - Network,Some lockout alarms cannot be cleared from the network.,UINT16,1,,1,0,,Read/write,0 = Normal; 1 = Clear alarms; 2 = Null
+Holding register,"FC03 read / FC06, FC16 write",10,11,40011,Chiller Mode Output,,UINT16,1,,1,0,,Read,1 = Ice; 2 = Cool; 3 = Heat; 4 = Cool/Heat Recovery; 5 = Defrost
+Holding register,"FC03 read / FC06, FC16 write",11,12,40012,Active Setpoint,"Leaving water setpoint in use (Cool or Ice), °F x10.",INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,13,40013,Actual Capacity,"Percent of maximum capacity, x10.",UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,14,40014,Active Capacity Limit Output,"Lowest of all active capacity limits, x10.",UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,15,40015,Chiller Status,,UINT16,1,,1,0,,Read,1 = Off; 2 = Start; 3 = Run; 4 = Pre Shutdown; 5 = Service
+Holding register,"FC03 read / FC06, FC16 write",15,16,40016,Evaporator Entering Fluid Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,17,40017,Evaporator Leaving Fluid Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,24,40024,Outdoor Air Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",26,27,40027,Total Kilowatts,"Total chiller power, 0-3500 kW.",UINT16,1,,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,28,40028,Warning Alarm Index,Index of the active warning (highest index); 0 = none.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",28,29,40029,Problem Alarm Index,Index of the active problem alarm (highest index); 0 = none.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,30,40030,Fault Alarm Index,Index of the active fault (highest index); 0 = none.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,31,40031,Warning Alarm Code,Encoded code of the active warning; 0 = none.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",31,32,40032,Problem Alarm Code,Encoded code of the active problem alarm; 0 = none.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",32,33,40033,Fault Alarm Code,Encoded code of the active fault; 0 = none.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",33,34,40034,Chiller Mode Setpoint - Network,Null runs Cool. Needs Available Modes other than Cool Only.,UINT16,1,,1,0,,Read/write,0 = Null; 1 = Ice; 2 = Cool; 3 = Heat; 4 = Cool/Heat Recovery
+Holding register,"FC03 read / FC06, FC16 write",34,35,40035,Cool Setpoint - Network,Chilled fluid setpoint 24.98-60.08 °F x10; default 43.88 °F.,INT16,1,,0.1,0,°F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",35,36,40036,Ice Setpoint - Network,AWV range 17.6-39.2 °F x10; default 24.98 °F.,INT16,1,,0.1,0,°F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",37,38,40038,Capacity Limit Setpoint - Network,Network capacity limit 0-100 % x10; default 100 %.,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",38,39,40039,Circuit 1 Condenser Refrigerant Pressure,psi x10 (kPa x10 in Metric; to 4826 kPa for R-410A).,UINT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",39,40,40040,Circuit 1 Condenser Saturated Refrigerant Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",40,41,40041,Circuit 1 Evaporator Refrigerant Pressure,psi x10 (kPa x10 in Metric); signed range.,INT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",42,43,40043,Circuit 2 Condenser Refrigerant Pressure,psi x10 (kPa x10 in Metric; to 4826 kPa for R-410A).,UINT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",43,44,40044,Circuit 2 Condenser Saturated Refrigerant Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",44,45,40045,Circuit 2 Evaporator Refrigerant Pressure,psi x10 (kPa x10 in Metric); signed range.,INT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",45,46,40046,Circuit 2 Evaporator Saturated Refrigerant Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",64,65,40065,Circuit 1 Compressor 1 Suction Refrigerant Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",67,68,40068,Circuit 1 Compressor 1 Discharge Refrigerant Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",68,69,40069,Circuit 1 Compressor 1 Percent RLA,"Motor load as percent of rated load amps, 0-100 %.",UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",69,70,40070,Circuit 1 Compressor 1 Current,"Average motor current, 0-10000 A.",UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",70,71,40071,Circuit 1 Compressor 1 Voltage,"Average motor voltage, 0-15000 VAC. Not on Turboscrew compressors.",UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",71,72,40072,Circuit 1 Compressor 1 Power,"Motor power, 0-3500 kW.",UINT16,1,,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",72,73,40073,Circuit 1 Compressor 1 Starts,"Start counter, 0-65535.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",73,74-75,40074,Circuit 1 Compressor 1 Run Hours,"0-999,999 h; low word in 74.",UINT32,2,CDAB,1,0,h,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",103,104,40104,Circuit 2 Compressor 1 Suction Refrigerant Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",106,107,40107,Circuit 2 Compressor 1 Discharge Refrigerant Temperature,°F x10 (°C x10 when Units = Metric).,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",107,108,40108,Circuit 2 Compressor 1 Percent RLA,Motor load as percent of rated load amps.,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",108,109,40109,Circuit 2 Compressor 1 Current,"Average motor current, 0-10000 A.",UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",109,110,40110,Circuit 2 Compressor 1 Voltage,"Average motor voltage, 0-15000 VAC. Not on Turboscrew compressors.",UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",110,111,40111,Circuit 2 Compressor 1 Power,"Motor power, 0-3500 kW.",UINT16,1,,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",111,112,40112,Circuit 2 Compressor 1 Starts,"Start counter, 0-65535.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",112,113-114,40113,Circuit 2 Compressor 1 Run Hours,"0-999,999 h; low word in 113.",UINT32,2,CDAB,1,0,h,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",169,170,40170,Circuit 1 Compressor VFD Temperature,"VFD heat-sink temperature, °F x10. AWV app 263220502+.",INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",170,171,40171,Circuit 2 Compressor VFD Temperature,"VFD heat-sink temperature, °F x10. AWV app 263220502+.",INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",302,303-304,40303,Evaporator Pump 1 Run Hours,"0-999,999 h; low word in 303.",UINT32,2,CDAB,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",304,305,40305,Evaporator Pump 1 Status,,UINT16,1,,1,0,,Read,0 = Pump off request; 1 = Pump on request
+Holding register,"FC03 read / FC06, FC16 write",305,306-307,40306,Evaporator Pump 2 Run Hours,"0-999,999 h; low word in 306.",UINT32,2,CDAB,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",307,308,40308,Evaporator Pump 2 Status,,UINT16,1,,1,0,,Read,0 = Pump off request; 1 = Pump on request
+Holding register,"FC03 read / FC06, FC16 write",308,309,40309,Clock Year,Controller clock; write to sync with the BAS.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",309,310,40310,Clock Month,1-12.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",310,311,40311,Clock Date,"Day of month, 1-31.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",311,312,40312,Clock Day of Week,Calculated by the controller.,UINT16,1,,1,0,,Read,0 = Monday; 1 = Tuesday; 2 = Wednesday; 3 = Thursday; 4 = Friday; 5 = Saturday; 6 = Sunday
+Holding register,"FC03 read / FC06, FC16 write",312,313,40313,Clock Hour,0-23.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",313,314,40314,Clock Minute,0-59.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",314,315,40315,Clock Second,0-59.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",315,316,40316,Units (English/Metric),Unit system for all network values; default English.,UINT16,1,,1,0,,Read/write,0 = English; 1 = Metric
+Holding register,"FC03 read / FC06, FC16 write",316,317,40317,Chiller Model,,UINT16,1,,1,0,,Read,0 = Centrifugal; 1 = Water cooled; 2 = Air cooled; 3 = Heat pump; 9 = Other
+Holding register,"FC03 read / FC06, FC16 write",317,318-327,40318,Chiller Location,"Up to 20 ASCII characters, two per register, first character in the high byte.",STRING[20],10,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",333,334-338,40334,Application Software Version,"Up to 10 ASCII characters, two per register, first character in the high byte.",STRING[10],5,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",399,400,40400,Waterside Economizer Entering Water Temperature,°F x10. Waterside economizer option; AWV app 263220502+.,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",839,840,40840,Control Panel Internal Temperature,°F x10. AWV app 263220504+.,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",840,841,40841,Power Panel Internal Temperature,°F x10. AWV app 263220504+.,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",841,842,40842,Harmonic Filter Internal Temperature,°F x10. AWV app 263220504+.,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",842,843,40843,Circuit 1 Liquid Line Approach Temperature,0-50 °F x10. AWV app 263220504+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",843,844,40844,Circuit 2 Liquid Line Approach Temperature,0-50 °F x10. AWV app 263220504+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",844,845,40845,Main Power Loss,AWV app 263220505+.,UINT16,1,,1,0,,Read,0 = Normal; 1 = Power loss
+Holding register,"FC03 read / FC06, FC16 write",845,846,40846,Circuit 1 Subcooling Temperature,°F x10. AWV app 263220505+.,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",846,847,40847,Circuit 2 Subcooling Temperature,°F x10. AWV app 263220505+.,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",969,970,40970,Circuit 1 Compressor 1 Unavailable,AWV app 263220112+.,UINT16,1,,1,0,,Read,0 = Available; 1 = Unavailable
+Holding register,"FC03 read / FC06, FC16 write",971,972,40972,Circuit 2 Compressor 1 Unavailable,AWV app 263220112+.,UINT16,1,,1,0,,Read,0 = Available; 1 = Unavailable
+Holding register,"FC03 read / FC06, FC16 write",1099,1100,41100,Evaporator Recirculate Time Remaining,0-300 s. AWV app 263220502+.,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",1100,1101,41101,Circuit 1 Cycle Time Remaining,0-3600 s. AWV app 263220502+.,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",1101,1102,41102,Circuit 2 Cycle Time Remaining,0-3600 s. AWV app 263220502+.,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",1808,1809,41809,Circuit 2 Compressor 1 Oil Feed Pressure,psi x10 (kPa x10 in Metric); signed range.,INT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",1848,1849,41849,Circuit 1 Compressor 1 Oil Feed Pressure,psi x10 (kPa x10 in Metric); signed range.,INT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",1853,1854,41854,Waterside Economizer State,Current cooling mode. Waterside economizer option only.,UINT16,1,,1,0,,Read,0 = Off; 1 = Mech; 2 = Hybrid; 3 = WsEcon
+Holding register,"FC03 read / FC06, FC16 write",1854,1855,41855,Waterside Economizer Enable Setpoint,Used only when Local/Remote = Remote. Option only.,UINT16,1,,1,0,,Read/write,0 = Disable; 1 = Enable
+Holding register,"FC03 read / FC06, FC16 write",1898,1899,41899,Circuit 1 Evaporator Superheat Temperature,0-50 °F x10. AWV app 263220502+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1899,1900,41900,Circuit 2 Evaporator Superheat Temperature,0-50 °F x10. AWV app 263220502+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1910,1911,41911,Circuit 1 Discharge Superheat Temperature,0-50 °F x10. AWV app 263220502+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1911,1912,41912,Circuit 2 Discharge Superheat Temperature,0-50 °F x10. AWV app 263220502+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1967,1968,41968,Circuit 2 Liquid Line Refrigerant Temperature,°F x10. AWV app 263220502+.,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1970,1971,41971,Circuit 2 Condenser Approach Temperature,0-50 °F x10. AWV app 263220502+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1971,1972,41972,Circuit 2 Evaporator Approach Temperature,0-50 °F x10. AWV app 263220502+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1983,1984,41984,Circuit 1 Liquid Line Refrigerant Temperature,°F x10. AWV app 263220502+.,INT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1986,1987,41987,Circuit 1 Condenser Approach Temperature,0-50 °F x10. AWV app 263220502+.,UINT16,1,,0.1,0,°F,Read,
+Holding register,"FC03 read / FC06, FC16 write",1987,1988,41988,Circuit 1 Evaporator Approach Temperature,0-50 °F x10. AWV app 263220502+.,UINT16,1,,0.1,0,°F,Read,
