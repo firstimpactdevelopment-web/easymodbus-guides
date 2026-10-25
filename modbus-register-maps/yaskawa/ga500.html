@@ -34,7 +34,7 @@
 </style>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Yaskawa GA500 Modbus Register Map | Easy Modbus</title>
+<title>Yaskawa GA500 Modbus Register List &amp; Map | Easy Modbus</title>
 <meta name="description" content="Yaskawa GA500 Modbus register map: 48 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
 <link rel="canonical" href="https://easymodbus.com/modbus-register-maps/yaskawa/ga500">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
@@ -42,12 +42,12 @@
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Yaskawa GA500 Modbus Register Map | Easy Modbus">
+<meta property="og:title" content="Yaskawa GA500 Modbus Register List &amp; Map | Easy Modbus">
 <meta property="og:description" content="Yaskawa GA500 Modbus register map: 48 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
 <meta property="og:url" content="https://easymodbus.com/modbus-register-maps/yaskawa/ga500">
 <meta property="og:image" content="https://easymodbus.com/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Yaskawa GA500 Modbus Register Map | Easy Modbus">
+<meta name="twitter:title" content="Yaskawa GA500 Modbus Register List &amp; Map | Easy Modbus">
 <meta name="twitter:description" content="Yaskawa GA500 Modbus register map: 48 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
 <meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,6 +117,9 @@ table.pts td.n{font-weight:600}
 table.pts td.d,table.pts td.s{color:var(--mut)}
 table.pts td.s{font-size:.82rem;min-width:200px}
 table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
 .acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
 .acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
@@ -160,7 +163,7 @@ footer a{color:var(--mut);text-decoration:underline}
    "@type": "WebPage",
    "@id": "https://easymodbus.com/modbus-register-maps/yaskawa/ga500",
    "url": "https://easymodbus.com/modbus-register-maps/yaskawa/ga500",
-   "name": "Yaskawa GA500 Modbus Register Map | Easy Modbus",
+   "name": "Yaskawa GA500 Modbus Register List & Map | Easy Modbus",
    "description": "Yaskawa GA500 Modbus register map: 48 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
    "dateModified": "2026-10-16",
    "isPartOf": {
@@ -430,7 +433,7 @@ decoded every way at once, so a wrong word order or scale is obvious. New to thi
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Yaskawa GA500 AC drive (MEMOBUS/Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Yaskawa GA500 AC drive (MEMOBUS/Modbus RTU) have?</summary><p>This map lists 48 registers: 48 holding registers. 21 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Yaskawa GA500 AC drive (MEMOBUS/Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Register numbers are printed in hex and go into the request unchanged: the manual&#x27;s read example asks for starting register 0020H by sending 00 20, and its write example writes 0001H/0002H directly. Parameters use the hex number printed under each parameter in the parameter list (e.g. H5-04 = 0428H).</p></details><details><summary>What are the minimum Modbus registers to integrate the Yaskawa GA500 AC drive (MEMOBUS/Modbus RTU)?</summary><p>Start with HR 1 Run command / MFDI command (Run/stop, direction, fault reset); HR 2 Frequency reference (Frequency reference (o1-03 units)); HR 32 Drive Status 1 (Drive Status 1: run/ready/fault); HR 33 Fault Description 1 (Fault Description 1); HR 36 U1-02 Output Frequency (U1-02 Output frequency); HR 49 U1-07 DC Bus Voltage (U1-07 DC bus voltage); HR 44 Drive Status 2 (Drive Status 2 incl. comm timeout bit).</p></details><details><summary>How do I enable Modbus control of the Yaskawa GA500 AC drive (MEMOBUS/Modbus RTU)?</summary><p>Set H5-01 node address (default 1FH), H5-02 speed (default 3 = 9600 bps) and H5-03 parity (default 0 = none), then power-cycle or set H5-20 = 1. For control set b1-01 = 2 [Memobus/Modbus Communications] and b1-02 = 2 (b1-15/b1-16 for external reference 2). H5-12 decides whether 0001H bits 0/1 mean FWD/REV run or Run + direction. Network inputs are ORed with terminals S1-S7.</p></details><details><summary>What happens when the Yaskawa GA500 AC drive (MEMOBUS/Modbus RTU) loses Modbus communication?</summary><p>H5-05 = 1 enables CE [Modbus Communication Error] detection, H5-09 CE Detection Time (0.0-25.0 s, default 2.0 s) sets the timeout, and H5-04 selects the reaction: 0 ramp to stop, 1 coast, 2 fast stop (C1-09), 3 alarm only (default). Drive Status 2 (002CH) bit F shows a communications timeout.</p></details><details><summary>Where is the official Yaskawa GA500 AC drive (MEMOBUS/Modbus RTU) Modbus documentation?</summary><p>The source is GA500 Drive Technical Reference (Versatile Compact Type) (SIEPC71061752C), revision 2023-06, published free by Yaskawa at https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061752&amp;cmd=documents&amp;documentName=SIEPC71061752.pdf.</p></details></div>
-
+<h2>More Yaskawa Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/yaskawa/a1000" data-row><span class="k">Variable frequency drive</span><h3>Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)</h3><p>Yaskawa A1000 drives (CIMR-AU; 200 V, 400 V and 600 V classes) using the built-in RS-422/485 MEMOBUS/Modbus terminals (TB5), per Technical Manual SIEP C710616 41H.</p><div class="meta">66 registers &middot; 13 writable &middot; RTU</div><span class="sr-only"> Also known as: CIMR-AU, CIMR-AUA, A1000 High Performance Vector Control Drive</span></a></li><li><a class="card" href="/modbus-register-maps/yaskawa/v1000" data-row><span class="k">Variable frequency drive</span><h3>Yaskawa V1000 AC drive (MEMOBUS/Modbus RTU)</h3><p>Yaskawa V1000 drives (CIMR-VU; 200 V single/three-phase and 400 V three-phase, 0.1-18.5 kW) using the built-in RS-422/485 MEMOBUS/Modbus terminals, per Technical Manual SIEP C710606 18F.</p><div class="meta">63 registers &middot; 11 writable &middot; RTU</div><span class="sr-only"> Also known as: CIMR-VU, V1000 Compact Vector Control Drive</span></a></li></ul>
 <p class="updated">Source: <a href="https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061752&amp;cmd=documents&amp;documentName=SIEPC71061752.pdf" rel="nofollow noopener" target="_blank">GA500 Drive Technical Reference (Versatile Compact Type) &middot; SIEPC71061752C &middot; rev. 2023-06</a>.
 Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
 

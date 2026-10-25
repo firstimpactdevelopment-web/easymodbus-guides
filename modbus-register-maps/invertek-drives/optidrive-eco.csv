@@ -1,0 +1,29 @@
+﻿# Invertek Drives Optidrive Eco (built-in Modbus RTU) Modbus register map - easymodbus.com - source: https://admin.invertekdrives.com/assets/56AFAD3C-CE1A-4D9D-A91D-F893F86B59D2/82-HEMAN-IN_V3.13%20Optidrive%20Eco%20User%20Guide.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Command control word,"Run, fast stop, reset and coast stop bits; needs P1-12 = 4.",BITMAP16,1,,1,0,,Read/write,"bit 0 = Run/stop: 1 = run (enable), 0 = stop; bit 1 = Fast stop: 1 = stop using the 2nd deceleration ramp; bit 2 = Fault reset: 1 = reset trip; set back to 0 after the fault clears; bit 3 = Coast stop: 1 = coast to stop"
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Command speed reference,Frequency setpoint in 0.1 Hz (500 = 50.0 Hz); needs P1-12 = 4.,INT16,1,,0.1,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,4,40004,Command ramp times,Accel/decel time 0-60000 = 0.00-600.00 s; used only when P5-07 = 1.,UINT16,1,,0.01,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,6,40006,Error code / drive status,"Low byte = status bits, high byte = fault code when tripped.",BITMAP16,1,,1,0,,Read,"bit 0 = 1 = running (enabled), 0 = stopped; bit 1 = 1 = tripped, 0 = healthy; bit 2 = 1 = Hand, 0 = Auto; bit 3 = Inhibit; bit 4 = Service due; bit 5 = Standby (sleep) active; bit 6 = Drive ready; bit 7 = 1 = low or high load condition detected; bit 8 = Bits 8-15 (upper byte): fault code number while tripped (50 = Modbus timeout)"
+Holding register,"FC03 read / FC06, FC16 write",6,7,40007,Output frequency,0.1 Hz (123 = 12.3 Hz).,INT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,8,40008,Output current,0.1 A (105 = 10.5 A).,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,9,40009,Output torque,Motor torque in 0.1 % (474 = 47.4 %).,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,10,40010,Output power,0.01 kW (1100 = 11.00 kW).,INT16,1,,0.01,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,11,40011,Digital input status,Bit n = digital input n+1.,BITMAP16,1,,1,0,,Read,bit 0 = Digital input 1; bit 1 = Digital input 2; bit 2 = Digital input 3
+Holding register,"FC03 read / FC06, FC16 write",19,20,40020,Analog input 1 level,Applied signal in 0.1 % (1000 = 100.0 %).,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",20,21,40021,Analog input 2 level,Applied signal in 0.1 % (1000 = 100.0 %).,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,23,40023,DC link voltage,Measured DC bus voltage in whole volts.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,24,40024,Drive temperature,Measured heatsink temperature in whole °C.,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",33,34,40034,Running time - hours,"Total run time, hours part (P0-31).",UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",100,101 (P1-01),40101,P1-01 Maximum frequency / speed limit,x10 per the guide's example (500 = 50.0 Hz); rpm when P1-10 > 0.,UINT16,1,,0.1,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",101,102 (P1-02),40102,P1-02 Minimum frequency / speed limit,Same format as P1-01; rpm when P1-10 > 0.,UINT16,1,,0.1,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",102,103 (P1-03),40103,P1-03 Acceleration ramp time,"0.0-6000.0 s, sent x10 (default 30.0 s).",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",103,104 (P1-04),40104,P1-04 Deceleration ramp time,"0.0-6000.0 s, sent x10 (default 30.0 s).",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",104,105 (P1-05),40105,P1-05 Stop mode,Action when the enable signal is removed.,UINT16,1,,1,0,,Read/write,0 = Ramp; 1 = Coast; 2 = AC flux braking
+Holding register,"FC03 read / FC06, FC16 write",106,107 (P1-07),40107,P1-07 Motor rated voltage / kE,Motor nameplate voltage (back-EMF for PM motors).,UINT16,1,,1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",108,109 (P1-09),40109,P1-09 Motor rated frequency,"Nameplate frequency, whole Hz (25-500).",UINT16,1,,1,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",109,110 (P1-10),40110,P1-10 Motor rated speed,0 = speeds shown in Hz; nameplate rpm switches to rpm.,UINT16,1,,1,0,rpm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",111,112 (P1-12),40112,P1-12 Primary command source,Set 4 to control the drive over Modbus RTU.,UINT16,1,,1,0,,Read/write,"0 = Terminal control; 1 = Keypad control, uni-directional; 2 = Keypad control, uni-directional; 3 = PID control; 4 = Fieldbus control (Modbus RTU or option module; not BACnet); 5 = Slave mode; 6 = BACnet MS/TP mode"
+Holding register,"FC03 read / FC06, FC16 write",112,113 (P1-13),40113,P1-13 Digital input function,Digital input macro selection (see guide's P1-13 table).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",504,505 (P5-05),40505,P5-05 Communications loss timeout,"0.0-5.0 s, sent x10; 0 disables (default 1.0 s).",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",505,506 (P5-06),40506,P5-06 Communications loss action,,UINT16,1,,1,0,,Read/write,0 = Trip and coast to stop; 1 = Ramp to stop then trip; 2 = Ramp to stop only (no trip); 3 = Run at preset speed 4
+Holding register,"FC03 read / FC06, FC16 write",506,507 (P5-07),40507,P5-07 Fieldbus ramp control,1 = ramp times come from register 4.,UINT16,1,,1,0,,Read/write,0 = Disabled (ramps from P1-03/P1-04); 1 = Enabled (ramps from fieldbus)

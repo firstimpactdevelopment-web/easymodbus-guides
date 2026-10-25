@@ -40,6 +40,10 @@ ROOT = "modbus-register-maps"
 UPDATED = "2026-10-16"
 UPDATED_HUMAN = "16 October 2026"
 
+# Per-page <lastmod> for the sitemap, filled in by build(): each model page is dated by its
+# own verification, collection pages by their newest model.
+LASTMOD = {}
+
 # table -> (heading, short code, function codes, Modicon prefix, Easy Modbus app name)
 TABLES = {
     "coil": ("Coil", "CO", "FC01 read / FC05, FC15 write", 0, "Coil"),
@@ -59,6 +63,16 @@ CONVENTION_TEXT = {
     "hex 0-based": "hexadecimal, 0-based",
     "parameter-derived": "derived from parameter numbers",
 }
+
+
+def human_date(iso):
+    y, mth, d = (int(x) for x in iso.split("-"))
+    return "%d %s %d" % (d, ("January February March April May June July August September October "
+                             "November December").split()[mth - 1], y)
+
+
+def newest(models):
+    return max(m["_date"] for m in models)
 
 
 def esc(s):
@@ -95,6 +109,7 @@ def load_all():
             print("SKIP %s: not verified yet" % os.path.relpath(path, HERE))
             continue
         d["_path"] = path
+        d["_date"] = (d.get("verified") or {}).get("date") or UPDATED
         models.append(d)
     return models
 
@@ -253,6 +268,9 @@ table.pts td.n{font-weight:600}
 table.pts td.d,table.pts td.s{color:var(--mut)}
 table.pts td.s{font-size:.82rem;min-width:200px}
 table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
 .acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
 .acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
@@ -459,16 +477,17 @@ def short_model(m):
     if not full:
         s = re.sub(r"\s*\([^)]*\)", "", s)
         s = re.split(r"\s+[-–]\s+", s)[0]
-    for name in {m["manufacturer"], mfr_short(m)}:
+    for name in sorted({m["manufacturer"], mfr_short(m), mfr_short(m).split()[0]}, key=len, reverse=True):
         s = re.sub(r"^%s\s+" % re.escape(name), "", s, flags=re.I)
-    s = re.sub(r"(?i)\s+modbus(\s+(rtu|tcp|map|module|gateway|interface))?$", "", s).strip()
+    s = re.sub(r"(?i)\s+modbus([\s-]+(rtu|tcp|map|module|gateway|interface))?$", "", s).strip()
     return s or m["model"]
 
 
 def page_title(m):
     brand = mfr_short(m)
     for mm in ("%s %s" % (brand, short_model(m)), "%s %s" % (brand.split()[0], short_model(m))):
-        for t in ("%s Modbus Register Map | Easy Modbus" % mm,
+        for t in ("%s Modbus Register List & Map | Easy Modbus" % mm,
+                  "%s Modbus Register Map | Easy Modbus" % mm,
                   "%s Modbus Register Map" % mm,
                   "%s Modbus Registers" % mm):
             if len(t) <= 62:
@@ -790,7 +809,7 @@ def model_page(m, siblings):
           '<h1><span class="mfr">%s</span> %s Modbus register map</h1>'
           '<p class="updated">Updated %s</p>' % (
               esc(m.get("equipment_type") or "Equipment"), esc(m["manufacturer"]), esc(m["model"]),
-              UPDATED_HUMAN))
+              human_date(m["_date"])))
 
     base = "/" + model_path(m, "")
     n_app = len(easymodbus_rows(m))
@@ -846,7 +865,7 @@ Register numbers, types, scaling and units are reproduced as published; descript
         "url": url, "keywords": keywords, "isAccessibleForFree": True,
         "license": BASE_URL + "/terms",
         "creator": {"@id": ORG["@id"]}, "publisher": {"@id": ORG["@id"]},
-        "dateModified": UPDATED,
+        "dateModified": m["_date"],
         "isBasedOn": {"@type": "CreativeWork", "name": s.get("title") or "", "url": s["url"],
                       "author": {"@type": "Organization", "name": m["manufacturer"]}},
         "about": {"@type": "Product", "name": "%s %s" % (m["manufacturer"], m["model"]),
@@ -866,7 +885,7 @@ Register numbers, types, scaling and units are reproduced as published; descript
     faq_ld = {"@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": ans}} for q, ans in faq]}
     page_ld = {"@type": "WebPage", "@id": url, "url": url, "name": title, "description": desc,
-               "dateModified": UPDATED, "isPartOf": {"@id": BASE_URL + "/#site"},
+               "dateModified": m["_date"], "isPartOf": {"@id": BASE_URL + "/#site"},
                "mainEntity": {"@id": url + "#dataset"}, "publisher": {"@id": ORG["@id"]}}
     jsonld = graph(ORG, page_ld, dataset, faq_ld, breadcrumb_ld(crumbs, url))
     return shell(relpath, title, desc, h1, body, jsonld, crumbs, og_type="article")
@@ -892,11 +911,34 @@ def collection_ld(url, title, desc, models, about=None):
         {"@type": "ListItem", "position": i, "url": clean(model_path(m)), "name": model_title(m)}
         for i, m in enumerate(models, 1)]}
     page_ld = {"@type": "CollectionPage", "@id": url, "url": url, "name": title, "description": desc,
-               "dateModified": UPDATED, "isPartOf": {"@id": BASE_URL + "/#site"}, "mainEntity": item_list,
+               "dateModified": newest(models), "isPartOf": {"@id": BASE_URL + "/#site"}, "mainEntity": item_list,
                "publisher": {"@id": ORG["@id"]}}
     if about:
         page_ld["about"] = about
     return page_ld
+
+
+def comms_table(models, heading):
+    """Default comm settings of every model on a collection page, so an integrator can see the
+    unit ID, serial format and word order without opening each map."""
+    rows = []
+    for m in models:
+        d = m.get("defaults") or {}
+        conv = (m.get("addressing") or {}).get("convention") or ""
+        rows.append("<tr><td><a href=\"/%s\">%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>"
+                    "<td>%s</td><td>%s</td></tr>" % (
+                        model_path(m), esc(m["model"]), esc("/".join(m.get("transport") or []) or "-"),
+                        esc(d.get("unit_id")) if d.get("unit_id") not in (None, "") else "Not stated",
+                        esc(", ".join(defaults_text(m))) or "-",
+                        esc(m.get("default_word_order") or "16-bit only"), esc(conv), len(m["registers"])))
+    return ("<h2>%s: default communication settings</h2>"
+            "<p>Factory defaults as the manufacturer documents them. Change one setting at a time on site and "
+            "write down what you changed. Word order applies to 32-bit values; the addressing column says how "
+            "the manufacturer prints register numbers (every map on this site also gives the 0-based wire "
+            "address).</p>"
+            "<div class=\"tablewrap\"><table class=\"comms\"><thead><tr><th>Model</th><th>Transport</th><th>Unit ID</th>"
+            "<th>Serial</th><th>Word order</th><th>Documented addressing</th><th>Registers</th></tr></thead>"
+            "<tbody>%s</tbody></table></div>" % (esc(heading), "".join(rows)))
 
 
 def mfr_page(mslug, models):
@@ -913,15 +955,17 @@ def mfr_page(mslug, models):
                "Free %s Modbus register maps for %d models: addresses, data types, word order, scaling and "
                "units, with CSV downloads." % (name, len(models)))
     h1 = ('<p class="eyebrow">Manufacturer</p><h1><span class="mfr">%s</span> Modbus register maps</h1>'
-          '<p class="updated">Updated %s</p>' % (esc(name), UPDATED_HUMAN))
+          '<p class="updated">Updated %s</p>' % (esc(name), human_date(newest(models))))
     body = """
 <p class="lede">%(nm)d %(name)s model%(s)s, %(total)s registers in all, each re-typed from %(name)s&rsquo;s
 own free documentation and checked against it.</p>
 <div class="tools"><input class="search" type="search" placeholder="Filter %(name)s models&hellip;"
  aria-label="Filter models" data-filter="models"><span class="count" data-count-for="models">%(nm)d of %(nm)d shown</span></div>
 <ul class="grid" id="models">%(cards)s</ul>
+%(comms)s
 """ % {"name": esc(name), "nm": len(models), "s": "" if len(models) == 1 else "s",
-       "total": "{:,}".format(total), "cards": "".join(card(m) for m in models)}
+       "total": "{:,}".format(total), "cards": "".join(card(m) for m in models),
+       "comms": comms_table(models, name)}
     ld = collection_ld(url, title, desc, models, {"@type": "Brand", "name": name})
     return shell(relpath, title, desc, h1, body, graph(ORG, ld, breadcrumb_ld(crumbs, url)), crumbs)
 
@@ -949,7 +993,7 @@ def cat_page(cat, models):
                "Free Modbus register maps for %d %s models: addresses, data types, word order, scaling and CSV "
                "downloads." % (len(models), noun))
     h1 = ('<p class="eyebrow">Equipment type</p><h1><span class="mfr">%s</span> Modbus register maps</h1>'
-          '<p class="updated">Updated %s</p>' % (esc(heading), UPDATED_HUMAN))
+          '<p class="updated">Updated %s</p>' % (esc(heading), human_date(newest(models))))
     body = """
 <p class="lede">%(n)d %(heading_l)s register map%(s)s from %(nm)d manufacturer%(s2)s: %(mfrs)s.</p>
 <div class="tools"><input class="search" type="search" placeholder="Filter %(heading_l)s&hellip;"
@@ -958,6 +1002,7 @@ def cat_page(cat, models):
 """ % {"n": len(models), "heading_l": esc(heading.lower()), "nm": len(mfrs), "mfrs": esc(", ".join(mfrs)),
        "s": "" if len(models) == 1 else "s", "s2": "" if len(mfrs) == 1 else "s",
        "cards": "".join(card(m) for m in models)}
+    body += comms_table(models, heading)
     ld = collection_ld(url, title, desc, models)
     return shell(relpath, title, desc, h1, body, graph(ORG, ld, breadcrumb_ld(crumbs, url)), crumbs)
 
@@ -984,7 +1029,7 @@ def hub_page(groups):
     options = "".join('<option value="/%s">%s (%d)</option>' % (mfr_path(s), esc(g[0]["manufacturer"]), len(g))
                       for s, g in groups.items())
     h1 = ('<p class="eyebrow">Free library</p><h1>Modbus register maps <span class="mfr">by manufacturer</span></h1>'
-          '<p class="updated">Updated %s</p>' % UPDATED_HUMAN)
+          '<p class="updated">Updated %s</p>' % human_date(newest(models)))
     body = """
 <p class="lede"><strong>%(nm)d models from %(ng)d manufacturers</strong> &mdash; %(total)s registers &mdash; each with
 the 0-based address, data type, word order, scale, units and access, checked against the manufacturer&rsquo;s own
@@ -1013,7 +1058,7 @@ document and ready to paste into Easy Modbus or download as CSV.</p>
          "name": "%s Modbus register maps" % g[0]["manufacturer"]}
         for i, (s, g) in enumerate(groups.items(), 1)]}
     page_ld = {"@type": "CollectionPage", "@id": url, "url": url, "name": title, "description": desc,
-               "dateModified": UPDATED, "isPartOf": {"@id": BASE_URL + "/#site"}, "mainEntity": item_list,
+               "dateModified": newest(models), "isPartOf": {"@id": BASE_URL + "/#site"}, "mainEntity": item_list,
                "publisher": {"@id": ORG["@id"]}}
     return shell(relpath, title, desc, h1, body, graph(ORG, page_ld, catalog, breadcrumb_ld(crumbs, url)), crumbs)
 
@@ -1121,23 +1166,28 @@ def build(write):
         if len(ms) > 1:
             for m in ms:
                 m["_full_title"] = True
+    LASTMOD.clear()
     paths = [hub_path()]
+    LASTMOD[hub_path()] = newest(models)
     write(hub_path(), hub_page(groups))
     for mslug, ms in groups.items():
         write(mfr_path(mslug), mfr_page(mslug, ms))
         paths.append(mfr_path(mslug))
+        LASTMOD[mfr_path(mslug)] = newest(ms)
         for m in ms:
             write(model_path(m), model_page(m, ms))
             write(model_path(m, ".csv"), csv_text(m))
             write(model_path(m, "-easymodbus.csv"), easymodbus_csv(m))
             write(model_path(m, ".json"), json_text(m))
             paths.append(model_path(m))
+            LASTMOD[model_path(m)] = m["_date"]
     cats = group_by_category(models)
     for c, ms in cats:
         write(cat_path(c[0]), cat_page(c, ms))
         paths.append(cat_path(c[0]))
+        LASTMOD[cat_path(c[0])] = newest(ms)
     catalogue = {
-        "name": "Easy Modbus register-map library", "url": clean(hub_path()), "updated": UPDATED,
+        "name": "Easy Modbus register-map library", "url": clean(hub_path()), "updated": newest(models),
         "address_note": "All addresses are 0-based Modbus wire addresses.",
         "models": [{
             "manufacturer": m["manufacturer"], "model": m["model"], "aliases": m.get("aliases") or [],

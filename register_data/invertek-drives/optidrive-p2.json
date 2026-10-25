@@ -1,0 +1,536 @@
+{
+  "manufacturer": "Invertek Drives",
+  "manufacturer_slug": "invertek-drives",
+  "model": "Optidrive P2 (built-in Modbus RTU)",
+  "model_slug": "optidrive-p2",
+  "short_model": "Optidrive P2",
+  "aliases": [
+    "ODP-2",
+    "Optidrive P2 IP20",
+    "Optidrive P2 IP55",
+    "Optidrive P2 IP66"
+  ],
+  "equipment_type": "Variable frequency drive",
+  "applies_to": "Invertek Optidrive P2 drives (0.75-250 kW) using the built-in RJ45 RS-485 Modbus RTU port, per user guide 82-P2MAN-IN V3.10.",
+  "summary": "Invertek's high-performance general purpose variable frequency drive, with Modbus RTU on the built-in RJ45 RS-485 port. Registers 1-4 take the control word, speed and torque references and ramp time; registers 6-24 report status, fault code, output values and I/O; and parameters P1-xx to P5-xx sit at register = parameter number (P1-01 = 101). This map covers the control/monitor block and the P1/P5 parameters a Modbus integration needs.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 115200,
+    "parity": "None",
+    "data_bits": null,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "The guide numbers registers from 1 and says masters that count from 0 must subtract 1, so register 1 (control word) is wire address 0 and register 6 (status) is address 5. Parameters use register = parameter number (P1-01 = register 101 = address 100; P5-05 = 505 = address 504)."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Optidrive P2 User Guide",
+    "doc_number": "82-P2MAN-IN V3.10",
+    "revision_date": "2024-05",
+    "url": "https://admin.invertekdrives.com/assets/6AA7F3D2-B563-4DF8-9821-31C506074AA9/(82-P2MAN-IN)%20P2%20User%20Guide%20V3.10.pdf",
+    "pages": "Section 9.2 Modbus RTU pp. 71-72 (telegram structure, register table, parameter access); RJ45 pinout/wiring section 9.1 pp. 70-71; P1 parameters pp. 44-45; P5 communication parameters pp. 63-64; fault codes 50-52 in section 11.1 p. 86"
+  },
+  "notes": [
+    "Register 6 packs two bytes: the low byte is the 8-bit status word, the high byte the fault code. Read the register, then take (value >> 8) for the fault number; 0 means no fault.",
+    "The Modbus table does not say whether the output values are signed. Output power is typed UINT16 because the guide's CANopen mapping of the same value (object 200Fh) is Unsigned 16, and a 250 kW drive in overload can pass 327.67 kW. Frequency, torque, analog levels and temperature are typed INT16, matching the guide's Integer 16 CANopen objects for speed, torque and drive temperature; analog input 1 can be set to -10 to +10 V, so its level can go negative.",
+    "Parameter registers follow the guide's rule: register number = parameter number, and a parameter shown with one decimal place is sent x10 (the guide's example: P1-01 = 500 means 50.0 Hz). When P1-10 Motor rated speed is non-zero, P1-01/P1-02 are in rpm instead and the decimal handling for rpm is not stated.",
+    "The guide says P5-01 (drive address), P5-03 (baud rate) and P5-04 (data format) are not accessible over Modbus, so they are not listed; P5-16 (alternative Modbus address) is left out for the same reason.",
+    "The register-4 text says ramp control needs 'P5-08 = 1', but the introduction and the P5-07 parameter description both put Fieldbus Ramp Control in P5-07; this map follows P5-07.",
+    "Left out: register 22 pre-ramp speed reference (units not stated), P1-03/P1-04 ramp times (resolution is 0.01 s on frame sizes 2-3 but 0.1 s on sizes 4-7, so the Modbus scale depends on the frame), P1-08 motor current and P1-11 boost (decimal places not stated)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "1",
+      "name": "Command control word",
+      "description": "Run, fast stop, reset and coast stop bits; needs P1-12 = 4.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Run/stop: 1 = run (enable), 0 = stop",
+        "1": "Fast stop: 1 = stop using the 2nd deceleration ramp",
+        "2": "Fault reset: 1 = reset trip; set back to 0 after the fault clears",
+        "3": "Coast stop: 1 = coast to stop"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "2",
+      "name": "Command speed reference",
+      "description": "Frequency setpoint in 0.1 Hz (500 = 50.0 Hz); needs P1-12 = 4.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "Hz",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "3",
+      "name": "Command torque reference",
+      "description": "Torque setpoint/limit in 0.1 % (2000 = 200.0 %).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "4",
+      "name": "Command ramp times",
+      "description": "Accel/decel time 0-60000 = 0.00-600.00 s; used only when P5-07 = 1.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "6",
+      "name": "Error code / drive status",
+      "description": "Low byte = status bits, high byte = fault code when tripped.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "1 = running (enabled), 0 = stopped",
+        "1": "1 = tripped, 0 = healthy",
+        "3": "1 = inhibit (STO input open), 0 = ready (STO closed)",
+        "4": "1 = maintenance time reached",
+        "5": "1 = standby (sleep) mode active",
+        "6": "1 = ready: mains on, no inhibit, no trip, enable input present",
+        "8": "Bits 8-15 (upper byte): fault code number while tripped (50 = Modbus comms fault)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "7",
+      "name": "Output frequency",
+      "description": "0.1 Hz (123 = 12.3 Hz).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "Hz",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "8",
+      "name": "Output current",
+      "description": "0.1 A (105 = 10.5 A).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "9",
+      "name": "Output torque",
+      "description": "Motor torque in 0.1 % (474 = 47.4 %).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "10",
+      "name": "Output power",
+      "description": "0.01 kW (1100 = 11.00 kW).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "kW",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "11",
+      "name": "Digital input status",
+      "description": "Bit n = digital input n+1.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Digital input 1",
+        "1": "Digital input 2",
+        "2": "Digital input 3"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 19,
+      "documented": "20",
+      "name": "Analog input 1 level",
+      "description": "Applied signal in 0.1 % (1000 = 100.0 %).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 20,
+      "documented": "21",
+      "name": "Analog input 2 level",
+      "description": "Applied signal in 0.1 % (1000 = 100.0 %).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 22,
+      "documented": "23",
+      "name": "DC bus voltage",
+      "description": "Measured DC bus voltage in whole volts.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "24",
+      "name": "Drive temperature",
+      "description": "Measured heatsink temperature in whole °C.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 100,
+      "documented": "101 (P1-01)",
+      "name": "P1-01 Maximum frequency / speed limit",
+      "description": "x10 per the guide's example (500 = 50.0 Hz); rpm when P1-10 > 0.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "Hz",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 101,
+      "documented": "102 (P1-02)",
+      "name": "P1-02 Minimum frequency / speed limit",
+      "description": "Same format as P1-01; rpm when P1-10 > 0.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "Hz",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 104,
+      "documented": "105 (P1-05)",
+      "name": "P1-05 Stop mode",
+      "description": "Action when the enable signal is removed.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Ramp",
+        "1": "Coast",
+        "2": "Ramp, brake chopper enabled",
+        "3": "Coast, brake chopper enabled",
+        "4": "AC flux braking"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 106,
+      "documented": "107 (P1-07)",
+      "name": "P1-07 Motor rated voltage / kE",
+      "description": "Motor nameplate voltage (back-EMF for PM motors).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 108,
+      "documented": "109 (P1-09)",
+      "name": "P1-09 Motor rated frequency",
+      "description": "Nameplate frequency, whole Hz (10-500).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "Hz",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 109,
+      "documented": "110 (P1-10)",
+      "name": "P1-10 Motor rated speed",
+      "description": "0 = speeds shown in Hz; nameplate rpm switches to rpm.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "rpm",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 111,
+      "documented": "112 (P1-12)",
+      "name": "P1-12 Primary command source",
+      "description": "Set 4 to control the drive over Modbus RTU.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Terminal control",
+        "1": "Keypad control, uni-directional",
+        "2": "Keypad control, bi-directional",
+        "3": "PID control",
+        "4": "Fieldbus mode (Modbus RTU when no option module fitted)",
+        "5": "Slave mode",
+        "6": "CANopen mode"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 112,
+      "documented": "113 (P1-13)",
+      "name": "P1-13 Digital input function",
+      "description": "Digital input macro selection (see guide's P1-13 table).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 504,
+      "documented": "505 (P5-05)",
+      "name": "P5-05 Communications loss timeout",
+      "description": "0.0-5.0 s, sent x10; 0 disables (default 1.0 s).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 505,
+      "documented": "506 (P5-06)",
+      "name": "P5-06 Communications loss action",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Trip and coast to stop",
+        "1": "Ramp to stop then trip",
+        "2": "Ramp to stop only (no trip)",
+        "3": "Run at preset speed 8"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 506,
+      "documented": "507 (P5-07)",
+      "name": "P5-07 Fieldbus ramp control",
+      "description": "1 = ramp times come from register 4.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled (ramps from P1-03/P1-04)",
+        "1": "Enabled (ramps from fieldbus)"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Put the drive in fieldbus control with P1-12 = 4, then write register 1 (control word) and register 2 (speed in 0.1 Hz) and poll registers 6-11 for status, fault code, frequency, current, torque and power. Subtract 1 from every register number the guide prints.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Control word: run/stop, fault reset"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Speed reference, 0.1 Hz"
+      },
+      {
+        "table": "holding_register",
+        "address": 5,
+        "why": "Status bits (low byte) + fault code (high byte)"
+      },
+      {
+        "table": "holding_register",
+        "address": 6,
+        "why": "Output frequency, 0.1 Hz"
+      },
+      {
+        "table": "holding_register",
+        "address": 7,
+        "why": "Output current, 0.1 A"
+      },
+      {
+        "table": "holding_register",
+        "address": 9,
+        "why": "Output power, 0.01 kW"
+      },
+      {
+        "table": "holding_register",
+        "address": 22,
+        "why": "DC bus voltage"
+      },
+      {
+        "table": "holding_register",
+        "address": 111,
+        "why": "P1-12 command source (must be 4)"
+      }
+    ],
+    "enable": "Set P1-14 = 101 to open the extended parameter groups, then set P5-01 node address (1-63; P5-16 for higher addresses), P5-03 baud rate and P5-04 data format, and set P1-12 = 4 (Fieldbus mode) so registers 1-2 can run the drive. In P1-12 = 4, digital input 1 must be closed to allow operation. If a fieldbus option module is fitted in the option slot, the built-in Modbus RTU and CAN ports are disabled.",
+    "watchdog": "P5-05 Communications loss timeout (0.0-5.0 s, default 1.0 s, 0 disables) with P5-06 action: 0 trip and coast, 1 ramp then trip, 2 ramp only, 3 run at preset speed 8. A timeout trips fault 50 (Modbus comms fault).",
+    "quirks": [
+      "Register numbers in the guide are 1-based: subtract 1 for the wire address (register 1 = address 0, P1-01 = register 101 = address 100).",
+      "Only function codes 03, 06 and 16 are supported, and 16 (write multiple) works for registers 1-4 only - write parameters one at a time with 06.",
+      "Register 6 holds status in the low byte and the fault code in the high byte; mask and shift rather than reading it as one number.",
+      "Fault reset (control word bit 2) must be set back to 0 after the fault clears."
+    ],
+    "setup": [
+      "Wire to the RJ45 port: pin 7 = RS485-, pin 8 = RS485+, pin 3 = 0 V common. Connect the 0 V common across all devices; it is not an Ethernet port.",
+      "Use shielded twisted pair (120 ohm), terminate the end of the network with 120 ohm, and ground the shield at the controller only.",
+      "Defaults: address 1 (P5-01), 115.2 kbps (P5-03), no parity / 1 stop bit (P5-04 'n-1'). Baud range 9.6-115.2 kbps.",
+      "P5-15 adds an extra reply delay in characters for slow masters."
+    ],
+    "gotchas": [
+      "If P1-12 is not 4, writes to registers 1-2 do not control the drive; registers 6-24 can still be read in any mode.",
+      "P1-01/P1-02 change to rpm once P1-10 Motor rated speed is set to the nameplate rpm.",
+      "Register 4 ramp times are ignored unless P5-07 Fieldbus ramp control = 1; otherwise P1-03/P1-04 apply.",
+      "P0-49 counts Modbus RTU communication errors - read it on the keypad when diagnosing a noisy bus."
+    ]
+  },
+  "verified": {
+    "date": "2026-10-24",
+    "method": "independent re-check of every register against the source PDF",
+    "pages": "pp. 43-45 (P1 group), 46 (P1-12 table), 63-64 (P5 group), 65 (P0-49), 70-72 (RJ45, Modbus 9.2.1-9.2.3), 74 (CANopen PDO data types), 86 (fault 50), 88 (doc number); PDF linked from invertekdrives.com Optidrive P2 support-resources page",
+    "corrections": 1,
+    "removed": 0
+  }
+}

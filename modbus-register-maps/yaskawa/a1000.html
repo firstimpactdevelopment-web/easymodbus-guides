@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yaskawa A1000 Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="Yaskawa A1000 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/yaskawa/a1000">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Yaskawa A1000 Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="Yaskawa A1000 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/yaskawa/a1000">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Yaskawa A1000 Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="Yaskawa A1000 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000",
+   "url": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000",
+   "name": "Yaskawa A1000 Modbus Register List & Map | Easy Modbus",
+   "description": "Yaskawa A1000 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-10-24",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000#dataset",
+   "name": "Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus register map",
+   "description": "Yaskawa's high-performance vector drive with a built-in RS-422/RS-485 MEMOBUS/Modbus RTU port on terminal block TB5. Commands are written to hex registers 0001H-001FH, status, fault and alarm words and key monitors are read from 0020H upwards, and every parameter has its own hex register in the parameter list. This map covers the command block, status/fault/alarm words, the main monitors with fixed units, fault and alarm codes, and the b1/H5 setup parameters. Yaskawa A1000 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000",
+   "keywords": [
+    "Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus register map",
+    "Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus registers",
+    "Yaskawa Modbus map",
+    "CIMR-AU Modbus register map",
+    "CIMR-AUA Modbus register map",
+    "A1000 High Performance Vector Control Drive Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "dateModified": "2026-10-24",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "YASKAWA AC Drive-A1000 High Performance Vector Control Drive Technical Manual",
+    "url": "https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&cmd=documents&documentName=SIEPC71061641.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Yaskawa"
+    }
+   },
+   "about": {
+    "@type": "Product",
+    "name": "Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)",
+    "brand": {
+     "@type": "Brand",
+     "name": "Yaskawa"
+    },
+    "category": "Variable frequency drive"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "name": "Easy Modbus import CSV",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000-easymodbus.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@id": "https://easymodbus.com/modbus-register-maps/#catalog"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 66 registers: 66 holding registers. 13 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Register numbers are printed in hex and go into the request unchanged: the manual's read example asks for starting register 0020H by sending 00 20, and its write example starts at 0001H (00 01). Parameters use the hex address printed under each parameter in the parameter list (H5-01 (0425) -> 0425H, b1-01 (0180) -> 0180H)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 1 Operation commands / multi-function inputs (Run/stop, direction, fault reset); HR 2 Frequency reference (Frequency reference (o1-03 units)); HR 32 Drive Status 1 (Drive Status 1: run/ready/fault); HR 33 Fault Contents 1 (Fault Contents 1); HR 36 Output frequency (Output frequency); HR 44 Drive Status 2 (Drive Status 2 incl. comm timeout bit); HR 49 DC bus voltage (DC bus voltage); HR 128 U2-01 Current Fault (U2-01 current fault code)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Set H5-01 slave address (default 1F hex = 31, range 0-FF hex), H5-02 speed (default 3 = 9600 bps) and H5-03 parity (default 0 = none), then cycle power. For control set b1-01 = 2 and b1-02 = 2 (b1-15/b1-16 for external reference 2). H5-12 decides whether 0001H bits 0/1 mean FWD/REV run or Run + direction. Network inputs are ORed with terminals S1-S8."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What happens when the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) loses Modbus communication?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "H5-05 = 1 (default) enables CE detection, H5-09 CE Detection Time (0.0-10.0 s, default 2.0 s) sets the timeout, and H5-04 selects the reaction: 0 ramp to stop, 1 coast, 2 fast stop, 3 alarm only and keep running (default). Drive Status 2 (002CH) bit F shows a communication timeout."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is YASKAWA AC Drive-A1000 High Performance Vector Control Drive Technical Manual (SIEP C710616 41H), revision 2022-03, published free by Yaskawa at https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&cmd=documents&documentName=SIEPC71061641.pdf."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Yaskawa",
+     "item": "https://easymodbus.com/modbus-register-maps/yaskawa/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "A1000 AC drive (MEMOBUS/Modbus RTU)",
+     "item": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/yaskawa/">Yaskawa</a></li><li aria-current="page">A1000 AC drive (MEMOBUS/Modbus RTU)</li></ol>
+<p class="eyebrow">Variable frequency drive &middot; Modbus register map</p><h1><span class="mfr">Yaskawa</span> A1000 AC drive (MEMOBUS/Modbus RTU) Modbus register map</h1><p class="updated">Updated 24 October 2026</p>
+
+<div class="answer"><b>Short answer</b><p>Yaskawa&#x27;s high-performance vector drive with a built-in RS-422/RS-485 MEMOBUS/Modbus RTU port on terminal block TB5. Commands are written to hex registers 0001H-001FH, status, fault and alarm words and key monitors are read from 0020H upwards, and every parameter has its own hex register in the parameter list. This map covers the command block, status/fault/alarm words, the main monitors with fixed units, fault and alarm codes, and the b1/H5 setup parameters.</p>
+<p>This page lists <strong>66 Modbus registers</strong> for the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) &mdash; 13 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Yaskawa&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/yaskawa/">Yaskawa</a></dd></div><div><dt>Model</dt><dd>A1000 AC drive (MEMOBUS/Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>66 (13 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>31</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>Firmware</dt><dd>Drive software up to PRG 1021-1024 (per the manual&#x27;s revision history)</dd></div><div><dt>Also known as</dt><dd>CIMR-AU, CIMR-AUA, A1000 High Performance Vector Control Drive</dd></div><div><dt>Source document</dt><dd><a href="https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&amp;cmd=documents&amp;documentName=SIEPC71061641.pdf" rel="nofollow noopener" target="_blank">YASKAWA AC Drive-A1000 High Performance Vector Control Drive Technical Manual &middot; SIEP C710616 41H &middot; rev. 2022-03</a></dd></div></dl>
+<div class="dl">
+  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/yaskawa/a1000-easymodbus.csv">Copy for the phone app <small>66 rows</small></button>
+  <a class="btn" href="/modbus-register-maps/yaskawa/a1000-easymodbus.csv" download>Download Easy Modbus CSV</a>
+  <a class="btn" href="/modbus-register-maps/yaskawa/a1000.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/yaskawa/a1000.json">JSON</a>
+  <a class="btn" href="https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&amp;cmd=documents&amp;documentName=SIEPC71061641.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+  <span class="toast" id="copy-msg" role="status"></span>
+</div>
+<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
+&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
+Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
+<section class="integ" id="integration"><h2>Integration notes: Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)</h2>
+<div class="answer"><b>Integration in brief</b><p>Set H5-01..H5-03 at the keypad and power-cycle, set b1-01 = 2 and b1-02 = 2 so the frequency reference and Run command come from Modbus, then write 0001H (run bits) and 0002H (frequency reference) together with function 10H and poll 0020H-002CH for status, faults and alarms.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Operation commands / multi-function inputs</td><td class="f">BITMAP16</td><td>Run/stop, direction, fault reset</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-2">HR 2</a></td><td class="n">Frequency reference</td><td class="f">UINT16</td><td>Frequency reference (o1-03 units)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-32">HR 32</a></td><td class="n">Drive Status 1</td><td class="f">BITMAP16</td><td>Drive Status 1: run/ready/fault</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-33">HR 33</a></td><td class="n">Fault Contents 1</td><td class="f">BITMAP16</td><td>Fault Contents 1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-36">HR 36</a></td><td class="n">Output frequency</td><td class="f">UINT16</td><td>Output frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-44">HR 44</a></td><td class="n">Drive Status 2</td><td class="f">BITMAP16</td><td>Drive Status 2 incl. comm timeout bit</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-49">HR 49</a></td><td class="n">DC bus voltage</td><td class="f">UINT16</td><td>DC bus voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-128">HR 128</a></td><td class="n">U2-01 Current Fault</td><td class="f">UINT16</td><td>U2-01 current fault code</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Set H5-01 slave address (default 1F hex = 31, range 0-FF hex), H5-02 speed (default 3 = 9600 bps) and H5-03 parity (default 0 = none), then cycle power. For control set b1-01 = 2 and b1-02 = 2 (b1-15/b1-16 for external reference 2). H5-12 decides whether 0001H bits 0/1 mean FWD/REV run or Run + direction. Network inputs are ORed with terminals S1-S8.</p></div><div class="ib"><h3>Communication loss &amp; watchdog</h3><p>H5-05 = 1 (default) enables CE detection, H5-09 CE Detection Time (0.0-10.0 s, default 2.0 s) sets the timeout, and H5-04 selects the reaction: 0 ramp to stop, 1 coast, 2 fast stop, 3 alarm only and keep running (default). Drive Status 2 (002CH) bit F shows a communication timeout.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Registers are hex and 0-based: 0020H is sent as 00 20.</li><li>Only function codes 03H, 08H and 10H are supported; there is no 06H single-register write, so use 10H even for one register.</li><li>Reads and writes are limited to 16 registers per message.</li><li>H5-11 defaults to 0 on A1000: parameter writes only apply after writing 0 to 0900H (RAM + EEPROM) or 0910H (RAM only). Registers 0000H-001FH never need Enter. 0900H/0910H are write-only; reading them returns error 02H.</li><li>Minimum gap before the next message: 5 ms after commands/reads, 50 or 200 ms after a parameter write, 200 ms-2 s after an Enter command, and 5 s for an Enter that saves to EEPROM after initialization.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Terminal block TB5 (R+, R-, S+, S-, IG); for 2-wire RS-485 jumper S+ to R+ and S- to R-. Up to 31 drives on RS-485.</li><li>Set DIP switch S2 ON (termination) only on the drive at the end of the line.</li><li>H5-07 = 1 (RTS switched, default) for RS-485 or multi-drop RS-422; 0 for point-to-point RS-422.</li><li>Data is 8 bits, 1 stop bit, RTU only; speeds 1.2-115.2 kbps; parity none/even/odd.</li><li>H5-06 Drive Transmit Wait Time (default 5 ms) delays the reply if the master overruns; H5-06 and H5-07 also need a power cycle.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>H5-01 = 0 stops the drive from answering at all.</li><li>H5-01..H5-03 changes need a power cycle before they apply.</li><li>The Enter command to EEPROM (0900H) wears the EEPROM (about 100,000 writes); use 0910H for frequent changes.</li><li>Error code 25H means an EEPROM write was refused; H5-17 = 1 makes such writes go to RAM only.</li><li>With a communication option card fitted, the option takes priority for ComRef/ComCtrl.</li><li>Self-test: set H1-06 = 67, jumper R+ to S+, R- to S- and S6 to SN (SC-SP jumper in place) and power up; the keypad shows PASS when the port is healthy, CE when not.</li></ul>
+</section>
+<h2 id="registers">Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>66</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">66 of 66 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-1"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1<small>doc 0001H</small></td><td class="n">Operation commands / multi-function inputs</td><td class="d">Run, direction, external fault, fault reset and virtual inputs.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">bit 0 = H5-12=0: 1 = forward run / 0 = stop; H5-12=1: 1 = run / 0 = stop; bit 1 = H5-12=0: 1 = reverse run / 0 = stop; H5-12=1: 1 = reverse / 0 = forward; bit 2 = External fault EF0; bit 3 = Fault reset; bit 4 = Multi-function input 1 (ComRef when H1-01 = 40); bit 5 = Multi-function input 2 (ComCtrl when H1-02 = 41); bit 6 = Multi-function input 3; bit 7 = Multi-function input 4; bit 8 = Multi-function input 5; bit 9 = Multi-function input 6; bit 10 = Multi-function input 7; bit 11 = Multi-function input 8</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2<small>doc 0002H</small></td><td class="n">Frequency reference</td><td class="d">Units follow o1-03 (0 = 0.01 Hz).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3<small>doc 0003H</small></td><td class="n">Output voltage gain</td><td class="d">20-2000 (2.0-200.0%); 1000 at power-up.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4<small>doc 0004H</small></td><td class="n">Torque reference / torque limit</td><td class="d">Signed; torque control only; enable with 000FH bit 2.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-5"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">5<small>doc 0005H</small></td><td class="n">Torque compensation</td><td class="d">Signed; torque control only; enable with 000FH bit 3.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6<small>doc 0006H</small></td><td class="n">PID target</td><td class="d">Signed; enable with 000FH bit 1.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9<small>doc 0009H</small></td><td class="n">Multi-function digital output setting</td><td class="d">Drive the digital outputs from the network.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">bit 0 = Contact output 1 (M1-M2); bit 1 = Contact output 2 (M3-M4); bit 2 = Contact output 3 (M5-M6); bit 6 = Enables the function in bit 7; bit 7 = Fault contact output MA/MB-MC</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10<small>doc 000AH</small></td><td class="n">Pulse output terminal MP setting</td><td class="d">0-32000 Hz.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Hz</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15<small>doc 000FH</small></td><td class="n">Control selection setting</td><td class="d">Enables network PID, torque and broadcast inputs.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">bit 1 = PID setpoint input from MEMOBUS; bit 2 = Torque reference / limit from MEMOBUS; bit 3 = Torque compensation from MEMOBUS; bit 12 = Enable terminal S5 input for broadcast data; bit 13 = Enable terminal S6 input for broadcast data; bit 14 = Enable terminal S7 input for broadcast data; bit 15 = Enable terminal S8 input for broadcast data</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32<small>doc 0020H</small></td><td class="n">Drive Status 1</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = During run; bit 1 = During reverse; bit 2 = Drive ready; bit 3 = Fault; bit 4 = Data setting error; bit 5 = Contact output 1 (M1-M2) on; bit 6 = Contact output 2 (M3-M4) on; bit 7 = Contact output 3 (M5-M6) on; bit 14 = ComRef enabled; bit 15 = ComCtrl enabled</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-33"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">33<small>doc 0021H</small></td><td class="n">Fault Contents 1</td><td class="d">Active fault groups.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = oC overcurrent, GF ground fault; bit 1 = ov overvoltage (Appendix C misprints it as &#x27;Drive Overheat Warning&#x27;); bit 2 = oL2 drive overload; bit 3 = oH1 overheat 1, oH2 drive overheat warning; bit 4 = rr braking transistor, rH braking resistor overheat; bit 6 = FbL/FbH PID feedback loss; bit 7 = EF to EF8 external fault; bit 8 = CPFxx hardware fault (incl. oFx); bit 9 = oL1 motor overload, oL3/oL4 overtorque, UL3/UL4 undertorque; bit 10 = PGo, PGoH, oS, dEv; bit 11 = Uv main circuit undervoltage; bit 12 = Uv1, Uv2, Uv3 undervoltage; bit 13 = LF output / PF input phase loss; bit 14 = CE MEMOBUS / bUS option communication error; bit 15 = oPr external operator connection fault</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-34"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">34<small>doc 0022H</small></td><td class="n">Data Link Status</td><td class="d">Result of the last parameter write.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Writing data or switching motors; bit 3 = Upper or lower limit error; bit 4 = Data conformity error; bit 5 = Writing to EEPROM; bit 6 = 0 = write to EEPROM, 1 = RAM only (only when H5-17 = 1)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-35"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">35<small>doc 0023H</small></td><td class="n">Frequency reference (monitor)</td><td class="d">Units follow o1-03 (0 = 0.01 Hz).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-36"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">36<small>doc 0024H</small></td><td class="n">Output frequency</td><td class="d">Units follow o1-03 (0 = 0.01 Hz).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-41"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">41<small>doc 0029H</small></td><td class="n">Fault Contents 2</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = SC output short circuit / IGBT fault; bit 1 = GF ground fault; bit 2 = PF input phase loss; bit 3 = LF output phase loss; bit 4 = rH braking resistor overheat; bit 6 = oH4 motor overheat 2 (PTC)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-42"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">42<small>doc 002AH</small></td><td class="n">Alarm Contents 1</td><td class="d">Active alarms (minor faults).</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 2 = EF forward/reverse run command input error; bit 3 = bb drive baseblock; bit 4 = oL3 overtorque 1; bit 5 = oH heatsink overheat; bit 6 = ov overvoltage (Appendix C misprints it as &#x27;Drive Overheat Warning&#x27;); bit 7 = Uv undervoltage; bit 8 = FAn internal fan fault; bit 9 = CE MEMOBUS communication error; bit 10 = bUS option communication error; bit 11 = UL3/UL4 undertorque; bit 12 = oH3 motor overheat; bit 13 = FbL/FbH PID feedback loss; bit 15 = CALL serial transmission error</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-43"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">43<small>doc 002BH</small></td><td class="n">Input terminal status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Terminal S1 closed; bit 1 = Terminal S2 closed; bit 2 = Terminal S3 closed; bit 3 = Terminal S4 closed; bit 4 = Terminal S5 closed; bit 5 = Terminal S6 closed; bit 6 = Terminal S7 closed; bit 7 = Terminal S8 closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-44"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">44<small>doc 002CH</small></td><td class="n">Drive Status 2</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = During run; bit 1 = Zero speed; bit 2 = Speed agree; bit 3 = User speed agree; bit 4 = Frequency detection 1; bit 5 = Frequency detection 2; bit 6 = Drive ready; bit 7 = During undervoltage; bit 8 = During baseblock; bit 9 = Frequency reference from operator keypad; bit 10 = Run command from operator keypad; bit 11 = Over/undertorque 1, 2; bit 12 = Frequency reference loss; bit 13 = During fault restart; bit 14 = Fault; bit 15 = Communication timeout</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-45"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">45<small>doc 002DH</small></td><td class="n">Output terminal status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Contact output 1 (M1-M2); bit 1 = Contact output 2 (M3-M4); bit 2 = Contact output 3 (M5-M6); bit 7 = Fault contact output MA/MB-MC</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-49"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">49<small>doc 0031H</small></td><td class="n">DC bus voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-52"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">52<small>doc 0034H</small></td><td class="n">Product code 1</td><td class="d">Two ASCII characters; &quot;A0&quot; for A1000.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-53"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">53<small>doc 0035H</small></td><td class="n">Product code 2</td><td class="d">Two ASCII characters: region code.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-56"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">56<small>doc 0038H</small></td><td class="n">PID feedback</td><td class="d">Unsigned; 100% = maximum output frequency.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-57"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">57<small>doc 0039H</small></td><td class="n">PID input</td><td class="d">Signed; 100% = maximum output frequency.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-58"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">58<small>doc 003AH</small></td><td class="n">PID output</td><td class="d">Signed; 100% = maximum output frequency.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-61"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">61<small>doc 003DH</small></td><td class="n">Communications error log</td><td class="d">Held until the fault is reset.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = CRC error; bit 1 = Data length error; bit 3 = Parity error; bit 4 = Overrun error; bit 5 = Framing error; bit 6 = Timeout</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-64"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">64<small>doc 0040H</small></td><td class="n">U1-01 Frequency Reference</td><td class="d">Units follow o1-03 (0 = 0.01 Hz).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-65"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">65<small>doc 0041H</small></td><td class="n">U1-02 Output Frequency</td><td class="d">Units follow o1-03 (0 = 0.01 Hz).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-66"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">66<small>doc 0042H</small></td><td class="n">U1-03 Output Current</td><td class="d">8192 = 100% of drive rated output current.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.0122070312</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-67"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">67<small>doc 0043H</small></td><td class="n">U1-04 Control Method</td><td class="d">Control method set in A1-02.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = V/f Control; 1 = V/f Control with PG; 2 = Open Loop Vector Control; 3 = Closed Loop Vector Control; 5 = Open Loop Vector Control for PM; 6 = Advanced Open Loop Vector Control for PM; 7 = Closed Loop Vector Control for PM</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-69"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">69<small>doc 0045H</small></td><td class="n">U1-06 Output Voltage Reference</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-70"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">70<small>doc 0046H</small></td><td class="n">U1-07 DC Bus Voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-75"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">75<small>doc 004BH</small></td><td class="n">U1-12 Drive Status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = During run; bit 1 = During zero speed; bit 2 = During reverse run; bit 3 = During fault reset signal input; bit 4 = During speed agree; bit 5 = Drive ready; bit 6 = Alarm; bit 7 = Fault; bit 8 = During operation error (oPExx); bit 9 = During momentary power loss; bit 10 = Motor 2 selected; bit 14 = ComRef / NetRef status; bit 15 = ComCtrl / NetCtrl status</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-76"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">76<small>doc 004CH</small></td><td class="n">U4-01 Cumulative Operation Time</td><td class="d">Reported in 10 h units over Modbus.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-103"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">103<small>doc 0067H</small></td><td class="n">U4-03 Cooling Fan Operation Time</td><td class="d">Reported in 10 h units over Modbus.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-117"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">117<small>doc 0075H</small></td><td class="n">U4-02 Number of Run Commands</td><td class="d">Count of Run commands (wraps after 65535).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-124"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">124<small>doc 007CH</small></td><td class="n">U4-05 Capacitor Maintenance</td><td class="d">Percent of expected capacitor life used.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-126"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">126<small>doc 007EH</small></td><td class="n">U4-04 Cooling Fan Maintenance</td><td class="d">Percent of expected fan life used.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-127"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">127<small>doc 007FH</small></td><td class="n">Alarm code</td><td class="d">Code of the active alarm (minor fault).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Undervoltage (Uv); 2 = DC Bus Overvoltage (ov) (printed in Table C.7 as &#x27;Drive Overheat Warning (ov)&#x27;); 3 = Heatsink Overheat (oH); 4 = Drive Overheat Warning (oH2); 5 = Overtorque 1 (oL3); 6 = Overtorque 2 (oL4); 7 = Forward/Reverse Run Command Input Error (EF); 8 = Drive Baseblock (bb); 9 = External Fault 3, input terminal S3 (EF3); 10 = External Fault 4, input terminal S4 (EF4); 11 = External Fault 5, input terminal S5 (EF5); 12 = External Fault 6, input terminal S6 (EF6); 13 = External Fault 7, input terminal S7 (EF7); 14 = External Fault 8, input terminal S8 (EF8); 15 = Internal Fan Fault (FAn); 16 = Overspeed (oS); 17 = Speed Deviation (dEv); 18 = PG Disconnected (PGo); 20 = MEMOBUS/Modbus Communication Error (CE); 21 = Option Communication Error (bUS); 22 = Serial Communication Transmission Error (CALL); 23 = Motor Overload (oL1); 24 = Drive Overload (oL2); 26 = Option Card External Fault (EF0); 27 = Motor Switch command input during run (rUn); 29 = Serial Communication Transmission Error (CALL); 30 = Undertorque Detection 1 (UL3); 31 = Undertorque Detection 2 (UL4); 32 = MEMOBUS/Modbus Communication Test Mode Error (SE); 34 = Motor Overheat (oH3); 39 = PID Feedback Loss (FbL); 40 = PID Feedback Loss (FbH); 42 = Drive Disabled (dnE); 43 = PG Disconnected (PGo); 49 = MECHATROLINK Watchdog Timer Error (E5); 50 = Station Address Setting Error (AEr); 51 = MECHATROLINK Comm. Cycle Setting Error (CyC); 52 = High Current Alarm (HCA); 53 = Cooling Fan Maintenance Time (LT-1); 54 = Capacitor Maintenance Time (LT-2); 56 = SI-S EEPROM Error (EEP); 57 = External Fault (input terminal S1) (EF1); 58 = External Fault (input terminal S2) (EF2); 59 = Safe Disable Input (HbbF); 60 = Safe Disable Input (Hbb); 61 = Mechanical Weakening Detection 1 (oL5); 62 = Mechanical Weakening Detection 2 (UL5); 63 = PLC Alarm (PA1); 64 = PLC Alarm (PA2); 65 = Output Voltage Detection Fault (voF); 66 = IGBT Maintenance Time (90%) (TrPC); 67 = Soft Charge Bypass Relay Maintenance Time (LT-3); 68 = IGBT Maintenance Time (50%) (LT-4); 69 = Braking Transistor Overload (boL); 72 = Motor Overheat (NTC Input) (oH5); 73 = DriveWorksEZ Fault (dWAL); 77 = Thermistor Disconnect (THo)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-128"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">128<small>doc 0080H</small></td><td class="n">U2-01 Current Fault</td><td class="d">Code of the fault now active.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">2 = DC Bus Undervoltage (Uv1); 3 = Control Power Supply Voltage Fault (Uv2); 4 = Undervoltage 3 (Uv3); 5 = Output Short-Circuit or IGBT Fault (SC); 6 = Ground Fault (GF); 7 = Overcurrent (oC); 8 = Overvoltage (ov) (printed in Table C.6 as &#x27;Drive Overheat Warning (ov)&#x27;); 9 = Heatsink Overheat (oH); 10 = Overheat 1 (oH1); 11 = Motor Overload (oL1); 12 = Drive Overload (oL2); 13 = Overtorque Detection 1 (oL3); 14 = Overtorque Detection 2 (oL4); 15 = Dynamic Braking Transistor (rr); 16 = Braking Resistor Overheat (rH); 17 = External Fault at Input Terminal S3 (EF3); 18 = External Fault at Input Terminal S4 (EF4); 19 = External Fault at Input Terminal S5 (EF5); 20 = External Fault at Input Terminal S6 (EF6); 21 = External Fault at Input Terminal S7 (EF7); 22 = External Fault at Input Terminal S8 (EF8); 23 = Internal Fan Fault (FAn); 24 = Overspeed (oS); 25 = Speed Deviation (dEv); 26 = PG Disconnect (PGo); 27 = Input Phase Loss (PF); 28 = Output Phase Loss (LF); 29 = Motor Overheat (PTC input) (oH3); 30 = Digital Operator Connection (oPr); 31 = EEPROM Write Error (Err); 32 = Motor Overheat (PTC input) (oH4); 33 = MEMOBUS/Modbus Communication Error (CE); 34 = Option Communication Error (bUS); 37 = Control Fault (CF); 38 = Zero-Servo Fault (SvE); 39 = Option External Fault (EF0); 40 = PID Feedback Loss (FbL); 41 = Undertorque Detection 1 (UL3); 42 = Undertorque Detection 2 (UL4); 43 = High Slip Braking Overload (oL7); 48 = Hardware Fault (including oFx); 50 = Z Pulse Fault (dv1); 51 = Z Pulse Noise Fault Detection (dv2); 52 = Inversion Detection (dv3); 53 = Inversion Prevention Detection (dv4); 54 = Output Current Imbalance (LF2); 55 = Pullout Detection (Sto); 56 = PG Hardware Fault (PGoH); 57 = MECHATROLINK Watchdog Timer Error (E5); 59 = Too Many Speed Search Restarts (SEr); 65 = PID Feedback Loss (FbH); 66 = External Fault 1, Input Terminal S1 (EF1); 67 = External Fault 2, Input Terminal S2 (EF2); 68 = Mechanical Weakening Detection 1 (oL5); 69 = Mechanical Weakening Detection 2 (UL5); 70 = Current Offset Fault (CoF); 71 = PLC Detection Error 1 (PE1); 72 = PLC Detection Error 2 (PE2); 73 = DriveWorksEZ Fault (dWFL); 74 = EEPROM Memory DriveWorksEZ Data Error (dWF1); 77 = Output Voltage Detection Fault (voF); 78 = Braking Resistor Transistor Fault (rF); 79 = Braking Transistor Overload Fault (boL); 80 = Motor Overheat (NTC Input) (oH5); 81 = LSo Fault (LSo); 82 = Node Setup Fault (nSE); 83 = Thermistor Disconnect (THo); 91 = Initial Polarity Estimation Timeout (dv7); 95 = Power Unit Output Phase Loss 3 (LF3); 96 = Current Unbalance (UnbC); 97 = Power Supply Module Undervoltage (Uv4); 131 = A/D Conversion Error (CPF02); 132 = PWM Data Fault (CPF03); 135 = EEPROM Memory Data Error (CPF06); 136 = Terminal Board Connection Error (CPF07); 137 = EEPROM Serial Communication Fault (CPF08); 140 = RAM Fault (CPF11); 141 = Flash Memory Circuit Exception (CPF12); 142 = Watchdog Circuit Exception (CPF13); 143 = Control Circuit Fault (CPF14); 145 = Clock Fault (CPF16); 146 = Timing Fault (CPF17); 147 = Control Circuit Fault (CPF18); 148 = Control Circuit Fault (CPF19); 149 = Hardware Fault at Power Up (CPF20); 150 = Hardware Fault at Communication Start Up (CPF21); 151 = A/D Conversion Fault (CPF22); 152 = PWM Feedback Fault (CPF23); 153 = Drive Unit Signal Fault (CPF24); 154 = Terminal Board is Not Properly Connected. (CPF25); 155 = ASIC BB Circuit Error (CPF26); 156 = ASIC PWM Setting Register Error (CPF27); 157 = ASIC PWM Pattern Error (CPF28); 158 = ASIC On-delay Error (CPF29); 159 = ASIC BBON Error (CPF30); 160 = ASIC Code Error (CPF31); 161 = ASIC Start-up Error (CPF32); 162 = Watch-dog Error (CPF33); 163 = ASIC Power/Clock Error (CPF34); 164 = External A/D Converter Error (CPF35); 169 = Control Circuit Error (CPF40); 170 = Control Circuit Error (CPF41); 171 = Control Circuit Error (CPF42); 172 = Control Circuit Error (CPF43); 173 = Control Circuit Error (CPF44); 174 = Control Circuit Error (CPF45); 257 = Option Compatibility Error (oFA00); 258 = Option Not Properly Connected (oFA01); 262 = A/D Conversion Error (oFA05); 263 = Option Response Error (oFA06); 273 = Option RAM Fault (oFA10); 274 = Option Operation Mode Fault (SLMOD) (oFA11); 275 = Drive Receive CRC Error (oFA12); 276 = Drive Receive Frame Error (oFA13); 277 = Drive Receive Abort Error (oFA14); 278 = Option Receive CRC Error (oFA15); 279 = Option Receive Frame Error (oFA16); 280 = Option Receive Abort Error (oFA17); 305 = Comm. ID Error (oFA30); 306 = Model Code Error (oFA31); 307 = Sumcheck Error (oFA32); 308 = Comm. Option Timeout Waiting for Response (oFA33); 309 = MEMOBUS Timeout (oFA34); 310 = Drive Timeout Waiting for Response (oFA35); 311 = CI Check Error (oFA36); 312 = Drive Timeout Waiting for Response (oFA37); 313 = Control Command Selection Error (oFA38); 314 = Drive Timeout Waiting for Response (oFA39); 315 = Control Response Selection 1 Error (oFA40); 316 = Drive Timeout Waiting for Response (oFA41); 317 = Control Response Selection 2 Error (oFA42); 318 = Drive Timeout Waiting for Response (oFA43); 513 = Option Compatibility Error (oFb00); 514 = Option Connection Error (oFb01); 515 = Same Type of Option Card Already Connected (oFb02); 518 = A/D Conversion Error (oFb05); 519 = Option Response Error (oFb06); 529 = Option RAM Fault (oFb10); 530 = Option Operation Mode Fault (SLMOD) (oFb11); 531 = Drive Receive CRC Error (oFb12); 532 = Drive Receive Frame Error (oFb13); 533 = Drive Receive Abort Error (oFb14); 534 = Option Receive CRC Error (oFb15); 535 = Option Receive Frame Error (oFb16); 536 = Option Receive Abort Error (oFb17); 561 = Comm. ID Error (oFb30); 562 = Model Code Error (oFb31); 563 = Sumcheck Error (oFb32); 564 = Comm. option Timeout Waiting for Response (oFb33); 565 = MEMOBUS Timeout (oFb34); 566 = Drive Timeout Waiting for Response (oFb35); 567 = CI Check Error (oFb36); 568 = Drive Timeout Waiting for Response (oFb37); 569 = Control Command Selection Error (oFb38); 570 = Drive Timeout Waiting for Response (oFb39); 571 = Control Response Selection 1 Error (oFb40); 572 = Drive Timeout Waiting for Response (oFb41); 573 = Control Response Selection 2 Error (oFb42); 574 = Drive Timeout Waiting for Response (oFb43); 769 = Option Compatibility Error (oFC00); 771 = Option Not Properly Connected (oFC01); 772 = Same Type of Option Card Already Connected (oFC02); 774 = A/D Conversion Error (oFC05); 775 = Option Response Error (oFC06); 785 = Option RAM Fault (oFC10); 786 = Option Operation Mode Fault (SLMOD) (oFC11); 787 = Drive Receive CRC Error (oFC12); 788 = Drive Receive Frame Error (oFC13); 789 = Drive Receive Abort Error (oFC14); 790 = Option Receive CRC Error (oFC15); 791 = Option Receive Frame Error (oFC16); 792 = Option Receive Abort Error (oFC17); 849 = Encoder Option AD Conversion Error (oFC50); 850 = Encoder Option Analog Circuit Error (oFC51); 851 = Encoder Communication Timeout (oFC52); 852 = Encoder Communication Data Error (oFC53); 853 = Encoder Error (oFC54); 854 = Resolver Error (oFC55)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-129"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">129<small>doc 0081H</small></td><td class="n">U2-02 Previous Fault</td><td class="d">Previous fault; same codes as U2-01.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-144"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">144<small>doc 0090H</small></td><td class="n">U3-01 Most Recent Fault</td><td class="d">Newest fault history entry; same codes as U2-01.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-152"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">152<small>doc 0098H</small></td><td class="n">U4-01 Cumulative Operation Time (upper digits)</td><td class="d">U4-01 divided by 10 (12345 h reads 1234).</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-153"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">153<small>doc 0099H</small></td><td class="n">U4-01 Cumulative Operation Time (last digit)</td><td class="d">Ones digit of U4-01 (12345 h reads 5).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-154"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">154<small>doc 009AH</small></td><td class="n">U4-03 Cooling Fan Operation Time (upper digits)</td><td class="d">U4-03 divided by 10.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-155"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">155<small>doc 009BH</small></td><td class="n">U4-03 Cooling Fan Operation Time (last digit)</td><td class="d">Ones digit of U4-03.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-191"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">191<small>doc 00BFH</small></td><td class="n">oPE error number</td><td class="d">Number of the active oPExx setting error.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-192"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">192<small>doc 00C0H</small></td><td class="n">Fault Contents 3</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 1 = Uv1 DC bus undervoltage; bit 2 = Uv2 control power supply undervoltage; bit 3 = Uv3 soft-charge bypass circuit fault; bit 4 = SC output short circuit / IGBT fault; bit 5 = GF ground fault; bit 6 = oC overcurrent; bit 7 = ov overvoltage (Appendix C misprints it as &#x27;Drive Overheat Warning&#x27;); bit 8 = oH heatsink overheat; bit 9 = oH1 overheat 1; bit 10 = oL1 motor overload; bit 11 = oL2 drive overload; bit 12 = oL3 overtorque 1; bit 13 = oL4 overtorque 2; bit 14 = rr braking transistor fault; bit 15 = rH braking resistor overheat</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-193"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">193<small>doc 00C1H</small></td><td class="n">Fault Contents 4</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = EF3 external fault S3; bit 1 = EF4 external fault S4; bit 2 = EF5 external fault S5; bit 3 = EF6 external fault S6; bit 4 = EF7 external fault S7; bit 5 = EF8 external fault S8; bit 6 = FAn internal fan fault; bit 7 = oS overspeed; bit 8 = dEv excessive speed deviation; bit 9 = PGo PG disconnected; bit 10 = PF input phase loss; bit 11 = LF output phase loss; bit 12 = oH3 motor overheat (PTC); bit 13 = oPr external operator connection fault; bit 14 = Err EEPROM write error; bit 15 = oH4 motor overheat fault (PTC)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-194"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">194<small>doc 00C2H</small></td><td class="n">Fault Contents 5</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = CE MEMOBUS communication error; bit 1 = bUS option communication error; bit 4 = CF control fault; bit 5 = SvE zero servo fault; bit 6 = EF0 option external fault; bit 7 = FbL PID feedback loss; bit 8 = UL3 undertorque 1; bit 9 = UL4 undertorque 2; bit 10 = oL7 high slip braking overload; bit 15 = Hardware fault (incl. oFx)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-384"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">384<small>doc 0180H</small></td><td class="n">b1-01 Frequency Reference Selection 1</td><td class="d">Set 2 for frequency reference over Modbus.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Digital operator; 1 = Analog input terminals; 2 = MEMOBUS/Modbus communications; 3 = Option PCB; 4 = Pulse input (terminal RP)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-385"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">385<small>doc 0181H</small></td><td class="n">b1-02 Run Command Selection 1</td><td class="d">Set 2 for Run command over Modbus.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Digital operator; 1 = Digital input terminals; 2 = MEMOBUS/Modbus communications; 3 = Option PCB</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1061"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1061<small>doc 0425H</small></td><td class="n">H5-01 Drive Node Address</td><td class="d">0-FF hex; 0 = no response. Power cycle to apply.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1062"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1062<small>doc 0426H</small></td><td class="n">H5-02 Communication Speed Selection</td><td class="d">Power cycle to apply.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = 1200 bps; 1 = 2400 bps; 2 = 4800 bps; 3 = 9600 bps; 4 = 19200 bps; 5 = 38400 bps; 6 = 57600 bps; 7 = 76800 bps; 8 = 115200 bps</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1063"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1063<small>doc 0427H</small></td><td class="n">H5-03 Communication Parity Selection</td><td class="d">Power cycle to apply.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No parity; 1 = Even parity; 2 = Odd parity</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1064"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1064<small>doc 0428H</small></td><td class="n">H5-04 Stopping Method after Communication Error</td><td class="d">Reaction to a CE fault.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Ramp to stop; 1 = Coast to stop; 2 = Fast stop; 3 = Alarm only</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1065"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1065<small>doc 0429H</small></td><td class="n">H5-05 Communication Fault Detection Selection</td><td class="d">Enables CE detection.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Disabled; 1 = Enabled</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1066"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1066<small>doc 042AH</small></td><td class="n">H5-06 Drive Transmit Wait Time</td><td class="d">5-65 ms delay before the drive replies.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>ms</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1067"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1067<small>doc 042BH</small></td><td class="n">H5-07 RTS Control Selection</td><td class="d">1 for RS-485 or multi-drop RS-422.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Disabled - RTS always on; 1 = Enabled - RTS on only while sending</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1077"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1077<small>doc 0435H</small></td><td class="n">H5-09 CE Detection Time</td><td class="d">0.0-10.0 s without messages before CE.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1078"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1078<small>doc 0436H</small></td><td class="n">H5-10 Unit Selection for Register 0025H</td><td class="d">Unit of the output voltage monitor at 0025H.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = 0.1 V units; 1 = 1 V units</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1084"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1084<small>doc 043CH</small></td><td class="n">H5-11 Communications Enter Function Selection</td><td class="d">Whether parameter writes need the Enter command.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Changes apply only after an Enter command; 1 = Changes apply immediately; Enter (0900H) still needed to save to EEPROM</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1085"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1085<small>doc 043DH</small></td><td class="n">H5-12 Run Command Method Selection</td><td class="d">Meaning of 0001H bits 0/1.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = FWD/Stop, REV/Stop; 1 = Run/Stop, FWD/REV</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2304"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2304<small>doc 0900H</small></td><td class="n">Enter command (save to EEPROM)</td><td class="d">Write 0: apply parameter writes to RAM and EEPROM.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc W">Write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2320"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2320<small>doc 0910H</small></td><td class="n">Enter command (RAM only)</td><td class="d">Write 0: apply parameter writes to RAM only.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc W">Write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4513"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4513<small>doc 11A1H</small></td><td class="n">H5-17 Operation when Unable to Write into EEPROM</td><td class="d">PRG 1018 and later.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Cannot write into EEPROM; 1 = Write in RAM only</td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>Frequency registers (0002H reference, 0023H/0040H U1-01, 0024H/0041H U1-02) use the units chosen in o1-03 (0 = 0.01 Hz, 1 = 0.01% of E1-04, 2 = r/min, 3 = user units); o1-03&#x27;s default depends on A1-02, so they are left unscaled here.</li><li>0042H U1-03 output current is scaled 8192 = drive rated current (U-monitor footnotes); the map converts it to % of rated current.</li><li>Left out: 0025H output voltage (unit switched by H5-10; use 0045H), 0026H and 00FBH output current (0.01 A, 0.1 A or 1 A depending on drive model), 0027H/0047H output power (unit not printed in the data table), 0028H/0032H torque reference (sign not stated), 002FH frequency reference bias and 0068H U4-08 heatsink temperature (sign not stated), 003EH/003FH, 0044H and 00ACH-00B8H speed/frequency in r/min and % (sign not stated), 004EH-0050H analog input levels (bipolar inputs, sign not stated), 0007H/0008H FM/AM analog outputs and 001BH-001DH option-card outputs (10 V = 4000H, sign not stated), 00ABH drive rated current (model-dependent units), U4-10/U4-11 kWh, the 0082H-008FH fault-trace snapshot values, and option-card fault words 00D8H-00E4H.</li><li>Appendix C labels the ov bit of 0021H, 002AH and 00C0H and code ov in Tables C.6/C.7 &#x27;Drive Overheat Warning (ov)&#x27;. The manual&#x27;s own fault and alarm lists (pp. 401, 419, 431) define ov as (DC bus) overvoltage, so this map names it overvoltage and keeps the printed label in brackets.</li><li>0022H Data Link Status: bit 1 is reserved and bit 2 has no printed meaning, so only bits 0 and 3-6 are listed.</li><li>Values for 0080H/0081H/0090H (U2-01, U2-02, U3-01) and 007FH are the fault and alarm codes of Tables C.6 and C.7 converted from hex to decimal (e.g. 0021H CE = 33).</li><li>Appendix C lists reading and writing parameters among the things a master can do over MEMOBUS/Modbus, with the qualifier &#x27;not H5-oo&#x27;, and its setup steps have H5 entered at the digital operator, so the H5 registers are listed read-only and should be set at the keypad (reading them is not explicitly confirmed either).</li><li>Torque registers 0004H/0005H only act when torque control is enabled and the matching 000FH bit is set.</li><li>Broadcast (slave address 0) accepts only 0001H, with its own bit layout (bit 0 run, bit 1 direction, bit 4 external fault, bit 5 fault reset, bits C-F terminals S5-S8), and 0002H (30000 = 100%); slaves do not reply.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
+Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
+decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) have?</summary><p>This map lists 66 registers: 66 holding registers. 13 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Register numbers are printed in hex and go into the request unchanged: the manual&#x27;s read example asks for starting register 0020H by sending 00 20, and its write example starts at 0001H (00 01). Parameters use the hex address printed under each parameter in the parameter list (H5-01 (0425) -&gt; 0425H, b1-01 (0180) -&gt; 0180H).</p></details><details><summary>What are the minimum Modbus registers to integrate the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)?</summary><p>Start with HR 1 Operation commands / multi-function inputs (Run/stop, direction, fault reset); HR 2 Frequency reference (Frequency reference (o1-03 units)); HR 32 Drive Status 1 (Drive Status 1: run/ready/fault); HR 33 Fault Contents 1 (Fault Contents 1); HR 36 Output frequency (Output frequency); HR 44 Drive Status 2 (Drive Status 2 incl. comm timeout bit); HR 49 DC bus voltage (DC bus voltage); HR 128 U2-01 Current Fault (U2-01 current fault code).</p></details><details><summary>How do I enable Modbus control of the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)?</summary><p>Set H5-01 slave address (default 1F hex = 31, range 0-FF hex), H5-02 speed (default 3 = 9600 bps) and H5-03 parity (default 0 = none), then cycle power. For control set b1-01 = 2 and b1-02 = 2 (b1-15/b1-16 for external reference 2). H5-12 decides whether 0001H bits 0/1 mean FWD/REV run or Run + direction. Network inputs are ORed with terminals S1-S8.</p></details><details><summary>What happens when the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) loses Modbus communication?</summary><p>H5-05 = 1 (default) enables CE detection, H5-09 CE Detection Time (0.0-10.0 s, default 2.0 s) sets the timeout, and H5-04 selects the reaction: 0 ramp to stop, 1 coast, 2 fast stop, 3 alarm only and keep running (default). Drive Status 2 (002CH) bit F shows a communication timeout.</p></details><details><summary>Where is the official Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus documentation?</summary><p>The source is YASKAWA AC Drive-A1000 High Performance Vector Control Drive Technical Manual (SIEP C710616 41H), revision 2022-03, published free by Yaskawa at https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&amp;cmd=documents&amp;documentName=SIEPC71061641.pdf.</p></details></div>
+<h2>More Yaskawa Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/yaskawa/ga500" data-row><span class="k">Variable frequency drive</span><h3>Yaskawa GA500 AC drive (MEMOBUS/Modbus RTU)</h3><p>Yaskawa GA500 drives using the built-in RS-485 MEMOBUS/Modbus port (terminal TB4), per technical reference SIEPC71061752 revision C.</p><div class="meta">48 registers &middot; 21 writable &middot; RTU</div><span class="sr-only"> Also known as: CIPR-GA50U, GA500 Versatile Compact</span></a></li><li><a class="card" href="/modbus-register-maps/yaskawa/v1000" data-row><span class="k">Variable frequency drive</span><h3>Yaskawa V1000 AC drive (MEMOBUS/Modbus RTU)</h3><p>Yaskawa V1000 drives (CIMR-VU; 200 V single/three-phase and 400 V three-phase, 0.1-18.5 kW) using the built-in RS-422/485 MEMOBUS/Modbus terminals, per Technical Manual SIEP C710606 18F.</p><div class="meta">63 registers &middot; 11 writable &middot; RTU</div><span class="sr-only"> Also known as: CIMR-VU, V1000 Compact Vector Control Drive</span></a></li></ul>
+<p class="updated">Source: <a href="https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&amp;cmd=documents&amp;documentName=SIEPC71061641.pdf" rel="nofollow noopener" target="_blank">YASKAWA AC Drive-A1000 High Performance Vector Control Drive Technical Manual &middot; SIEP C710616 41H &middot; rev. 2022-03</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:Firstimpactdevelopment@gmail.com">Firstimpactdevelopment@gmail.com</a>.</p>
+  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+  var cp=document.getElementById('copy-em');
+  if(cp){cp.addEventListener('click',function(){
+    var msg=document.getElementById('copy-msg');
+    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
+      return navigator.clipboard.writeText(t);
+    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
+      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
+  });}
+})();
+</script>
+</body>
+</html>

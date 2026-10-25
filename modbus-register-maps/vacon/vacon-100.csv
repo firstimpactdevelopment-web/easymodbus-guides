@@ -1,0 +1,80 @@
+﻿# Danfoss VACON VACON 100 family (built-in Modbus RTU / Modbus TCP) Modbus register map - easymodbus.com - source: https://assets.danfoss.com/documents/270144/BC361182856709en-000401.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,0001,00001,Run/stop (control word bit 0),Modbus TCP/UDP only.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",1,0002,00002,Direction (control word bit 1),Modbus TCP/UDP only.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",2,0003,00003,Fault reset (control word bit 2),Modbus TCP/UDP only.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",16,0017,00017,Reset operation days trip counter,Write 1 to clear. Modbus TCP/UDP only.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",17,0018,00018,Reset energy trip counter,Write 1 to clear. Modbus TCP/UDP only.,BIT,1,,1,0,,Write,
+Discrete input,FC02 read,0,10001,10001,Ready (status word bit 0),Modbus TCP/UDP only.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,1,10002,10002,Run (status word bit 1),Modbus TCP/UDP only.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,2,10003,10003,Direction (status word bit 2),Modbus TCP/UDP only.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,3,10004,10004,Fault (status word bit 3),Modbus TCP/UDP only.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,4,10005,10005,Alarm (status word bit 4),Modbus TCP/UDP only.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,5,10006,10006,At reference (status word bit 5),Modbus TCP/UDP only.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,6,10007,10007,Zero speed (status word bit 6),Modbus TCP/UDP only.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,7,10008,10008,Flux ready (status word bit 7),Modbus TCP/UDP only.,BIT,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,ID 1 (register 1),40001,Output frequency,,INT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,ID 2 (register 2),40002,Motor speed,,INT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,ID 3 (register 3),40003,Motor current,Scale varies with drive size; use ID 45 for fixed 0.1 A.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3,ID 4 (register 4),40004,Motor torque,,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,ID 5 (register 5),40005,Motor shaft power,,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,ID 6 (register 6),40006,Motor voltage,,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",6,ID 7 (register 7),40007,DC link voltage,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,ID 8 (register 8),40008,Unit temperature,,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,ID 9 (register 9),40009,Motor temperature,,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",17,ID 18 (register 18),40018,Torque reference,,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,ID 23 (register 23),40023,PID1 output,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,ID 24 (register 24),40024,PID1 status,,UINT16,1,,1,0,,Read,0 = Stopped; 1 = Running; 3 = Sleep mode; 4 = In dead band
+Holding register,"FC03 read / FC06, FC16 write",24,ID 25 (register 25),40025,Frequency reference,,INT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",36,ID 37 (register 37),40037,Last active fault code,53 = fieldbus communication fault.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",42,ID 43 (register 43),40043,Drive status word,Bit numbers as printed in the application guide.,BITMAP16,1,,1,0,,Read,bit 1 = Ready; bit 2 = Run; bit 3 = Fault; bit 6 = Run enable; bit 7 = Alarm active; bit 10 = DC current in stop; bit 11 = DC brake active; bit 12 = Run request; bit 13 = Motor regulator active; bit 15 = Brake chopper active
+Holding register,"FC03 read / FC06, FC16 write",44,ID 45 (register 45),40045,Motor current 1 decimal,Fixed 0.1 A resolution regardless of drive size.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",58,ID 59 (register 59),40059,Analog input 1,Slot A.1 by default.,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",59,ID 60 (register 60),40060,Analog input 2,Slot A.2 by default.,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",73,ID 74 (register 74),40074,Last active alarm code,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",76,ID 77 (register 77),40077,Motor regulator status,,BITMAP16,1,,1,0,,Read,bit 0 = Current limit (motor); bit 1 = Current limit (generator); bit 2 = Torque limit (motor); bit 3 = Torque limit (generator); bit 4 = Overvoltage control; bit 5 = Undervoltage control; bit 6 = Power limit (motor); bit 7 = Power limit (generator)
+Holding register,"FC03 read / FC06, FC16 write",77,ID 78 (register 78),40078,Ready status,Conditions needed before the drive is ready.,BITMAP16,1,,1,0,,Read,bit 0 = Run enable high; bit 1 = No fault active; bit 2 = Charge switch closed; bit 3 = DC voltage within limits; bit 4 = Power manager initialised; bit 5 = Power unit not blocking start; bit 6 = System software not blocking start
+Holding register,"FC03 read / FC06, FC16 write",88,ID 89 (register 89),40089,Application status word 1,,BITMAP16,1,,1,0,,Read,bit 0 = Interlock 1; bit 1 = Interlock 2; bit 3 = Ramp 2 active; bit 4 = Mechanical brake control; bit 5 = I/O A control active; bit 6 = I/O B control active; bit 7 = Fieldbus control active; bit 8 = Local control active; bit 9 = PC control active; bit 10 = Preset frequencies active; bit 11 = Jogging active; bit 12 = Fire mode active; bit 13 = Motor preheat active; bit 14 = Quick stop active; bit 15 = Drive stopped from keypad
+Holding register,"FC03 read / FC06, FC16 write",94,ID 95 (register 95),40095,Last active fault ID,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",102,ID 103 (register 103),40103,Acceleration time 1,0.1-300.0 s.,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",103,ID 104 (register 104),40104,Deceleration time 1,0.1-300.0 s.,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",121,ID 122 (register 122),40122,Fieldbus control reference selection,Reference used in fieldbus control place (default 3).,UINT16,1,,1,0,,Read/write,1 = Preset frequency 0; 2 = Keypad reference; 3 = Fieldbus; 4 = AI1; 5 = AI2; 6 = AI1+AI2; 7 = PID reference; 8 = Motor potentiometer; 9 = Joystick reference; 10 = Jogging reference; 11 = Block Out.1; 12 = Block Out.2; 13 = Block Out.3; 14 = Block Out.4; 15 = Block Out.5; 16 = Block Out.6; 17 = Block Out.7; 18 = Block Out.8; 19 = Block Out.9; 20 = Block Out.10
+Holding register,"FC03 read / FC06, FC16 write",171,ID 172 (register 172),40172,Remote control place,Set 1 so the drive takes start/stop from fieldbus.,UINT16,1,,1,0,,Read/write,0 = I/O control; 1 = Fieldbus control
+Holding register,"FC03 read / FC06, FC16 write",210,ID 211 (register 211),40211,Local/remote,,UINT16,1,,1,0,,Read/write,0 = Remote; 1 = Local
+Holding register,"FC03 read / FC06, FC16 write",504,ID 505 (register 505),40505,Start function,,UINT16,1,,1,0,,Read/write,0 = Ramping; 1 = Flying start
+Holding register,"FC03 read / FC06, FC16 write",505,ID 506 (register 506),40506,Stop function,,UINT16,1,,1,0,,Read/write,0 = Coasting; 1 = Ramping
+Holding register,"FC03 read / FC06, FC16 write",732,ID 733 (register 733),40733,Response to fieldbus communication fault,Default 3.,UINT16,1,,1,0,,Read/write,0 = No action; 1 = Alarm; 2 = Alarm + preset fault frequency; 3 = Fault (stop according to stop function); 4 = Fault (stop by coasting)
+Holding register,"FC03 read / FC06, FC16 write",887,ID 888 (register 888),40888,FB sign of actual,Sign used for FB actual speed (2103).,UINT16,1,,1,0,,Read/write,0 = Positive; 1 = Actual direction; 2 = Follow reference
+Holding register,"FC03 read / FC06, FC16 write",1494,ID 1495 (register 1495),41495,Frequency reference source,Where the active frequency reference comes from.,UINT16,1,,1,0,,Read,"0 = PC; 1 = Preset freqs; 2 = Keypad reference; 3 = Fieldbus; 4 = AI1; 5 = AI2; 6 = AI1+AI2; 7 = PID controller; 8 = Motor potentiometer; 9 = Joystick; 10 = Jogging; 100 = Not defined; 101 = Alarm, preset freq; 102 = Auto-cleaning"
+Holding register,"FC03 read / FC06, FC16 write",2000,2001,42001,FB control word,Low 16 bits of the 32-bit fieldbus control word.,BITMAP16,1,,1,0,,Read/write,"bit 0 = Start/stop: 1 = run request, 0 = stop request; bit 1 = Direction: 0 = forward, 1 = reverse; bit 2 = Fault reset on rising edge 0->1 (faults, alarms, infos); bit 3 = Stop mode 1: 1 = override stop mode to coasting; bit 4 = Stop mode 2: 1 = override stop mode to ramping; bit 5 = Quick ramp time: 1 = shorter deceleration ramp (not on 100 HVAC); bit 6 = Freeze setpoint: 1 = ignore changes to FB speed reference; bit 7 = Setpoint to zero: 1 = fieldbus setpoint forced to 0 (not on 100 HVAC); bit 8 = Request fieldbus control: 1 = control place forced to fieldbus; bit 9 = Request fieldbus reference: 1 = reference source forced to fieldbus; bit 10 = Jogging 1 (not on 100 HVAC); bit 11 = Jogging 2 (not on 100 HVAC); bit 12 = Quick stop / emergency stop (not on 100 HVAC)"
+Holding register,"FC03 read / FC06, FC16 write",2001,2002,42002,FB general control word,Application-specific bits; write 0 if unused.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2002,2003,42003,FB speed reference,0-10000 = 0.00-100.00 % between min and max frequency.,UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2100,2101,42101,FB status word,Low 16 bits of the 32-bit fieldbus status word.,BITMAP16,1,,1,0,,Read,"bit 0 = Ready: drive ready to run; bit 1 = Run: motor running; bit 2 = Direction: 0 = clockwise, 1 = counterclockwise; bit 3 = Fault active; bit 4 = Alarm active; bit 5 = At reference speed; bit 6 = At zero speed; bit 7 = Flux ready (motor magnetized)"
+Holding register,"FC03 read / FC06, FC16 write",2101,2102,42102,FB general status word,Application-specific (high half of the 32-bit status word).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2102,2103,42103,FB actual speed,0.00-100.00 % between min and max frequency; sign per ID 888.,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2103,2104,42104,Process data out 1 (output frequency),Default ID 1; remap with P3.6.1 (ID 852).,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",2104,2105,42105,Process data out 2 (motor speed),Default ID 2; remap with ID 853.,UINT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",2105,2106,42106,Process data out 3 (motor current),Default ID 3 (45 on 100 HVAC); scale varies by drive size.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2106,2107,42107,Process data out 4 (motor torque),Default ID 4; remap with ID 855.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2107,2108,42108,Process data out 5 (motor power),Default ID 5; remap with ID 856.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2108,2109,42109,Process data out 6 (motor voltage),Default ID 6; remap with ID 857.,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2109,2110,42110,Process data out 7 (DC link voltage),Default ID 7; remap with ID 858.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2110,2111,42111,Process data out 8 (active fault code),Default ID 37; remap with ID 859.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2150,2151-2152,42151,FB status word (32-bit),Full 32-bit status word incl. control place bits 29-31.,UINT32,2,ABCD,1,0,,Read,"bit 0 = Ready: drive ready to run; bit 1 = Run: motor running; bit 2 = Direction: 0 = clockwise, 1 = counterclockwise; bit 3 = Fault active; bit 4 = Alarm active; bit 5 = At reference speed; bit 6 = At zero speed; bit 7 = Flux ready (motor magnetized); bit 29 = Control place, read with bits 30-31: only bit 31 set = fieldbus, only bit 30 = keypad, bits 30+31 = PC tool, only bit 29 = I/O terminals; bit 30 = Control place (see bit 29); bit 31 = Control place (see bit 29)"
+Holding register,"FC03 read / FC06, FC16 write",2207,ID 2208 (register 2208),42208,RS-485 protocol,Must be 1 for Modbus RTU.,UINT16,1,,1,0,,Read/write,0 = No protocol; 1 = Modbus RTU; 2 = BACnet MSTP; 3 = N2
+Holding register,"FC03 read / FC06, FC16 write",2319,ID 2320 (register 2320),42320,RTU slave address,"1-247, default 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2320,ID 2321 (register 2321),42321,RTU communication time-out,0 = not used; default 10 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2377,ID 2378 (register 2378),42378,RTU baud rate,Coded selection; default code 6 = 9600 baud.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2378,ID 2379 (register 2379),42379,RTU parity type,,UINT16,1,,1,0,,Read/write,0 = Even; 1 = Odd; 2 = None
+Holding register,"FC03 read / FC06, FC16 write",2379,ID 2380 (register 2380),42380,RTU stop bits,,UINT16,1,,1,0,,Read/write,1 = 1 stop bit; 2 = 1.5 stop bits; 3 = 2 stop bits
+Holding register,"FC03 read / FC06, FC16 write",2380,ID 2381 (register 2381),42381,RTU fieldbus protocol status,,UINT16,1,,1,0,,Read,0 = Init; 1 = Stopped; 2 = Operational; 3 = Faulted
+Holding register,"FC03 read / FC06, FC16 write",2382,ID 2383 (register 2383),42383,RTU illegal functions,Count of exception 01h replies.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2383,ID 2384 (register 2384),42384,RTU illegal data addresses,Count of exception 02h replies.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2384,ID 2385 (register 2385),42385,RTU illegal data values,Count of exception 03h replies.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2388,ID 2389 (register 2389),42389,RTU last fault response,Last exception code sent.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2389,ID 2390 (register 2390),42390,RTU control word (monitor),Control word last received over RTU.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2390,ID 2391 (register 2391),42391,RTU status word (monitor),Status word currently sent over RTU.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2445,ID 2446 (register 2446),42446,TCP connection limit,"0-3 simultaneous Modbus TCP/UDP clients, default 3.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2446,ID 2447 (register 2447),42447,TCP unit identifier,"0-255, default 255; checked on TCP and UDP.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2447,ID 2448 (register 2448),42448,TCP communication time-out,0 = not used; default 10 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2448,ID 2449 (register 2449),42449,TCP fieldbus protocol status,,UINT16,1,,1,0,,Read,1 = Stopped; 2 = Operational; 3 = Faulted

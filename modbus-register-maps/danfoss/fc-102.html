@@ -34,7 +34,7 @@
 </style>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Danfoss FC 102 Modbus Register Map | Easy Modbus</title>
+<title>Danfoss FC 102 Modbus Register List &amp; Map | Easy Modbus</title>
 <meta name="description" content="Danfoss FC 102 Modbus register map: 51 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
 <link rel="canonical" href="https://easymodbus.com/modbus-register-maps/danfoss/fc-102">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
@@ -42,12 +42,12 @@
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Danfoss FC 102 Modbus Register Map | Easy Modbus">
+<meta property="og:title" content="Danfoss FC 102 Modbus Register List &amp; Map | Easy Modbus">
 <meta property="og:description" content="Danfoss FC 102 Modbus register map: 51 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
 <meta property="og:url" content="https://easymodbus.com/modbus-register-maps/danfoss/fc-102">
 <meta property="og:image" content="https://easymodbus.com/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Danfoss FC 102 Modbus Register Map | Easy Modbus">
+<meta name="twitter:title" content="Danfoss FC 102 Modbus Register List &amp; Map | Easy Modbus">
 <meta name="twitter:description" content="Danfoss FC 102 Modbus register map: 51 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
 <meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,6 +117,9 @@ table.pts td.n{font-weight:600}
 table.pts td.d,table.pts td.s{color:var(--mut)}
 table.pts td.s{font-size:.82rem;min-width:200px}
 table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
 .acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
 .acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
@@ -160,7 +163,7 @@ footer a{color:var(--mut);text-decoration:underline}
    "@type": "WebPage",
    "@id": "https://easymodbus.com/modbus-register-maps/danfoss/fc-102",
    "url": "https://easymodbus.com/modbus-register-maps/danfoss/fc-102",
-   "name": "Danfoss FC 102 Modbus Register Map | Easy Modbus",
+   "name": "Danfoss FC 102 Modbus Register List & Map | Easy Modbus",
    "description": "Danfoss FC 102 Modbus register map: 51 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
    "dateModified": "2026-10-16",
    "isPartOf": {
@@ -442,7 +445,7 @@ decoded every way at once, so a wrong word order or scale is obvious. New to thi
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Danfoss VLT HVAC Drive FC 102 (Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Danfoss VLT HVAC Drive FC 102 (Modbus RTU) have?</summary><p>This map lists 51 registers: 1 coil, 50 holding registers. 18 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Danfoss VLT HVAC Drive FC 102 (Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers derived from parameter numbers. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Registers are printed 1-based. A parameter&#x27;s register number is 10 x its parameter number (3-03 -&gt; 3030, 16-13 -&gt; 16130) and the request carries that number minus 1 (3-03 is read at address 3029 = 0x0BD5, per the manual&#x27;s own example). The fixed process registers CTW 50000, REF 50010, STW 50200 and MAV 50210 follow the same minus-1 rule (CTW = address 49999). Coils are also numbered from 1 (coil 65 = address 64).</p></details><details><summary>What byte order does the Danfoss VLT HVAC Drive FC 102 (Modbus RTU) use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Danfoss VLT HVAC Drive FC 102 (Modbus RTU)?</summary><p>Start with HR 49999 Control word (CTW) (CTW: start/stop/reset); HR 50009 Bus reference (REF) (REF: speed reference, 4000h = 100%); HR 50199 Status word (STW) (STW: ready/running/trip/warning); HR 16129 16-13 Frequency (16-13 Frequency, 0.1 Hz); HR 16139 16-14 Motor current (16-14 Motor current, 0.01 A); HR 16099 16-10 Power [kW] (16-10 Power, 10 W steps (0.01 kW)); HR 16899 16-90 Alarm Word (16-90 Alarm word); HR 15019 15-02 kWh Counter (15-02 kWh counter).</p></details><details><summary>How do I enable Modbus control of the Danfoss VLT HVAC Drive FC 102 (Modbus RTU)?</summary><p>Set 8-30 Protocol = [2] Modbus RTU (effective only after powering the drive off and on), 8-31 Address, 8-32 FC Port Baud Rate and 8-33 Parity/Stop Bits. Control word source 8-02 must be [1] FC port; 8-01 Control Site chooses digital and/or control word; 8-50..8-56 decide how bus bits combine with digital inputs (8-50, 8-55 and 8-56 default to Logic OR). STW bit 9 must read 1 (not in local operation) for bus control, and CTW bit 10 (data valid) must be 1.</p></details><details><summary>What happens when the Danfoss VLT HVAC Drive FC 102 (Modbus RTU) loses Modbus communication?</summary><p>8-03 Control Word Timeout Time (0.5-18000 s, 0.1 s units) and 8-04 Control Word Timeout Function (default Off; options include Freeze output, Stop, Jogging, Max. speed, Stop and trip, set-up switching, Warning only). A valid control word restarts the timer. 8-05 decides what happens after communication returns from a set-up-switching timeout, and 8-06 resets that timeout when 8-05 = Hold set-up.</p></details><details><summary>Where is the official Danfoss VLT HVAC Drive FC 102 (Modbus RTU) Modbus documentation?</summary><p>The source is VLT HVAC Drive FC 102 Design Guide 1.1-90 kW (chapter 8 RS485 Installation and Set-up, Modbus RTU) (MG11BC02), revision 2014-06, published free by Danfoss at https://assets.danfoss.com/documents/272734/AJ299549559248en-001801.pdf.</p></details></div>
-
+<h2>More Danfoss Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/danfoss/fc-202" data-row><span class="k">Variable frequency drive</span><h3>Danfoss VLT AQUA Drive FC 202 (Modbus RTU)</h3><p>VLT AQUA Drive FC 202 using the built-in RS-485 (FC) port with 8-30 Protocol = Modbus RTU and the FC control profile; parameter data checked against the software 5.4X programming guide.</p><div class="meta">61 registers &middot; 22 writable &middot; RTU</div><span class="sr-only"> Also known as: VLT AQUA Drive, FC202, FC-202, AQUA Drive FC 202</span></a></li><li><a class="card" href="/modbus-register-maps/danfoss/fc-302" data-row><span class="k">Variable frequency drive</span><h3>Danfoss VLT AutomationDrive FC 301/302 (Modbus RTU)</h3><p>VLT AutomationDrive FC 301 and FC 302 (0.25-75 kW design guide; same scheme across sizes) using the built-in RS-485 (FC) port with 8-30 Protocol = Modbus RTU and the FC control profile; parameter data checked against the software 9.5x / 48.96 programming guide.</p><div class="meta">62 registers &middot; 22 writable &middot; RTU</div><span class="sr-only"> Also known as: VLT AutomationDrive, FC 301, FC301, FC302, FC-302, FC-301, FC 300</span></a></li></ul>
 <p class="updated">Source: <a href="https://assets.danfoss.com/documents/272734/AJ299549559248en-001801.pdf" rel="nofollow noopener" target="_blank">VLT HVAC Drive FC 102 Design Guide 1.1-90 kW (chapter 8 RS485 Installation and Set-up, Modbus RTU) &middot; MG11BC02 &middot; rev. 2014-06</a>.
 Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
 

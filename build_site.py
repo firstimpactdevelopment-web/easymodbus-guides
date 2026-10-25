@@ -40,8 +40,8 @@ BASE_URL = "https://easymodbus.com"
 INDEXNOW_KEY = "04c386653e0efc62f1f8fdfb5f466541"
 
 # Freshness signal. Bump when guide content is meaningfully revised.
-UPDATED = "2026-09-30"              # ISO, for JSON-LD and sitemap <lastmod>
-UPDATED_HUMAN = "30 September 2026"  # for the visible "Updated" line
+UPDATED = "2026-10-24"              # ISO, for JSON-LD and sitemap <lastmod>
+UPDATED_HUMAN = "24 October 2026"
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -723,6 +723,7 @@ GUIDES.append(dict(
   and which register that actually is, before you save anything.</p>
 """,
     related=[
+        ("modbus-register-maps/index", "Modbus register maps with both printed and 0-based wire addresses"),
         ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
         ("guides/what-is-a-modbus-register-map", "What is a Modbus register map?"),
         ("guides/modbus-function-codes-explained", "Modbus function codes in plain English"),
@@ -814,6 +815,7 @@ GUIDES.append(dict(
   physically have &mdash; a humidity of 452% being the obvious case.</p>
 """,
     related=[
+        ("modbus-register-maps/index", "Modbus register maps with word order and scaling, by manufacturer"),
         ("guides/modbus-address-off-by-one", "Why is my Modbus address off by one?"),
         ("guides/what-is-a-modbus-register-map", "What is a Modbus register map?"),
         ("guides/how-to-find-modbus-register-map", "How do I find my Modbus register map?"),
@@ -822,7 +824,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/cannot-find-modbus-devices",
-    title="Why can't I find my Modbus devices? | Easy Modbus",
+    title="Can't find Modbus devices? 6 things to check | Easy Modbus",
     question="Why can't I find my Modbus devices on the network?",
     description="Modbus has no discovery at all — devices never announce themselves. Here is why scanning is the only option, and the six things to check when nothing answers.",
     answer_html="""<p>Start with the thing that surprises everyone: <strong>Modbus
@@ -1005,7 +1007,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/modbus-unit-id-slave-id",
-    title="What is a Modbus unit ID or slave ID? | Easy Modbus",
+    title="Modbus unit ID (slave ID): find the right one | Easy Modbus",
     question="What is a Modbus unit ID or slave ID?",
     description="The Modbus unit ID (slave ID) picks which device answers on a shared line or gateway. What it is, why it matters, and how to find the right one.",
     answer_html="""<p>A unit ID &mdash; also called a slave ID, station address, or
@@ -1403,7 +1405,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/modbus-reading-slow-or-unreliable",
-    title="Why is my Modbus reading slow or unreliable? | Easy Modbus",
+    title="Modbus slow or unreliable? 5 causes and fixes | Easy Modbus",
     question="Why is my Modbus reading slow or unreliable?",
     description="Slow or intermittent Modbus reads: block sizes, serial turnaround, connection limits, polling collisions and stale replies, and how to fix each.",
     answer_html="""<p>Five usual causes. A slow serial chain behind a gateway, where
@@ -2202,7 +2204,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/modbus-timeout-no-response",
-    title="Modbus timeout / no response from slave | Easy Modbus",
+    title="Modbus timeout, no response? 7 causes in order | Easy Modbus",
     question="Why is my Modbus request timing out with no response?",
     description="A Modbus timeout means your request left but nothing came back. The seven causes in order of likelihood, and how to tell a network fault from a framing one.",
     answer_html="""<p>A timeout means the request went out and <strong>nothing came
@@ -2526,7 +2528,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/modbus-register-reads-zero",
-    title="Modbus register reads 0? Why, and the fix | Easy Modbus",
+    title="Modbus register reads 0? The 3 usual causes | Easy Modbus",
     question="Why does my Modbus register read 0?",
     description="A Modbus register reading 0 is usually the wrong function code, an off-by-one address, or a value split across two registers, not a dead device.",
     answer_html="""<p>A register stuck at zero is rarely a broken sensor. Five things
@@ -2865,7 +2867,7 @@ GUIDES.append(dict(
 
 GUIDES.append(dict(
     slug="guides/read-eastron-sdm-modbus",
-    title="Read an Eastron SDM power meter over Modbus | Easy Modbus",
+    title="Read Eastron SDM120/SDM630 over Modbus | Easy Modbus",
     question="How do I read an Eastron SDM power meter over Modbus?",
     description="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them from a phone.",
     answer_html="""<p>Eastron's SDM range &mdash; the SDM120, SDM220, SDM630 and their
@@ -2930,6 +2932,7 @@ GUIDES.append(dict(
   </div>
 """,
     related=[
+        ("modbus-register-maps/eastron/index", "Eastron SDM Modbus register maps (SDM120CT, SDM230, SDM630)"),
         ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
         ("guides/find-modbus-baud-rate-parity", "How do I find an unknown Modbus baud rate?"),
         ("guides/log-modbus-to-csv-on-phone", "How do I log Modbus data to CSV?"),
@@ -4128,7 +4131,8 @@ def main(ping=False):
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
-        sm.append("  <url><loc>%s/%s</loc><lastmod>%s</lastmod></url>" % (BASE_URL, u, UPDATED))
+        sm.append("  <url><loc>%s/%s</loc><lastmod>%s</lastmod></url>" % (
+            BASE_URL, u, register_library.LASTMOD.get(u, UPDATED)))
     sm.append("</urlset>")
     write("sitemap.xml", "\n".join(sm) + "\n")
 
