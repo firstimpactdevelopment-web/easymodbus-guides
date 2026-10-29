@@ -1,0 +1,24 @@
+﻿# Belimo Air/water actuators with Modbus RTU (..24A-MOD) Modbus register map - easymodbus.com - source: https://www.belimo.com/mam/general-documents/system_integration/Modbus/belimo_Modbus-Register_AirWater_V3_8_en-gb.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Setpoint,"Position setpoint 0-100 %, scaled between Min (No. 106) and Max (No. 107).",UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Override control,Forces a fixed position instead of the setpoint.,UINT16,1,,1,0,,Read/write,0 = None; 1 = Open; 2 = Close; 3 = Min; 4 = Mid; 5 = Max; 6 = Fast open; 7 = Fast close
+Holding register,"FC03 read / FC06, FC16 write",2,3,40003,Command,Starts a service function; reads back 0 once accepted. 4 clears No. 105.,UINT16,1,,1,0,,Read/write,0 = None; 1 = Adaption; 2 = Test; 3 = Sync; 4 = Reset
+Holding register,"FC03 read / FC06, FC16 write",3,4,40004,Actuator type,,UINT16,1,,1,0,,Read,0 = Actuator not connected; 1 = Air / water; 2 = VAV / EPIV; 3 = Fire; 4 = Energy Valve; 5 = 6-way EPIV
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,Relative position,,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,6,40006,Absolute position,"Degrees for rotary actuators, mm for linear actuators.",UINT16,1,,1,0,° / mm,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,9,40009,Sensor 1 value,Raw reading of sensor input 1; meaning and scale follow No. 108 (see notes).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,13,40013,Analog setpoint,Setpoint seen on the 0-10 V input when Setpoint source = Analog.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",99,100,40100,Bus termination,Shows whether the built-in 120 ohm terminator is on (set with the tool).,UINT16,1,,1,0,,Read,0 = Inactive; 1 = Active
+Holding register,"FC03 read / FC06, FC16 write",100,101,40101,Series number 1st part,First block of the serial number on the housing label.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",101,102,40102,Series number 2nd part,Second block of the serial number.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",102,103,40103,Series number 4th part,Fourth block of the serial number (the third is not exposed).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",103,104,40104,Firmware version,Bus module firmware; 302 means version 3.02.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",104,105,40105,Malfunction and service information,Bit-coded fault and status flags; clear with Command = 4.,BITMAP16,1,,1,0,,Read,"bit 1 = Mechanical travel increased (moved outside adapted range); bit 2 = Actuator cannot move (overload / blocked); bit 8 = Internal activity (test run, adaption); bit 9 = Gear train disengaged (manual override pressed); bit 10 = Bus watchdog triggered"
+Holding register,"FC03 read / FC06, FC16 write",105,106,40106,Min,Lower position limit; must stay at least 20 % below Max. Default 0.,UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",106,107,40107,Max,Upper position limit; must stay at least 20 % above Min. Default 100 %.,UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",107,108,40108,Sensor 1 type,What is wired to sensor input 1; restart may be needed after a change.,UINT16,1,,1,0,,Read/write,0 = None; 1 = Active; 2 = Passive_1K; 3 = Passive_20K; 4 = Switch; 5 = PT1000_C; 6 = NI1000_C; 7 = NTC10K2_C; 8 = PT1000_F; 9 = NI1000_F; 10 = NTC10K2_F
+Holding register,"FC03 read / FC06, FC16 write",108,109,40109,Bus fail position,Where the actuator goes when the bus watchdog expires.,UINT16,1,,1,0,,Read/write,0 = None / last setpoint; 1 = Fast close; 2 = Fast open; 3 = Mid position (parametrised)
+Holding register,"FC03 read / FC06, FC16 write",109,110,40110,Timeout for bus watchdog,0 disables; defaults to 120 s once a bus fail position is set.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",118,119,40119,Setpoint source,Bus = No. 1 drives the actuator; Analog = 0-10 V on wire 3. Default Bus.,UINT16,1,,1,0,,Read/write,0 = Analog; 1 = Bus
+Holding register,"FC03 read / FC06, FC16 write",189,190,40190,Fail-safe bridging time,Delay before the fail-safe move after power loss (electronic fail-safe types only).,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",190,191,40191,Fail-safe position,Position taken on power loss (electronic fail-safe types; knob on 'Tool').,UINT16,1,,0.01,0,%,Read/write,

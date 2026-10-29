@@ -1,0 +1,515 @@
+{
+  "manufacturer": "Belimo",
+  "manufacturer_slug": "belimo",
+  "model": "6-way EPIV Modbus RTU (EP..R-R6+BAC)",
+  "model_slug": "epiv-6-way",
+  "short_model": "Belimo 6-way EPIV",
+  "aliases": [
+    "EP..R-R6+BAC",
+    "6-way pressure-independent valve"
+  ],
+  "equipment_type": "Actuator / valve (6-way pressure-independent change-over valve)",
+  "applies_to": "Belimo 6-way EPIV EP..R-R6+BAC on Modbus RTU, per 6-way EPIV Modbus Register en-gb 2024-01 (general notes dated 16.12.2019).",
+  "summary": "Belimo's 6-way EPIV serves two circuits (sequence 1 and sequence 2) through one valve and controls the flow in each with its own flow sensor. Over Modbus RTU one setpoint register covers both sequences (0-33 % and 67-100 %, with a closed dead band in between); the map also gives position, flow in three units, the active sequence, Vmax per sequence and fault flags.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 10,
+    "baud": 38400,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 2,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "Belimo prints each register twice: 'No.' counts from 1 and 'Address' from 0, and the documented value here is the No. column. Register No. 1 (setpoint) is wire address 0. Every value sits in one flat table, so holding-register reads (FC 3) and writes (FC 6/16) reach everything; FC 4 input-register reads of the same addresses also work."
+  },
+  "default_word_order": "CDAB",
+  "firmware": null,
+  "source": {
+    "title": "Modbus Register - 6-way EPIV",
+    "doc_number": "6-way EPIV Modbus Register en-gb 2024-01",
+    "revision_date": "2024-01",
+    "url": "https://www.belimo.com/mam/general-documents/system_integration/Modbus/belimo_Modbus-Register_6way-EPIV_en-gb.pdf",
+    "pages": "General notes p. 2; register overview p. 3; register description pp. 4-6"
+  },
+  "notes": [
+    "32-bit values occupy two registers with the low word first (Belimo's worked example: No. 10 = 14551, No. 11 = 19 gives 19 x 65536 + 14551 = 1,259,735), so they are UINT32 with CDAB word order. Write a 32-bit pair with one FC 16 request covering only those two registers.",
+    "Belimo states all values are unsigned 16-bit integers; unsupported registers read 65535. Writable registers from No. 101 up are persistent.",
+    "The factory Modbus address of this valve is 10, not 1.",
+    "The flow-setpoint pair (No. 14/15) is read-only in the description table even though the overview's access column is hard to read; it is listed as read-only.",
+    "This edition has no bus watchdog or bus-fail registers, and the bus terminator must be fitted externally (120 ohm).",
+    "Registers 3, 108-110 are unused and not listed."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "1",
+      "name": "Setpoint",
+      "description": "Flow control: 0-33 % runs sequence 1, 67-100 % sequence 2. Position control: plain 0-100 %.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "2",
+      "name": "Override control",
+      "description": "Forces a fixed position or flow.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Open sequence 1 (0 %)",
+        "2": "Open sequence 2 (100 %)",
+        "3": "Close (50 %)",
+        "4": "Vmax sequence 1",
+        "5": "Vmax sequence 2"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "4",
+      "name": "Actuator type",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Actuator not connected",
+        "1": "Air / water",
+        "2": "VAV / EPIV",
+        "3": "Fire",
+        "4": "Energy Valve",
+        "5": "6-way EPIV"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "5",
+      "name": "Relative position",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "6",
+      "name": "Absolute position",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "°",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "7",
+      "name": "Relative volumetric flow",
+      "description": "Flow as % of the active Vmax (Vmax1 or Vmax2).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "8",
+      "name": "Absolute volumetric flow (selected unit)",
+      "description": "Unit set by No. 118.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "see No. 118",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "10",
+      "name": "Absolute volumetric flow (l/h)",
+      "description": "",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "l/h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "12",
+      "name": "Absolute volumetric flow (gpm)",
+      "description": "",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "gpm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 13,
+      "documented": "14",
+      "name": "Flow setpoint (selected unit)",
+      "description": "Active absolute flow setpoint; unit set by No. 118.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "see No. 118",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15,
+      "documented": "16",
+      "name": "Setpoint analog",
+      "description": "Analog control voltage when Setpoint source = Analog.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16,
+      "documented": "17",
+      "name": "Active sequence",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Sequence 1 (0-33 %)",
+        "1": "Sequence 2 (67-100 %)",
+        "2": "Dead band (34-66 %)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 100,
+      "documented": "101",
+      "name": "Series number 1st part",
+      "description": "First block of the serial number on the housing label.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 101,
+      "documented": "102",
+      "name": "Series number 2nd part",
+      "description": "Second block of the serial number.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 102,
+      "documented": "103",
+      "name": "Series number 4th part",
+      "description": "Fourth block of the serial number (the third is not exposed).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 103,
+      "documented": "104",
+      "name": "Firmware version",
+      "description": "Bus module firmware; 302 means version 3.02.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 104,
+      "documented": "105",
+      "name": "Malfunction and service information",
+      "description": "Bit-coded fault flags; several can be set at once.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "2": "Error flow sensor",
+        "3": "Actuator cannot move",
+        "4": "Flow with closed valve",
+        "5": "Air bubbles (runs in position control until cleared)",
+        "6": "Flow not reached within 3 min",
+        "9": "Gear disengaged"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 105,
+      "documented": "106",
+      "name": "Vmax sequence 1",
+      "description": "Max flow for sequence 1, 5-100 %; default 100 %.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 106,
+      "documented": "107",
+      "name": "Vmax sequence 2",
+      "description": "Max flow for sequence 2, 5-100 %; default 100 %.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 110,
+      "documented": "111",
+      "name": "Nominal volumetric flow (selected unit)",
+      "description": "Vnom; unit set by No. 118.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "see No. 118",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 112,
+      "documented": "113",
+      "name": "Nominal volumetric flow (l/h)",
+      "description": "",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "l/h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 114,
+      "documented": "115",
+      "name": "Nominal volumetric flow (gpm)",
+      "description": "",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "gpm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 116,
+      "documented": "117",
+      "name": "Control mode",
+      "description": "Default flow control.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Position control",
+        "1": "Flow control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 117,
+      "documented": "118",
+      "name": "Unit selection flow",
+      "description": "Default l/h.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "m3/s",
+        "1": "m3/h",
+        "2": "l/s",
+        "3": "l/min",
+        "4": "l/h",
+        "5": "gpm",
+        "6": "cfm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 118,
+      "documented": "119",
+      "name": "Setpoint source",
+      "description": "Analog = 0-10 V on wire 3; Bus = No. 1. Default Analog.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Analog",
+        "1": "Bus"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set the address (factory 10) and frame with the Belimo Assistant app, write Setpoint source No. 119 = 1 (Bus), then write No. 1: 0-33 % runs sequence 1, 67-100 % sequence 2, 34-66 % closes. Poll No. 17 (active sequence), No. 7/10 (flow) and No. 105 (faults).",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 118,
+        "why": "Setpoint source = Bus (default Analog)"
+      },
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Setpoint across both sequences"
+      },
+      {
+        "table": "holding_register",
+        "address": 16,
+        "why": "Active sequence"
+      },
+      {
+        "table": "holding_register",
+        "address": 9,
+        "why": "Flow l/h"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Relative position"
+      },
+      {
+        "table": "holding_register",
+        "address": 104,
+        "why": "Fault flags"
+      }
+    ],
+    "enable": "Configure address and frame with the Belimo Assistant app, then write No. 119 = 1 so the valve follows the bus setpoint (factory setting is Analog).",
+    "watchdog": null,
+    "quirks": [
+      "Register No. is 1-based; subtract 1 for the wire address.",
+      "Factory slave address is 10.",
+      "One setpoint drives both sequences; 33 % and 67 % are both zero flow."
+    ],
+    "setup": [
+      "Default frame 1-8-N-2 at 38400 baud.",
+      "No built-in terminator: fit an external 120 ohm resistor at the bus ends."
+    ],
+    "gotchas": [
+      "While air bubbles are detected the valve stays in position control whatever Control mode says (bit 5 of No. 105)."
+    ]
+  },
+  "verified": {
+    "date": "2026-10-28",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

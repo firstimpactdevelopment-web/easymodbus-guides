@@ -1,0 +1,27 @@
+﻿# Belimo 6-way EPIV Modbus RTU (EP..R-R6+BAC) Modbus register map - easymodbus.com - source: https://www.belimo.com/mam/general-documents/system_integration/Modbus/belimo_Modbus-Register_6way-EPIV_en-gb.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Setpoint,"Flow control: 0-33 % runs sequence 1, 67-100 % sequence 2. Position control: plain 0-100 %.",UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Override control,Forces a fixed position or flow.,UINT16,1,,1,0,,Read/write,0 = None; 1 = Open sequence 1 (0 %); 2 = Open sequence 2 (100 %); 3 = Close (50 %); 4 = Vmax sequence 1; 5 = Vmax sequence 2
+Holding register,"FC03 read / FC06, FC16 write",3,4,40004,Actuator type,,UINT16,1,,1,0,,Read,0 = Actuator not connected; 1 = Air / water; 2 = VAV / EPIV; 3 = Fire; 4 = Energy Valve; 5 = 6-way EPIV
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,Relative position,,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,6,40006,Absolute position,,UINT16,1,,0.01,0,°,Read,
+Holding register,"FC03 read / FC06, FC16 write",6,7,40007,Relative volumetric flow,Flow as % of the active Vmax (Vmax1 or Vmax2).,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,8,40008,Absolute volumetric flow (selected unit),Unit set by No. 118.,UINT32,2,CDAB,0.001,0,see No. 118,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,10,40010,Absolute volumetric flow (l/h),,UINT32,2,CDAB,0.001,0,l/h,Read,
+Holding register,"FC03 read / FC06, FC16 write",11,12,40012,Absolute volumetric flow (gpm),,UINT32,2,CDAB,0.001,0,gpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,14,40014,Flow setpoint (selected unit),Active absolute flow setpoint; unit set by No. 118.,UINT32,2,CDAB,0.001,0,see No. 118,Read,
+Holding register,"FC03 read / FC06, FC16 write",15,16,40016,Setpoint analog,Analog control voltage when Setpoint source = Analog.,UINT16,1,,0.01,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,17,40017,Active sequence,,UINT16,1,,1,0,,Read,0 = Sequence 1 (0-33 %); 1 = Sequence 2 (67-100 %); 2 = Dead band (34-66 %)
+Holding register,"FC03 read / FC06, FC16 write",100,101,40101,Series number 1st part,First block of the serial number on the housing label.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",101,102,40102,Series number 2nd part,Second block of the serial number.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",102,103,40103,Series number 4th part,Fourth block of the serial number (the third is not exposed).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",103,104,40104,Firmware version,Bus module firmware; 302 means version 3.02.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",104,105,40105,Malfunction and service information,Bit-coded fault flags; several can be set at once.,BITMAP16,1,,1,0,,Read,bit 2 = Error flow sensor; bit 3 = Actuator cannot move; bit 4 = Flow with closed valve; bit 5 = Air bubbles (runs in position control until cleared); bit 6 = Flow not reached within 3 min; bit 9 = Gear disengaged
+Holding register,"FC03 read / FC06, FC16 write",105,106,40106,Vmax sequence 1,"Max flow for sequence 1, 5-100 %; default 100 %.",UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",106,107,40107,Vmax sequence 2,"Max flow for sequence 2, 5-100 %; default 100 %.",UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",110,111,40111,Nominal volumetric flow (selected unit),Vnom; unit set by No. 118.,UINT32,2,CDAB,0.001,0,see No. 118,Read,
+Holding register,"FC03 read / FC06, FC16 write",112,113,40113,Nominal volumetric flow (l/h),,UINT32,2,CDAB,0.001,0,l/h,Read,
+Holding register,"FC03 read / FC06, FC16 write",114,115,40115,Nominal volumetric flow (gpm),,UINT32,2,CDAB,0.001,0,gpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",116,117,40117,Control mode,Default flow control.,UINT16,1,,1,0,,Read/write,0 = Position control; 1 = Flow control
+Holding register,"FC03 read / FC06, FC16 write",117,118,40118,Unit selection flow,Default l/h.,UINT16,1,,1,0,,Read/write,0 = m3/s; 1 = m3/h; 2 = l/s; 3 = l/min; 4 = l/h; 5 = gpm; 6 = cfm
+Holding register,"FC03 read / FC06, FC16 write",118,119,40119,Setpoint source,Analog = 0-10 V on wire 3; Bus = No. 1. Default Analog.,UINT16,1,,1,0,,Read/write,0 = Analog; 1 = Bus

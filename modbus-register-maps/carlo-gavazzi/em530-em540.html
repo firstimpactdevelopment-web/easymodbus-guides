@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carlo Gavazzi EM530/EM540 Modbus Register Map | Easy Modbus</title>
+<meta name="description" content="Carlo Gavazzi EM530/EM540 Modbus register map: 109 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Carlo Gavazzi EM530/EM540 Modbus Register Map | Easy Modbus">
+<meta property="og:description" content="Carlo Gavazzi EM530/EM540 Modbus register map: 109 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Carlo Gavazzi EM530/EM540 Modbus Register Map | Easy Modbus">
+<meta name="twitter:description" content="Carlo Gavazzi EM530/EM540 Modbus register map: 109 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540",
+   "url": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540",
+   "name": "Carlo Gavazzi EM530/EM540 Modbus Register Map | Easy Modbus",
+   "description": "Carlo Gavazzi EM530/EM540 Modbus register map: 109 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-10-28",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540#dataset",
+   "name": "Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus register map",
+   "description": "The EM530 and EM540 are Carlo Gavazzi's three-phase DIN-rail energy meters (EM530 CT-connected, EM540 direct-connected). The S1 versions talk Modbus RTU on RS485; live values and energy totals are 32-bit integers sent low word first with fixed weights, and functions 03 and 04 return the same data. This map covers volts, amps, powers, PF, frequency, THD, demand, total/partial/phase/tariff energy, run hours, identity, setup, serial settings and resets. Carlo Gavazzi EM530/EM540 Modbus register map: 109 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540",
+   "keywords": [
+    "Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus register map",
+    "Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus registers",
+    "Carlo Gavazzi Modbus map",
+    "EM530 Modbus register map",
+    "EM540 Modbus register map",
+    "EM530DINAV53XS1X Modbus register map",
+    "EM530DINAV53XS1PFA Modbus register map",
+    "EM530DINAV53XS1PFB Modbus register map",
+    "EM530DINAV53XS1PFC Modbus register map",
+    "EM540DINAV23XS1X Modbus register map",
+    "EM540DINAV23XS1PFA Modbus register map",
+    "EM540DINAV23XS1PFB Modbus register map",
+    "EM540DINAV23XS1PFC Modbus register map",
+    "EM500 series Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "dateModified": "2026-10-28",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "EM530/EM540 Modbus Communication Protocol (public version)",
+    "url": "https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Carlo Gavazzi"
+    }
+   },
+   "about": {
+    "@type": "Product",
+    "name": "Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)",
+    "brand": {
+     "@type": "Brand",
+     "name": "Carlo Gavazzi"
+    },
+    "category": "Energy meter"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "name": "Easy Modbus import CSV",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540-easymodbus.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@id": "https://easymodbus.com/modbus-register-maps/#catalog"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 109 registers: 92 input registers, 17 holding registers. 16 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each row shows a 6-digit Modicon number for function 04 (3xxxxx; swap the leading 3 for 4 with function 03) and the hex physical address that goes in the frame. Wire address = physical address: 300001 / 0000h is address 0."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What byte order does the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) use for 32-bit values?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with IR 0 V L1-N (V L1-N); IR 12 A L1 (A L1); IR 40 W sys (W sys); IR 49 PF sys (PF sys); IR 51 Hz (Frequency); IR 52 kWh (+) TOT (kWh(+) total); IR 78 kWh (-) TOT (kWh(-) total); IR 11 Carlo Gavazzi identification code (Model check)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Only the S1 versions have the RS485 Modbus port. Set address, baud, parity and stop bits from the front menu or registers 2000h-2003h."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is EM530/EM540 Modbus Communication Protocol (public version) (Version 1.3), revision 2024-02-13, published free by Carlo Gavazzi at https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Carlo Gavazzi",
+     "item": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "EM530 / EM540 three-phase energy meters (RS485 Modbus)",
+     "item": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></li><li aria-current="page">EM530 / EM540 three-phase energy meters (RS485 Modbus)</li></ol>
+<p class="eyebrow">Energy meter &middot; Modbus register map</p><h1><span class="mfr">Carlo Gavazzi</span> EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus register map</h1><p class="updated">Updated 28 October 2026</p>
+
+<div class="answer"><b>Short answer</b><p>The EM530 and EM540 are Carlo Gavazzi&#x27;s three-phase DIN-rail energy meters (EM530 CT-connected, EM540 direct-connected). The S1 versions talk Modbus RTU on RS485; live values and energy totals are 32-bit integers sent low word first with fixed weights, and functions 03 and 04 return the same data. This map covers volts, amps, powers, PF, frequency, THD, demand, total/partial/phase/tariff energy, run hours, identity, setup, serial settings and resets.</p>
+<p>This page lists <strong>109 Modbus registers</strong> for the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) &mdash; 16 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Carlo Gavazzi&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></dd></div><div><dt>Model</dt><dd>EM530 / EM540 three-phase energy meters (RS485 Modbus)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>109 (16 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>EM530, EM540, EM530DINAV53XS1X, EM530DINAV53XS1PFA, EM530DINAV53XS1PFB, EM530DINAV53XS1PFC, EM540DINAV23XS1X, EM540DINAV23XS1PFA, EM540DINAV23XS1PFB, EM540DINAV23XS1PFC, EM500 series</dd></div><div><dt>Source document</dt><dd><a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf" rel="nofollow noopener" target="_blank">EM530/EM540 Modbus Communication Protocol (public version) &middot; Version 1.3 &middot; rev. 2024-02-13</a></dd></div></dl>
+<div class="dl">
+  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/em530-em540-easymodbus.csv">Copy for the phone app <small>108 rows</small></button>
+  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em530-em540-easymodbus.csv" download>Download Easy Modbus CSV</a>
+  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em530-em540.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em530-em540.json">JSON</a>
+  <a class="btn" href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+  <span class="toast" id="copy-msg" role="status"></span>
+</div>
+<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
+&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
+Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
+<section class="integ" id="integration"><h2>Integration notes: Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)</h2>
+<div class="answer"><b>Integration in brief</b><p>Read input registers 0000h-0033h (function 04 or 03) for live values and 0034h-005Dh for energy, in blocks of up to 20 registers. Decode INT32 low word first and apply the fixed weights: V, W, VA, var and kWh x0.1, A and PF x0.001, Hz x0.1.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">V L1-N</td><td class="f">INT32 CDAB</td><td>V L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-12">IR 12</a></td><td class="n">A L1</td><td class="f">INT32 CDAB</td><td>A L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-40">IR 40</a></td><td class="n">W sys</td><td class="f">INT32 CDAB</td><td>W sys</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-49">IR 49</a></td><td class="n">PF sys</td><td class="f">INT16</td><td>PF sys</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-51">IR 51</a></td><td class="n">Hz</td><td class="f">INT16</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-52">IR 52</a></td><td class="n">kWh (+) TOT</td><td class="f">INT32 CDAB</td><td>kWh(+) total</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-78">IR 78</a></td><td class="n">kWh (-) TOT</td><td class="f">INT32 CDAB</td><td>kWh(-) total</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-11">IR 11</a></td><td class="n">Carlo Gavazzi identification code</td><td class="f">UINT16</td><td>Model check</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Only the S1 versions have the RS485 Modbus port. Set address, baud, parity and stop bits from the front menu or registers 2000h-2003h.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>INT32 values are low word first (CDAB).</li><li>PF at 002Eh-0031h is signed by power direction; the lead/lag sign is in the separate PF rows at 0072h-0075h.</li><li>Exported energy (kWh(-)) counting depends on measurement mode (1103h); on MID models the mode is fixed by the part number (PFA/PFB/PFC).</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Defaults: address 1, 9600 baud, no parity, 1 stop bit.</li><li>Baud 9600-115200; parity none or even.</li><li>Terminate both bus ends with 120 ohm; on the meter, bridge B+ to T on the last unit. Use a repeater beyond 1000 m or more than 160 instruments on one bus.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Reset registers always read 0; writing 1 runs the command.</li><li>Total-counter reset (4003h) and CT changes are blocked on MID versions.</li><li>Reading an unlisted address returns an illegal-data-address exception, so do not read across gaps.</li></ul>
+</section>
+<h2 id="registers">Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="input_register" aria-pressed="false" title="Input register">Input registers<b>92</b></button></li><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>17</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">109 of 109 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="input_register" id="r-ir-0"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">0<small>doc 300001 / 0000h</small></td><td class="n">V L1-N</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-2"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">2<small>doc 300003 / 0002h</small></td><td class="n">V L2-N</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-4"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">4<small>doc 300005 / 0004h</small></td><td class="n">V L3-N</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-6"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">6<small>doc 300007 / 0006h</small></td><td class="n">V L1-L2</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-8"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">8<small>doc 300009 / 0008h</small></td><td class="n">V L2-L3</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-10"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">10<small>doc 300011 / 000Ah</small></td><td class="n">V L3-L1</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-11"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">11<small>doc 300012 / 000Bh</small></td><td class="n">Carlo Gavazzi identification code</td><td class="d">Model code, e.g. 1760 = EM540 X.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1744 = EM530 X; 1745 = EM530 PFA; 1746 = EM530 PFB; 1747 = EM530 PFC; 1760 = EM540 X; 1761 = EM540 PFA; 1762 = EM540 PFB; 1763 = EM540 PFC</td></tr>
+<tr data-row data-type="input_register" id="r-ir-12"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">12<small>doc 300013 / 000Ch</small></td><td class="n">A L1</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-14"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">14<small>doc 300015 / 000Eh</small></td><td class="n">A L2</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-16"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">16<small>doc 300017 / 0010h</small></td><td class="n">A L3</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-18"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">18<small>doc 300019 / 0012h</small></td><td class="n">W L1</td><td class="d">Negative = exported power.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-20"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">20<small>doc 300021 / 0014h</small></td><td class="n">W L2</td><td class="d">Negative = exported power.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-22"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">22<small>doc 300023 / 0016h</small></td><td class="n">W L3</td><td class="d">Negative = exported power.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-24"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">24<small>doc 300025 / 0018h</small></td><td class="n">VA L1</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-26"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">26<small>doc 300027 / 001Ah</small></td><td class="n">VA L2</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-28"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">28<small>doc 300029 / 001Ch</small></td><td class="n">VA L3</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-30"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">30<small>doc 300031 / 001Eh</small></td><td class="n">var L1</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-32"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">32<small>doc 300033 / 0020h</small></td><td class="n">var L2</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-34"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">34<small>doc 300035 / 0022h</small></td><td class="n">var L3</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-36"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">36<small>doc 300037 / 0024h</small></td><td class="n">V L-N sys</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-38"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">38<small>doc 300039 / 0026h</small></td><td class="n">V L-L sys</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-40"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">40<small>doc 300041 / 0028h</small></td><td class="n">W sys</td><td class="d">Negative = exported power.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-42"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">42<small>doc 300043 / 002Ah</small></td><td class="n">VA sys</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-44"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">44<small>doc 300045 / 002Ch</small></td><td class="n">var sys</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>var</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-46"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">46<small>doc 300047 / 002Eh</small></td><td class="n">PF L1</td><td class="d">Sign follows power direction: negative = exporting.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.001</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-47"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">47<small>doc 300048 / 002Fh</small></td><td class="n">PF L2</td><td class="d">Sign follows power direction: negative = exporting.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.001</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-48"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">48<small>doc 300049 / 0030h</small></td><td class="n">PF L3</td><td class="d">Sign follows power direction: negative = exporting.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.001</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-49"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">49<small>doc 300050 / 0031h</small></td><td class="n">PF sys</td><td class="d">Sign follows power direction: negative = exporting.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.001</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-50"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">50<small>doc 300051 / 0032h</small></td><td class="n">Phase sequence</td><td class="d">Meaningful on 3-phase systems only.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = L1-L2-L3; -1 = L1-L3-L2</td></tr>
+<tr data-row data-type="input_register" id="r-ir-51"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">51<small>doc 300052 / 0033h</small></td><td class="n">Hz</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-52"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">52<small>doc 300053 / 0034h</small></td><td class="n">kWh (+) TOT</td><td class="d">Imported active energy total.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-54"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">54<small>doc 300055 / 0036h</small></td><td class="n">kvarh (+) TOT</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kvarh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-56"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">56<small>doc 300057 / 0038h</small></td><td class="n">W sys DMD</td><td class="d">System active power demand.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-58"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">58<small>doc 300059 / 003Ah</small></td><td class="n">W sys DMD MAX</td><td class="d">Peak system power demand.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-60"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">60<small>doc 300061 / 003Ch</small></td><td class="n">kWh (+) PARTIAL</td><td class="d">Resettable imported energy.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-62"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">62<small>doc 300063 / 003Eh</small></td><td class="n">kvarh (+) PARTIAL</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kvarh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-64"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">64<small>doc 300065 / 0040h</small></td><td class="n">kWh (+) L1</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-66"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">66<small>doc 300067 / 0042h</small></td><td class="n">kWh (+) L2</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-68"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">68<small>doc 300069 / 0044h</small></td><td class="n">kWh (+) L3</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-70"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">70<small>doc 300071 / 0046h</small></td><td class="n">kWh (+) t1</td><td class="d">Imported energy on tariff 1.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-72"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">72<small>doc 300073 / 0048h</small></td><td class="n">kWh (+) t2</td><td class="d">Imported energy on tariff 2.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-78"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">78<small>doc 300079 / 004Eh</small></td><td class="n">kWh (-) TOT</td><td class="d">Exported active energy total.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-80"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">80<small>doc 300081 / 0050h</small></td><td class="n">kvarh (-) TOT</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kvarh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-82"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">82<small>doc 300083 / 0052h</small></td><td class="n">kWh (-) PARTIAL</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-84"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">84<small>doc 300085 / 0054h</small></td><td class="n">kvarh (-) PARTIAL</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kvarh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-86"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">86<small>doc 300087 / 0056h</small></td><td class="n">kVAh TOT</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kVAh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-88"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">88<small>doc 300089 / 0058h</small></td><td class="n">kVAh PARTIAL</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>kVAh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-90"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">90<small>doc 300091 / 005Ah</small></td><td class="n">Run hour meter</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-92"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">92<small>doc 300093 / 005Ch</small></td><td class="n">Run hour meter kWh (-)</td><td class="d">Hours spent exporting.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-110"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">110<small>doc 300111 / 006Eh</small></td><td class="n">Run hour meter PARTIAL</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-112"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">112<small>doc 300113 / 0070h</small></td><td class="n">Run hour meter kWh (-) PARTIAL</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-114"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">114<small>doc 300115 / 0072h</small></td><td class="n">PF L1 (lead/lag)</td><td class="d">Negative = leading (capacitive), positive = lagging (inductive).</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.001</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-115"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">115<small>doc 300116 / 0073h</small></td><td class="n">PF L2 (lead/lag)</td><td class="d">Negative = leading (capacitive), positive = lagging (inductive).</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.001</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-116"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">116<small>doc 300117 / 0074h</small></td><td class="n">PF L3 (lead/lag)</td><td class="d">Negative = leading (capacitive), positive = lagging (inductive).</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.001</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-117"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">117<small>doc 300118 / 0075h</small></td><td class="n">PF sys (lead/lag)</td><td class="d">Negative = leading (capacitive), positive = lagging (inductive).</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.001</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-118"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">118<small>doc 300119 / 0076h</small></td><td class="n">Load type L1</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Inductive (L); -1 = Capacitive (C)</td></tr>
+<tr data-row data-type="input_register" id="r-ir-119"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">119<small>doc 300120 / 0077h</small></td><td class="n">Load type L2</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Inductive (L); -1 = Capacitive (C)</td></tr>
+<tr data-row data-type="input_register" id="r-ir-120"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">120<small>doc 300121 / 0078h</small></td><td class="n">Load type L3</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Inductive (L); -1 = Capacitive (C)</td></tr>
+<tr data-row data-type="input_register" id="r-ir-121"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">121<small>doc 300122 / 0079h</small></td><td class="n">Load type sys</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Inductive (L); -1 = Capacitive (C)</td></tr>
+<tr data-row data-type="input_register" id="r-ir-130"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">130<small>doc 300131 / 0082h</small></td><td class="n">THD A L1</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-132"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">132<small>doc 300133 / 0084h</small></td><td class="n">THD A L2</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-134"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">134<small>doc 300135 / 0086h</small></td><td class="n">THD A L3</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-138"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">138<small>doc 300139 / 008Ah</small></td><td class="n">THD V L1-N</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-140"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">140<small>doc 300141 / 008Ch</small></td><td class="n">THD V L2-N</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-142"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">142<small>doc 300143 / 008Eh</small></td><td class="n">THD V L3-N</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-146"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">146<small>doc 300147 / 0092h</small></td><td class="n">THD V L1-L2</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-148"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">148<small>doc 300149 / 0094h</small></td><td class="n">THD V L2-L3</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-150"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">150<small>doc 300151 / 0096h</small></td><td class="n">THD V L3-L1</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-152"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">152<small>doc 300153 / 0098h</small></td><td class="n">An</td><td class="d">Neutral current.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-154"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">154<small>doc 300155 / 009Ah</small></td><td class="n">I1 DMD</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-156"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">156<small>doc 300157 / 009Ch</small></td><td class="n">I2 DMD</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-158"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">158<small>doc 300159 / 009Eh</small></td><td class="n">I3 DMD</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-160"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">160<small>doc 300161 / 00A0h</small></td><td class="n">I1 DMDMAX</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-162"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">162<small>doc 300163 / 00A2h</small></td><td class="n">I2 DMDMAX</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-164"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">164<small>doc 300165 / 00A4h</small></td><td class="n">I3 DMDMAX</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-172"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">172<small>doc 300173 / 00ACh</small></td><td class="n">W1 DMD</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-174"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">174<small>doc 300175 / 00AEh</small></td><td class="n">W2 DMD</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-176"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">176<small>doc 300177 / 00B0h</small></td><td class="n">W3 DMD</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-178"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">178<small>doc 300179 / 00B2h</small></td><td class="n">W1 DMDMAX</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-180"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">180<small>doc 300181 / 00B4h</small></td><td class="n">W2 DMDMAX</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-182"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">182<small>doc 300183 / 00B6h</small></td><td class="n">W3 DMDMAX</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-214"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">214<small>doc 300215 / 00D6h</small></td><td class="n">VA DMD</td><td class="d">System apparent power demand.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-216"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">216<small>doc 300217 / 00D8h</small></td><td class="n">VA DMD MAX</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td>VA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-768"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">768<small>doc 300769 / 0300h</small></td><td class="n">Digital input status</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Open; 1 = Closed</td></tr>
+<tr data-row data-type="input_register" id="r-ir-769"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">769<small>doc 300770 / 0301h</small></td><td class="n">Active tariff</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Tariff 1; 2 = Tariff 2</td></tr>
+<tr data-row data-type="input_register" id="r-ir-770"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">770<small>doc 300771 / 0302h</small></td><td class="n">Firmware version</td><td class="d">High byte: major (bits 4-7) and minor (bits 0-3); low byte: revision.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-774"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">774<small>doc 300775 / 0306h</small></td><td class="n">Alarm status</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Not active (or delay running); 1 = Active</td></tr>
+<tr data-row data-type="input_register" id="r-ir-1340"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">1340<small>doc 301341 / 053Ch</small></td><td class="n">Hz (high resolution)</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.001</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-1342"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">1342<small>doc 301343 / 053Eh</small></td><td class="n">Run hour life counter</td><td class="d">Lifetime hours; not cleared by the total reset.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f">&times; 0.01</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-20480"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">20480<small>doc 320481 / 5000h</small></td><td class="n">Serial number</td><td class="d">13 ASCII characters, two per register, high byte first.</td><td class="f">STRING[14]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-20487"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">20487<small>doc 320488 / 5007h</small></td><td class="n">Production year</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-20498"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">20498<small>doc 320499 / 5012h</small></td><td class="n">Device state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Run; 1 = Fault; 2 = Configuration error (phase/terminal setup)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4096"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4096<small>doc 304097 / 1000h</small></td><td class="n">Password</td><td class="d">0 = no password, up to 9999.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4098"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4098<small>doc 304099 / 1002h</small></td><td class="n">Measuring system</td><td class="d">MID models accept only 0 and 1.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 3Pn (3-phase + neutral); 1 = 3P (3-phase, no neutral); 2 = 2P (2-phase + neutral)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4099"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4099<small>doc 304100 / 1003h</small></td><td class="n">Current transformer ratio</td><td class="d">10-20000 = CT 1.0-2000.0. Read-only on MID; absent on AV2 models.</td><td class="f">UINT32</td><td class="f">CDAB</td><td class="f">&times; 0.1</td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4112"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4112<small>doc 304113 / 1010h</small></td><td class="n">Demand integration time</td><td class="d"></td><td class="f">UINT32</td><td class="f">CDAB</td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 1 min; 1 = 5 min; 2 = 10 min; 3 = 15 min; 4 = 20 min; 5 = 30 min; 6 = 60 min</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4353"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4353<small>doc 304354 / 1101h</small></td><td class="n">Tariff selection by Modbus</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4355"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4355<small>doc 304356 / 1103h</small></td><td class="n">Measurement mode</td><td class="d">Read-only on MID models, fixed by part number.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = A (absolute); 1 = B (accumulate by phase); 2 = C (bidirectional)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4356"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4356<small>doc 304357 / 1104h</small></td><td class="n">Wrong connection detection</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Disabled; 1 = Enabled</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4357"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4357<small>doc 304357 / 1105h</small></td><td class="n">Wrong connection status</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Correct; 1 = Connection error</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8192"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8192<small>doc 308193 / 2000h</small></td><td class="n">RS485 address</td><td class="d">1-247.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8193"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8193<small>doc 308194 / 2001h</small></td><td class="n">RS485 baud rate</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">1 = 9600; 2 = 19200; 3 = 38400; 4 = 57600; 5 = 115200</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8194"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8194<small>doc 308195 / 2002h</small></td><td class="n">RS485 parity</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">1 = None; 2 = Even</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8195"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8195<small>doc 308196 / 2003h</small></td><td class="n">RS485 stop bits</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 1 stop bit; 1 = 2 stop bits</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8196"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8196<small>doc 308197 / 2004h</small></td><td class="n">RS485 reply delay</td><td class="d">0-1000 ms.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>ms</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16387"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16387<small>doc 316388 / 4003h</small></td><td class="n">Reset total counters</td><td class="d">Write 1. Non-MID (X) models only; lifetime hours kept.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc W">Write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16388"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16388<small>doc 316389 / 4004h</small></td><td class="n">Reset partial counters</td><td class="d">Write 1. Clears partial energy and partial hours.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc W">Write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16389"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16389<small>doc 316390 / 4005h</small></td><td class="n">Reset demand</td><td class="d">Write 1. Clears DMD and DMD max.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc W">Write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16390"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16390<small>doc 316391 / 4006h</small></td><td class="n">Reset tariff counters</td><td class="d">Write 1.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc W">Write</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>Word order: section 3.1 says bytes are MSB first inside each word and INT32/UINT32/UINT64 values are sent LSW first, so every 32-bit value here is CDAB.</li><li>Functions 03 and 04 return the same data; configuration rows are listed as holding registers because they are written with 06/10.</li><li>Left out: the INT64 Wh/varh energy block at 0500h-0533h, because the data-format section states word order for INT32, UINT32 and UINT64 but not INT64. The INT32 kWh x0.1 registers carry the same totals.</li><li>Left out: the energy offset registers (4100h-4214h), factory reset (4020h), alarm and pulse-output settings, display/screen-saver pages and the configurable name, to keep the map to what an integrator needs.</li><li>Left out: table 4.2 (00F6h onward), which repeats the same values grouped by phase.</li><li>The identification code is printed at 000Bh (300012), which is also the high word of V L3-L1 (000Ah-000Bh). The document lists both and says the ID table is read one word at a time; read 000Bh on its own to get the model code.</li><li>Rows printed as &#x27;n.a.&#x27; or &#x27;not available, value = 0&#x27; are skipped.</li><li>The revision history inside the PDF ends at Rev. 1.3 dated 3 June 2021 while the cover says 13 February 2024; the cover date is used.</li><li>The frame tables show 1-20 registers per read while the text says up to 125; keep read blocks to 20 registers to be safe.</li><li>Table 4.12 prints Modicon 304357 for both 1104h and 1105h; the physical address 1105h is used for the wrong-connection status (304357 is the Modicon number of 1104h).</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
+Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
+decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)</h2><div class="faq"><details open><summary>What Modbus registers does the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) have?</summary><p>This map lists 109 registers: 92 input registers, 17 holding registers. 16 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each row shows a 6-digit Modicon number for function 04 (3xxxxx; swap the leading 3 for 4 with function 03) and the hex physical address that goes in the frame. Wire address = physical address: 300001 / 0000h is address 0.</p></details><details><summary>What byte order does the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)?</summary><p>Start with IR 0 V L1-N (V L1-N); IR 12 A L1 (A L1); IR 40 W sys (W sys); IR 49 PF sys (PF sys); IR 51 Hz (Frequency); IR 52 kWh (+) TOT (kWh(+) total); IR 78 kWh (-) TOT (kWh(-) total); IR 11 Carlo Gavazzi identification code (Model check).</p></details><details><summary>How do I enable Modbus control of the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)?</summary><p>Only the S1 versions have the RS485 Modbus port. Set address, baud, parity and stop bits from the front menu or registers 2000h-2003h.</p></details><details><summary>Where is the official Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus documentation?</summary><p>The source is EM530/EM540 Modbus Communication Protocol (public version) (Version 1.3), revision 2024-02-13, published free by Carlo Gavazzi at https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf.</p></details></div>
+<h2>More Carlo Gavazzi Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/carlo-gavazzi/em111-em112-et112" data-row><span class="k">Energy meter</span><h3>Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112)</h3><p>Single-phase EM111, EM112 energy meters and ET112 bidirectional meter with the S1 (RS485 Modbus RTU) port, protocol version 2 revision 14.</p><div class="meta">48 registers &middot; 18 writable &middot; RTU</div><span class="sr-only"> Also known as: EM111, EM112, ET112, EM110, EM111-DIN, EM112-DIN, ET112-DIN, EM111DINAV81XS1X, EM112DINAV01XS1X, ET112DINAV01XS1X</span></a></li><li><a class="card" href="/modbus-register-maps/carlo-gavazzi/em210" data-row><span class="k">Energy meter (energy analyzer)</span><h3>Carlo Gavazzi EM210 (AV versions)</h3><p>EM210 three-phase energy analyzers, AV input versions with the RS485 Modbus RTU option, protocol version 4 revision 3 (newest variables need firmware A.5/A.6).</p><div class="meta">64 registers &middot; 15 writable &middot; RTU</div><span class="sr-only"> Also known as: EM210, EM210-72D, EM210 AV</span></a></li><li><a class="card" href="/modbus-register-maps/carlo-gavazzi/em24-din" data-row><span class="k">Energy meter (energy analyzer)</span><h3>Carlo Gavazzi EM24-DIN (PFA, PFB and X models)</h3><p>EM24-DIN three-phase energy analyzers, PFA/PFB (MID) and X models with the RS485 Modbus RTU port (IS option), protocol version 4 revision 0.</p><div class="meta">78 registers &middot; 20 writable &middot; RTU</div><span class="sr-only"> Also known as: EM24, EM24DIN, EM24DINAV93XISPFA, EM24DINAV93XISPFB, EM24DINAV93XISX, EM24DINAV53XISX, EM24DINAV23XISX, EM24 DIN AV9, EM24 DIN AV5</span></a></li><li><a class="card" href="/modbus-register-maps/carlo-gavazzi/em24-din-e1" data-row><span class="k">Energy meter (energy analyzer)</span><h3>Carlo Gavazzi EM24-DIN Ethernet (E1)</h3><p>EM24-DIN energy analyzers with the E1 Ethernet (RJ45) Modbus TCP port, AV2 and AV5 inputs, X/PFA/PFB, protocol version 0 revision 1.3 (FW 1.0).</p><div class="meta">89 registers &middot; 29 writable &middot; TCP</div><span class="sr-only"> Also known as: EM24 E1, EM24_E1, EM24DINAV23XE1X, EM24DINAV23XE1PFA, EM24DINAV23XE1PFB, EM24DINAV53XE1X, EM24DINAV53XE1PFA, EM24DINAV53XE1PFB</span></a></li><li><a class="card" href="/modbus-register-maps/carlo-gavazzi/em24-is-sfa-sfb" data-row><span class="k">Energy meter</span><h3>Carlo Gavazzi EM24-IS (SFA and SFB models)</h3><p>EM24-DIN AV2/AV5 IS SFA and SFB versions (identification codes 1696-1699), protocol revision 2.0.</p><div class="meta">30 registers &middot; 8 writable &middot; RTU</div><span class="sr-only"> Also known as: EM24DINAV23XISSFA, EM24DINAV53XISSFA, EM24DINAV23XISSFB, EM24DINAV53XISSFB, EM24 SFA, EM24 SFB</span></a></li><li><a class="card" href="/modbus-register-maps/carlo-gavazzi/em330-em340-et330-et340" data-row><span class="k">Energy meter</span><h3>Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340)</h3><p>EM330, EM331, EM340, EM341 energy meters and ET330/ET340 bidirectional meters with the S1 (RS485 Modbus RTU) port, protocol version 2 revision 17.</p><div class="meta">83 registers &middot; 23 writable &middot; RTU</div><span class="sr-only"> Also known as: EM330, EM340, ET330, ET340, EM331, EM341, EM330-DIN, EM340-DIN, ET340-DIN, EM340DINAV23XS1X, EM340DINAV23XS1PFA, EM340DINAV23XS1PFB</span></a></li><li><a class="card" href="/modbus-register-maps/carlo-gavazzi/wm15" data-row><span class="k">Power meter (power analyzer)</span><h3>Carlo Gavazzi WM15 power analyzer</h3><p>WM15-96 three-phase panel power analyzers with RS485 Modbus RTU (OS / OSPF / HOS versions), protocol version 1.2.</p><div class="meta">119 registers &middot; 22 writable &middot; RTU</div><span class="sr-only"> Also known as: WM15, WM15-96, WM1596AV53XOSX, WM1596AV53XOSPFB, WM1596AV53HOSX</span></a></li><li><a class="card" href="/modbus-register-maps/carlo-gavazzi/wm20-wm30-wm40" data-row><span class="k">Power meter (power analyzer)</span><h3>Carlo Gavazzi WM20 / WM30 / WM40 power analyzers</h3><p>WM20, WM30 and WM40 modular power analyzers with an RS485 (or Ethernet) Modbus module, protocol internal version rev. 4.0 (2018-03-28); WM30 = firmware letter X, WM40 = Y, WM20 = Z.</p><div class="meta">79 registers &middot; 12 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: WM20, WM30, WM40, WM20-96, WM30-96, WM40-96</span></a></li></ul>
+<p class="updated">Source: <a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf" rel="nofollow noopener" target="_blank">EM530/EM540 Modbus Communication Protocol (public version) &middot; Version 1.3 &middot; rev. 2024-02-13</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:Firstimpactdevelopment@gmail.com">Firstimpactdevelopment@gmail.com</a>.</p>
+  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+  var cp=document.getElementById('copy-em');
+  if(cp){cp.addEventListener('click',function(){
+    var msg=document.getElementById('copy-msg');
+    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
+      return navigator.clipboard.writeText(t);
+    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
+      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
+  });}
+})();
+</script>
+</body>
+</html>

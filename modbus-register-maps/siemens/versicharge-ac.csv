@@ -1,0 +1,55 @@
+﻿# Siemens VersiCharge AC series wallbox (Modbus map) Modbus register map - easymodbus.com - source: https://cache.industry.siemens.com/dl/files/359/109814359/att_1291322/v1/versicharge_wallbox_modBus_map_en-US.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Manufacturer name,"ASCII text, reads Siemens AG.",STRING[10],5,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Production year,"Word 1 of the production date (YYYY), taken from the serial number.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,40008,40008,Serial number,,STRING[10],5,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,40013,40013,MLFB number,Siemens catalog (order) number as ASCII text.,STRING[20],10,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,40023,40023,Platform type,,UINT16,1,,1,0,,Read,1 = Residential; 2 = Commercial; 3 = ERK
+Holding register,"FC03 read / FC06, FC16 write",24,40025,40025,Number of outlets,,UINT16,1,,1,0,,Read,1 = 1 outlet; 2 = 2 outlets
+Holding register,"FC03 read / FC06, FC16 write",25,40026,40026,Type of outlet,"Connector type, derived from the catalog number.",UINT16,1,,1,0,,Read,0 = Left: socket type 2; 1 = Left: cable with plug type 2 (7 m); 2 = Left: socket with shutters type 2 - France; 3 = Left: cable with plug type 1 (7 m); 4 = Left: cable with plug type GB/T (6 m); 5 = Front SAE J1772 (20 ft); 6 = Front SAE J1772 (25 ft); 7 = Right: socket type 2; 8 = Right: cable with plug type 2 (7 m); 9 = Right: cover type 2 with shutter and E-plug; 10 = Right: cable with plug type 1 (7 m); 11 = Right: cover type 2 with shutter and F-plug; 12 = Right: cover type 2 with shutter only; 14 = Left and right: socket type 2; 15 = Left and right: cable with plug type 2 (7 m); 16 = Left and right: cover type 2 - France (7 m); 17 = Left and right: cable with plug type 1 (7 m); 18 = Left and right: cable with plug type GB/T (7 m); 19 = CCS1/J1772 (25 ft); 22 = Blocked
+Holding register,"FC03 read / FC06, FC16 write",26,40027,40027,Delay button status,Charging delay chosen with the delay button.,UINT16,1,,1,0,,Read,0 = No delay; 1 = 2 hours delay; 2 = 4 hours delay; 3 = 6 hours delay; 4 = 8 hours delay
+Holding register,"FC03 read / FC06, FC16 write",27,40028,40028,Utilized connectivity stream,Link the charger was commissioned over; Modbus needs a commissioned charger.,UINT16,1,,1,0,,Read,0 = Not commissioned; 1 = Wi-Fi; 2 = Cellular; 3 = Ethernet
+Holding register,"FC03 read / FC06, FC16 write",28,40029,40029,Rated current,Maximum current of the hardware (6-80 A).,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,40030,40030,Installation current (DIP switch),"Derated current from the amp DIP switch, capped at the rated current.",UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,40031,40031,Meter type,,UINT16,1,,1,0,,Read,0 = No metering; 1 = Basic; 2 = ANSI; 3 = MID; 4 = Integrated meter MID; 5 = Eichrechtskonform metering (ERK); 7 = CMC meter; 9 = Onboard CMC; 25 = Blocked
+Holding register,"FC03 read / FC06, FC16 write",31,40032,40032,A8 firmware version,"Main (A8) processor firmware as ASCII text, e.g. 2.135.",STRING[10],5,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",41,40042,40042,Modbus app version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",79,40080,40080,RFID authorization status,Read or switch RFID card authorization.,UINT16,1,,1,0,,Read/write,0 = RFID authorization disabled; 1 = RFID authorization enabled
+Holding register,"FC03 read / FC06, FC16 write",1599,41600,41600,EVSE state,"J1772 state as two ASCII characters (A1, A2, B1, B2, C1, C2, F).",STRING[2],1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1600,41601,41601,EVSE error code,Active charger fault; 0 = no fault.,INT16,1,,1,0,,Read,0 = No fault; 2 = Line phase A under volt; 3 = Line phase B under volt; 4 = Line phase C under volt; 6 = Line phase A over volt; 7 = Line phase B over volt; 8 = Line phase C over volt; 10 = Line phase A zero volt; 11 = Line phase B zero volt; 12 = Line phase C zero volt; 22 = Load phase A zero volt; 23 = Load phase B zero volt; 24 = Load phase C zero volt; 25 = Bad pilot voltage; 26 = Bad amp switch position; 27 = ADC fault; 28 = Static memory fault; 29 = CCID fault; 30 = CCID self test fault; 35 = EEPROM rw fault; 36 = FRAM rw fault; 37 = Metering chip rw fault; 38 = CCID close ON fault; 40 = Connector lock fault; 41 = Cable max temperature fault; 42 = Welded contact phase A fault; 43 = Welded contact phase B fault; 44 = Welded contact phase C fault; 45 = Diode fault; 46 = Ground monitoring fault; 47 = On-board temperature fault; 48 = Over current fault
+Holding register,"FC03 read / FC06, FC16 write",1601,41602,41602,OCPP state,Connector status from the OCPP backend; reads 1 when no backend is connected.,UINT16,1,,1,0,,Read,1 = Available; 2 = Preparing; 3 = Charging; 4 = Suspended EV; 5 = Suspended EVSE; 6 = Faulted; 7 = Finishing
+Holding register,"FC03 read / FC06, FC16 write",1602,41603,41603,PCBA temperature,Board temperature.,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1633,41634,41634,Charging current limit,"Modbus current limit; reads back in whole amps (0-80), see notes for writing.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1642,41643,41643,Charger phase,,UINT16,1,,1,0,,Read,0 = 1-phase charger; 1 = 3-phase charger
+Holding register,"FC03 read / FC06, FC16 write",1647,41648,41648,Charging current L1,,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1648,41649,41649,Charging current L2,3-phase chargers only.,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1649,41650,41650,Charging current L3,3-phase chargers only.,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1650,41651,41651,Average charging current,,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1651,41652,41652,Charging voltage L1-N,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1652,41653,41653,Charging voltage L2-N,3-phase chargers only.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1653,41654,41654,Charging voltage L3-N,3-phase chargers only.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1654,41655,41655,Charging voltage L1-L2,3-phase chargers; reads 0 on the ERK variant.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1655,41656,41656,Charging voltage L2-L3,3-phase chargers; reads 0 on the ERK variant.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1656,41657,41657,Charging voltage L3-L1,3-phase chargers; reads 0 on the ERK variant.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1660,41661,41661,Fallback current phase sum,Current used when Modbus is lost for the fallback time; not persistent.,UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1661,41662,41662,Fallback time,0 or 60-600 s of Modbus silence before the fallback current applies; not persistent.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1662,41663,41663,Charging power L1,"Active power, phase 1.",UINT16,1,,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",1663,41664,41664,Charging power L2,3-phase chargers only.,UINT16,1,,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",1664,41665,41665,Charging power L3,3-phase chargers only.,UINT16,1,,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",1665,41666,41666,Charging power total,Total active power (use this on 1-phase chargers).,UINT16,1,,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",1666,41667,41667,Power factor L1,,UINT16,1,,0.001,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1667,41668,41668,Power factor L2,3-phase chargers only.,UINT16,1,,0.001,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1668,41669,41669,Power factor L3,3-phase chargers only.,UINT16,1,,0.001,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1669,41670,41670,Average power factor,Average of the three phases on 3-phase chargers.,UINT16,1,,0.001,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1670,41671,41671,Apparent power L1,,UINT16,1,,1,0,VA,Read,
+Holding register,"FC03 read / FC06, FC16 write",1671,41672,41672,Apparent power L2,3-phase chargers only.,UINT16,1,,1,0,VA,Read,
+Holding register,"FC03 read / FC06, FC16 write",1672,41673,41673,Apparent power L3,3-phase chargers only.,UINT16,1,,1,0,VA,Read,
+Holding register,"FC03 read / FC06, FC16 write",1673,41674,41674,Apparent power total,,UINT16,1,,1,0,VA,Read,
+Holding register,"FC03 read / FC06, FC16 write",1674,41675,41675,Reactive power L1,,INT16,1,,1,0,var,Read,
+Holding register,"FC03 read / FC06, FC16 write",1675,41676,41676,Reactive power L2,3-phase chargers only.,INT16,1,,1,0,var,Read,
+Holding register,"FC03 read / FC06, FC16 write",1676,41677,41677,Reactive power L3,3-phase chargers only.,INT16,1,,1,0,var,Read,
+Holding register,"FC03 read / FC06, FC16 write",1677,41678,41678,Reactive power total,,UINT16,1,,1,0,var,Read,
+Holding register,"FC03 read / FC06, FC16 write",1692,41693,41693,Real energy consumed,Total delivered energy counter.,UINT32,2,ABCD,1,0,Wh,Read,
+Holding register,"FC03 read / FC06, FC16 write",1825,41826,41826,RTU slave address,Modbus RTU address 1-247; takes about 20 s to apply.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1826,41827,41827,Reboot charger,,UINT16,1,,1,0,,Write,1 = Soft reset (Modbus application); 2 = Hard reset (A8 board)
+Holding register,"FC03 read / FC06, FC16 write",1878,41879,41879,Reset RTU slave address,Write 1 to restore the default RTU address 2.,UINT16,1,,1,0,,Write,1 = Reset to default address

@@ -1,0 +1,503 @@
+{
+  "manufacturer": "Belimo",
+  "manufacturer_slug": "belimo",
+  "model": "Air/water actuators with Modbus RTU (..24A-MOD)",
+  "model_slug": "air-water-actuators-mod",
+  "short_model": "Belimo -MOD actuators",
+  "aliases": [
+    "LM24A-MOD",
+    "NM24A-MOD",
+    "SM24A-MOD",
+    "GM24A-MOD",
+    "LMC24A-MOD",
+    "NMC24A-MOD",
+    "NR24A-MOD",
+    "LR24A-MOD",
+    "NV24A-MOD",
+    "NVK24A-MOD",
+    "LF24A-MOD",
+    "NF24A-MOD",
+    "NRF24A-MOD",
+    "LRF24A-MOD",
+    "LH24A-MOD",
+    "SH24A-MOD"
+  ],
+  "equipment_type": "Actuator / valve (damper and valve actuator)",
+  "applies_to": "Belimo ..M(C)24A-MOD, ..R24A-MOD, ..V(K)24A-MOD, ..F24A-MOD, ..RF24A-MOD and ..H24A-MOD air/water actuators, per Modbus interface description edition 2026-05 / V3.08.",
+  "summary": "Belimo's standard damper and valve actuators in the -MOD version speak Modbus RTU on RS-485 directly. The map is small and flat: a position setpoint, an override, position feedback and an optional sensor input in registers 1-13, then identity, fault flags, Min/Max limits, the bus watchdog and the setpoint source from register 100 up. Everything is a 16-bit unsigned value.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 38400,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 2,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "Belimo prints each register twice: 'No.' counts from 1 and 'Address' from 0, and the documented value here is the No. column. Register No. 1 (setpoint) is wire address 0. Every value sits in one flat table, so holding-register reads (FC 3) and writes (FC 6/16) reach everything; FC 4 input-register reads of the same addresses also work."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Modbus Interface Description - Air/water actuators (General actuators for air and water)",
+    "doc_number": "Edition 2026-05 / V3.08",
+    "revision_date": "2026-05",
+    "url": "https://www.belimo.com/mam/general-documents/system_integration/Modbus/belimo_Modbus-Register_AirWater_V3_8_en-gb.pdf",
+    "pages": "General notes pp. 3-4; register overview p. 5; register descriptions pp. 6-8"
+  },
+  "notes": [
+    "Belimo states that all register values are unsigned 16-bit integers; a register that does not apply to the device or its settings reads 65535.",
+    "Sensor 1 value (No. 9) changes meaning with Sensor 1 type (No. 108): mV for Active, ohms for the passive types, 0/1 for Switch (scale 1), and 0.1 °C or 0.1 °F for the PT1000/NI1000/NTC10K2 types. It is listed raw (scale 1); multiply by 0.1 yourself for the temperature types.",
+    "Writable registers above No. 100 are stored in non-volatile memory; Belimo says not to write them on a regular basis.",
+    "No. 190/191 exist only on electronic fail-safe actuators; other types return 65535.",
+    "Registers 7, 8, 10-12 and 111-118 are unused in this actuator range and are not listed.",
+    "Read Discrete Inputs (FC 2) can also read the bits of No. 105: start bit address = 104 x 16 = 1664."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "1",
+      "name": "Setpoint",
+      "description": "Position setpoint 0-100 %, scaled between Min (No. 106) and Max (No. 107).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "2",
+      "name": "Override control",
+      "description": "Forces a fixed position instead of the setpoint.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Open",
+        "2": "Close",
+        "3": "Min",
+        "4": "Mid",
+        "5": "Max",
+        "6": "Fast open",
+        "7": "Fast close"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "3",
+      "name": "Command",
+      "description": "Starts a service function; reads back 0 once accepted. 4 clears No. 105.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Adaption",
+        "2": "Test",
+        "3": "Sync",
+        "4": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "4",
+      "name": "Actuator type",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Actuator not connected",
+        "1": "Air / water",
+        "2": "VAV / EPIV",
+        "3": "Fire",
+        "4": "Energy Valve",
+        "5": "6-way EPIV"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "5",
+      "name": "Relative position",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "6",
+      "name": "Absolute position",
+      "description": "Degrees for rotary actuators, mm for linear actuators.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "° / mm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "9",
+      "name": "Sensor 1 value",
+      "description": "Raw reading of sensor input 1; meaning and scale follow No. 108 (see notes).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 12,
+      "documented": "13",
+      "name": "Analog setpoint",
+      "description": "Setpoint seen on the 0-10 V input when Setpoint source = Analog.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 99,
+      "documented": "100",
+      "name": "Bus termination",
+      "description": "Shows whether the built-in 120 ohm terminator is on (set with the tool).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 100,
+      "documented": "101",
+      "name": "Series number 1st part",
+      "description": "First block of the serial number on the housing label.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 101,
+      "documented": "102",
+      "name": "Series number 2nd part",
+      "description": "Second block of the serial number.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 102,
+      "documented": "103",
+      "name": "Series number 4th part",
+      "description": "Fourth block of the serial number (the third is not exposed).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 103,
+      "documented": "104",
+      "name": "Firmware version",
+      "description": "Bus module firmware; 302 means version 3.02.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 104,
+      "documented": "105",
+      "name": "Malfunction and service information",
+      "description": "Bit-coded fault and status flags; clear with Command = 4.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "1": "Mechanical travel increased (moved outside adapted range)",
+        "2": "Actuator cannot move (overload / blocked)",
+        "8": "Internal activity (test run, adaption)",
+        "9": "Gear train disengaged (manual override pressed)",
+        "10": "Bus watchdog triggered"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 105,
+      "documented": "106",
+      "name": "Min",
+      "description": "Lower position limit; must stay at least 20 % below Max. Default 0.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 106,
+      "documented": "107",
+      "name": "Max",
+      "description": "Upper position limit; must stay at least 20 % above Min. Default 100 %.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 107,
+      "documented": "108",
+      "name": "Sensor 1 type",
+      "description": "What is wired to sensor input 1; restart may be needed after a change.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Active",
+        "2": "Passive_1K",
+        "3": "Passive_20K",
+        "4": "Switch",
+        "5": "PT1000_C",
+        "6": "NI1000_C",
+        "7": "NTC10K2_C",
+        "8": "PT1000_F",
+        "9": "NI1000_F",
+        "10": "NTC10K2_F"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 108,
+      "documented": "109",
+      "name": "Bus fail position",
+      "description": "Where the actuator goes when the bus watchdog expires.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None / last setpoint",
+        "1": "Fast close",
+        "2": "Fast open",
+        "3": "Mid position (parametrised)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 109,
+      "documented": "110",
+      "name": "Timeout for bus watchdog",
+      "description": "0 disables; defaults to 120 s once a bus fail position is set.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 118,
+      "documented": "119",
+      "name": "Setpoint source",
+      "description": "Bus = No. 1 drives the actuator; Analog = 0-10 V on wire 3. Default Bus.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Analog",
+        "1": "Bus"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 189,
+      "documented": "190",
+      "name": "Fail-safe bridging time",
+      "description": "Delay before the fail-safe move after power loss (electronic fail-safe types only).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 190,
+      "documented": "191",
+      "name": "Fail-safe position",
+      "description": "Position taken on power loss (electronic fail-safe types; knob on 'Tool').",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Wire to the RS-485 terminals, set address and frame with the Belimo Assistant app (or the Address button quick-addressing), then write the position in 0.01 % to register 1 (wire address 0) and poll registers 5 and 105. Leave Setpoint source (No. 119) at Bus, its default.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Position setpoint, 0.01 %"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Override (open/close/min/mid/max)"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Relative position feedback"
+      },
+      {
+        "table": "holding_register",
+        "address": 104,
+        "why": "Fault and service flags"
+      },
+      {
+        "table": "holding_register",
+        "address": 118,
+        "why": "Setpoint source must be Bus"
+      },
+      {
+        "table": "holding_register",
+        "address": 108,
+        "why": "Bus fail position"
+      },
+      {
+        "table": "holding_register",
+        "address": 109,
+        "why": "Bus watchdog timeout"
+      }
+    ],
+    "enable": "Modbus is active out of the box on -MOD actuators; Setpoint source (No. 119) defaults to Bus. Address (1-247), baud rate and frame are set with the Belimo Assistant 2 app or tool, and the address can also be set with the Address and Adaption buttons (see the product datasheet).",
+    "watchdog": "Not monitored by default. Set Bus fail position (No. 109) and Timeout for bus watchdog (No. 110, 0-3600 s; 0 = off, 120 s default once a fail position is set). If neither No. 1 nor No. 2 is written within the timeout, the actuator goes to the fail position and bit 10 of No. 105 is set. In hybrid mode (Setpoint source = Analog) bus monitoring is not active.",
+    "quirks": [
+      "The No. column is 1-based; subtract 1 for the wire address (setpoint = address 0).",
+      "Min and Max must stay at least 20 % apart (Min <= Max - 20 %, Max >= Min + 20 %).",
+      "Registers that a device or its settings don't support read 65535."
+    ],
+    "setup": [
+      "Factory frame is 38400 baud, 8 data bits, no parity, 2 stop bits (1-8-N-2), address 1.",
+      "Supported frames: 1-8-N-2, 1-8-N-1, 1-8-E-1, 1-8-O-1; baud 9600-115200.",
+      "Up to 32 nodes per segment without a repeater; terminate the bus ends with 120 ohm."
+    ],
+    "gotchas": [
+      "Don't write the persistent registers (No. 101 and up) on every poll cycle - they live in non-volatile memory.",
+      "Fast open / Fast close overrides add mechanical wear; Belimo suggests keeping them for events like frost protection."
+    ]
+  },
+  "verified": {
+    "date": "2026-10-28",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

@@ -1,0 +1,53 @@
+﻿# MENNEKES AMTRON 4You 300 / Compact 2.0s / Start 2.0s (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.mennekes.de/fileadmin/MEN-Deutschland/emobility/01_documents/04_installer/Modbus_RTU_Specification_AMTRON_4You300_Compact_2.0s_Start_2.0s-v2.5.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0x0000,40001,Modbus version,"Register layout version, e.g. 0x0103 = v01.03.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,0x0001,40002,Firmware version,16 ASCII characters.,STRING[16],8,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",19,0x0013,40020,Serial number,16 ASCII characters (layout v01.02+).,STRING[16],8,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,0x001B,40028,MENNEKES article number,Article number from the type plate (layout v01.03+).,STRING[16],8,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",256,0x0100,40257,EVSE state,,UINT16,1,,1,0,,Read,"0 = Not initialized; 1 = Idle (no EV connected); 2 = EV connected (no current signalled); 3 = Preconditions valid, not charging yet; 4 = Ready to charge (current signalled); 5 = Charging; 6 = Error; 7 = Service mode"
+Holding register,"FC03 read / FC06, FC16 write",257,0x0101,40258,Authorization status,RFID / energy-manager release state.,UINT16,1,,1,0,,Read,0 = Not used (idle); 1 = Authorized (charging released); 2 = Not authorized
+Holding register,"FC03 read / FC06, FC16 write",258,0x0102,40259,Downgrade,State of the external downgrade input.,UINT16,1,,1,0,,Read,0 = Not relevant (no EV); 1 = Not downgraded; 2 = Downgraded
+Holding register,"FC03 read / FC06, FC16 write",259,0x0103,40260,Phase rotation,"Configured phase order, used for load management.",UINT16,1,,1,0,,Read,0 = L1-L2-L3; 1 = L2-L3-L1; 2 = L3-L1-L2
+Holding register,"FC03 read / FC06, FC16 write",264,0x0108,40265,CP state,Control-pilot state between wallbox and EV (layout v01.02+).,UINT16,1,,1,0,,Read,"0 = Init; 10 = A1 (no EV); 11 = B1 (EV connected, not charging / paused); 12 = C1 (EV ready to charge); 13 = D1; 14 = E (error); 15 = F (error); 26 = A2 (current >= 6 A offered, EV disconnected); 27 = B2 (ready, current >= 6 A offered); 28 = C2 (charging, current >= 6 A offered); 29 = D2"
+Holding register,"FC03 read / FC06, FC16 write",276,0x0114 - 0x0115,40277,Signaled current,Current offered to the EV on the CP line (layout v01.03+).,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",768,0x0300 - 0x0301,40769,Downgrade current,Current limit applied while the downgrade input is active.,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",770,0x0302 - 0x0303,40771,Charging current energy manager,"EMS current limit: 0 = no limit, 0.01-5.99 = pause, 6+ = limit.",FLOAT32,2,ABCD,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",772,0x0304 - 0x0305,40773,Maximal current house (DIP),Installation current set on DIP switches 6-8 of bank S2.,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",774,0x0306 - 0x0307,40775,Maximal EVSE current,Maximum wallbox current set at installation.,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",778,0x030A,40779,Phase switching mode,Phase use of the internal solar algorithm.,UINT16,1,,1,0,,Read,0 = Solar only 1 phase; 1 = Solar only 3 phases; 2 = Solar dynamic 1 or 3 phases
+Holding register,"FC03 read / FC06, FC16 write",780,0x030C,40781,Phase options HW,Whether the hardware can switch between 1 and 3 phases.,UINT16,1,,1,0,,Read,0 = Only 1 phase; 1 = Only 3 phases; 2 = 1 or 3 phases (phase switch possible)
+Holding register,"FC03 read / FC06, FC16 write",781,0x030D,40782,Cable lock setting,Permanent cable lock.,UINT16,1,,1,0,,Read,0 = Not enabled or unavailable; 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",782,0x030E,40783,Energy manager fallback current,Behaviour if the EMS heartbeat stops during a session; 6-32 = fallback amps.,UINT16,1,,1,0,,Read,"0 = Fallback disabled, keep last EMS values; 1 = Fallback enabled, pause charging"
+Holding register,"FC03 read / FC06, FC16 write",783,0x030F,40784,Grid imbalance,,UINT16,1,,1,0,,Read,0 = Disabled; 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",784,0x0310,40785,Grid imbalance threshold,,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",785,0x0311,40786,Grid phases connected,,UINT16,1,,1,0,,Read,"0 = L1 connected; 2 = L1, L2, L3 connected"
+Holding register,"FC03 read / FC06, FC16 write",786,0x0312,40787,Authorization,Whether authorization is required.,UINT16,1,,1,0,,Read,0 = Disabled; 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",787,0x0313,40788,Sunshine+ minimum current,Minimum current in solar-supported (Sunshine+) mode.,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",788,0x0314,40789,Phase switching pause,Pause between a 1-to-3 or 3-to-1 phase switch.,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",1280,0x0500 - 0x0501,41281,Current L1,RMS output current.,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1282,0x0502 - 0x0503,41283,Current L2,RMS output current.,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1284,0x0504 - 0x0505,41285,Current L3,RMS output current.,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1286,0x0506 - 0x0507,41287,Voltage L1,RMS output voltage.,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1288,0x0508 - 0x0509,41289,Voltage L2,RMS output voltage.,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1290,0x050A - 0x050B,41291,Voltage L3,RMS output voltage.,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1292,0x050C - 0x050D,41293,Power L1,,FLOAT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",1294,0x050E - 0x050F,41295,Power L2,,FLOAT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",1296,0x0510 - 0x0511,41297,Power L3,,FLOAT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",1298,0x0512 - 0x0513,41299,Power overall,Total power on all phases.,FLOAT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",2304,0x0900 - 0x0901,42305,Temperature,Temperature inside the wallbox.,FLOAT32,2,ABCD,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2816,0x0B00 - 0x0B01,42817,Max current session,"Highest current allowed for this session by static limits (cable, installation).",FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",2818,0x0B02 - 0x0B03,42819,Charged energy session,Energy delivered in the current session.,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",2820,0x0B04 - 0x0B05,42821,Duration session,Length of the current session.,UINT32,2,ABCD,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",2822,0x0B06,42823,Detected EV phases,Most phases the EV drew during this session.,UINT16,1,,1,0,,Read,0 = Not initialized; 1 = 1 phase; 2 = 2 phases; 3 = 3 phases
+Holding register,"FC03 read / FC06, FC16 write",3328,0x0D00,43329,Heartbeat energy manager,EMS must write 0x55AA (21930) at least every 10 s.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",3330,0x0D02,43331,Cable lock status,,UINT16,1,,1,0,,Read,0 = Unknown; 1 = Cable unlocked; 2 = Cable locked; 3 = Fixed cable
+Holding register,"FC03 read / FC06, FC16 write",3331,0x0D03,43332,Solar charging mode,Mode shown on the solar LEDs; also changed by the wallbox button.,UINT16,1,,1,0,,Read/write,0 = Solar mode not active; 1 = Fast charging (standard); 2 = Solar charging (Sunshine); 3 = Solar supported charging (Sunshine+)
+Holding register,"FC03 read / FC06, FC16 write",3332,0x0D04,43333,Requested phases,Ask for 1-phase charging on phase-switch capable hardware.,UINT16,1,,1,0,,Read/write,0 = Charge on all available phases; 1 = Force 1-phase charging
+Holding register,"FC03 read / FC06, FC16 write",3333,0x0D05,43334,Charging release energy manager,EMS release; 0 opens the relays.,UINT16,1,,1,0,,Read/write,0 = Charging not allowed; 1 = Charging allowed
+Holding register,"FC03 read / FC06, FC16 write",3334,0x0D06,43335,Lock EVSE,Block charging at the wallbox.,UINT16,1,,1,0,,Read/write,0 = Not locked; 1 = Locked
+Holding register,"FC03 read / FC06, FC16 write",3353,0x0D19,43354,System restart,"Write 0xBB (187) once, only while idle (layout v01.03+).",UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",3584,0x0E00,43585,Active error code,0 = no error.,UINT16,1,,1,0,,Read,0 = No error; 200 = Energy manager not available (no heartbeat); 2011 = EV overcurrent; 2323 = Connected phases mismatch
+Holding register,"FC03 read / FC06, FC16 write",3585,0x0E01,43586,Master lost fallback state,,UINT16,1,,1,0,,Read,0 = Not active; 1 = Active (energy manager unavailable)
+Holding register,"FC03 read / FC06, FC16 write",3586,0x0E02,43587,Switched phases,Phases that will be used once the relays close.,UINT16,1,,1,0,,Read,0 = All available phases; 1 = 1 phase only
+Holding register,"FC03 read / FC06, FC16 write",4096,0x1000 - 0x1001,44097,Charged energy total,Lifetime energy on the AC port; not for billing.,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",4098,0x1002 - 0x1003,44099,Charging sessions total,,UINT32,2,ABCD,1,0,,Read,

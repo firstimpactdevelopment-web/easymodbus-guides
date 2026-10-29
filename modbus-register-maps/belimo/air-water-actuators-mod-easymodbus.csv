@@ -1,0 +1,23 @@
+Device Name,Host,Port,Unit ID,Transport,Reading Name,Table,Wire Address,Register Number,Modicon,Data Type,Word Order,Bit,Multiplier,Offset Value,Units,Value,Status,Notes
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Setpoint,Holding Register,0,1,40001,UINT16,,,0.01,0,%,,,"Position setpoint 0-100 %, scaled between Min (No. 106) and Max (No. 107)."
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Override control,Holding Register,1,2,40002,UINT16,,,1,0,,,,Forces a fixed position instead of the setpoint. | 0 = None; 1 = Open; 2 = Close; 3 = Min; 4 = Mid; 5 = Max; 6 = Fast open; 7 = Fast close
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Command,Holding Register,2,3,40003,UINT16,,,1,0,,,,Starts a service function; reads back 0 once accepted. 4 clears No. 105. | 0 = None; 1 = Adaption; 2 = Test; 3 = Sync; 4 = Reset
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Actuator type,Holding Register,3,4,40004,UINT16,,,1,0,,,,0 = Actuator not connected; 1 = Air / water; 2 = VAV / EPIV; 3 = Fire; 4 = Energy Valve; 5 = 6-way EPIV
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Relative position,Holding Register,4,5,40005,UINT16,,,0.01,0,%,,,
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Absolute position,Holding Register,5,6,40006,UINT16,,,1,0,° / mm,,,"Degrees for rotary actuators, mm for linear actuators."
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Sensor 1 value,Holding Register,8,9,40009,UINT16,,,1,0,,,,Raw reading of sensor input 1; meaning and scale follow No. 108 (see notes).
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Analog setpoint,Holding Register,12,13,40013,UINT16,,,0.01,0,%,,,Setpoint seen on the 0-10 V input when Setpoint source = Analog.
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Bus termination,Holding Register,99,100,40100,UINT16,,,1,0,,,,Shows whether the built-in 120 ohm terminator is on (set with the tool). | 0 = Inactive; 1 = Active
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Series number 1st part,Holding Register,100,101,40101,UINT16,,,1,0,,,,First block of the serial number on the housing label.
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Series number 2nd part,Holding Register,101,102,40102,UINT16,,,1,0,,,,Second block of the serial number.
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Series number 4th part,Holding Register,102,103,40103,UINT16,,,1,0,,,,Fourth block of the serial number (the third is not exposed).
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Firmware version,Holding Register,103,104,40104,UINT16,,,1,0,,,,Bus module firmware; 302 means version 3.02.
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Malfunction and service information,Holding Register,104,105,40105,UINT16,,,1,0,,,,"Bit-coded fault and status flags; clear with Command = 4. | bit 1 = Mechanical travel increased (moved outside adapted range); bit 2 = Actuator cannot move (overload / blocked); bit 8 = Internal activity (test run, adaption); bit 9 = Gear train disengaged (manual override pressed); bit 10 = Bus watchdog triggered"
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Min,Holding Register,105,106,40106,UINT16,,,0.01,0,%,,,Lower position limit; must stay at least 20 % below Max. Default 0.
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Max,Holding Register,106,107,40107,UINT16,,,0.01,0,%,,,Upper position limit; must stay at least 20 % above Min. Default 100 %.
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Sensor 1 type,Holding Register,107,108,40108,UINT16,,,1,0,,,,What is wired to sensor input 1; restart may be needed after a change. | 0 = None; 1 = Active; 2 = Passive_1K; 3 = Passive_20K; 4 = Switch; 5 = PT1000_C; 6 = NI1000_C; 7 = NTC10K2_C; 8 = PT1000_F; 9 = NI1000_F; 10 = NTC10K2_F
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Bus fail position,Holding Register,108,109,40109,UINT16,,,1,0,,,,Where the actuator goes when the bus watchdog expires. | 0 = None / last setpoint; 1 = Fast close; 2 = Fast open; 3 = Mid position (parametrised)
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Timeout for bus watchdog,Holding Register,109,110,40110,UINT16,,,1,0,s,,,0 disables; defaults to 120 s once a bus fail position is set.
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Setpoint source,Holding Register,118,119,40119,UINT16,,,1,0,,,,Bus = No. 1 drives the actuator; Analog = 0-10 V on wire 3. Default Bus. | 0 = Analog; 1 = Bus
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Fail-safe bridging time,Holding Register,189,190,40190,UINT16,,,1,0,s,,,Delay before the fail-safe move after power loss (electronic fail-safe types only).
+Belimo -MOD actuators,,502,1,RTU_OVER_TCP,Fail-safe position,Holding Register,190,191,40191,UINT16,,,0.01,0,%,,,Position taken on power loss (electronic fail-safe types; knob on 'Tool').

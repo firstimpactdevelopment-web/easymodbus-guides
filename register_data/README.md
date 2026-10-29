@@ -107,5 +107,5 @@ Only state what the source (or another free official document, cited in `notes`)
 ## Equipment types (equipment_type should contain one of these words)
 
 Power meter / Energy meter, Generator controller, Variable frequency drive, Solar inverter,
-Battery inverter, Boiler, Pump, Chiller, Heat pump, Air handler, Rooftop unit, VRF / split AC
+Battery inverter, EV charger, Boiler, Pump, Chiller, Heat pump, Air handler, Rooftop unit, VRF / split AC
 gateway, Thermostat, Actuator / valve, Sensor, Transfer switch, UPS.

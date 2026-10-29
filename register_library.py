@@ -37,8 +37,8 @@ BASE_URL = "https://easymodbus.com"
 ROOT = "modbus-register-maps"
 
 # Bump when the library's data or pages change meaningfully.
-UPDATED = "2026-10-16"
-UPDATED_HUMAN = "16 October 2026"
+UPDATED = "2026-10-28"
+UPDATED_HUMAN = "28 October 2026"
 
 # Per-page <lastmod> for the sitemap, filled in by build(): each model page is dated by its
 # own verification, collection pages by their newest model.
@@ -430,6 +430,7 @@ ORG = {"@type": "Organization", "@id": BASE_URL + "/#org", "name": "Easy Modbus"
 CATEGORIES = [
     ("generator-controllers", "Generator controllers", "generator controller", ["generator", "genset", "transfer switch"]),
     ("solar-inverters", "Solar & battery inverters", "inverter", ["inverter", "pv ", "solar", "battery", "energy storage"]),
+    ("ev-chargers", "EV chargers", "EV charger", ["ev charger", "charging station", "wallbox"]),
     ("vfds", "Variable frequency drives", "drive", ["frequency drive", "vfd", "drive"]),
     ("power-meters", "Power & energy meters", "meter", ["meter", "power analy", "energy analy", "network analy"]),
     ("hvac-gateways", "AC & VRF gateways", "AC gateway", ["gateway", "vrf", "split"]),

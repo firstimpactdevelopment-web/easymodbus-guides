@@ -1,0 +1,53 @@
+Device Name,Host,Port,Unit ID,Transport,Reading Name,Table,Wire Address,Register Number,Modicon,Data Type,Word Order,Bit,Multiplier,Offset Value,Units,Value,Status,Notes
+ABB ACS480,,502,1,RTU_OVER_TCP,Control word (EFB CW),Holding Register,0,1,40001,UINT16,,,1,0,,,,"ABB Drives profile bits shown; DCU profile layout differs (58.25). | bit 0 = OFF1_CONTROL: 1 = ready to operate, 0 = ramp stop (OFF1); bit 1 = OFF2_CONTROL: 0 = emergency OFF, coast to stop; bit 2 = OFF3_CONTROL: 0 = emergency stop (OFF3 ramp); bit 3 = INHIBIT_OPERATION: 1 = operation enabled (run), 0 = inhibit; bit 4 = RAMP_OUT_ZERO: 0 = force ramp output to zero; bit 5 = RAMP_HOLD: 0 = hold ramp; bit 6 = RAMP_IN_ZERO: 0 = force ramp input to zero; bit 7 = RESET: 0->1 = fault reset; bit 8 = JOGGING_1: 1 = run at jogging speed 1; bit 9 = JOGGING_2: 1 = run at jogging speed 2; bit 10 = REMOTE_CMD: 1 = fieldbus control (manual text truncated to 'Fieldbus control d.'); 0 = last CW/reference kept unless both are 0; bit 11 = EXT_CTRL_LOC: 1 = select EXT2, 0 = select EXT1; bit 12 = USER_0; bit 13 = USER_1; bit 14 = USER_2; bit 15 = USER_3"
+ABB ACS480,,502,1,RTU_OVER_TCP,Reference 1 (EFB Ref1),Holding Register,1,2,40002,INT16,,,1,0,,,,"Signed; 20000 = value of 46.01/46.02 scaling, type per 58.26."
+ABB ACS480,,502,1,RTU_OVER_TCP,Reference 2 (EFB Ref2),Holding Register,2,3,40003,INT16,,,1,0,,,,Signed second reference; type and scaling per 58.27.
+ABB ACS480,,502,1,RTU_OVER_TCP,Status word (EFB SW),Holding Register,3,4,40004,UINT16,,,1,0,,,,"ABB Drives profile bits shown; DCU profile layout differs (58.25). | bit 0 = RDY_ON: ready to switch on; bit 1 = RDY_RUN: ready to operate (0 = OFF1 active); bit 2 = RDY_REF: operation enabled; bit 3 = TRIPPED: fault; bit 4 = OFF_2_STATUS: 1 = OFF2 inactive; bit 5 = OFF_3_STATUS: 1 = OFF3 inactive; bit 6 = SWC_ON_INHIB: switch-on inhibited; bit 7 = ALARM: warning active; bit 8 = AT_SETPOINT: actual value at reference; bit 9 = REMOTE: 1 = remote (EXT1/EXT2), 0 = local; bit 10 = ABOVE_LIMIT: speed/frequency at or above supervision limit; bit 11 = USER_0; bit 12 = USER_1; bit 13 = USER_2; bit 14 = USER_3; bit 15 = Reserved"
+ABB ACS480,,502,1,RTU_OVER_TCP,Actual value 1 (EFB Act1),Holding Register,4,5,40005,INT16,,,1,0,,,,"Signed; 20000 = value of 46.01/46.02, type per 58.28."
+ABB ACS480,,502,1,RTU_OVER_TCP,Actual value 2 (EFB Act2),Holding Register,5,6,40006,INT16,,,1,0,,,,Signed second actual value; type per 58.29 (default transparent).
+ABB ACS480,,502,1,RTU_OVER_TCP,Reset error registers,Holding Register,89,90,40090,UINT16,,,1,0,,,,Write 1 to clear error registers 400091-400095. | 0 = Do nothing; 1 = Reset
+ABB ACS480,,502,1,RTU_OVER_TCP,Error function code,Holding Register,90,91,40091,UINT16,,,1,0,,,,Function code of the last failed query.
+ABB ACS480,,502,1,RTU_OVER_TCP,Error code,Holding Register,91,92,40092,UINT16,,,1,0,,,,Detail code when exception 04h was returned. | 0 = No error; 2 = Low/High limit exceeded; 3 = Faulty index (array parameter); 5 = Incorrect data type; 101 = General error (65h)
+ABB ACS480,,502,1,RTU_OVER_TCP,Failed register,Holding Register,92,93,40093,UINT16,,,1,0,,,,Last register that failed to read or write.
+ABB ACS480,,502,1,RTU_OVER_TCP,Last register written successfully,Holding Register,93,94,40094,UINT16,,,1,0,,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,Last register read successfully,Holding Register,94,95,40095,UINT16,,,1,0,,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,01.03 Motor speed %,Holding Register,102,103,40103,INT16,,,0.1,0,%,,,Motor speed in percent of synchronous speed.
+ABB ACS480,,502,1,RTU_OVER_TCP,01.08 Motor current % of motor nom,Holding Register,107,108,40108,UINT16,,,1,0,%,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,01.09 Motor current % of drive nom,Holding Register,108,109,40109,UINT16,,,1,0,%,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,01.11 DC voltage,Holding Register,110,111,40111,UINT16,,,0.1,0,V,,,Measured DC link voltage.
+ABB ACS480,,502,1,RTU_OVER_TCP,01.13 Output voltage,Holding Register,112,113,40113,UINT16,,,1,0,V,,,Calculated motor voltage (AC).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.15 Output power % of motor nom,Holding Register,114,115,40115,INT16,,,0.1,0,%,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,01.18 Inverter GWh counter,Holding Register,117,118,40118,UINT16,,,1,0,GWh,,,Whole GWh through the drive; combine with 01.19 and 01.20.
+ABB ACS480,,502,1,RTU_OVER_TCP,01.19 Inverter MWh counter,Holding Register,118,119,40119,UINT16,,,1,0,MWh,,,"Whole MWh, rolls over into 01.18."
+ABB ACS480,,502,1,RTU_OVER_TCP,01.20 Inverter kWh counter,Holding Register,119,120,40120,UINT16,,,0.1,0,kWh,,,"kWh part (0-1000), rolls over into 01.19."
+ABB ACS480,,502,1,RTU_OVER_TCP,01.24 Flux actual %,Holding Register,123,124,40124,UINT16,,,1,0,%,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,01.62 Abs motor speed %,Holding Register,161,162,40162,UINT16,,,0.1,0,%,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,01.65 Abs output power,Holding Register,164,165,40165,UINT16,,,1,0,kW,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,01.66 Abs output power % motor nom,Holding Register,165,166,40166,UINT16,,,1,0,%,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,04.01 Tripping fault,Holding Register,400,401,40401,UINT16,,,1,0,,,,Hex code of the fault that caused the trip; 0 = none.
+ABB ACS480,,502,1,RTU_OVER_TCP,04.02 Active fault 2,Holding Register,401,402,40402,UINT16,,,1,0,,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,04.03 Active fault 3,Holding Register,402,403,40403,UINT16,,,1,0,,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,04.06 Active warning 1,Holding Register,405,406,40406,UINT16,,,1,0,,,,Hex code of the first active warning.
+ABB ACS480,,502,1,RTU_OVER_TCP,04.07 Active warning 2,Holding Register,406,407,40407,UINT16,,,1,0,,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,04.08 Active warning 3,Holding Register,407,408,40408,UINT16,,,1,0,,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,04.11 Latest fault,Holding Register,410,411,40411,UINT16,,,1,0,,,,Most recent stored (non-active) fault code.
+ABB ACS480,,502,1,RTU_OVER_TCP,04.12 2nd latest fault,Holding Register,411,412,40412,UINT16,,,1,0,,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,04.13 3rd latest fault,Holding Register,412,413,40413,UINT16,,,1,0,,,,
+ABB ACS480,,502,1,RTU_OVER_TCP,04.16 Latest warning,Holding Register,415,416,40416,UINT16,,,1,0,,,,Most recent stored warning code.
+ABB ACS480,,502,1,RTU_OVER_TCP,05.01 On-time counter,Holding Register,500,501,40501,UINT16,,,1,0,days,,,Days the drive has been powered.
+ABB ACS480,,502,1,RTU_OVER_TCP,05.02 Run-time counter,Holding Register,501,502,40502,UINT16,,,1,0,days,,,Days the inverter has been modulating.
+ABB ACS480,,502,1,RTU_OVER_TCP,05.04 Fan on-time counter,Holding Register,503,504,40504,UINT16,,,1,0,days,,,Cooling fan running time.
+ABB ACS480,,502,1,RTU_OVER_TCP,05.11 Inverter temperature,Holding Register,510,511,40511,INT16,,,1,0,%,,,Drive temperature as percent of fault limit.
+ABB ACS480,,502,1,RTU_OVER_TCP,58.14 Communication loss action,Holding Register,5813,5814,45814,UINT16,,,1,0,,,,Reaction to EFB communication loss. | 0 = No action; 1 = Fault; 2 = Last speed; 3 = Speed ref safe; 4 = Fault always; 5 = Warning
+ABB ACS480,,502,1,RTU_OVER_TCP,58.15 Communication loss mode,Holding Register,5814,5815,45815,UINT16,,,1,0,,,,Which messages reset the comm-loss timer (defaults disagree in the manual). | 1 = Any message; 2 = Cw / Ref1 / Ref2
+ABB ACS480,,502,1,RTU_OVER_TCP,01.01 Motor speed used (32-bit),Holding Register,20201,20202,420202,INT32,CDAB,,0.01,0,rpm,,,Estimated motor speed; CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.06 Output frequency (32-bit),Holding Register,20211,20212,420212,INT32,CDAB,,0.01,0,Hz,,,Estimated output frequency; CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.07 Motor current (32-bit),Holding Register,20213,20214,420214,UINT32,CDAB,,0.01,0,A,,,Measured motor current; CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.10 Motor torque (32-bit),Holding Register,20219,20220,420220,INT32,CDAB,,0.1,0,%,,,Percent of nominal motor torque; CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.11 DC voltage (32-bit),Holding Register,20221,20222,420222,UINT32,CDAB,,0.01,0,V,,,CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.14 Output power (32-bit),Holding Register,20227,20228,420228,INT32,CDAB,,0.01,0,kW,,,Unit follows 96.16 Unit selection (kW or hp); CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.54 Cumulative inverter energy (32-bit),Holding Register,20307,20308,420308,INT32,CDAB,,1,0,kWh,,,Signed total energy through the drive; CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.72 U-phase RMS current (32-bit),Holding Register,20343,20344,420344,UINT32,CDAB,,0.01,0,A,,,CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.73 V-phase RMS current (32-bit),Holding Register,20345,20346,420346,UINT32,CDAB,,0.01,0,A,,,CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,01.74 W-phase RMS current (32-bit),Holding Register,20347,20348,420348,UINT32,CDAB,,0.01,0,A,,,CDAB assumes 58.34 = LO-HI (default).
+ABB ACS480,,502,1,RTU_OVER_TCP,05.03 Hours run (32-bit),Holding Register,21005,21006,421006,UINT32,CDAB,,0.1,0,h,,,Motor run time in hours; CDAB assumes 58.34 = LO-HI (default).
