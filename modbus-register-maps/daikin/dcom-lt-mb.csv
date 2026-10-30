@@ -1,0 +1,34 @@
+﻿# Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps Modbus register map - easymodbus.com - source: https://www.daikin.eu/content/dam/document-library/installation-manuals/ctrl/bms/dcom-lt-mb/DCOM-LT-MB_reference%20and%20installation%20manual_English.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,21,21,30022,Unit error,,INT16,1,,1,0,,Read,0 = No error; 1 = Fault; 2 = Warning
+Input register,FC04 read,22,22,30023,Unit error code,"Two ASCII characters, high byte first; 11565 = ""--"" (no error).",UINT16,1,,1,0,,Read,11565 = -- (no error); 21816 = U8 (DCOM timed out waiting for master)
+Input register,FC04 read,23,23,30024,Unit error sub code,0-99 while an error exists; 32766 when there is none.,INT16,1,,1,0,,Read,
+Input register,FC04 read,30,30,30031,Circulation pump running,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,31,31,30032,Compressor run,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,32,32,30033,Booster heater run,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,33,33,30034,Disinfection operation,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,35,35,30036,Defrost/startup,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,36,36,30037,Hot start,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,37,37,30038,3-way valve,Which circuit the valve currently serves.,INT16,1,,1,0,,Read,0 = Space heating; 1 = DHW
+Input register,FC04 read,38,38,30039,Operation mode (actual),,INT16,1,,1,0,,Read,1 = Heating; 2 = Cooling
+Input register,FC04 read,40,40,30041,Leaving water temperature pre PHE,Before the plate heat exchanger.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,41,41,30042,Leaving water temperature pre BUH,Before the backup heater.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,42,42,30043,Return water temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,43,43,30044,Domestic hot water temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,44,44,30045,Outside air temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,45,45,30046,Liquid refrigerant temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,49,49,30050,Flow rate,Water flow; raw value is litres per minute x 100.,INT16,1,,0.01,0,l/min,Read,
+Input register,FC04 read,50,50,30051,Remocon room temperature,Room temperature measured by the user interface.,INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,1,40002,Leaving water main heating setpoint,"Whole °C, 25-55 range; out-of-range writes are clamped.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,2,40003,Leaving water main cooling setpoint,"Whole °C, 5-22 range; out-of-range writes are clamped.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,3,40004,Operation mode,,INT16,1,,1,0,,Read/write,0 = Auto; 1 = Heating; 2 = Cooling
+Holding register,"FC03 read / FC06, FC16 write",4,4,40005,Space heating/cooling on/off,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",6,6,40007,Room thermostat heating setpoint,"Whole °C, 12-30 range.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7,7,40008,Room thermostat cooling setpoint,"Whole °C, 15-35 range.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9,9,40010,Quiet mode operation,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",10,10,40011,DHW reheat setpoint,"Domestic hot water target, whole °C, 30-60 range.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12,12,40013,DHW reheat on/off,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",13,13,40014,DHW booster mode on/off,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",53,53,40054,Weather dependent mode,How the leaving water setpoint is chosen.,INT16,1,,1,0,,Read/write,0 = Fixed; 1 = Weather dependent; 2 = Fixed + scheduled; 3 = Weather dependent + scheduled
+Holding register,"FC03 read / FC06, FC16 write",54,54,40055,Weather dependent LWT heating setpoint offset,"Shift of the heating curve, -10 to +10 °C.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",55,55,40056,Weather dependent LWT cooling setpoint offset,"Shift of the cooling curve, -10 to +10 °C.",INT16,1,,1,0,°C,Read/write,

@@ -1,0 +1,632 @@
+{
+  "manufacturer": "Intesis (HMS Networks)",
+  "manufacturer_slug": "intesis",
+  "model": "INMBSHIT001R000 Hitachi AC to Modbus RTU gateway",
+  "model_slug": "inmbshit001r000",
+  "short_model": "INMBSHIT001R000",
+  "aliases": [
+    "INMBSHIT001R000",
+    "Hitachi Modbus gateway",
+    "Intesis Hitachi"
+  ],
+  "equipment_type": "VRF / split AC gateway",
+  "applies_to": "Intesis (HMS Networks) INMBSHIT001R000 interface on the AB bus of one Hitachi commercial-line indoor unit (or group), per user manual v1.6 (01/2024).",
+  "summary": "One Intesis interface per Hitachi indoor unit (or remote-controller group), wired to the unit's AB bus and presented to the BMS as a Modbus RTU slave. Every point is a single 16-bit holding register: on/off, mode, fan speed, vane position, setpoint and room temperature, alarm and error code, window-contact logic, remote-control lockout and a virtual-temperature input for a BMS room sensor.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 2,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "Each register is listed with a 'protocol address' and a 'PLC address' one higher. This map uses the protocol address as the wire address: on/off is 0 (PLC 1), setpoint 4 (PLC 5)."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Intesis INMBSHIT001R000 User's Manual - Modbus RTU (EIA-485) Interface for Hitachi air conditioners",
+    "doc_number": "User's Manual v1.6 EN",
+    "revision_date": "2024-01",
+    "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-inmbshit001r000.pdf",
+    "pages": "pp. 6-7 (connection, quick start), p. 8 (physical layer), pp. 8-10 (registers), pp. 11-12 (temperature registers), pp. 13-14 (DIP switches)"
+  },
+  "notes": [
+    "The manual says every register is a 16-bit unsigned holding register; the 'not initialised' marker it prints as -32768 is raw 0x8000 (32768).",
+    "Temperature format is set on DIP switch SW4: P1 picks whole degrees (x1) or tenths (x10), P2 picks °C or °F; Fahrenheit is never x10. The manual contradicts itself on the factory setting: the SW4 table marks x1 as default, while a register-table footnote says x10 °C is the default. The scale of 1 shown on the temperature registers is a placeholder for the x1 setting, not a confirmed default: check SW4 P1 on site (or compare a known temperature) and use 0.1 if P1 is set to x10.",
+    "The baud-rate register (14) lists the possible rates but not the number that stands for each, so no value list is given.",
+    "Mode, fan speed and vane values available depend on the indoor unit model.",
+    "Error codes other than 0 and 65535 are listed in section 7 of the manual."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "0",
+      "name": "AC unit on/off",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "1",
+      "name": "AC unit mode",
+      "description": "Available values depend on the indoor unit.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Heat",
+        "2": "Dry",
+        "3": "Fan",
+        "4": "Cool"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "2",
+      "name": "AC unit fan speed",
+      "description": "Available values depend on the indoor unit.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Low",
+        "2": "Mid",
+        "3": "High",
+        "4": "Super-high"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "3",
+      "name": "AC unit vane position",
+      "description": "Available values depend on the indoor unit.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "POS1 (horizontal)",
+        "2": "POS2 (horizontal)",
+        "3": "POS3 (middle)",
+        "4": "POS4 (vertical)",
+        "5": "POS5 (vertical)",
+        "6": "POS6",
+        "7": "POS7",
+        "10": "Swing"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "4",
+      "name": "AC unit temperature setpoint",
+      "description": "Requested setpoint, 16-32 °C. Scale per SW4 P1; factory setting unclear.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": {
+        "32768": "Not initialised (0x8000, printed as -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "5",
+      "name": "AC unit temperature reference",
+      "description": "Temperature the indoor unit controls to. Scale per SW4 P1; factory setting unclear.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Not initialised (0x8000, printed as -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "6",
+      "name": "Window contact",
+      "description": "Open starts the switch-off countdown (register 13).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Closed",
+        "1": "Open"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "7",
+      "name": "Gateway disablement",
+      "description": "1 stops the gateway sending commands to the unit; stored.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Gateway enabled",
+        "1": "Gateway disabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "8",
+      "name": "AC remote control disablement",
+      "description": "1 locks out the wired remote; stored.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Remote control enabled",
+        "1": "Remote control disabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "9",
+      "name": "AC unit operation time",
+      "description": "Hours the unit has been on; stored.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "h",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "10",
+      "name": "AC unit alarm status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No alarm",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "11",
+      "name": "Error code",
+      "description": "0 = none; 65535 = gateway or remote cannot reach the unit.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No error",
+        "65535": "Communication error with the AC unit"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 13,
+      "documented": "13",
+      "name": "Open window switch-off timeout",
+      "description": "0-30 min, factory 30.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 14,
+      "documented": "14",
+      "name": "Modbus RTU baud rate",
+      "description": "Read-only; set on SW3/SW4.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15,
+      "documented": "15",
+      "name": "Modbus slave address",
+      "description": "1-63; set on SW3.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 21,
+      "documented": "21",
+      "name": "Max number of fan speeds",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 22,
+      "documented": "22",
+      "name": "External ambient temperature (Modbus)",
+      "description": "BMS room temperature; writing it enables virtual temperature. Scale per SW4 P1; factory setting unclear.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": {
+        "32768": "Not initialised (0x8000, printed as -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "23",
+      "name": "AC real temperature setpoint",
+      "description": "Setpoint actually sent to the unit. Scale per SW4 P1; factory setting unclear.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Not initialised (0x8000, printed as -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 24,
+      "documented": "24",
+      "name": "Current AC max setpoint",
+      "description": "Scale per SW4 P1; factory setting unclear.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Not initialised (0x8000, printed as -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 25,
+      "documented": "25",
+      "name": "Current AC min setpoint",
+      "description": "Scale per SW4 P1; factory setting unclear.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Not initialised (0x8000, printed as -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 31,
+      "documented": "31",
+      "name": "Window contact status (feedback)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not active",
+        "1": "Active (window open)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 34,
+      "documented": "34",
+      "name": "Left/right vane pulse",
+      "description": "Write 1 to step the side vane.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "1": "Pulse"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 45,
+      "documented": "45",
+      "name": "Error reset",
+      "description": "Write 1 to reset the error.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "1": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 48,
+      "documented": "48",
+      "name": "Switch value",
+      "description": "DIP switch positions.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 49,
+      "documented": "49",
+      "name": "Device ID",
+      "description": "Reads 0x1400.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "5120": "INMBSHIT001R000 (0x1400)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 50,
+      "documented": "50",
+      "name": "Software version",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 66,
+      "documented": "66",
+      "name": "Return path temperature",
+      "description": "Return-air sensor of the indoor unit. Scale per SW4 P1; factory setting unclear.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Not initialised (0x8000, printed as -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 81,
+      "documented": "81",
+      "name": "Error address",
+      "description": "Indoor unit number reporting the error.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 98,
+      "documented": "98",
+      "name": "Master/slave (gateway)",
+      "description": "Gateway role on the Hitachi AB bus.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Slave",
+        "1": "Master"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 99,
+      "documented": "99",
+      "name": "Reset",
+      "description": "Write 1 to restart the gateway.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "1": "Reset"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Wire the AB bus to the indoor unit (or in parallel with the Hitachi wired remote) and A+/B- to the Modbus master, set the address on SW3, then read holding registers 0-25 with function 03 and write commands one register at a time with function 06.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "On/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Fan speed"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Setpoint"
+      },
+      {
+        "table": "holding_register",
+        "address": 5,
+        "why": "Room temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 10,
+        "why": "Alarm flag"
+      },
+      {
+        "table": "holding_register",
+        "address": 11,
+        "why": "Error code"
+      },
+      {
+        "table": "holding_register",
+        "address": 7,
+        "why": "Gateway disablement (keep 0)"
+      }
+    ],
+    "enable": "No enable step; keep register 7 (gateway disablement) at 0. Set SW1 P1 to Slave when a Hitachi wired remote is the AB-bus master (default), or Master when there is no remote.",
+    "watchdog": null,
+    "quirks": [
+      "Function 16 is accepted only with a quantity of one register.",
+      "Factory serial setting is 9600 baud, 8-N-2; 8-N-1 is detected automatically.",
+      "Temperature format follows DIP SW4 (x1 / x10, °C / °F)."
+    ],
+    "setup": [
+      "SW3 P1-P6: slave address (default 1); SW3 P7-P8 with SW4 P3: baud rate (default 9600).",
+      "SW4 P1: x1 / x10; SW4 P2: °C / °F; SW4 P4: 120 ohm termination.",
+      "SW1 P1: gateway Slave (with Hitachi remote as master, default) or Master (no remote).",
+      "DIP changes need a power cycle; the interface must be connected to a powered indoor unit to communicate."
+    ],
+    "gotchas": [
+      "If several indoor units share one AB bus, a Hitachi wired remote set as master is required.",
+      "Writing a room temperature to register 22 turns on virtual temperature: the setpoint sent to the unit (register 23) then differs from register 4 and from what the Hitachi remote shows.",
+      "AB bus maximum length is 500 m."
+    ]
+  },
+  "verified": {
+    "date": "2026-10-29",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

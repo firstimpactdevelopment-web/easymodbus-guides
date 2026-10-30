@@ -1,0 +1,682 @@
+{
+ "manufacturer": "Daikin",
+ "manufacturer_slug": "daikin",
+ "model": "DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps",
+ "model_slug": "dcom-lt-mb",
+ "short_model": "DCOM-LT/MB",
+ "aliases": [
+  "DCOM-LT-MB",
+  "534-001",
+  "Altherma LT Modbus interface"
+ ],
+ "equipment_type": "Heat pump",
+ "applies_to": "Daikin Altherma low-temperature (LT) air-to-water heat pumps fitted with the DCOM-LT/MB (model number 534-001) P1P2-to-Modbus RTU interface, standard operating mode, per reference manual 534-252-A3.",
+ "summary": "The DCOM-LT/MB is a small DIN-rail interface that sits on the Altherma P1P2 user-interface bus and exposes the heat pump as a Modbus RTU slave. Holding registers carry the commands and setpoints (on/off, mode, leaving water and room setpoints, domestic hot water, quiet mode, weather-curve offsets); input registers report the error state, running flags, temperatures and flow. Every register is one signed 16-bit word, with sensor temperatures in hundredths of a degree.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The manual numbers registers by offset with 'Register Base 0', so the printed offset is the wire address. Its own example: holding register 1 = Modicon 40002, input register 20 = Modicon 30021."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "DCOM-LT/MB Reference Manual (English)",
+  "doc_number": "534-252-A3",
+  "revision_date": null,
+  "url": "https://www.daikin.eu/content/dam/document-library/installation-manuals/ctrl/bms/dcom-lt-mb/DCOM-LT-MB_reference%20and%20installation%20manual_English.pdf",
+  "pages": "p. 6 (protocol, function codes, special values, data types, holding registers), p. 7 (input registers), p. 8 (Modicon conversion, fault code decoding), p. 9 (sequencer mode)"
+ },
+ "notes": [
+  "Three special values can come back from any register when read as 16-bit: 32767 = register unsupported, 32766 = not available in the current configuration, 32765 = value not loaded yet. Expect 32765 everywhere while the DCOM synchronises with the Altherma (up to 8 minutes after power-up).",
+  "The manual types the setpoints and offsets as plain int16 with no scaling, so they are whole degrees; only the sensor temperatures (temp16) are in hundredths.",
+  "The DCOM can also run in Sequencer mode (used with the DCOM-LT/IO variant) and Smart Grid mode, chosen with DIP switches SW1.1-SW1.2 (SW1.1-SW1.4 in Smart Grid mode). Sequencer mode moves several input registers (for example outside air to 133); those alternative registers are not listed here.",
+  "Which functions actually work depends on the Altherma model and its user interface; unsupported ones return 32767 or 32766.",
+  "The unit error code is two ASCII characters packed into one register: high byte = first character, low byte = second (for example 14152 = '7H'). The sub code is a separate number."
+ ],
+ "registers": [
+  {
+   "table": "input_register",
+   "address": 21,
+   "documented": "21",
+   "name": "Unit error",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Fault",
+    "2": "Warning"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 22,
+   "documented": "22",
+   "name": "Unit error code",
+   "description": "Two ASCII characters, high byte first; 11565 = \"--\" (no error).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "11565": "-- (no error)",
+    "21816": "U8 (DCOM timed out waiting for master)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 23,
+   "documented": "23",
+   "name": "Unit error sub code",
+   "description": "0-99 while an error exists; 32766 when there is none.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 30,
+   "documented": "30",
+   "name": "Circulation pump running",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 31,
+   "documented": "31",
+   "name": "Compressor run",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 32,
+   "documented": "32",
+   "name": "Booster heater run",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 33,
+   "documented": "33",
+   "name": "Disinfection operation",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 35,
+   "documented": "35",
+   "name": "Defrost/startup",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 36,
+   "documented": "36",
+   "name": "Hot start",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 37,
+   "documented": "37",
+   "name": "3-way valve",
+   "description": "Which circuit the valve currently serves.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Space heating",
+    "1": "DHW"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 38,
+   "documented": "38",
+   "name": "Operation mode (actual)",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Heating",
+    "2": "Cooling"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 40,
+   "documented": "40",
+   "name": "Leaving water temperature pre PHE",
+   "description": "Before the plate heat exchanger.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 41,
+   "documented": "41",
+   "name": "Leaving water temperature pre BUH",
+   "description": "Before the backup heater.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 42,
+   "documented": "42",
+   "name": "Return water temperature",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 43,
+   "documented": "43",
+   "name": "Domestic hot water temperature",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 44,
+   "documented": "44",
+   "name": "Outside air temperature",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 45,
+   "documented": "45",
+   "name": "Liquid refrigerant temperature",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 49,
+   "documented": "49",
+   "name": "Flow rate",
+   "description": "Water flow; raw value is litres per minute x 100.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "l/min",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 50,
+   "documented": "50",
+   "name": "Remocon room temperature",
+   "description": "Room temperature measured by the user interface.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1",
+   "name": "Leaving water main heating setpoint",
+   "description": "Whole °C, 25-55 range; out-of-range writes are clamped.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "Leaving water main cooling setpoint",
+   "description": "Whole °C, 5-22 range; out-of-range writes are clamped.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "Operation mode",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heating",
+    "2": "Cooling"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4",
+   "name": "Space heating/cooling on/off",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6",
+   "name": "Room thermostat heating setpoint",
+   "description": "Whole °C, 12-30 range.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Room thermostat cooling setpoint",
+   "description": "Whole °C, 15-35 range.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "9",
+   "name": "Quiet mode operation",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "10",
+   "name": "DHW reheat setpoint",
+   "description": "Domestic hot water target, whole °C, 30-60 range.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "12",
+   "name": "DHW reheat on/off",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "13",
+   "name": "DHW booster mode on/off",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 53,
+   "documented": "53",
+   "name": "Weather dependent mode",
+   "description": "How the leaving water setpoint is chosen.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Fixed",
+    "1": "Weather dependent",
+    "2": "Fixed + scheduled",
+    "3": "Weather dependent + scheduled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 54,
+   "documented": "54",
+   "name": "Weather dependent LWT heating setpoint offset",
+   "description": "Shift of the heating curve, -10 to +10 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 55,
+   "documented": "55",
+   "name": "Weather dependent LWT cooling setpoint offset",
+   "description": "Shift of the cooling curve, -10 to +10 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Wire P1P2 to the Altherma user interface and RS-485 to the master, set the slave address on DIP switches SW1.3-SW1.8, wait for the green status LED, then poll input registers 21-50 with function 04 and write setpoints with function 06 or 16.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Space heating/cooling on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Operation mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Heating leaving water setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 10,
+    "why": "DHW setpoint"
+   },
+   {
+    "table": "input_register",
+    "address": 21,
+    "why": "Unit error"
+   },
+   {
+    "table": "input_register",
+    "address": 22,
+    "why": "Error code"
+   },
+   {
+    "table": "input_register",
+    "address": 42,
+    "why": "Return water temperature"
+   },
+   {
+    "table": "input_register",
+    "address": 43,
+    "why": "DHW temperature"
+   },
+   {
+    "table": "input_register",
+    "address": 44,
+    "why": "Outside temperature"
+   }
+  ],
+  "enable": "No software enable. Choose the operating mode on SW1.1-SW1.2 and the address on SW1.3-SW1.8; the DCOM answers as a Modbus slave once it has synchronised with the Altherma master.",
+  "watchdog": "If P1P2 communication with the Altherma master fails for 60 seconds the DCOM falls back to waiting for the master; after 3 more minutes it reports Timeout (unit error 1, error code U8). No Modbus-side watchdog is documented.",
+  "quirks": [
+   "Reads are limited to 64 registers; function 06 for single writes, function 16 for up to 64.",
+   "Setpoint writes outside the configured range are clamped to the nearest limit; other out-of-range writes are ignored.",
+   "Sensor temperatures are signed and divided by 100; setpoints are whole degrees."
+  ],
+  "setup": [
+   "Power: regulated 15-24 VDC, at least 80 mA (polarity independent).",
+   "RS-485 is fixed at 9600 baud, 8 data bits, no parity, 1 stop bit.",
+   "Connect the RS-485 common terminal C to the other devices' common; termination is not needed at 9600 baud, and if you add it you must add failsafe bias too.",
+   "Up to 32 devices per segment, bus topology, under 1000 m."
+  ],
+  "gotchas": [
+   "With Altherma 2 and EKRUCBL / EKRUHML user interfaces the DCOM works only if no LAN adapter is connected.",
+   "Values read 32765 until synchronisation finishes; do not treat that as a temperature."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/daikin/dcom-lt-mb",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}
