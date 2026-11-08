@@ -4100,7 +4100,7 @@ def main(ping=False):
             "base": BASE_URL,
             "css": CSS,
             "updated": "30 September 2026",
-            "contact": "Firstimpactdevelopment@gmail.com",
+            "contact": "webmaster@easymodbus.com",
         },
     )
 
@@ -4110,7 +4110,7 @@ def main(ping=False):
             "base": BASE_URL,
             "css": CSS,
             "updated": "15 September 2026",
-            "contact": "Firstimpactdevelopment@gmail.com",
+            "contact": "webmaster@easymodbus.com",
         },
     )
 
@@ -4120,7 +4120,7 @@ def main(ping=False):
             "base": BASE_URL,
             "css": CSS,
             "updated": "15 September 2026",
-            "contact": "Firstimpactdevelopment@gmail.com",
+            "contact": "webmaster@easymodbus.com",
         },
     )
 

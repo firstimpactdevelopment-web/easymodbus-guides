@@ -353,7 +353,7 @@ def shell(relpath, title, description, h1_html, body, jsonld, crumbs, og_type="w
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
   confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
-  <a href="mailto:Firstimpactdevelopment@gmail.com">Firstimpactdevelopment@gmail.com</a>.</p>
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
   <p><a href="/index.html">Easy Modbus</a> &middot; <a href="/modbus-register-maps/index.html">Register maps</a> &middot;
   <a href="/index.html#guides">Guides</a> &middot; <a href="/terms.html">Terms of use</a> &middot; <a href="/privacy.html">Privacy policy</a></p>
 </div></footer>
