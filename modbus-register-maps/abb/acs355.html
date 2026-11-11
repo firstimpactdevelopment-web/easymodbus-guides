@@ -235,12 +235,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/abb/acs355-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/abb/acs355.csv"
     },
     {
@@ -342,7 +336,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/abb/">ABB</a></li><li aria-current="page">ACS355 machinery drive (embedded Modbus RTU)</li></ol>
@@ -354,16 +348,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 ABB&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/abb/">ABB</a></dd></div><div><dt>Model</dt><dd>ACS355 machinery drive (embedded Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>55 (15 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>Firmware</dt><dd>ACS355 firmware 5.110 or later</dd></div><div><dt>Also known as</dt><dd>ACS355-01E, ACS355-03E, ACS355-01U, ACS355-03U, ACS355 with FMBA-01</dd></div><div><dt>Source document</dt><dd><a href="https://search.abb.com/library/Download.aspx?DocumentID=3AUA0000066143&amp;LanguageCode=en&amp;DocumentPartId=1&amp;Action=Launch" rel="nofollow noopener" target="_blank">ACS355 drives user&#x27;s manual &middot; 3AUA0000066143 Rev E &middot; rev. 2020-11-02</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/abb/acs355-easymodbus.csv">Copy for the phone app <small>55 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/abb/acs355-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/abb/acs355.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/abb/acs355.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/abb/acs355.json">JSON</a>
   <a class="btn" href="https://search.abb.com/library/Download.aspx?DocumentID=3AUA0000066143&amp;LanguageCode=en&amp;DocumentPartId=1&amp;Action=Launch" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: ABB ACS355 machinery drive (embedded Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Fit the FMBA-01 adapter, set 9802 = STD MODBUS and the group 53 link settings, then cycle power. Set 5305 = ABB DRV FULL, point 1001 EXT1 COMMANDS and 1103 REF1 SELECT at COMM, write the control word and REF1 at 40001/40002 and poll the status word plus the default actual values (output frequency, current) at 40004-40006.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Control word (ABB Drives)</td><td class="f">BITMAP16</td><td>Control word: start/stop/reset</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Reference 1 (REF1)</td><td class="f">INT16</td><td>REF1 speed/frequency setpoint (20000 = 1105)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-3">HR 3</a></td><td class="n">Status word (ABB Drives)</td><td class="f">BITMAP16</td><td>Status word: ready/running/fault/remote</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-102">HR 102</a></td><td class="n">0103 Output freq</td><td class="f">UINT16</td><td>0103 Output frequency, 0.1 Hz</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-103">HR 103</a></td><td class="n">0104 Current</td><td class="f">UINT16</td><td>0104 Motor current, 0.1 A</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-106">HR 106</a></td><td class="n">0107 DC bus voltage</td><td class="f">UINT16</td><td>0107 DC bus voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-400">HR 400</a></td><td class="n">0401 Last fault</td><td class="f">UINT16</td><td>0401 Last fault code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-304">HR 304</a></td><td class="n">0305 Fault word 1</td><td class="f">BITMAP16</td><td>0305 Fault word 1</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -437,9 +425,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>There are no 32-bit registers: the manual states all values read or written are limited to 16 bits. Signals that can be negative (0101, 0105, 0106, 0110, 0111, 0112, 0404, 0405, 0408) are listed as INT16.</li><li>Scaling is the manual&#x27;s FbEq column (fieldbus integer per unit, e.g. &#x27;1 = 0.1 Hz&#x27; -&gt; scale 0.1).</li><li>40001 and 40004 work only with 5305 = ABB DRV LIM or ABB DRV FULL; 40031-40034 work only with 5305 = DCU PROFILE. ABB DRV LIM (the default) ignores control word bits 4 (RAMP_OUT_ZERO) and 10 (REMOTE_CMD).</li><li>Actual values 40005-40012 follow 5310-5317 (defaults: 40005 = 0103, 40006 = 0104, 40007-40012 unassigned). Their scaling is that of the chosen signal, so they are left unscaled here; 40007-40012 are not listed.</li><li>Reference scaling (ABB Drives profile): REF1 20000 = 1105 REF1 MAX (speed or frequency); REF2 10000 = 1108 REF2 MAX (speed, frequency, torque or PID). 1104/1107 minimums do not affect the scaling.</li><li>Defaults conflict inside the manual: group 53 lists 5302 = 1, 5303 = 9.6 kbit/s, 5304 = 8 NONE 1 and 9802 = NOT SEL, while the AC500 Modbus macro sets station 2, 19.2 kbit/s, 5304 = 1 (which the parameter list calls 8 NONE 2), ABB DRV FULL and STD MODBUS. The text of that macro also mislabels 5302 as 5303. The macro also sets 3018 = FAULT and re-points 5310-5312 to 0101, 0303 and 0305, so 40005-40007 then read speed &amp; dir, DCU status word LSW and fault word 1. Check the drive.</li><li>0111 External ref 1 is in 0.1 Hz or 1 rpm depending on 9904 Motor ctrl mode, so it is left unscaled.</li><li>Left out: 0120-0139 analog I/O, PID and process-variable signals (units depend on configuration), 0160/0414 DI status (panel and binary encodings differ), 0402/0403 fault time stamps, 0409 status at fault, and all motor/application parameters.</li><li>The group 03 fault and alarm words are documented as read-only actual signals, but the alarm word text says an alarm can be reset by writing zero to the word; they are marked R here.</li><li>5318 EFB PAR 18 is left out: the group 53 parameter list describes it as an extra response delay in ms, while the exception-code section says it holds the most recent exception code, so its meaning cannot be pinned down from the manual.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the ABB ACS355 machinery drive (embedded Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the ABB ACS355 machinery drive (embedded Modbus RTU) have?</summary><p>This map lists 55 registers: 55 holding registers. 15 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the ABB ACS355 machinery drive (embedded Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The manual lists 4xxxx holding registers and states that register 4xxxx is sent as xxxx - 1 in the Modbus message (its example: 40002 is addressed as 0001), so 40001 = wire address 0. Drive parameter NNNN sits at register 4NNNN (e.g. 0103 -&gt; 40103, wire 102; 3018 -&gt; 43018, wire 3017). Registers that do not correspond to a parameter return an exception.</p></details><details><summary>What are the minimum Modbus registers to integrate the ABB ACS355 machinery drive (embedded Modbus RTU)?</summary><p>Start with HR 0 Control word (ABB Drives) (Control word: start/stop/reset); HR 1 Reference 1 (REF1) (REF1 speed/frequency setpoint (20000 = 1105)); HR 3 Status word (ABB Drives) (Status word: ready/running/fault/remote); HR 102 0103 Output freq (0103 Output frequency, 0.1 Hz); HR 103 0104 Current (0104 Motor current, 0.1 A); HR 106 0107 DC bus voltage (0107 DC bus voltage); HR 400 0401 Last fault (0401 Last fault code); HR 304 0305 Fault word 1 (0305 Fault word 1).</p></details><details><summary>How do I enable Modbus control of the ABB ACS355 machinery drive (embedded Modbus RTU)?</summary><p>Set 9802 COMM PROT SEL = STD MODBUS (EIA-485 through FMBA-01 on X3) or MODBUS RS232 (panel connector, max 3 m). Set 5302 station ID, 5303 baud, 5304 parity and 5305 profile; new settings apply at the next power-up or after clearing and re-entering 5302. For control set 1001 EXT1 COMMANDS = COMM (1002 for EXT2), 1103 REF1 SELECT = COMM, and optionally 1102 EXT1/EXT2 SEL, 1601 RUN ENABLE and 1604 FAULT RESET SEL = COMM. Save fieldbus parameter writes with 1607 PARAM SAVE.</p></details><details><summary>What happens when the ABB ACS355 machinery drive (embedded Modbus RTU) loses Modbus communication?</summary><p>3018 COMM FAULT FUNC (NOT SEL default / FAULT / CONST SP 7 / LAST SPEED) after the delay in 3019 COMM FAULT TIME (default 3.0 s, 0.1 s steps). FAULT trips SERIAL 1 ERR (0028) and coasts; the other two raise alarm IO COMM (2005) and keep running. The supervision is inactive for 60 s after start-up.</p></details><details><summary>Where is the official ABB ACS355 machinery drive (embedded Modbus RTU) Modbus documentation?</summary><p>The source is ACS355 drives user&#x27;s manual (3AUA0000066143 Rev E), revision 2020-11-02, published free by ABB at https://search.abb.com/library/Download.aspx?DocumentID=3AUA0000066143&amp;LanguageCode=en&amp;DocumentPartId=1&amp;Action=Launch.</p></details></div>
@@ -451,10 +440,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -480,14 +469,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

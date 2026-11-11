@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/schneider-electric/atv320-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/schneider-electric/atv320.csv"
     },
     {
@@ -343,7 +337,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/schneider-electric/">Schneider Electric</a></li><li aria-current="page">Altivar Machine ATV320 (embedded Modbus RTU)</li></ol>
@@ -355,16 +349,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Schneider Electric&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/schneider-electric/">Schneider Electric</a></dd></div><div><dt>Model</dt><dd>Altivar Machine ATV320 (embedded Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>68 (31 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8E1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Also known as</dt><dd>ATV320, Altivar 320, ATV320U, ATV320D, ATV320 Book, ATV320 Compact</dd></div><div><dt>Source document</dt><dd><a href="https://download.schneider-electric.com/files?p_Doc_Ref=NVE41316" rel="nofollow noopener" target="_blank">ATV320 - Communication Parameters (Excel) &middot; NVE41316 V3.5 &middot; rev. 2024-09</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/schneider-electric/atv320-easymodbus.csv">Copy for the phone app <small>68 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/schneider-electric/atv320-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/schneider-electric/atv320.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/schneider-electric/atv320.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/schneider-electric/atv320.json">JSON</a>
   <a class="btn" href="https://download.schneider-electric.com/files?p_Doc_Ref=NVE41316" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Set Add (6001) to 1-247 and power-cycle, set FR1 = Modbus and keep CHCF = SIM, then write CMD (8501) = 0006h, then 000Fh with a non-zero LFR (8502, 0.1 Hz) or LFRD (8602, rpm) to run. Poll ETA (3201), RFR (3202), LCR (3204) and LFT (7121).</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-8501">HR 8501</a></td><td class="n">CMD - Command word</td><td class="f">BITMAP16</td><td>CMD: CiA402 run/stop/reset</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-8502">HR 8502</a></td><td class="n">LFR - Frequency reference</td><td class="f">INT16</td><td>LFR: frequency reference, 0.1 Hz</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-3201">HR 3201</a></td><td class="n">ETA - Status word</td><td class="f">BITMAP16</td><td>ETA: CiA402 status word</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-3202">HR 3202</a></td><td class="n">RFR - Output frequency</td><td class="f">INT16</td><td>RFR: output frequency, 0.1 Hz</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-3204">HR 3204</a></td><td class="n">LCR - Motor current</td><td class="f">UINT16</td><td>LCR: motor current, 0.1 A</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-3240">HR 3240</a></td><td class="n">HMIS - Drive state</td><td class="f">UINT16</td><td>HMIS: drive state code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-7121">HR 7121</a></td><td class="n">LFT - Last fault</td><td class="f">UINT16</td><td>LFT: last fault code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-3209">HR 3209</a></td><td class="n">THD - Drive thermal state</td><td class="f">UINT16</td><td>THD: drive thermal state</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -451,9 +439,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Second source: Altivar Machine ATV320 Modbus Serial Link Manual NVE41308 rev 01 (04/2016), https://download.schneider-electric.com/files?p_Doc_Ref=NVE41308 - used for addressing, function codes, the Add/tbr/tFO/ttO settings, the CiA402 sequence and SLL behaviour.</li><li>Every register is a single 16-bit word; the map has no 32-bit values.</li><li>M1EC (6010) and M1CT (6011) are not in the parameter file; their logical addresses come from the Modbus manual p. 74.</li><li>LFR (8502) and RFR (3202) are 0.1 Hz only while CMI bit 9 = 0 (power-up default); with bit 9 = 1 they become a signed value where 32767 = tFr.</li><li>APH, RTH and PTH have no fixed unit: read UNT (3234) after them to learn whether each is in Wh/kWh/MWh or s/min/h.</li><li>ACC/DEC are raw values; their resolution follows INR (9020): 0 = 0.01 s, 1 = 0.1 s (factory), 2 = 1 s.</li><li>LFT and DP0-DP3 use the full LFT list (61 codes) from the parameter file Enumerations sheet.</li><li>FR1 and CD1 value lists show the channel choices relevant to network control; the full PSA list also includes analog and function sources.</li><li>Left out: ERRD (CiA402 error code, 8606) because the file types it as a bit string but gives a code list; CCS (8421) values because they come from a long assignable-input list; option-card (CANopen, Ethernet, EtherCAT) parameters; Safety-function and function-block registers.</li><li>Registers marked RW that the source lists as R/WS can only be written while the drive is not running (not in Operation enabled or Quick stop active).</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU) have?</summary><p>This map lists 68 registers: 68 holding registers. 31 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Logical addresses are decimal (the parameter file also shows hex as 16#....) and go into the request unchanged. The Modbus manual&#x27;s read example asks for W3102-W3105 by sending starting address 0C1E hex (= 3102), and its write example writes W9001 at 2329 hex. So ETA 3201 is requested at address 3201 (0x0C81), with no 40001 offset and no minus 1.</p></details><details><summary>What are the minimum Modbus registers to integrate the Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU)?</summary><p>Start with HR 8501 CMD - Command word (CMD: CiA402 run/stop/reset); HR 8502 LFR - Frequency reference (LFR: frequency reference, 0.1 Hz); HR 3201 ETA - Status word (ETA: CiA402 status word); HR 3202 RFR - Output frequency (RFR: output frequency, 0.1 Hz); HR 3204 LCR - Motor current (LCR: motor current, 0.1 A); HR 3240 HMIS - Drive state (HMIS: drive state code); HR 7121 LFT - Last fault (LFT: last fault code); HR 3209 THD - Drive thermal state (THD: drive thermal state).</p></details><details><summary>How do I enable Modbus control of the Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU)?</summary><p>Set [Modbus Address] Add (COM- menu; logical 6001) to 1-247 - the factory value is OFF, so the drive does not answer at all until this is set. Speed and format default to 19200, 8-E-1 (tbr 6003, tFO 6004). Communication changes apply after a power cycle. For combined CiA402 control set [Ref Freq 1 Config] FR1 = [Modbus] Mdb with [Control Mode] CHCF = [Not separ.] SIM (factory). For separate mode use CHCF = SEP and Cd1 = Mdb; for the I/O profile use CHCF = IO and Cd1 = Mdb, then CMD bit 0 is run forward.</p></details><details><summary>What happens when the Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU) loses Modbus communication?</summary><p>[Modbus Timeout] ttO (6005), 0.1-30 s, factory 10 s: once the Modbus channel is being monitored, a Modbus communication interruption longer than this raises SLF1. [Modbus fault mgt] SLL (7010) sets the reaction: freewheel (factory), ramp, fast stop, DC injection, ignore, per Stt, fallback speed LFF (7080) or maintain speed. A channel is only monitored once it has written a command or reference.</p></details><details><summary>Where is the official Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU) Modbus documentation?</summary><p>The source is ATV320 - Communication Parameters (Excel) (NVE41316 V3.5), revision 2024-09, published free by Schneider Electric at https://download.schneider-electric.com/files?p_Doc_Ref=NVE41316.</p></details></div>
@@ -465,10 +454,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -494,14 +483,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

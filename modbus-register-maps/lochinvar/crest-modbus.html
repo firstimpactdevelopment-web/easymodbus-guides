@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/lochinvar/crest-modbus-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/lochinvar/crest-modbus.csv"
     },
     {
@@ -343,7 +337,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/lochinvar/">Lochinvar</a></li><li aria-current="page">Crest / Crest with Hellcat boilers (ModBus communication board)</li></ol>
@@ -355,16 +349,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Lochinvar&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/lochinvar/">Lochinvar</a></dd></div><div><dt>Model</dt><dd>Crest / Crest with Hellcat boilers (ModBus communication board)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/boilers/">Boiler</a></dd></div><div><dt>Registers</dt><dd>62 (9 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>Also known as</dt><dd>Crest, Crest FB751-6001, Crest OF751-6001, Crest FCB1000-6000, Hellcat, MTR-01</dd></div><div><dt>Source document</dt><dd><a href="https://assets.lochinvar.com/damroot/Original/10017/MODB_100161012_2000020084_REV%20X_(71343).pdf" rel="nofollow noopener" target="_blank">ModBus and BACnet Communication Instructions for Crest FB/OF751-6001, FCB1000-6000 and Regent IWH500-1000 &middot; 100161012_2000020084 Rev X</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/lochinvar/crest-modbus-easymodbus.csv">Copy for the phone app <small>62 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/lochinvar/crest-modbus-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/lochinvar/crest-modbus.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/lochinvar/crest-modbus.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/lochinvar/crest-modbus.json">JSON</a>
   <a class="btn" href="https://assets.lochinvar.com/damroot/Original/10017/MODB_100161012_2000020084_REV%20X_(71343).pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Lochinvar Crest / Crest with Hellcat boilers (ModBus communication board)</h2>
 <div class="answer"><b>Integration in brief</b><p>Set address, baud and parity on the board DIP switches, set the Demand Configuration in MAIN MENU &gt; SETUP &gt; BMS, then write 40001 (configuration) followed by the commands, using the exact values from the manual for the chosen configuration: enable only is 40001 = 0x0001 with 40002 = 0x0001; enable + BMS is 40001 = 0x0005 with 40002 = 0x0010 and the rate/setpoint in 40003. Monitor 30009-30016.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Configuration</td><td class="f">BITMAP16</td><td>Configuration bits</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-co-0">CO 0</a></td><td class="n">Boiler Enable</td><td class="f">BIT</td><td>Boiler enable</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-2">HR 2</a></td><td class="n">0-10 Volt Input / Rate Command / Setpoint Command</td><td class="f">UINT16</td><td>Rate (%) or setpoint command</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-ir-8">IR 8</a></td><td class="n">Outlet Temperature</td><td class="f">UINT16</td><td>Outlet temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-11">IR 11</a></td><td class="n">Firing Rate</td><td class="f">UINT16</td><td>Firing rate</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-13">IR 13</a></td><td class="n">Boiler Status Code</td><td class="f">UINT16</td><td>Status code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-14">IR 14</a></td><td class="n">Boiler Blocking Code</td><td class="f">UINT16</td><td>Blocking code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-15">IR 15</a></td><td class="n">Boiler Lockout Code</td><td class="f">UINT16</td><td>Lockout code</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -445,9 +433,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Temperatures: the manual&#x27;s conversion section says the appliance passes temperatures in degrees C multiplied by 10 (worked examples: outdoor 26.7 C sent as 267; outlet 683 read as 68.3 C). Scale 0.1 is applied to every temperature register.</li><li>Removed: System/Cascade Setpoint (30004), Outlet Setpoint (30008) and Tank Setpoint (40004). The memory map gives these a 0.5 C resolution while the conversion section says all temperature data is degrees C x 10, and the worked examples only cover other registers (outdoor temperature and outlet temperature). Because the scaling of these three is not settled by the document, they are left out.</li><li>Signed types: registers whose published minimum is negative (inlet, flue, tank, outdoor, supply/return temperatures) are listed as INT16; the manual itself only says &#x27;16-bit word&#x27;.</li><li>Dip switch 8 on the communication board selects degrees C (OFF) or F (ON) for the display/data; units here assume C (switch OFF), matching the manual&#x27;s tables and conversion examples.</li><li>Holding register 40002 &#x27;Coils&#x27; has no bit list: for the Crest, the enable-only table writes 0x0001 to enable the unit, the enable + BMS table writes 0x0010 for the same purpose, and the DHW table writes 0x0010 for the tank thermostat. Prefer the Boiler Enable coil (00001) and confirm on site.</li><li>Input registers 30001-30003 are packed copies of the discrete inputs; the bit-to-input order is not stated, so they are listed as UINT16. Use the discrete inputs instead.</li><li>Left out: FCB1000-6000 combustion registers 30019-30025 and 30036-30038 (air/gas damper angle, fan speed target, O2 status, trim factor, barometer, flame, O2 reading) because the manual gives no units or scaling for them.</li><li>The full Crest lockout-code list (input register 30016) is long; see pp. 43 onward in the manual.</li><li>The Regent water heater map in the same manual uses different input-register numbers and is not included.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Lochinvar Crest / Crest with Hellcat boilers (ModBus communication board)</h2><div class="faq"><details open><summary>What Modbus registers does the Lochinvar Crest / Crest with Hellcat boilers (ModBus communication board) have?</summary><p>This map lists 62 registers: 2 coils, 30 discrete inputs, 23 input registers, 7 holding registers. 9 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Lochinvar Crest / Crest with Hellcat boilers (ModBus communication board) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Addresses are printed Modicon-style (00001, 10001, 30001, 40001). Subtract the table base and 1 for the wire address; the manual&#x27;s exception-code text confirms PDU addresses start at 0.</p></details><details><summary>What are the minimum Modbus registers to integrate the Lochinvar Crest / Crest with Hellcat boilers (ModBus communication board)?</summary><p>Start with HR 0 Configuration (Configuration bits); CO 0 Boiler Enable (Boiler enable); HR 2 0-10 Volt Input / Rate Command / Setpoint Command (Rate (%) or setpoint command); IR 8 Outlet Temperature (Outlet temperature); IR 11 Firing Rate (Firing rate); IR 13 Boiler Status Code (Status code); IR 14 Boiler Blocking Code (Blocking code); IR 15 Boiler Lockout Code (Lockout code).</p></details><details><summary>How do I enable Modbus control of the Lochinvar Crest / Crest with Hellcat boilers (ModBus communication board)?</summary><p>Choose the Demand Configuration (enable only, enable + BMS rate/setpoint, or BMS only) in MAIN MENU &gt; SETUP &gt; BMS; set the BMS type to rate or setpoint for 40003. Re-send 40001 before issuing commands.</p></details><details><summary>What happens when the Lochinvar Crest / Crest with Hellcat boilers (ModBus communication board) loses Modbus communication?</summary><p>Crest: BAS timeout adjustable 5-120 s in MAIN MENU &gt; SETUP &gt; BAS; BAS-supplied temperatures must be refreshed within it or the boiler reverts to its own sensors. Other commands must be refreshed at least every 4 minutes. Hellcat: timeout fixed at 300 s.</p></details><details><summary>Where is the official Lochinvar Crest / Crest with Hellcat boilers (ModBus communication board) Modbus documentation?</summary><p>The source is ModBus and BACnet Communication Instructions for Crest FB/OF751-6001, FCB1000-6000 and Regent IWH500-1000 (100161012_2000020084 Rev X), published free by Lochinvar at https://assets.lochinvar.com/damroot/Original/10017/MODB_100161012_2000020084_REV%20X_(71343).pdf.</p></details></div>
@@ -459,10 +448,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -488,14 +477,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

@@ -235,12 +235,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/woodward/easygen-3000xt-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/woodward/easygen-3000xt.csv"
     },
     {
@@ -350,7 +344,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/woodward/">Woodward</a></li><li aria-current="page">easYgen-3000XT Series</li></ol>
@@ -362,16 +356,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Woodward&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/woodward/">Woodward</a></dd></div><div><dt>Model</dt><dd>easYgen-3000XT Series</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/generator-controllers/">Generator controller</a></dd></div><div><dt>Registers</dt><dd>90 (8 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Firmware</dt><dd>Release 2.17-0</dd></div><div><dt>Also known as</dt><dd>easYgen-3100XT-P1, easYgen-3200XT-P1, easYgen-3200XT-P1-LT, easYgen-3100XT, easYgen-3200XT</dd></div><div><dt>Source document</dt><dd><a href="https://www.woodward.com/products/wp-content/uploads/sites/3/2025/04/B37574_U.pdf" rel="nofollow noopener" target="_blank">Manual easYgen-3000XT Series Genset Control, Release 2.17-0 &middot; B37574 Revision U &middot; rev. 2025</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/woodward/easygen-3000xt-easymodbus.csv">Copy for the phone app <small>90 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/woodward/easygen-3000xt-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/woodward/easygen-3000xt.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/woodward/easygen-3000xt.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/woodward/easygen-3000xt.json">JSON</a>
   <a class="btn" href="https://www.woodward.com/products/wp-content/uploads/sites/3/2025/04/B37574_U.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Woodward easYgen-3000XT Series</h2>
 <div class="answer"><b>Integration in brief</b><p>Block-read holding registers from 50000 (up to 128 per request) for status and alarms, and the 32-bit generator and mains values at 50322-50411. To start or stop the set, write parameter 503 with 0 and then the start (bit 0) or stop (bit 1) bit; acknowledge alarms by pulsing bit 4 twice.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-50099">HR 50099</a></td><td class="n">Control mode</td><td class="f">BITMAP16</td><td>Operating mode (AUTO/STOP/MANUAL/TEST)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-50104">HR 50104</a></td><td class="n">Control bits 3</td><td class="f">BITMAP16</td><td>GCB / MCB closed flags</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-50114">HR 50114</a></td><td class="n">Alarm general</td><td class="f">BITMAP16</td><td>Latched alarm classes A-F</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-50009">HR 50009</a></td><td class="n">Generator frequency</td><td class="f">INT16</td><td>Generator frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-50322">HR 50322</a></td><td class="n">Total generator active power</td><td class="f">INT32 ABCD</td><td>Total generator active power (32-bit)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-50346">HR 50346</a></td><td class="n">Generator voltage L1-L2</td><td class="f">INT32 ABCD</td><td>Generator voltage L1-L2 (32-bit)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-50336">HR 50336</a></td><td class="n">Generator current 1</td><td class="f">INT32 ABCD</td><td>Generator current 1 (32-bit)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-50052">HR 50052</a></td><td class="n">Battery voltage</td><td class="f">INT16</td><td>Battery voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-503">HR 503</a></td><td class="n">Remote control word 1</td><td class="f">BITMAP16</td><td>Remote start / stop / acknowledge</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -480,9 +468,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>The manual states Modbus registers are big-endian; 32-bit values are read high word first (ABCD). LogicsManager composite parameters are the exception (little-endian) and are not on this page.</li><li>Left out: the 16-bit power, voltage and current values at 50010-50021 and 50031-50040. Their scale depends on exponents published at 50001-50003 and the manual does not give the formula clearly enough; use the 32-bit values from 50322, which have fixed scaling.</li><li>Left out: 50028/50029 (setpoint frequency / PF, printed with a multiplier of 1 that does not fit their units), the &#x27;active (reserved)&#x27; alarm words, and rows the table marks for the easYgen-3400XT/3500XT only (busbar L2-L3/L3-L1, LSx values, GGB bits, analog inputs 4-12, relays 13-22).</li><li>The status message at 50100 is an index into the manual&#x27;s status message list; the index-to-text mapping is not tabulated, so no enum is given.</li><li>&#x27;Latched&#x27; alarm words hold an alarm until it is acknowledged. The controller also offers alarm telegrams (protocols 5011/5017) that are not covered here.</li><li>Interface setpoints only take effect when the matching AnalogManager source (05.56, 05.12, 05.53, 05.59, 05.83) is selected. Parameters 507-511 are described with CANopen object data types; their Modbus addresses follow the parameter rule on p. 921.</li><li>The easYgen-3400XT/3500XT use the same 5010 telegram but are documented in their own manual, which was not checked for this page.</li><li>The parameter list gives Ethernet A a default IP of 10.31.140.0 with mask 255.255.240.0. The TCP port is not stated in the manual.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Woodward easYgen-3000XT Series</h2><div class="faq"><details open><summary>What Modbus registers does the Woodward easYgen-3000XT Series have?</summary><p>This map lists 90 registers: 90 holding registers. 8 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Woodward easYgen-3000XT Series Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The protocol 5010 table in the appendix prints wire addresses (Protocol ID at 50000). The Modbus chapter shows the same block Modicon-style from 450001 and says 450001 can become bus address 50000. Parameters (remote control, setpoints) use Modicon address = 40000 + (parameter ID + 1), so parameter 503 is 40504 and wire address 503. The manual warns some PC tools need a shift of one (e.g. 504); if a write has no effect, try the neighbour.</p></details><details><summary>What byte order does the Woodward easYgen-3000XT Series use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Woodward easYgen-3000XT Series?</summary><p>Start with HR 50099 Control mode (Operating mode (AUTO/STOP/MANUAL/TEST)); HR 50104 Control bits 3 (GCB / MCB closed flags); HR 50114 Alarm general (Latched alarm classes A-F); HR 50009 Generator frequency (Generator frequency); HR 50322 Total generator active power (Total generator active power (32-bit)); HR 50346 Generator voltage L1-L2 (Generator voltage L1-L2 (32-bit)); HR 50336 Generator current 1 (Generator current 1 (32-bit)); HR 50052 Battery voltage (Battery voltage); HR 503 Remote control word 1 (Remote start / stop / acknowledge).</p></details><details><summary>How do I enable Modbus control of the Woodward easYgen-3000XT Series?</summary><p>RS-485: set Modbus slave ID (parameter 3188, default 1; 0 disables Modbus) and baud/parity/stop bits (3170-3172). Ethernet: set Modbus/TCP slave ID (7485) and the Ethernet A IP settings, then turn on the matching &#x27;Set IP address&#x27; parameter. Protocol number 3184 must stay 5010 for this map; a change needs a reboot. For a remote start, the LogicsManager start request must include 04.13 Remote request.</p></details><details><summary>What happens when the Woodward easYgen-3000XT Series loses Modbus communication?</summary><p>No Modbus communication timeout is documented. Bits 2 and 3 of parameter 503 must always be 0; the manual reserves them for a watchdog. A remote start request (04.13) stays set until a stop bit arrives or power is lost.</p></details><details><summary>Where is the official Woodward easYgen-3000XT Series Modbus documentation?</summary><p>The source is Manual easYgen-3000XT Series Genset Control, Release 2.17-0 (B37574 Revision U), revision 2025, published free by Woodward at https://www.woodward.com/products/wp-content/uploads/sites/3/2025/04/B37574_U.pdf.</p></details></div>
@@ -494,10 +483,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -523,14 +512,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

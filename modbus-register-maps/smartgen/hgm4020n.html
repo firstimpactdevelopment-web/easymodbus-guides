@@ -232,12 +232,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/smartgen/hgm4020n-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/smartgen/hgm4020n.csv"
     },
     {
@@ -339,7 +333,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/smartgen/">SmartGen</a></li><li aria-current="page">HGM4010N / HGM4020N</li></ol>
@@ -351,16 +345,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 SmartGen&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/smartgen/">SmartGen</a></dd></div><div><dt>Model</dt><dd>HGM4010N / HGM4020N</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/generator-controllers/">Generator controller</a></dd></div><div><dt>Registers</dt><dd>150 (7 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>HGM4010N, HGM4000N</dd></div><div><dt>Source document</dt><dd><a href="https://www.smartgen.cn/yun/data/download/HGM4000N_Protocol_en.pdf" rel="nofollow noopener" target="_blank">HGM4000N Genset Controller Communication Protocol &middot; rev. 2023-04-20 (v1.2)</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/smartgen/hgm4020n-easymodbus.csv">Copy for the phone app <small>150 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/smartgen/hgm4020n-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/smartgen/hgm4020n.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/smartgen/hgm4020n.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/smartgen/hgm4020n.json">JSON</a>
   <a class="btn" href="https://www.smartgen.cn/yun/data/download/HGM4000N_Protocol_en.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: SmartGen HGM4010N / HGM4020N</h2>
 <div class="answer"><b>Integration in brief</b><p>Wire to RS485 A/B, set the Controller Address, then poll holding registers 0000-0081 with FC03 and coils 0000-0084 with FC01. Remote commands are single FC05 writes of FF00 to coils 0000-0006, the same addresses that read back as status bits.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-co-0">CO 0</a></td><td class="n">Common Alarm (read) / WRITE = REMOTE START</td><td class="f">BIT</td><td>Common alarm (read) / remote start (write)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-co-41">CO 41</a></td><td class="n">Auto Mode</td><td class="f">BIT</td><td>Auto mode active</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-34">HR 34</a></td><td class="n">Controller Running Status</td><td class="f">UINT16</td><td>Genset running state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-7">HR 7</a></td><td class="n">Gen UA</td><td class="f">UINT16</td><td>Generator phase A voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-14">HR 14</a></td><td class="n">A Phase Current</td><td class="f">UINT16</td><td>Phase A current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-26">HR 26</a></td><td class="n">Active Power</td><td class="f">UINT16</td><td>Total active power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23">HR 23</a></td><td class="n">Speed</td><td class="f">UINT16</td><td>Engine speed</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-24">HR 24</a></td><td class="n">Battery Voltage</td><td class="f">UINT16</td><td>Battery voltage</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -529,9 +517,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Coil addresses 0-6 are shared: FC01 reads return status bits, while an FC05 write of FF00 to the same address issues a remote command (start, stop, test, auto, manual, breaker). Each entry names both meanings; the write meaning is in capitals.</li><li>HGM4010N and HGM4020N differ at command coils 5 and 6: on the HGM4020N they are gen and mains close/open keys, on the HGM4010N gen open and gen close keys.</li><li>The only 32-bit value (Accum. Fuel Consump., 0068-0069) is low word first: the document&#x27;s example reads E240h at 0068 and 0001h at 0069 and combines them to 0001E240h (123456). Its result table labels the rows 0103/0104, but the request frame uses start address 0x0044 (68).</li><li>Left out: mains and gen frequency (0006, 0013). The table prints ratio 0.1 Hz, but the note explaining ratios uses frequency with ratio 0.01 Hz as its worked example, so the scale is contradictory.</li><li>Left out: oil pressure value (0019), fuel level value (0021), aux. sensor value and resistance (0030-0031) and coolant level (0058), because no ratio is printed for them; the delay values at 0037 and 0039 because neither ratio nor unit is printed; Load Output Percentage (0055) because its range is -100 to 100 but it is marked unsigned; HW version (0051) because no format is given.</li><li>Run hours, start count and energy are each split into an MSB register (0-9000) and an LSB register (0-9999). The document does not say how the two parts combine, so they are listed separately.</li><li>Water and ECU temperatures and the powers are documented as unsigned, so negative values cannot be represented as documented.</li><li>A reading of 32766 means the sensor is open (controller shows ++++); 32767 means the ECU sent no data (####).</li><li>The controller running status table stops at 14 (Stop Failure); no &#x27;After Stop&#x27; state is listed in this document.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the SmartGen HGM4010N / HGM4020N</h2><div class="faq"><details open><summary>What Modbus registers does the SmartGen HGM4010N / HGM4020N have?</summary><p>This map lists 150 registers: 83 coils, 67 holding registers. 7 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the SmartGen HGM4010N / HGM4020N Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Tables print a decimal &#x27;Modbus Address&#x27; (used here as the wire address) next to a 1-based &#x27;PLC Address&#x27; (coils 0001.., holding registers 40001..). The document&#x27;s examples confirm the Modbus Address column is the PDU address: Accum. Fuel Consump. at 0068 is requested with start address 0x0044, and Remote Manual at 0004 is written to coil 0x0004.</p></details><details><summary>What byte order does the SmartGen HGM4010N / HGM4020N use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the SmartGen HGM4010N / HGM4020N?</summary><p>Start with CO 0 Common Alarm (read) / WRITE = REMOTE START (Common alarm (read) / remote start (write)); CO 41 Auto Mode (Auto mode active); HR 34 Controller Running Status (Genset running state); HR 7 Gen UA (Generator phase A voltage); HR 14 A Phase Current (Phase A current); HR 26 Active Power (Total active power); HR 23 Speed (Engine speed); HR 24 Battery Voltage (Battery voltage).</p></details><details><summary>How do I enable Modbus control of the SmartGen HGM4010N / HGM4020N?</summary><p>Set a unique Controller Address (1-254, default 1) from the front panel: menu, Parameter Setting, password (default 0318), Controller Address. The setting applies once saved. Parity is none, odd or even (default none); the document gives 9600 bps as the only baud rate.</p></details><details><summary>Where is the official SmartGen HGM4010N / HGM4020N Modbus documentation?</summary><p>The source is HGM4000N Genset Controller Communication Protocol, revision 2023-04-20 (v1.2), published free by SmartGen at https://www.smartgen.cn/yun/data/download/HGM4000N_Protocol_en.pdf.</p></details></div>
@@ -543,10 +532,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -572,14 +561,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

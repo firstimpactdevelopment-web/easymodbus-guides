@@ -234,12 +234,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/wm50-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/wm50.csv"
     },
     {
@@ -341,7 +335,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></li><li aria-current="page">WM50 power analyzer with TCD branch channels</li></ol>
@@ -353,16 +347,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Carlo Gavazzi&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></dd></div><div><dt>Model</dt><dd>WM50 power analyzer with TCD branch channels</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter (power analyzer)</a></dd></div><div><dt>Registers</dt><dd>81 (15 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Firmware</dt><dd>X0 (all WM50 firmware letters A and B)</dd></div><div><dt>Also known as</dt><dd>WM50, WM50AV5, WM50-96, WM50 AV5</dd></div><div><dt>Source document</dt><dd><a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/WM50_CP.pdf" rel="nofollow noopener" target="_blank">WM50 Communication Protocol (User version) &middot; rev. 1.0.0 &middot; rev. 2017-09-27</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/wm50-easymodbus.csv">Copy for the phone app <small>80 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/wm50-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/wm50.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/carlo-gavazzi/wm50.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/carlo-gavazzi/wm50.json">JSON</a>
   <a class="btn" href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/WM50_CP.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Carlo Gavazzi WM50 power analyzer with TCD branch channels</h2>
 <div class="answer"><b>Integration in brief</b><p>Read input registers (function 04, or 03) from 0050h as low-word-first floats for main-feeder values and 0500h-051Fh as UINT64 Wh/varh counters (least significant word first). Branch circuits start at C200h, 14 registers per channel.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-80">IR 80</a></td><td class="n">V L1-N</td><td class="f">FLOAT32 CDAB</td><td>V L1-N (float)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-96">IR 96</a></td><td class="n">A L1</td><td class="f">FLOAT32 CDAB</td><td>A L1 (float)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-110">IR 110</a></td><td class="n">W system</td><td class="f">FLOAT32 CDAB</td><td>W system (float)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-134">IR 134</a></td><td class="n">PF system</td><td class="f">FLOAT32 CDAB</td><td>PF system</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-136">IR 136</a></td><td class="n">Frequency</td><td class="f">FLOAT32 CDAB</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-1280">IR 1280</a></td><td class="n">Total kWh+</td><td class="f">UINT64 CDAB</td><td>Total kWh+ in Wh</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-11">IR 11</a></td><td class="n">Carlo Gavazzi identification code</td><td class="f">UINT16</td><td>Model ID (99 = WM50)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-49666">IR 49666</a></td><td class="n">Channel 1 active power</td><td class="f">FLOAT32 CDAB</td><td>Branch channel 1 active power</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -462,9 +450,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Float word order: the data-format page lists frame bytes as float bits 15-8, 7-0, 31-24, 23-16, i.e. low word first with MSB-first bytes (CDAB).</li><li>Integer word order: UINT16/UINT64 are MSB-first inside a word and LSW first across words (p. 28). Under this library&#x27;s 64-bit convention CDAB means least significant word first with all four words reversed, which is what the document describes.</li><li>Functions 03 and 04 return the same data; reads are limited to 125 registers. Measured values are listed as input registers, commands and the default tariff as holding registers (written with 06 or 10h).</li><li>After a reset sent with function 10h, wait at least 1 second before the next request.</li><li>Float units are not printed in a separate column; the variable names (V, A, W, VA, var, Hz, %) give the engineering units, so no scaling is applied. Energy counters are in Wh / varh, not kWh.</li><li>Source quirk: the A system row (009Ah) is printed with Modicon 300153, the same number as the row above it; the physical address is used here.</li><li>Left out: the main-unit THD and TDD floats (00A0h-00DAh), which have no unit or scaling stated (precedent from the WM20/30/40 map); temperature and analogue input (0096h/0098h, optional module, unit not printed); the hour counter (0520h, packed hours x100 plus minutes); totalizers C-1..C-3 (0584h-058Ch, &#x27;values multiplied by 1000&#x27; without a base unit); max/min/demand blocks; harmonics; clock; and alarm/latch reset commands.</li><li>Left out: the TCD channel and load energy counters (Wh+, UINT32) and the min/max/demand timestamps (UINT32). The data-format page states the word order only for UINT16 and UINT64, not for UINT32.</li><li>TCD blocks: only channel 1 and load 1 are listed. Channels repeat every 14 registers from C200h (channel 96 at C732h); loads 1-48 repeat every 24 registers from C760h (load 48 at CBC8h). The channel voltage references are one register per channel from C100h to C15Fh.</li><li>RS485/Ethernet communication settings are not in this document; set them on the instrument (see the WM50 instruction manual).</li><li>This document shows only RTU frames (with CRC); TCP is listed because the MCETH module is the Ethernet option, which this document does not describe further.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Carlo Gavazzi WM50 power analyzer with TCD branch channels</h2><div class="faq"><details open><summary>What Modbus registers does the Carlo Gavazzi WM50 power analyzer with TCD branch channels have?</summary><p>This map lists 81 registers: 66 input registers, 15 holding registers. 15 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Carlo Gavazzi WM50 power analyzer with TCD branch channels Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each row shows a 6-digit Modicon number for function 04 (3xxxxx; replace the first digit with 4 for function 03) beside the hex &#x27;physical address&#x27; that the document says goes in the frame. Wire address = physical address: 300081 / 0050h is requested as 0x0050.</p></details><details><summary>What byte order does the Carlo Gavazzi WM50 power analyzer with TCD branch channels use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Carlo Gavazzi WM50 power analyzer with TCD branch channels?</summary><p>Start with IR 80 V L1-N (V L1-N (float)); IR 96 A L1 (A L1 (float)); IR 110 W system (W system (float)); IR 134 PF system (PF system); IR 136 Frequency (Frequency); IR 1280 Total kWh+ (Total kWh+ in Wh); IR 11 Carlo Gavazzi identification code (Model ID (99 = WM50)); IR 49666 Channel 1 active power (Branch channel 1 active power).</p></details><details><summary>How do I enable Modbus control of the Carlo Gavazzi WM50 power analyzer with TCD branch channels?</summary><p>Fit a communication module (the status word at 4002h shows MC485232 or MCETH as present) and set its communication parameters on the instrument as described in the WM50 instruction manual; this document does not list them.</p></details><details><summary>Where is the official Carlo Gavazzi WM50 power analyzer with TCD branch channels Modbus documentation?</summary><p>The source is WM50 Communication Protocol (User version) (rev. 1.0.0), revision 2017-09-27, published free by Carlo Gavazzi at https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/WM50_CP.pdf.</p></details></div>
@@ -476,10 +465,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -505,14 +494,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

@@ -241,12 +241,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/sma/sunny-tripower-storage-x-sunny-island-x-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/sma/sunny-tripower-storage-x-sunny-island-x.csv"
     },
     {
@@ -356,7 +350,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/sma/">SMA</a></li><li aria-current="page">Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS)</li></ol>
@@ -368,16 +362,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 SMA&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/sma/">SMA</a></dd></div><div><dt>Model</dt><dd>Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/solar-inverters/">Battery inverter</a></dd></div><div><dt>Registers</dt><dd>30 (21 writable)</dd></div><div><dt>Transport</dt><dd>Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>3</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>STPS30-20, STPS50-20, STPS27-US-20, STPS60-US-20, SI30-20, SI50-20, SI27-US208-20, SI40-US480-20, SI60-US480-20, Sunny Tripower Storage X 50, Sunny Island X 50</dd></div><div><dt>Source document</dt><dd><a href="https://files.sma.de/downloads/SMAModbus-STPS-X-SI-X-TI-en-11.pdf" rel="nofollow noopener" target="_blank">SMA Modbus Interface - Sunny Tripower Storage X / Sunny Island X (Technical Information) &middot; SMAModbus-STPS-X-SI-X-TI-en-11 (Version 1.1) &middot; rev. 2026-04-20</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/sma/sunny-tripower-storage-x-sunny-island-x-easymodbus.csv">Copy for the phone app <small>30 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/sma/sunny-tripower-storage-x-sunny-island-x-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/sma/sunny-tripower-storage-x-sunny-island-x.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/sma/sunny-tripower-storage-x-sunny-island-x.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/sma/sunny-tripower-storage-x-sunny-island-x.json">JSON</a>
   <a class="btn" href="https://files.sma.de/downloads/SMAModbus-STPS-X-SI-X-TI-en-11.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS)</h2>
 <div class="answer"><b>Integration in brief</b><p>Activate the Modbus TCP server on the System Manager, disable its energy management if a third-party EMS will steer the batteries, then talk to each device on unit ID 3 (port 502). Set 40210 = 1079, 41195 = timeout and 44029 = 303 once, then write 44449 and 44451 together at a regular interval (SMA&#x27;s example: once per second).</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-30845">IR 30845</a></td><td class="n">Current battery state of charge (unit ID 2/3)</td><td class="f">UINT32 ABCD</td><td>Battery state of charge (%)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-30955">IR 30955</a></td><td class="n">Operating status of battery (unit ID 3)</td><td class="f">UINT32 ABCD</td><td>Battery operating status</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40029">HR 40029</a></td><td class="n">General operating status (unit ID 2/3)</td><td class="f">UINT32 ABCD</td><td>General operating status</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40210">HR 40210</a></td><td class="n">Operating mode active power setpoint (unit ID 3)</td><td class="f">UINT32 ABCD</td><td>Active power setpoint mode - must be 1079 for external battery control</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-41195">HR 41195</a></td><td class="n">Timeout for external setpoint (unit ID 2/3)</td><td class="f">UINT32 ABCD</td><td>External setpoint timeout (watchdog)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-44449">HR 44449</a></td><td class="n">Maximum active power battery (unit ID 3)</td><td class="f">INT32 ABCD</td><td>Battery power upper bound (%)</td><td><span class="acc W">Write</span></td></tr><tr><td class="t"><a href="#r-hr-44451">HR 44451</a></td><td class="n">Minimum active power battery (unit ID 3)</td><td class="f">INT32 ABCD</td><td>Battery power lower bound (%)</td><td><span class="acc W">Write</span></td></tr></tbody></table></div>
@@ -426,9 +414,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Word order: the SMA Modbus ennexOS TI (SMAModbus-ennexOS-TI-en-14, https://files.sma.de/downloads/SMAModbus-ennexOS-TI-en-14.pdf, section 3.4.3) says the big-endian transmission rule also applies to 32/64-bit values (&#x27;Big-Big&#x27;); its validity list names STPS 30-20/50-20, SI30-20/SI50-20 and Sunny Island X-US. For all variants, including STPS27-US-20/STPS60-US-20, this TI&#x27;s own battery example writes 10 % to 44449/44451 as 0000 03E8 and shows NaN as 8000 0000, i.e. high word first.</li><li>Format to scale: FIX0 = integer (x1), FIX2 = two decimals (x0.01), FIX3 = three decimals (x0.001), DURATION = seconds, per the SMA data formats in the ennexOS TI. TAGLIST/ENUM values are tag codes.</li><li>NaN values: U32 0xFFFFFFFF, S32 0x80000000, and status tags (TAGLIST) 16777213 (0xFFFFFD) for &#x27;information not available&#x27;.</li><li>The unit ID in each name tells where to read the register: 1 = communication product, 2 = system (System Manager view), 3 = individual device; &#x27;2/3&#x27; registers exist under both and may differ because one is the system view.</li><li>Table: 3xxxx registers are listed here as input registers and 4xxxx as holding registers. The TI&#x27;s procedure reads with function 0x04 and writes with 0x10; the ennexOS TI lists 0x03, 0x04, 0x06 and 0x10 as supported.</li><li>Left out: 30233 (&#x27;Accumulated connected power of the PV inverter&#x27;) - its row text describes setting an active power limit while the access is read-only, so the source contradicts itself on what the register is.</li><li>Left out: 31391 - named &#x27;Battery state of charge&#x27; but documented as returning a status tag (error/off/OK/warning); name and format disagree. Use 30845 for the state of charge in percent.</li><li>This TI is deliberately limited to control-related registers; the full device list is in SMA&#x27;s per-device &#x27;Parameters and Measured Values&#x27; document, which was not available as a free download and is not covered here.</li><li>Writable RW parameters are meant for long-term settings; SMA marks some that must not be changed more than once a day and marks the grid-management parameters that may be written cyclically. The markings are in SMA&#x27;s &#x27;Parameters and Measured Values&#x27; document, not in this TI.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS)</h2><div class="faq"><details open><summary>What Modbus registers does the SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS) have?</summary><p>This map lists 30 registers: 7 input registers, 23 holding registers. 21 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The SMA tables list &#x27;ADR&#x27; as the decimal Modbus register and the TI&#x27;s own procedure enters ADR directly as the start address in the Modbus master, so the printed number is the wire address (30845 is requested as 30845). Only the SunSpec profile (unit ID 126, from 40001) uses a minus-one offset - that profile is not part of this map.</p></details><details><summary>What byte order does the SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS) use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS)?</summary><p>Start with IR 30845 Current battery state of charge (unit ID 2/3) (Battery state of charge (%)); IR 30955 Operating status of battery (unit ID 3) (Battery operating status); HR 40029 General operating status (unit ID 2/3) (General operating status); HR 40210 Operating mode active power setpoint (unit ID 3) (Active power setpoint mode - must be 1079 for external battery control); HR 41195 Timeout for external setpoint (unit ID 2/3) (External setpoint timeout (watchdog)); HR 44449 Maximum active power battery (unit ID 3) (Battery power upper bound (%)); HR 44451 Minimum active power battery (unit ID 3) (Battery power lower bound (%)).</p></details><details><summary>How do I enable Modbus control of the SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS)?</summary><p>Log in to the user interface of the device configured as System Manager and activate its Modbus server (TCP only; no RTU or UDP). For direct battery control the energy management in the System Manager must be deactivated, after which the third-party EMS is responsible for battery and inverter protection (basic functions such as deep-discharge protection remain). Set CtlComMssMod to &#x27;Apply fallback values&#x27; and FlbWMaxNom/FlbWMinNom to 0 in the parameters.</p></details><details><summary>What happens when the SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS) loses Modbus communication?</summary><p>41195 &#x27;Timeout for external setpoint&#x27; (1-1800 s, default 600 s) with 41193 choosing &#x27;keep values&#x27; (2506, default) or &#x27;use fallback values&#x27; (2507) when setpoints stop. SMA&#x27;s battery procedure uses a 10 s timeout and resends 44449/44451 about once per second.</p></details><details><summary>Where is the official SMA Sunny Tripower Storage X / Sunny Island X (SMA Modbus, ennexOS) Modbus documentation?</summary><p>The source is SMA Modbus Interface - Sunny Tripower Storage X / Sunny Island X (Technical Information) (SMAModbus-STPS-X-SI-X-TI-en-11 (Version 1.1)), revision 2026-04-20, published free by SMA at https://files.sma.de/downloads/SMAModbus-STPS-X-SI-X-TI-en-11.pdf.</p></details></div>
@@ -440,10 +429,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -469,14 +458,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

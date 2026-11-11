@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/fronius/gen24-sunspec-int-sf.csv"
     },
     {
@@ -343,7 +337,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/fronius/">Fronius</a></li><li aria-current="page">Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF</li></ol>
@@ -355,16 +349,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Fronius&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/fronius/">Fronius</a></dd></div><div><dt>Model</dt><dd>Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/solar-inverters/">Solar inverter</a></dd></div><div><dt>Registers</dt><dd>162 (24 writable)</dd></div><div><dt>Transport</dt><dd>Modbus TCP, Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Documented addressing</dt><dd>1-based (subtract 1 for the wire address)</dd></div><div><dt>Firmware</dt><dd>Register map archive 1.2.7-2 (bundled with GEN24 firmware 1.36.x); manual 42,0410,2649 rev. 034-28092026.</dd></div><div><dt>Also known as</dt><dd>Primo GEN24 Plus, Symo GEN24 Plus, Primo GEN24, Symo GEN24, Symo GEN24 10.0 Plus, Primo GEN24 6.0 Plus</dd></div><div><dt>Source document</dt><dd><a href="https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf" rel="nofollow noopener" target="_blank">Fronius GEN24 Modbus TCP &amp; RTU (operating instructions) + Gen24_Primo_Symo_Inverter_Register_Map_Int&amp;SF_storage_ROW.xlsx &middot; 42,0410,2649 (034-28092026) &middot; rev. 2026-09</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/fronius/gen24-sunspec-int-sf-easymodbus.csv">Copy for the phone app <small>153 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/fronius/gen24-sunspec-int-sf-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/fronius/gen24-sunspec-int-sf.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/fronius/gen24-sunspec-int-sf.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/fronius/gen24-sunspec-int-sf.json">JSON</a>
   <a class="btn" href="https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF</h2>
 <div class="answer"><b>Integration in brief</b><p>In the inverter web UI (Communication &gt; Modbus) enable the TCP server, select int+SF and tick Allow Control if you need writes; then poll unit ID 1. Read registers 40070-40109 (wire addresses 40069-40108) for live data, register 40352 (address 40351) for battery SoC, and use models 123/124 for power limits and battery windows.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-40069">HR 40069</a></td><td class="n">Inverter ID</td><td class="f">UINT16</td><td>Inverter model ID (101/103) - confirms int+SF layout</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40083">HR 40083</a></td><td class="n">W</td><td class="f">INT16</td><td>AC power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40084">HR 40084</a></td><td class="n">W_SF</td><td class="f">INT16</td><td>AC power scale factor (auto-scaled)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40107">HR 40107</a></td><td class="n">St</td><td class="f">UINT16</td><td>Operating state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40351">HR 40351</a></td><td class="n">ChaState</td><td class="f">UINT16</td><td>Battery state of charge</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40365">HR 40365</a></td><td class="n">ChaState_SF</td><td class="f">INT16</td><td>SoC scale factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40232">HR 40232</a></td><td class="n">WMaxLimPct</td><td class="f">UINT16</td><td>Active power limit %</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-40236">HR 40236</a></td><td class="n">WMaxLim_Ena</td><td class="f">UINT16</td><td>Enable/disable the power limit</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-40250">HR 40250</a></td><td class="n">WMaxLimPct_SF</td><td class="f">INT16</td><td>Power limit scale factor</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -545,9 +533,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Register table from Fronius&#x27; official GEN24 XLSX (gen24-modbus-api-external-docs.zip, linked from the Fronius Modbus TCP open-interfaces page); behaviour and settings from the PDF.</li><li>Addresses assume SunSpec Model Type = int+SF and a battery configured. With float the inverter model is 111/113 and later models move by +10. Without a battery the MPPT model has only inputs 1-2 and the end block follows at 40304. Fronius advises walking the model chain from 40001 rather than hard-coding addresses.</li><li>Word order: neither the PDF nor the XLSX states the order of 32/64-bit values, so they are left out: SID 40001-40002, WH 40094-40095, Evt1/Evt2/EvtVnd1-2 40110-40117, ActWh 40187-40190, StActCtl 40217-40218, Tms 40223-40224, and DCWH/Tms of every MPPT input. The SID is documented as 0x53756E53 &#x27;SunS&#x27;, which suggests high word first, but this is not stated.</li><li>DCA/DCV in the inverter model are left out: GEN24 has several DC inputs, their scale factors are marked not supported, and per-input values are in model 160.</li><li>Registers marked &#x27;not supported&#x27; in the XLSX are left out (Opt, other temperatures, VMax/VMin, ramp settings, model 160 Tmp/DCSt/DCEvt, StorAval, InBatV and similar). VAChaMax (40350) is listed as writable but its scale factor VAChaMax_SF is marked not supported, so it is left out too.</li><li>Many scale factors are &#x27;auto-scaled&#x27; (A, W, VA, VAr, WH, DCW, Ris, model 160): they change at runtime, so read a value and its SF in the same request.</li><li>Unsupported values read as: int16 0x8000, uint16/enum16/bitfield16 0xFFFF, sunssf 0x8000. Phase B/C and line-line points depend on the grid connection.</li><li>Settings model 121 registers are all read-only in the GEN24 map (the Datamanager map marks some writable).</li><li>StVnd is documented as identical to St; the PDF lists SunSpec states 1-8.</li><li>The Smart Meter is published at its own unit ID (default 200, then 201-204) with a separate common block and meter model starting at 40001; not part of this map.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF</h2><div class="faq"><details open><summary>What Modbus registers does the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF have?</summary><p>This map lists 162 registers: 162 holding registers. 24 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Fronius numbers SunSpec registers from 40001 and says to send the register number minus one: register 40001 is read at address 40000 (0x9C40). The manual&#x27;s RTU example reads register 40005 (Mn) with address bytes 9C 44 (40004).</p></details><details><summary>What are the minimum Modbus registers to integrate the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF?</summary><p>Start with HR 40069 Inverter ID (Inverter model ID (101/103) - confirms int+SF layout); HR 40083 W (AC power); HR 40084 W_SF (AC power scale factor (auto-scaled)); HR 40107 St (Operating state); HR 40351 ChaState (Battery state of charge); HR 40365 ChaState_SF (SoC scale factor); HR 40232 WMaxLimPct (Active power limit %); HR 40236 WMaxLim_Ena (Enable/disable the power limit); HR 40250 WMaxLimPct_SF (Power limit scale factor).</p></details><details><summary>How do I enable Modbus control of the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF?</summary><p>Inverter web interface &gt; Communication &gt; Modbus: choose TCP Server and/or RTU Server, set SunSpec Model Type (int+SF for this map), and activate &#x27;Allow Control&#x27; for on/off, power reduction, power factor, reactive power and battery commands. &#x27;Restrict Control&#x27; limits control to fixed IP addresses. Writes to models 123/124 raise an exception when control is not allowed.</p></details><details><summary>What happens when the Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF loses Modbus communication?</summary><p>Model 123 controls have *_RvrtTms fallback timers (0-28800 s) that restart with every Modbus message; on expiry the control ends and the next-priority mode takes over. 0 (default) keeps the setting until disabled. Model 124 has InOutWRte_RvrtTms (0-28800 s) for the battery window.</p></details><details><summary>Where is the official Fronius Primo GEN24 / Symo GEN24 (Plus) SunSpec int+SF Modbus documentation?</summary><p>The source is Fronius GEN24 Modbus TCP &amp; RTU (operating instructions) + Gen24_Primo_Symo_Inverter_Register_Map_Int&amp;SF_storage_ROW.xlsx (42,0410,2649 (034-28092026)), revision 2026-09, published free by Fronius at https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2649.pdf.</p></details></div>
@@ -559,10 +548,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -588,14 +577,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

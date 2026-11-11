@@ -231,12 +231,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/eastron/sdm630mct-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/eastron/sdm630mct.csv"
     },
     {
@@ -338,7 +332,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/eastron/">Eastron</a></li><li aria-current="page">SDM630MCT</li></ol>
@@ -350,16 +344,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Eastron&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/eastron/">Eastron</a></dd></div><div><dt>Model</dt><dd>SDM630MCT</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>109 (12 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>SDM630 MCT</dd></div><div><dt>Source document</dt><dd><a href="https://www.eastroneurope.com/images/uploads/products/protocol/SDM630MCT_MODBUS_Protocol_V1.7.pdf" rel="nofollow noopener" target="_blank">Eastron SDM630MCT Smart Meter Modbus Protocol Implementation V1.7 &middot; V1.7</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/eastron/sdm630mct-easymodbus.csv">Copy for the phone app <small>109 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/eastron/sdm630mct-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/eastron/sdm630mct.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/eastron/sdm630mct.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/eastron/sdm630mct.json">JSON</a>
   <a class="btn" href="https://www.eastroneurope.com/images/uploads/products/protocol/SDM630MCT_MODBUS_Protocol_V1.7.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Eastron SDM630MCT</h2>
 <div class="answer"><b>Integration in brief</b><p>Use function 04 from 30001 (wire 0) in blocks of up to 60 registers; every value is a big-endian float. Settings are floats in holding registers written with function 16, one parameter per message; system type and CT/PT ratios need the password written to 40025 first.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">Phase 1 line to neutral volts</td><td class="f">FLOAT32 ABCD</td><td>Phase 1 voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-6">IR 6</a></td><td class="n">Phase 1 current</td><td class="f">FLOAT32 ABCD</td><td>Phase 1 current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-52">IR 52</a></td><td class="n">Total system power</td><td class="f">FLOAT32 ABCD</td><td>Total system power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-62">IR 62</a></td><td class="n">Total system power factor</td><td class="f">FLOAT32 ABCD</td><td>Total power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-70">IR 70</a></td><td class="n">Frequency of supply voltages</td><td class="f">FLOAT32 ABCD</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-72">IR 72</a></td><td class="n">Total import kWh</td><td class="f">FLOAT32 ABCD</td><td>Total import kWh</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-74">IR 74</a></td><td class="n">Total export kWh</td><td class="f">FLOAT32 ABCD</td><td>Total export kWh</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-62">HR 62</a></td><td class="n">CT ratio</td><td class="f">FLOAT32 ABCD</td><td>CT ratio check</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -487,9 +475,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Hosted by Eastron (Metering) Europe, Eastron&#x27;s European site.</li><li>Word order: the document says each value is an IEEE-754 float sent most significant register first by default (ABCD). It mentions a &#x27;Register Order&#x27; holding register that can change this, but that register is not in the table, so it is not listed.</li><li>Read and write an even number of registers; odd counts return an exception. A request is limited to 30 values (60 registers) per the overview, while the input-register section says 40 parameters; keep requests at 30 values or fewer.</li><li>Each input value is marked available or not per wiring system (3P4W, 3P3W, 1P2W); unavailable values read zero. The descriptions say where a value is missing.</li><li>Left out: 30255 &#x27;Total system power factor&#x27; because the table gives its unit as Degrees, which clashes with 30063.</li><li>Left out: CT2 and PT2 rows (hex 0034 / 0030), which have no register number in the table; and the serial number (464513), an unsigned 32-bit integer with no stated word order.</li><li>Demand note: the power-sum demand is described as calculated for import minus export; check on a live meter if the sign matters.</li><li>Total kWh / kVArh (30343 / 30345) are import plus export, not net.</li><li>CT type (1 A / 5 A) and DIN-rail mounting are from the SDM630MCT series user manual on eastrongroup.com (https://www.eastrongroup.com/eastrongroup/2024/08/21/eastronsdm630mctseriesusermanual.pdf).</li><li>The password default is printed as 1000 in the holding-register table but as 0000 in the password section; try both.</li><li>The reset register (461457) is a single 2-byte register although the overview says requests must use an even register count; the document does not resolve this.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Eastron SDM630MCT</h2><div class="faq"><details open><summary>What Modbus registers does the Eastron SDM630MCT have?</summary><p>This map lists 109 registers: 93 input registers, 16 holding registers. 12 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Eastron SDM630MCT Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Registers are printed Modicon style (30001 / 40001, and six-digit 46xxxx for high addresses) next to the hex start address actually sent. Wire address = printed number minus 30001 or 40001 (or 400001): 30001 is 0x0000, 30007 is 0x0006 (the document&#x27;s own example), 461457 is 0xF010.</p></details><details><summary>What byte order does the Eastron SDM630MCT use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Eastron SDM630MCT?</summary><p>Start with IR 0 Phase 1 line to neutral volts (Phase 1 voltage); IR 6 Phase 1 current (Phase 1 current); IR 52 Total system power (Total system power); IR 62 Total system power factor (Total power factor); IR 70 Frequency of supply voltages (Frequency); IR 72 Total import kWh (Total import kWh); IR 74 Total export kWh (Total export kWh); HR 62 CT ratio (CT ratio check).</p></details><details><summary>How do I enable Modbus control of the Eastron SDM630MCT?</summary><p>RS485 Modbus RTU is built in on the RS485 versions. Set address, baud rate and parity/stop bits from the front setup menu or holding registers 40021, 40029 and 40019.</p></details><details><summary>Where is the official Eastron SDM630MCT Modbus documentation?</summary><p>The source is Eastron SDM630MCT Smart Meter Modbus Protocol Implementation V1.7 (V1.7), published free by Eastron at https://www.eastroneurope.com/images/uploads/products/protocol/SDM630MCT_MODBUS_Protocol_V1.7.pdf.</p></details></div>
@@ -501,10 +490,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -530,14 +519,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

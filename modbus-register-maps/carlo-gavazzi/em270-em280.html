@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em270-em280-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em270-em280.csv"
     },
     {
@@ -343,7 +337,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></li><li aria-current="page">EM270 / EM280 dual three-phase energy meters with TCD current sensors</li></ol>
@@ -355,16 +349,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Carlo Gavazzi&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></dd></div><div><dt>Model</dt><dd>EM270 / EM280 dual three-phase energy meters with TCD current sensors</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>56 (7 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Firmware</dt><dd>EM270 X r.b0+, EM270 W r.C0+, EM280 r.E0+ (PF values from r.b4 / r.E3)</dd></div><div><dt>Also known as</dt><dd>EM270, EM280, EM270 X, EM270 W, EM27072DMV53X2SX, EM28072DMV53X2SX</dd></div><div><dt>Source document</dt><dd><a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM270_EM280_CP.pdf" rel="nofollow noopener" target="_blank">EM270 X &amp; W, EM280 Communication Protocol &middot; Version 5 Revision 1 &middot; rev. 2018-01-29</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/em270-em280-easymodbus.csv">Copy for the phone app <small>55 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em270-em280-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em270-em280.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/carlo-gavazzi/em270-em280.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em270-em280.json">JSON</a>
   <a class="btn" href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM270_EM280_CP.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Carlo Gavazzi EM270 / EM280 dual three-phase energy meters with TCD current sensors</h2>
 <div class="answer"><b>Integration in brief</b><p>Over RS485 read input registers (function 04, or 03) in short blocks: 0000h-000Ah for voltages, 010Ch-0120h for load 1 (TCDA1) and 020Ch-0220h for load 2 (TCDA2). All values are INT32 low word first with fixed scaling.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">V L1-N</td><td class="f">INT32 CDAB</td><td>V L1-N (x0.1 V)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-268">IR 268</a></td><td class="n">A L1 TCDA1</td><td class="f">INT32 CDAB</td><td>TCDA1 current L1 (x0.001 A)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-280">IR 280</a></td><td class="n">W total TCDA1</td><td class="f">INT32 CDAB</td><td>TCDA1 total power (x0.1 W)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-286">IR 286</a></td><td class="n">kWh(+) total TCDA1</td><td class="f">INT32 CDAB</td><td>TCDA1 kWh(+) (x0.1 kWh)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-536">IR 536</a></td><td class="n">W total TCDA2</td><td class="f">INT32 CDAB</td><td>TCDA2 total power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-542">IR 542</a></td><td class="n">kWh(+) total TCDA2</td><td class="f">INT32 CDAB</td><td>TCDA2 kWh(+)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-11">IR 11</a></td><td class="n">Carlo Gavazzi identification code</td><td class="f">UINT16</td><td>Model ID</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -439,9 +427,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Word order: the data-format section states that the byte order inside a word is MSB first and that INT32, UINT32 and UINT64 values are sent LSW first, so all 32-bit values here are CDAB.</li><li>Scaling is taken from the Notes column: Volt*10, Ampere*1000, Watt*10, VA*10, var*10, kWh*10, kvarh*10 and PF*1000, so the scales are 0.1, 0.001, 0.1, 0.1, 0.1, 0.1, 0.1 and 0.001.</li><li>Availability depends on the measuring system (3P 1.3P, 3P 2.3P, 3P 3.1P, 3P 6.1P, 1P 3.1P, 1P 6.1P); the document marks some values as available only when the SUM/Virtual function is on. Values are valid only when the same variable is shown on the meter display.</li><li>Functions 03 and 04 return the same data. The text allows up to 18 registers per read, but the request-frame table prints &#x27;1 to 10h (1 to 11)&#x27;, so keep each read to 16 registers or fewer. The version, keypad and ID registers may only be read one word at a time. Writes use function 06 only.</li><li>Setting rows (1000h onwards) are printed with 3xxxxx Modicon numbers but are written with function 06, so they are listed as holding registers.</li><li>Left out: per-phase demand and max-demand values, VA demand, per-phase var, per-phase PF, kWh(+) L2/L3 per TCD input, password, VT ratio and CT-type rows (model- and TCD-dependent tables), pulse output settings, easy-connection and TCD phase-order menus, and the UINT32 secondary address.</li><li>EM280 models report the TCD type (TCD06Bx / TCD06Sx) at 1003h instead of a CT primary value; that row is left out.</li><li>On EM270 X firmware r.b4 and later, register 1007h is &#x27;Virtual meter enabling&#x27; (SUM or DIF) rather than &#x27;Sum mode enabling&#x27;; because its meaning depends on firmware it is left out.</li><li>The serial port uses a fixed 1 stop bit; baud (9600/19200/38400) and parity (none/even) are set at 2001h/2002h.</li><li>The ID code at 000Bh shares its address with the second word of V L3-L1 (000Ah-000Bh); the document prints both. Read 000Bh on its own, one word per request, as the ID table requires.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Carlo Gavazzi EM270 / EM280 dual three-phase energy meters with TCD current sensors</h2><div class="faq"><details open><summary>What Modbus registers does the Carlo Gavazzi EM270 / EM280 dual three-phase energy meters with TCD current sensors have?</summary><p>This map lists 56 registers: 49 input registers, 7 holding registers. 7 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Carlo Gavazzi EM270 / EM280 dual three-phase energy meters with TCD current sensors Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each row shows a 6-digit Modicon number for function 04 (3xxxxx; replace the first digit with 4 for function 03) next to the hex &#x27;physical address&#x27; that the document says goes in the frame. Wire address = physical address: 300269 / 010Ch is requested as 0x010C.</p></details><details><summary>What byte order does the Carlo Gavazzi EM270 / EM280 dual three-phase energy meters with TCD current sensors use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Carlo Gavazzi EM270 / EM280 dual three-phase energy meters with TCD current sensors?</summary><p>Start with IR 0 V L1-N (V L1-N (x0.1 V)); IR 268 A L1 TCDA1 (TCDA1 current L1 (x0.001 A)); IR 280 W total TCDA1 (TCDA1 total power (x0.1 W)); IR 286 kWh(+) total TCDA1 (TCDA1 kWh(+) (x0.1 kWh)); IR 536 W total TCDA2 (TCDA2 total power); IR 542 kWh(+) total TCDA2 (TCDA2 kWh(+)); IR 11 Carlo Gavazzi identification code (Model ID).</p></details><details><summary>How do I enable Modbus control of the Carlo Gavazzi EM270 / EM280 dual three-phase energy meters with TCD current sensors?</summary><p>Modbus RTU runs on the built-in RS485 port. Address, baud and parity are set from the meter&#x27;s configuration or written at 2000h-2002h.</p></details><details><summary>Where is the official Carlo Gavazzi EM270 / EM280 dual three-phase energy meters with TCD current sensors Modbus documentation?</summary><p>The source is EM270 X &amp; W, EM280 Communication Protocol (Version 5 Revision 1), revision 2018-01-29, published free by Carlo Gavazzi at https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM270_EM280_CP.pdf.</p></details></div>
@@ -453,10 +442,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -482,14 +471,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

@@ -241,12 +241,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/abb/m4m-20-30-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/abb/m4m-20-30.csv"
     },
     {
@@ -348,7 +342,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/abb/">ABB</a></li><li aria-current="page">M4M 20 / M4M 30 network analyzer</li></ol>
@@ -360,16 +354,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 ABB&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/abb/">ABB</a></dd></div><div><dt>Model</dt><dd>M4M 20 / M4M 30 network analyzer</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter (network analyzer)</a></dd></div><div><dt>Registers</dt><dd>152 (26 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Firmware</dt><dd>Map v1.3O (2023-10-23); some registers need FW P1.3.10.0 or later</dd></div><div><dt>Also known as</dt><dd>M4M 20, M4M 30, M4M 20 Modbus, M4M 30 Modbus, M4M 20 Ethernet, M4M 30 Ethernet, M4M 20 I/O, M4M 30 I/O, M4M 2X, M4M 30-M, M4M 32</dd></div><div><dt>Source document</dt><dd><a href="https://search.abb.com/library/Download.aspx?DocumentID=9AKK107492A7627&amp;LanguageCode=en&amp;DocumentPartId=&amp;Action=Launch" rel="nofollow noopener" target="_blank">M4M Modbus protocol map (Modbus mapping table workbook) &middot; 9AKK107492A7627, map v1.3O &middot; rev. 2023-10-23</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/abb/m4m-20-30-easymodbus.csv">Copy for the phone app <small>147 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/abb/m4m-20-30-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/abb/m4m-20-30.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/abb/m4m-20-30.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/abb/m4m-20-30.json">JSON</a>
   <a class="btn" href="https://search.abb.com/library/Download.aspx?DocumentID=9AKK107492A7627&amp;LanguageCode=en&amp;DocumentPartId=&amp;Action=Launch" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: ABB M4M 20 / M4M 30 network analyzer</h2>
 <div class="answer"><b>Integration in brief</b><p>Read holding registers with function 3 at the hex address from the map (for example 0x5B02 for phase voltage L1). Energy is 4 registers at 0.01 kWh; voltages, currents and powers are 2 registers, high word first.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-20480">HR 20480</a></td><td class="n">Active energy import</td><td class="f">UINT64 ABCD</td><td>Total active import energy</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-20484">HR 20484</a></td><td class="n">Active energy export</td><td class="f">UINT64 ABCD</td><td>Total active export energy</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23298">HR 23298</a></td><td class="n">Phase voltage L1</td><td class="f">UINT32 ABCD</td><td>Phase voltage L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23312">HR 23312</a></td><td class="n">Current L1</td><td class="f">UINT32 ABCD</td><td>Current L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23322">HR 23322</a></td><td class="n">Active power total</td><td class="f">INT32 ABCD</td><td>Total active power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23346">HR 23346</a></td><td class="n">Frequency</td><td class="f">UINT16</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23360">HR 23360</a></td><td class="n">Power factor total</td><td class="f">INT16</td><td>Total power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-35168">HR 35168</a></td><td class="n">Type designation</td><td class="f">STRING[12]</td><td>Type designation (ASCII), confirms the variant</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -540,9 +528,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Byte/word order and addressing rules come from the companion &#x27;Communication protocol - Modbus manual, M4M network analyzers&#x27; 2CSG445050D0201 v1.05 (https://search.abb.com/library/Download.aspx?DocumentID=2CSG445050D0201&amp;LanguageCode=en&amp;DocumentPartId=&amp;Action=Launch), section 3: multi-register values are most significant byte first in the lowest register (ABCD).</li><li>Only function codes 3, 6 and 16 are supported. Readable range per the manual is 0x1000-0x8EFF, 1-125 registers per read; quantities missing on a variant return FFFF (unsigned) or 7FFF... (signed) instead of an exception.</li><li>Instantaneous power registers are signed 32-bit at 0.01 W, so they saturate near +/-21 MW. Map v1.3 added whole-watt (&#x27;Scaler 1&#x27;) power registers from CB1Ah onward (real-time) and CC24h onward (max/min), available from FW P1.3.10.0; they are not included here.</li><li>The map prints the apparent energy unit as &#x27;kVA&#x27;; these are energy accumulators and are listed as kVAh.</li><li>Left out: 5024/5034 (CO2 and currency equivalents of imported energy) because the map gives their unit as kg/kWh and Currency/kWh with &#x27;conversion factor&#x27; wording, which leaves the meaning ambiguous.</li><li>Left out: Error/Information/Warning/Alarm flag blocks (8A13-8A28, 64 bits each) whose bit meanings are not tabulated with the register rows; average/min/max values and their timestamps; individual harmonic orders; historical/log/load-profile header and data blocks; OBIS-coded alarm, pulse and tariff configuration groups; Slave ID (8911), Date Time (8A00) and Day of week (8A03), which have no plain data type in the map.</li><li>Removed on verification: outputs 1-6 (6300h-6305h), input status 1-6 (6308h-630Dh), input counters 1-6 (6318h-632Ch), product type number ID (8910h) and LED source (8CE4h). The map leaves their Data Type cell empty and the companion Modbus manual (2CSG445050D0201, sections 11.1 and 14) does not state a type either, so they are not published. Bluetooth enable (8EFCh) is typed &#x27;Unsigned&#x27; in the map and is kept.</li><li>Unbalance registers 6200/6202 were swapped in map v1.3N; this file follows the v1.3O labels.</li><li>Rows marked &#x27;M4M 30 only&#x27; or &#x27;I/O versions&#x27; return the invalid marker on other variants.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the ABB M4M 20 / M4M 30 network analyzer</h2><div class="faq"><details open><summary>What Modbus registers does the ABB M4M 20 / M4M 30 network analyzer have?</summary><p>This map lists 152 registers: 152 holding registers. 26 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the ABB M4M 20 / M4M 30 network analyzer Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The map gives each start register in hex (and decimal) exactly as sent on the bus; 5B02 is wire address 0x5B02 = 23298. The manual&#x27;s example frame reads phase voltage L1 at 0x5B02 with function 3.</p></details><details><summary>What byte order does the ABB M4M 20 / M4M 30 network analyzer use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the ABB M4M 20 / M4M 30 network analyzer?</summary><p>Start with HR 20480 Active energy import (Total active import energy); HR 20484 Active energy export (Total active export energy); HR 23298 Phase voltage L1 (Phase voltage L1); HR 23312 Current L1 (Current L1); HR 23322 Active power total (Total active power); HR 23346 Frequency (Frequency); HR 23360 Power factor total (Total power factor); HR 35168 Type designation (Type designation (ASCII), confirms the variant).</p></details><details><summary>How do I enable Modbus control of the ABB M4M 20 / M4M 30 network analyzer?</summary><p>Modbus is built in on the Modbus RTU and Ethernet (Modbus TCP) versions; set address, baud rate and parity (RTU) or DHCP/IP/port (TCP) on the device or through registers 8CEB-8CF6.</p></details><details><summary>Where is the official ABB M4M 20 / M4M 30 network analyzer Modbus documentation?</summary><p>The source is M4M Modbus protocol map (Modbus mapping table workbook) (9AKK107492A7627, map v1.3O), revision 2023-10-23, published free by ABB at https://search.abb.com/library/Download.aspx?DocumentID=9AKK107492A7627&amp;LanguageCode=en&amp;DocumentPartId=&amp;Action=Launch.</p></details></div>
@@ -554,10 +543,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -583,14 +572,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

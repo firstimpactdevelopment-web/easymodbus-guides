@@ -36,19 +36,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Read Eastron SDM120/SDM630 over Modbus | Easy Modbus</title>
-<meta name="description" content="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them from a phone.">
+<meta name="description" content="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them over a network.">
 <link rel="canonical" href="https://easymodbus.com/guides/read-eastron-sdm-modbus">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Read Eastron SDM120/SDM630 over Modbus | Easy Modbus">
-<meta property="og:description" content="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them from a phone.">
+<meta property="og:description" content="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them over a network.">
 <meta property="og:url" content="https://easymodbus.com/guides/read-eastron-sdm-modbus">
 <meta property="og:image" content="https://easymodbus.com/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Read Eastron SDM120/SDM630 over Modbus | Easy Modbus">
-<meta name="twitter:description" content="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them from a phone.">
+<meta name="twitter:description" content="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them over a network.">
 <meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,8 +124,8 @@
   "@graph": [
     {
       "@type": "FAQPage",
-      "datePublished": "2026-10-24",
-      "dateModified": "2026-10-24",
+      "datePublished": "2026-11-10",
+      "dateModified": "2026-11-10",
       "mainEntity": [{
         "@type": "Question",
         "name": "How do I read an Eastron SDM power meter over Modbus?",
@@ -147,12 +147,12 @@
 
 <header class="site">
   <a href="../" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
-  <span class="muted">&middot; plain-English Modbus reference</span>
+  <a class="muted" href="/modbus-register-maps/">Register maps &rarr;</a>
 </header>
 
 <article>
   <h1>How do I read an Eastron SDM power meter over Modbus?</h1>
-  <p class="updated">Updated 24 October 2026</p>
+  <p class="updated">Updated 10 November 2026</p>
 
   <div class="answer">
     <strong>Short answer</strong>
@@ -201,15 +201,14 @@
   that is why &mdash; see <a href="modbus-address-off-by-one">Modbus address off
   by one</a>.</p>
 
-  <h2>Reading one from a phone</h2>
-  <p>If the meter is on a network (native Ethernet, or RS-485 behind a gateway),
-  <a href="../">Easy Modbus</a> reads it directly. Point it at the meter,
-  read the input-register block, and its Analyzer confirms each pair as a float in
-  ABCD order &mdash; so you are not trusting the numbers above blind, you are watching
-  the app decode the live value and match it to what the meter's own display shows.
-  Name each register once, and the map is saved and exportable as a CSV. To trend
-  energy or power over time, see <a href="log-modbus-to-csv-on-phone">log Modbus
-  data to CSV on your phone</a>.</p>
+  <h2>Reading one over the network</h2>
+  <p>If the meter is on a network (native Ethernet, or RS-485 behind a gateway), any
+  Modbus TCP master reads it directly. Read a block of input registers with function
+  code 4 and decode each pair as a float in ABCD order; the
+  <a href="../modbus-float-decoder">float decoder</a> confirms a pair by hand.
+  Compare the result with the meter's own display before you trust the addresses. For
+  the full, verified register list of each model, see the
+  <a href="../modbus-register-maps/eastron/">Eastron register maps</a>.</p>
 
   <div class="callout">
   <p>If the meter is straight RS-485 with no gateway, you will read it with a Windows
@@ -226,7 +225,6 @@
       <li><a href="../modbus-register-maps/eastron/">Eastron SDM Modbus register maps (SDM120CT, SDM230, SDM630)</a></li>
       <li><a href="../guides/modbus-value-wrong-scaling-byte-order">Why does my Modbus value look wrong?</a></li>
       <li><a href="../guides/find-modbus-baud-rate-parity">How do I find an unknown Modbus baud rate?</a></li>
-      <li><a href="../guides/log-modbus-to-csv-on-phone">How do I log Modbus data to CSV?</a></li>
       <li><a href="../guides/modbus-function-codes-explained">What are Modbus function codes?</a></li>
     </ul>
   </nav>
@@ -235,9 +233,9 @@
   <p>Need a device&rsquo;s registers? Browse the free
   <a href="/modbus-register-maps/">Modbus register-map library</a> &mdash; verified addresses, data types,
   word order and scaling by manufacturer and model.</p>
-  <p>Published alongside <a href="../">Easy Modbus</a>, a free
-  Android app that finds Modbus TCP equipment on a network, helps you work out
-  what its registers mean, and exports the result as a CSV.</p>
+  <p>easymodbus.com is a free, plain-English Modbus reference: verified register maps,
+  short guides and browser calculators. Corrections and questions:
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
   <p><a href="../terms">Terms of use</a> &middot; <a href="../privacy">Privacy policy</a></p>
 </footer>
 

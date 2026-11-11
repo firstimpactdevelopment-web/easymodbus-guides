@@ -234,12 +234,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/dent-instruments/powerscout-3037-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/dent-instruments/powerscout-3037.csv"
     },
     {
@@ -341,7 +335,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/dent-instruments/">DENT Instruments</a></li><li aria-current="page">PowerScout 3037 Power Meter</li></ol>
@@ -353,16 +347,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 DENT Instruments&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/dent-instruments/">DENT Instruments</a></dd></div><div><dt>Model</dt><dd>PowerScout 3037 Power Meter</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter</a></dd></div><div><dt>Registers</dt><dd>53 (17 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>PS3037, PowerScout 3037 Ethernet, PS3037-E, PowerScout 3037 Serial</dd></div><div><dt>Source document</dt><dd><a href="https://www.dentinstruments.com/wp-content/uploads/2022/04/PS3037_Manual.pdf" rel="nofollow noopener" target="_blank">Operator&#x27;s Guide: PowerScout 3037 Power Meter and ViewPoint Software &middot; rev. 2017-11-09</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/dent-instruments/powerscout-3037-easymodbus.csv">Copy for the phone app <small>51 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/dent-instruments/powerscout-3037-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/dent-instruments/powerscout-3037.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/dent-instruments/powerscout-3037.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/dent-instruments/powerscout-3037.json">JSON</a>
   <a class="btn" href="https://www.dentinstruments.com/wp-content/uploads/2022/04/PS3037_Manual.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: DENT Instruments PowerScout 3037 Power Meter</h2>
 <div class="answer"><b>Integration in brief</b><p>Read 44602 first to learn the data scalar, then poll the system block from 44001 (wire 4000) with function 03 and apply the matching factor per quantity. Writes use function 06 (single register) only.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-4601">HR 4601</a></td><td class="n">Data Scalar</td><td class="f">UINT16</td><td>Data scalar that sets the integer scaling</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-4000">HR 4000</a></td><td class="n">kWh System</td><td class="f">UINT32 CDAB</td><td>System kWh (raw, LSW first)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-4002">HR 4002</a></td><td class="n">kW System</td><td class="f">UINT16</td><td>System kW (raw)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-4014">HR 4014</a></td><td class="n">Apparent PF System</td><td class="f">UINT16</td><td>System apparent power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-4055">HR 4055</a></td><td class="n">Amps L1</td><td class="f">UINT16</td><td>Phase 1 current (raw)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-4058">HR 4058</a></td><td class="n">Volts L1 to Neutral</td><td class="f">UINT16</td><td>Phase 1-N voltage (raw)</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -434,9 +422,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Scaling: the guide&#x27;s scalar table (p. 34, Table 7) applies to registers 44001-44061. Those integer readings are listed here raw (scale 1, no unit); multiply by the factor for the current Data Scalar (44602, values 0-6, see its value list) in the column named in each register&#x27;s description: kW/kWh/Demand, kVAR/kVARh, kVA/kVAh, Amps or Volts. Power factor is x0.01 at every scalar, so the PF registers carry that fixed scale.</li><li>Two-register integers (energy, time since reset) put the LSW at the lower register and the MSW at the next one; the guide&#x27;s worked example (p. 36) computes MSW x 65536 + LSW, then applies the scalar. They are listed as UINT32 with CDAB word order.</li><li>The guide says every register is a 16-bit unsigned value (p. 81), yet its positive/negative PF register descriptions refer to the system and phase PF values in 44014/44015/44050-44055 being negative. How a negative PF is encoded there is not stated; they are listed as unsigned here.</li><li>Left out: the positive (46xxx), negative (47xxx) and NET (44150-44157, 46150-46157, 47150-47157) power and energy blocks. The guide&#x27;s scalar table names only registers 44001-44061 and does not say which factor applies to these blocks. The exception is 46022, which the guide documents as 10 x Hz.</li><li>Left out: the Veris H8035/H8036 floating-point block 40257-40310 (Table 27). The guide labels each value MSW/LSW but never states the float format, gives units only by name, and does not say whether the block answers when 44526 is not set to 1 (Veris identity).</li><li>Left out: the Veris integer block 40001-40027. Its multipliers depend on the CT rating band (Table 26) rather than a fixed scale.</li><li>Left out: 44022 Line Frequency (the absolute block gives no scale); use 46022.</li><li>Left out: per-CT settings 50100-50399, the CT phase-shift registers, the snap-to-zero thresholds and the synchronize register 40129, as their encodings are not fully stated.</li><li>Left out for size: the per-phase energy, kVAR, kVA and displacement-PF registers and the extra demand registers 44080-44084 (see pp. 67-70).</li><li>DENT&#x27;s one-page &#x27;Interpreting the PowerScout Registers - Data Scaling&#x27; sheet (https://www.dentinstruments.com/wp-content/uploads/2022/09/Interpreting_PowerScout_Registers_Data_Scaling.pdf) gives the same scalar table, but its worked examples name registers 44302 and 44064 as the scalar register; in the guide 44064 is the Data Tick Counter. The guide&#x27;s 44602 is followed here.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the DENT Instruments PowerScout 3037 Power Meter</h2><div class="faq"><details open><summary>What Modbus registers does the DENT Instruments PowerScout 3037 Power Meter have?</summary><p>This map lists 53 registers: 53 holding registers. 17 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the DENT Instruments PowerScout 3037 Power Meter Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The tables print 4xxxx register numbers next to an &#x27;Offset&#x27; column, and the guide states the offset is relative to 40001 and that the address sent on the wire is the register minus 40001 (its examples: 40025 is sent as 0024, 44062 as 4061). So wire address = printed register - 40001, which equals the printed offset.</p></details><details><summary>What byte order does the DENT Instruments PowerScout 3037 Power Meter use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the DENT Instruments PowerScout 3037 Power Meter?</summary><p>Start with HR 4601 Data Scalar (Data scalar that sets the integer scaling); HR 4000 kWh System (System kWh (raw, LSW first)); HR 4002 kW System (System kW (raw)); HR 4014 Apparent PF System (System apparent power factor); HR 4055 Amps L1 (Phase 1 current (raw)); HR 4058 Volts L1 to Neutral (Phase 1-N voltage (raw)).</p></details><details><summary>How do I enable Modbus control of the DENT Instruments PowerScout 3037 Power Meter?</summary><p>Modbus is the factory protocol on RS-485. To return from BACnet to Modbus, write 375 to BACnet object 10190 in ViewPoint, or power up with the address switches at FF, set LSB = 1 (Modbus) and MSB to the baud code within 10 seconds. Switches at 00 force Modbus at 9600 8N1. Writing 1833 to 44612 changes the meter to BACnet.</p></details><details><summary>Where is the official DENT Instruments PowerScout 3037 Power Meter Modbus documentation?</summary><p>The source is Operator&#x27;s Guide: PowerScout 3037 Power Meter and ViewPoint Software, revision 2017-11-09, published free by DENT Instruments at https://www.dentinstruments.com/wp-content/uploads/2022/04/PS3037_Manual.pdf.</p></details></div>
@@ -448,10 +437,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -477,14 +466,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

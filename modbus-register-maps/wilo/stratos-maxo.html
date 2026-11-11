@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/wilo/stratos-maxo-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/wilo/stratos-maxo.csv"
     },
     {
@@ -351,7 +345,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/wilo/">Wilo</a></li><li aria-current="page">Stratos MAXO with CIF module Modbus RTU</li></ol>
@@ -363,16 +357,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Wilo&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/wilo/">Wilo</a></dd></div><div><dt>Model</dt><dd>Stratos MAXO with CIF module Modbus RTU</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/pumps/">Pump (smart circulator)</a></dd></div><div><dt>Registers</dt><dd>56 (11 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Firmware</dt><dd>CIF module Modbus RTU 1.00-99.99 (individual registers from 3.00, 3.01, 3.02 or 5.01 as noted)</dd></div><div><dt>Also known as</dt><dd>Wilo-Stratos MAXO, Stratos MAXO-D, Stratos MAXO-Z, CIF-Module Modbus RTU, CIF Modbus RTU 2190368, CIF Modbus RTU UL 2237080</dd></div><div><dt>Source document</dt><dd><a href="https://cms.media.wilo.com/cdndoc/wilo194406/11516106/wilo194406.html" rel="nofollow noopener" target="_blank">WILO Modbus RTU - CIF-Module installation and operating instructions with functional description and datapoint list &middot; wilo194406 &middot; rev. 2026-07-15</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/wilo/stratos-maxo-easymodbus.csv">Copy for the phone app <small>56 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/wilo/stratos-maxo-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/wilo/stratos-maxo.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/wilo/stratos-maxo.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/wilo/stratos-maxo.json">JSON</a>
   <a class="btn" href="https://cms.media.wilo.com/cdndoc/wilo194406/11516106/wilo194406.html" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Wilo Stratos MAXO with CIF module Modbus RTU</h2>
 <div class="answer"><b>Integration in brief</b><p>Set the Modbus address, baud and frame in the pump menu, then write H 300 = 5 (MANUAL), H 401 = 1 (bus setpoint), H 42 = control mode, H 1 = duty point (200 = 100 %) and H 40 = 9 (on, with the required bit 3), as in Wilo&#x27;s basic example. Check I 211 (parameter set 1 = normal), I 210, I 10, I 200 and I 402, then poll I 404, I 940, I 1, I 2, I 4 and I 7.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-40">HR 40</a></td><td class="n">Pump Command in</td><td class="f">BITMAP16</td><td>On/off command (write 9 = on)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-42">HR 42</a></td><td class="n">controlFunction</td><td class="f">UINT16</td><td>Control mode</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">dutyPointRel</td><td class="f">INT16</td><td>Duty point, 0.5 % steps</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-401">HR 401</a></td><td class="n">setpointSignalSource</td><td class="f">UINT16</td><td>Setpoint source = bus</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-300">HR 300</a></td><td class="n">busCmd.Timer</td><td class="f">UINT16</td><td>Bus command timer / local lockout</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-ir-404">IR 404</a></td><td class="n">Operation Status</td><td class="f">BITMAP16</td><td>Ready / warning / error flags</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-940">IR 940</a></td><td class="n">warning/errorMessage</td><td class="f">UINT16</td><td>Wilo error code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-4">IR 4</a></td><td class="n">powerInput</td><td class="f">UINT16</td><td>Electrical power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2">IR 2</a></td><td class="n">flow</td><td class="f">UINT16</td><td>Calculated flow</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-7">IR 7</a></td><td class="n">speed</td><td class="f">INT16</td><td>Speed</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -447,9 +435,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Source is Wilo&#x27;s public HTML document for all CIF modules, which marks every register and every enum/bit value with the pumps that support it. Only registers and values listed as supported by the Stratos MAXO are kept. Second, related Wilo document: Wilo-CIF-Module installation and operating instructions 2193854 Ed.02/2020-11, https://cms.media.wilo.com/cdndoc/wilo182202/5025204/wilo182202.pdf (wiring and terminators; no datapoint list). Facts are re-keyed in our own words and the documents are linked, not re-hosted.</li><li>32-bit values (REAL and UDINT) are high word first (ABCD): Wilo puts the most significant 16 bits at the base address.</li><li>Scale: physical value = raw x scale as in Wilo&#x27;s list (pressure raw x 10 = cm H2O, operation time raw x 10 = h, flow raw x 0.1 = m³/h, duty point raw x 0.5 = %, temperatures raw x 0.1 = K).</li><li>Temperatures are in kelvin, not °C: 2931 means 293.1 K = 20.0 °C.</li><li>Error values: Wilo marks an unavailable or invalid reading with the largest positive value of the data type (e.g. 65535 for UINT, 32767 for INT).</li><li>controlFunction lists every mode Wilo marks as supported on a Stratos MAXO; which modes a given pump accepts depends on its firmware and CPU variant (Wilo lists CPU_F4 and CPU_H5), and unsupported values are ignored. Values 69 and 70 are marked reserved and are left out.</li><li>warning/errorMessage (I 940) lists only the codes Wilo marks as supported on the Stratos MAXO. The user trouble code (I 901, 74 Stratos MAXO codes) and the second error register I 950 are left out.</li><li>Left out: aux parameter set H 412-415 and its readbacks I 222-262; PID tuning H 408-410; flow limits H 420-427 / I 270-281; temperature references H 302/H 304 and sensor signal H 306; analog input readings I 324-332; heat-meter start times I 306/I 310 (REAL seconds since 1970); system time I 502; identification I 700-718 (BCD-coded firmware, vendor/UUID words); double-pump total run time I 9; legacy Stratos registers H 44-47 and the partner-pump block I 65-102 (not marked for Stratos MAXO).</li><li>Bits shown for the bit-field registers are those Wilo marks as supported on Stratos MAXO; bits not listed are static 0 (or unused) on this pump.</li><li>Left out: I 212. Wilo names it &#x27;pressure max-pres-value&#x27; (REAL, bar, module 5.01+) but describes it as the live pressure, so it is unclear whether it is the actual or the maximum pressure.</li><li>Flow (I 2): for module versions up to 6.00 Wilo gives 9999 as its error value, not 65535.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Wilo Stratos MAXO with CIF module Modbus RTU</h2><div class="faq"><details open><summary>What Modbus registers does the Wilo Stratos MAXO with CIF module Modbus RTU have?</summary><p>This map lists 56 registers: 45 input registers, 11 holding registers. 11 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Wilo Stratos MAXO with CIF module Modbus RTU Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Wilo states that all register addresses are raw addresses as sent on the bus, so input register 700 is requested at address 700. Its example frame confirms it: 01 04 02 BC 00 01 reads input register 0x02BC = 700. Masters that number registers from 1 must use 701 (or 30701).</p></details><details><summary>What byte order does the Wilo Stratos MAXO with CIF module Modbus RTU use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Wilo Stratos MAXO with CIF module Modbus RTU?</summary><p>Start with HR 40 Pump Command in (On/off command (write 9 = on)); HR 42 controlFunction (Control mode); HR 1 dutyPointRel (Duty point, 0.5 % steps); HR 401 setpointSignalSource (Setpoint source = bus); HR 300 busCmd.Timer (Bus command timer / local lockout); IR 404 Operation Status (Ready / warning / error flags); IR 940 warning/errorMessage (Wilo error code); IR 4 powerInput (Electrical power); IR 2 flow (Calculated flow); IR 7 speed (Speed).</p></details><details><summary>How do I enable Modbus control of the Wilo Stratos MAXO with CIF module Modbus RTU?</summary><p>In the pump menu go to Settings &gt; External interfaces and set up the Modbus RTU interface (address, baud rate, data frame); OFF for the bus address deactivates it. Over the bus, write H 401 = 1 so the setpoint comes from the CIF module. On module 3.01+, H 416 picks the parameter set; if I 211 does not read 1 (normal set), the normal registers are not the ones in effect. Wilo&#x27;s basic example then writes H 300 = 5 (MANUAL) so both the local menu and the bus are allowed, last write wins. By factory setting the local menu and control input IN2 are locked while a CIF module is fitted.</p></details><details><summary>What happens when the Wilo Stratos MAXO with CIF module Modbus RTU loses Modbus communication?</summary><p>Bus command timer: write H 300 = 2 (SET) or 6 (SET_PRESET) and repeat the write before the timeout in H 400 elapses (minimum 20 s; Wilo describes 300 s as the default or fixed value). If the writes stop, the local menu is released and, with SET_PRESET, the pump runs on the preset values in H 402-405; the pump may show E50 (bus timeout). I 504 shows the seconds remaining. The activation survives a power cycle; write H 300 = 1 (OFF) to return to factory behaviour.</p></details><details><summary>Where is the official Wilo Stratos MAXO with CIF module Modbus RTU Modbus documentation?</summary><p>The source is WILO Modbus RTU - CIF-Module installation and operating instructions with functional description and datapoint list (wilo194406), revision 2026-07-15, published free by Wilo at https://cms.media.wilo.com/cdndoc/wilo194406/11516106/wilo194406.html.</p></details></div>
@@ -461,10 +450,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -490,14 +479,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

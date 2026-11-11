@@ -232,12 +232,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/siemens/versicharge-ac-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/siemens/versicharge-ac.csv"
     },
     {
@@ -347,7 +341,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/siemens/">Siemens</a></li><li aria-current="page">VersiCharge AC series wallbox (Modbus map)</li></ol>
@@ -359,16 +353,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Siemens&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/siemens/">Siemens</a></dd></div><div><dt>Model</dt><dd>VersiCharge AC series wallbox (Modbus map)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/ev-chargers/">EV charger</a></dd></div><div><dt>Registers</dt><dd>53 (7 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>2</dd></div><div><dt>Default serial</dt><dd>38400 baud, 8E1</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Firmware</dt><dd>V2.135 or higher</dd></div><div><dt>Also known as</dt><dd>VersiCharge, VersiCharge AC</dd></div><div><dt>Source document</dt><dd><a href="https://cache.industry.siemens.com/dl/files/359/109814359/att_1291322/v1/versicharge_wallbox_modBus_map_en-US.pdf" rel="nofollow noopener" target="_blank">VERSICHARGE AC SERIES ModBus Map &middot; A5E52200882-AJ &middot; rev. 2024-06</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/siemens/versicharge-ac-easymodbus.csv">Copy for the phone app <small>48 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/siemens/versicharge-ac-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/siemens/versicharge-ac.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/siemens/versicharge-ac.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/siemens/versicharge-ac.json">JSON</a>
   <a class="btn" href="https://cache.industry.siemens.com/dl/files/359/109814359/att_1291322/v1/versicharge_wallbox_modBus_map_en-US.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Siemens VersiCharge AC series wallbox (Modbus map)</h2>
 <div class="answer"><b>Integration in brief</b><p>Poll internal 1599-1602 for state and faults and 1647-1677 for live values with function 3. To manage load, set the fallback current (1660) and fallback time (1661) once after every reboot, then write the charging current limit to 1633 inside that time window.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-1599">HR 1599</a></td><td class="n">EVSE state</td><td class="f">STRING[2]</td><td>J1772 charging state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1600">HR 1600</a></td><td class="n">EVSE error code</td><td class="f">INT16</td><td>Active fault code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1665">HR 1665</a></td><td class="n">Charging power total</td><td class="f">UINT16</td><td>Total charging power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1647">HR 1647</a></td><td class="n">Charging current L1</td><td class="f">UINT16</td><td>Phase L1 current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1692">HR 1692</a></td><td class="n">Real energy consumed</td><td class="f">UINT32 ABCD</td><td>Energy counter</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1633">HR 1633</a></td><td class="n">Charging current limit</td><td class="f">UINT16</td><td>Charging current limit (write)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1660">HR 1660</a></td><td class="n">Fallback current phase sum</td><td class="f">UINT16</td><td>Fallback current</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1661">HR 1661</a></td><td class="n">Fallback time</td><td class="f">UINT16</td><td>Fallback time</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -440,9 +428,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>The energy counter (1692) is marked &#x27;Uint32 (Big-endian)&#x27; in the map, so the high word comes first (ABCD).</li><li>Charging current limit (internal 1633): written values of 100 or less are whole amps, values 101-8000 are hundredths of an amp (write 6 or 600 for 6 A, 850 for 8.5 A). A read always returns whole amps in the 0-80 range. Values above 8000 are rejected, and anything under 6 A pauses charging. Other limits (OCPP smart charging, cloud power level) still apply on top.</li><li>Left out: the charging session energy target (internal 1640). Its units column says watt-hours but its description talks about kWh, so the scale cannot be settled from the map.</li><li>Production date (5-6): only the first word (year) is listed; the second packs month and day as two bytes.</li><li>Not listed: the five-register firmware strings for the M0 processor, the firmware variant and release-date strings, RFID card add/remove and whitelist blocks (40081-40338, 41853-41878) and the factory-reset salt/command registers, which are marked for internal use.</li><li>The map warns that when the charger is controlled by OCPP, Modbus is mainly a monitoring interface.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Siemens VersiCharge AC series wallbox (Modbus map)</h2><div class="faq"><details open><summary>What Modbus registers does the Siemens VersiCharge AC series wallbox (Modbus map) have?</summary><p>This map lists 53 registers: 53 holding registers. 7 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Siemens VersiCharge AC series wallbox (Modbus map) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The map prints every register four ways: &#x27;external&#x27; decimal (40001 style), &#x27;internal&#x27; decimal, and both in hex. External 40001 is internal 0, so the internal number is the wire address: external 41634 = internal 1633 = 0x661. &#x27;documented&#x27; below is the external number; &#x27;address&#x27; is the internal one. The map&#x27;s own notes mix the two (it cites both &#x27;register 1633&#x27; and &#x27;register 41661&#x27;), so check which one is meant.</p></details><details><summary>What byte order does the Siemens VersiCharge AC series wallbox (Modbus map) use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Siemens VersiCharge AC series wallbox (Modbus map)?</summary><p>Start with HR 1599 EVSE state (J1772 charging state); HR 1600 EVSE error code (Active fault code); HR 1665 Charging power total (Total charging power); HR 1647 Charging current L1 (Phase L1 current); HR 1692 Real energy consumed (Energy counter); HR 1633 Charging current limit (Charging current limit (write)); HR 1660 Fallback current phase sum (Fallback current); HR 1661 Fallback time (Fallback time).</p></details><details><summary>How do I enable Modbus control of the Siemens VersiCharge AC series wallbox (Modbus map)?</summary><p>The charger must be commissioned (register 27 shows the link used), and the &#x27;Modbus&#x27; setting must be True in the charger&#x27;s VersiCloud group; otherwise the Modbus application does not start.</p></details><details><summary>What happens when the Siemens VersiCharge AC series wallbox (Modbus map) loses Modbus communication?</summary><p>If Modbus traffic stops for the Fallback Time (1661, 0 or 60-600 s), the charger applies the Fallback Current Phase Sum (1660). Both registers reset at power cycle or Modbus soft reset and must be written again.</p></details><details><summary>Where is the official Siemens VersiCharge AC series wallbox (Modbus map) Modbus documentation?</summary><p>The source is VERSICHARGE AC SERIES ModBus Map (A5E52200882-AJ), revision 2024-06, published free by Siemens at https://cache.industry.siemens.com/dl/files/359/109814359/att_1291322/v1/versicharge_wallbox_modBus_map_en-US.pdf.</p></details></div>
@@ -454,10 +443,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -483,14 +472,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

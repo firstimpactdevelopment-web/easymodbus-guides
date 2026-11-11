@@ -235,12 +235,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/weg/cfw500-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/weg/cfw500.csv"
     },
     {
@@ -342,7 +336,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/weg/">WEG</a></li><li aria-current="page">CFW500 frequency inverter (Modbus RTU)</li></ol>
@@ -354,16 +348,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 WEG&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/weg/">WEG</a></dd></div><div><dt>Model</dt><dd>CFW500 frequency inverter (Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>62 (30 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8E1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Firmware</dt><dd>Programming manual for software V2.2X (doc 10002296099 rev 07); Modbus guide rev 04 adds STO/Fire Mode status bits and PID control bits</dd></div><div><dt>Also known as</dt><dd>CFW500 VFD, CFW500-IOS, CFW500-CRS485, CFW500-CUSB, CFW500-CRS232</dd></div><div><dt>Source document</dt><dd><a href="https://static.weg.net/medias/downloadcenter/h73/ha4/WEG-CFW500-modbus-rtu-manual-10002253377-en.pdf" rel="nofollow noopener" target="_blank">Modbus RTU CFW500 User&#x27;s Guide &middot; 10002253377 / 04 &middot; rev. 2025-06</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/weg/cfw500-easymodbus.csv">Copy for the phone app <small>62 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/weg/cfw500-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/weg/cfw500.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/weg/cfw500.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/weg/cfw500.json">JSON</a>
   <a class="btn" href="https://static.weg.net/medias/downloadcenter/h73/ha4/WEG-CFW500-modbus-rtu-manual-10002253377-en.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: WEG CFW500 frequency inverter (Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Leave P0312 = 2 (Modbus RTU on the standard RS-485), match P0308/P0310/P0311 to the master, then point the remote command sources at Serial/USB (P0220, P0222 = 9, P0226, P0227 = 2). Write the P0682 control word (e.g. 0x0017 = run + general enable + forward + remote; 0x0016 = ramp stop) and P0683 in the 8192 = rated-frequency scale, and poll P0680, P0005, P0003 and P0049.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-682">HR 682</a></td><td class="n">Serial/USB control word</td><td class="f">BITMAP16</td><td>Control word: run, enable, direction, fault reset</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-683">HR 683</a></td><td class="n">Serial/USB speed reference</td><td class="f">INT16</td><td>Speed reference, 8192 = P0403</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-680">HR 680</a></td><td class="n">Logical status (status word)</td><td class="f">BITMAP16</td><td>Status word: running, remote, fault</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-5">HR 5</a></td><td class="n">Output frequency</td><td class="f">UINT16</td><td>Output frequency (0.1 Hz)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-3">HR 3</a></td><td class="n">Motor current</td><td class="f">UINT16</td><td>Motor current (0.1 A)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-4">HR 4</a></td><td class="n">DC link voltage (Ud)</td><td class="f">UINT16</td><td>DC link voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-49">HR 49</a></td><td class="n">Present fault</td><td class="f">UINT16</td><td>Present fault number</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-48">HR 48</a></td><td class="n">Present alarm</td><td class="f">UINT16</td><td>Present alarm number</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -444,9 +432,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Scaling and the P0001-P0070 monitoring parameters come from the WEG CFW500 Programming Manual V2.2X, doc 10002296099 rev 07 (09/2024), https://static.weg.net/medias/downloadcenter/h69/h0f/WEG-CFW500-programming-manual-10002296099-en.pdf. Newer firmware (V3.x/V4.x) manuals were not available in English from WEG&#x27;s server, so check P0023 on site; parameter numbers for these core points are the same in the R04 Modbus guide.</li><li>P0001 and P0002 are left unscaled: they use the user scale from P0208 (full-scale value), P0209 (unit) and P0210 (decimal point). With the factory defaults the scale is Hz with one decimal.</li><li>P0681 and P0683 use WEG&#x27;s 13-bit scale: 8192 equals the motor rated frequency P0403, so Hz = value x P0403 / 8192, saturating at +/-32767 (4x rated).</li><li>Left out: P0040/P0041 PID process variable and setpoint (decimal places depend on P0529), fault-history currents/voltages for the second and third faults (P0061-P0074, same format as P0051-P0055), and P0684/P0685 (fieldbus-card control word and reference, not used over the serial port).</li><li>The R04 Modbus guide shows P0680 bit 0 as STO and bit 2 as Fire Mode, and P0682 bits 13/14 as internal/external PID manual select; the V2.2X programming manual marks those bits reserved. Older firmware will leave them at 0.</li><li>The Modbus guide lists P0308 as 0-255; the programming manual lists 1-247. Use 1-247.</li><li>Fault and alarm numbers are the F/A codes without the letter (P0049 = 228 means F0228 serial timeout).</li><li>P0312 options 1, 3, 8, 9, 14 and 15 (SymbiNet and BACnet) come from the R04 Modbus guide; the V2.2X programming manual lists them as Reserved, so they need newer firmware.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the WEG CFW500 frequency inverter (Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the WEG CFW500 frequency inverter (Modbus RTU) have?</summary><p>This map lists 62 registers: 62 holding registers. 30 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the WEG CFW500 frequency inverter (Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The Modbus guide says parameters are mapped with offset zero: the parameter number is the holding register address (P0100 = address 100 = 0064h), and it lists P0680 at holding register address 680. So P0680 is requested as address 680; a master that numbers holding registers from 40001 needs 40681. Values travel as plain integers with no decimal point; the guide says the number of decimal places comes from the programming manual, so scale here follows the decimals in each parameter&#x27;s range there (e.g. P0003 0.0-200.0 A -&gt; 0.1 A).</p></details><details><summary>What are the minimum Modbus registers to integrate the WEG CFW500 frequency inverter (Modbus RTU)?</summary><p>Start with HR 682 Serial/USB control word (Control word: run, enable, direction, fault reset); HR 683 Serial/USB speed reference (Speed reference, 8192 = P0403); HR 680 Logical status (status word) (Status word: running, remote, fault); HR 5 Output frequency (Output frequency (0.1 Hz)); HR 3 Motor current (Motor current (0.1 A)); HR 4 DC link voltage (Ud) (DC link voltage); HR 49 Present fault (Present fault number); HR 48 Present alarm (Present alarm number).</p></details><details><summary>How do I enable Modbus control of the WEG CFW500 frequency inverter (Modbus RTU)?</summary><p>P0312 selects the serial protocol (2 = Modbus RTU slave on serial 1, 7 = on the second port of a CRS485/CUSB/CRS232 module). Set P0308 address, P0310 baud and P0311 byte format. For network control set P0220 = 1 (always Remote) or 6 (Local/Remote switched by P0682 bit 4), P0222 = 9 (reference from P0683), P0226 = 5 or 6 (direction from P0682 bit 2) and P0227 = 2 (run/stop from P0682). Use P0221/P0223/P0224 instead if the drive runs in Local.</p></details><details><summary>What happens when the WEG CFW500 frequency inverter (Modbus RTU) loses Modbus communication?</summary><p>P0314 Serial Watchdog (0.0-999.0 s, 0 = off by default) raises alarm A0128 when no valid telegram arrives in time; P0313 picks the reaction (0 none, 1 ramp stop default, 2 coast/general disable, 3 go to Local, 4 Local keeping the network commands, 5 fault F0228). Timing starts at the first valid telegram after power-up. P0316 shows 2 while the watchdog error is active.</p></details><details><summary>Where is the official WEG CFW500 frequency inverter (Modbus RTU) Modbus documentation?</summary><p>The source is Modbus RTU CFW500 User&#x27;s Guide (10002253377 / 04), revision 2025-06, published free by WEG at https://static.weg.net/medias/downloadcenter/h73/ha4/WEG-CFW500-modbus-rtu-manual-10002253377-en.pdf.</p></details></div>
@@ -458,10 +447,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -487,14 +476,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

@@ -233,12 +233,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/siemens/sinamics-v20-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/siemens/sinamics-v20.csv"
     },
     {
@@ -340,7 +334,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/siemens/">Siemens</a></li><li aria-current="page">SINAMICS V20 inverter (Modbus RTU)</li></ol>
@@ -352,16 +346,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Siemens&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/siemens/">Siemens</a></dd></div><div><dt>Model</dt><dd>SINAMICS V20 inverter (Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>107 (38 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8E1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>Also known as</dt><dd>V20, 6SL3210-5BB, 6SL3210-5BE</dd></div><div><dt>Source document</dt><dd><a href="https://cache.industry.siemens.com/dl/files/991/109743991/att_906061/v1/V20_op_instr_1116_en-US.pdf" rel="nofollow noopener" target="_blank">SINAMICS V20 Inverter Operating Instructions &middot; A5E34559884-006 &middot; rev. 2016-11</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/siemens/sinamics-v20-easymodbus.csv">Copy for the phone app <small>107 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/siemens/sinamics-v20-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/siemens/sinamics-v20.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/siemens/sinamics-v20.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/siemens/sinamics-v20.json">JSON</a>
   <a class="btn" href="https://cache.industry.siemens.com/dl/files/991/109743991/att_906061/v1/V20_op_instr_1116_en-US.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Siemens SINAMICS V20 inverter (Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Run connection macro Cn011 (or set P0700 = 5, P1000 = 5, P2023 = 2 and power-cycle), then write the control word to 40100 and the setpoint to 40101 and poll 40110/40111 for status and actual value. 40024-40033 / 40340-40348 give scaled frequency, current, power and voltage.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-99">HR 99</a></td><td class="n">STW (control word 1)</td><td class="f">BITMAP16</td><td>Control word: ON/OFF1, enables, fault acknowledge</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-100">HR 100</a></td><td class="n">HSW (main setpoint)</td><td class="f">INT16</td><td>Main setpoint, 4000 hex = P2000</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-109">HR 109</a></td><td class="n">ZSW (status word 1)</td><td class="f">BITMAP16</td><td>Status word: ready, running, fault, warning</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-110">HR 110</a></td><td class="n">HIW (main actual value)</td><td class="f">INT16</td><td>Main actual value</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-341">HR 341</a></td><td class="n">Frequency output</td><td class="f">INT16</td><td>Output frequency in 0.01 Hz</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-344">HR 344</a></td><td class="n">Current</td><td class="f">UINT16</td><td>Output current in 0.01 A</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-346">HR 346</a></td><td class="n">Actual power</td><td class="f">UINT16</td><td>Actual power in 0.01 kW</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-399">HR 399</a></td><td class="n">Fault 1</td><td class="f">UINT16</td><td>Latest fault number</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -487,9 +475,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>All values are single 16-bit registers; there are no 32-bit values in the map. Scaled values are sent as the engineering value multiplied by the table&#x27;s scaling factor (e.g. 100 for 0.01 resolution), so the scale here is 1 / factor.</li><li>Signed/unsigned is not printed per register; registers with a negative range in the table are INT16, the rest UINT16. Ramp times and P2000 reach raw values above 32767 (650.0 s x 100, 550.00 Hz x 100), which only fits as unsigned.</li><li>Left out: 40002 Watchdog action (the manual gives no action codes), 40035 Stop/run (its on/off text order contradicts the status bit it mirrors), 40349 Hand/auto (r0807 only reports whether an external client has master control; the HAND/AUTO text is not tied to a bit value), 40013 (reserved), and the parameter-access window 40550-40559 (parameter number, index, upper/lower word) because the access procedure is not described.</li><li>40003 and 40044 are the setpoint and actual value in % (factor 100); 40101 and 40111 are the same process data unscaled, where 4000 hex = 100 % of P2000.</li><li>Writing a BICO register (e.g. 40014/40200 digital output, 40009/40500 PID enable) fixes that BICO input to a static 0 or 1 and drops its previous connection; reading returns the BICO output.</li><li>This is the 11/2016 edition; a newer 05/2022 edition exists on the Siemens support site but its direct PDF link refused automated download, so it was not used.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Siemens SINAMICS V20 inverter (Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Siemens SINAMICS V20 inverter (Modbus RTU) have?</summary><p>This map lists 107 registers: 107 holding registers. 38 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Siemens SINAMICS V20 inverter (Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The mapping table prints each register twice: an &#x27;Inverter&#x27; number starting at 0 and a &#x27;MODBUS&#x27; number starting at 40001 (e.g. 0 = 40001, 99 = 40100). The inverter number is the value that goes into the request, so subtract 40001 from the Modicon number: control word 40100 is wire address 99.</p></details><details><summary>What are the minimum Modbus registers to integrate the Siemens SINAMICS V20 inverter (Modbus RTU)?</summary><p>Start with HR 99 STW (control word 1) (Control word: ON/OFF1, enables, fault acknowledge); HR 100 HSW (main setpoint) (Main setpoint, 4000 hex = P2000); HR 109 ZSW (status word 1) (Status word: ready, running, fault, warning); HR 110 HIW (main actual value) (Main actual value); HR 341 Frequency output (Output frequency in 0.01 Hz); HR 344 Current (Output current in 0.01 A); HR 346 Actual power (Actual power in 0.01 kW); HR 399 Fault 1 (Latest fault number).</p></details><details><summary>How do I enable Modbus control of the Siemens SINAMICS V20 inverter (Modbus RTU)?</summary><p>Connection macro Cn011 sets P0700 = 5 (command source RS485), P1000 = 5 (setpoint RS485), P2023 = 2 (Modbus), P2010 = 6 (9600 bps), P2021 = 1, P2022 = 1000 ms, P2014 = 100 ms, P2034 = 2 (even parity) and P2035 = 1 stop bit. Power-cycle after changing P2023, waiting until the display goes blank. Baud choices P2010: 6 = 9600, 7 = 19200, 8 = 38400, 9 = 57600, 10 = 76800, 11 = 93750, 12 = 115200.</p></details><details><summary>What happens when the Siemens SINAMICS V20 inverter (Modbus RTU) loses Modbus communication?</summary><p>P2014[0] USS/MODBUS telegram off time (factory 2000 ms, 100 ms with Cn011; 0 disables). F72 trips if P2014 is non-zero, process data has been received since power-up and the gap between two process-data telegrams exceeds P2014.</p></details><details><summary>Where is the official Siemens SINAMICS V20 inverter (Modbus RTU) Modbus documentation?</summary><p>The source is SINAMICS V20 Inverter Operating Instructions (A5E34559884-006), revision 2016-11, published free by Siemens at https://cache.industry.siemens.com/dl/files/991/109743991/att_906061/v1/V20_op_instr_1116_en-US.pdf.</p></details></div>
@@ -501,10 +490,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -530,14 +519,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

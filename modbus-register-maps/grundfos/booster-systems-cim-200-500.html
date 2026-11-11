@@ -244,12 +244,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/grundfos/booster-systems-cim-200-500-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/grundfos/booster-systems-cim-200-500.csv"
     },
     {
@@ -359,7 +353,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/grundfos/">Grundfos</a></li><li aria-current="page">Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500</li></ol>
@@ -371,16 +365,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Grundfos&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/grundfos/">Grundfos</a></dd></div><div><dt>Model</dt><dd>Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/pumps/">Pump (booster system / multi-pump controller)</a></dd></div><div><dt>Registers</dt><dd>127 (23 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8E1</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>1-based (subtract 1 for the wire address)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>Hydro MPC, Control MPC, CU 352, GENIECON MPC, Hydro Multi-E, Hydro Multi-B, CU 323, DDD, CU 354, TPED, MAGNA3-D, CIM 200, CIM 500, SoftCIM Modbus TCP</dd></div><div><dt>Source document</dt><dd><a href="https://api.grundfos.com/literature/Grundfosliterature-6012934.pdf" rel="nofollow noopener" target="_blank">Modbus for Grundfos boosters - SoftCIM Modbus RTU, SoftCIM Modbus TCP, CIM/CIU 200 Modbus RTU, CIM/CIU 500 Modbus TCP - Functional profile and user manual &middot; 98393459 &middot; rev. 2025-09</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/grundfos/booster-systems-cim-200-500-easymodbus.csv">Copy for the phone app <small>127 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/grundfos/booster-systems-cim-200-500-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/grundfos/booster-systems-cim-200-500.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/grundfos/booster-systems-cim-200-500.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/grundfos/booster-systems-cim-200-500.json">JSON</a>
   <a class="btn" href="https://api.grundfos.com/literature/Grundfosliterature-6012934.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500</h2>
 <div class="answer"><b>Integration in brief</b><p>Address the CIM (rotary switches on the CIM 200, IP on the CIM 500), enable bus control in the controller if it is an MPC/GENIECON/DDD, then write 00101 = 3 to take remote control and start, and 00104 for the setpoint in 0.01 %. Poll 00201 for on/alarm/warning, 00205 for the alarm code, 00301/00302 for pressure and flow and 00209/00210 for per-pump running and alarm bits.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-100">HR 100</a></td><td class="n">ControlRegister</td><td class="f">BITMAP16</td><td>Remote/start/stop/reset command word</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-103">HR 103</a></td><td class="n">Setpoint</td><td class="f">UINT16</td><td>Setpoint, 0.01 %</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-200">HR 200</a></td><td class="n">SystemStatus</td><td class="f">BITMAP16</td><td>System status bits</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-204">HR 204</a></td><td class="n">AlarmCode</td><td class="f">UINT16</td><td>System alarm code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-208">HR 208</a></td><td class="n">PumpsRunning</td><td class="f">BITMAP16</td><td>Pumps running</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-209">HR 209</a></td><td class="n">PumpsAlarm</td><td class="f">BITMAP16</td><td>Pumps in alarm</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-300">HR 300</a></td><td class="n">Head</td><td class="f">UINT16</td><td>System head/pressure</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-301">HR 301</a></td><td class="n">VolumeFlow</td><td class="f">UINT16</td><td>System flow</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-311">HR 311</a></td><td class="n">Power</td><td class="f">UINT32 ABCD</td><td>System power (32-bit)</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -526,9 +514,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>All blocks can be read with function code 03 or 04; listed here as holding registers. Control and configuration registers are written with 06 or 16.</li><li>32-bit values are HI/LO register pairs with HI at the lower address; the manual combines them as HI x 65536 + LO (ABCD).</li><li>Temperatures are in 0.01 K (kelvin) except HeatDiffTemp (00369), which is published in 0.01 °C.</li><li>A raw value of 0xFFFF means &#x27;not available&#x27;. Many registers apply only to particular booster types or need a sensor; see the support columns in the manual.</li><li>Pump blocks repeat every 10 registers: pump 1 at 00401, pump 2 at 00411 ... pump 6 at 00451. Pump power is in 10 W steps. Pilot and backup pump blocks (00461, 00471) and Pump-x energy for pilot/backup were left out.</li><li>Left out: tank-filling limits (00111-00114, 00215-00219), DDD remote-sensor setpoints and fieldbus sensor block (00119-00128, 00146-00156), manual pump speeds (00136-00143), PI tuning registers 00144/00145 and 00231/00232 (offset/scaling not clear enough), FeedbackSensorMin/Max (00221/00222, no scaling given), analog input values/units (00224-00230, 00376-00382, scaling depends on an enum), flow measurements 1-3 and remote/differential pressures not listed above, and the DDD logged sensor data. Alarm simulation registers were also omitted.</li><li>AlarmCode 00205 lists booster-system codes; when the alarm comes from an individual pump the pump&#x27;s own Grundfos code is reported (see the E-pump code list).</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500</h2><div class="faq"><details open><summary>What Modbus registers does the Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500 have?</summary><p>This map lists 127 registers: 127 holding registers. 23 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500 Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Registers are printed as 5-digit register numbers; the manual states register X is addressed as X-1 in the telegram (setpoint 00104 is sent as 00103).</p></details><details><summary>What byte order does the Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500 use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500?</summary><p>Start with HR 100 ControlRegister (Remote/start/stop/reset command word); HR 103 Setpoint (Setpoint, 0.01 %); HR 200 SystemStatus (System status bits); HR 204 AlarmCode (System alarm code); HR 208 PumpsRunning (Pumps running); HR 209 PumpsAlarm (Pumps in alarm); HR 300 Head (System head/pressure); HR 301 VolumeFlow (System flow); HR 311 Power (System power (32-bit)).</p></details><details><summary>How do I enable Modbus control of the Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500?</summary><p>Set 00101 bit 0 (RemoteAccessReq) = 1 and bit 1 (OnOffReq) to start/stop. For Hydro MPC, GENIECON and DDD you must also set the controller&#x27;s control source to &#x27;From bus&#x27; (Settings &gt; Secondary functions &gt; Control source). With a CIM in more than one pump of a Multi-E/TPED, control registers must be written to every pump head.</p></details><details><summary>What happens when the Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500 loses Modbus communication?</summary><p>Register 00012 sets a comm-loss timeout of 5-3600 s (0 = disabled, default). On timeout the booster returns to Local mode.</p></details><details><summary>Where is the official Grundfos Booster systems (Hydro MPC, Hydro Multi-E, Multi-B) via CIM 200 / CIM 500 Modbus documentation?</summary><p>The source is Modbus for Grundfos boosters - SoftCIM Modbus RTU, SoftCIM Modbus TCP, CIM/CIU 200 Modbus RTU, CIM/CIU 500 Modbus TCP - Functional profile and user manual (98393459), revision 2025-09, published free by Grundfos at https://api.grundfos.com/literature/Grundfosliterature-6012934.pdf.</p></details></div>
@@ -540,10 +529,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -569,14 +558,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

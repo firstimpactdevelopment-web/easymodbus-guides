@@ -233,12 +233,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/daikin/dcom-lt-mb-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/daikin/dcom-lt-mb.csv"
     },
     {
@@ -340,7 +334,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/daikin/">Daikin</a></li><li aria-current="page">DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps</li></ol>
@@ -352,16 +346,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Daikin&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/daikin/">Daikin</a></dd></div><div><dt>Model</dt><dd>DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/pumps/">Heat pump</a></dd></div><div><dt>Registers</dt><dd>32 (13 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Also known as</dt><dd>DCOM-LT-MB, 534-001, Altherma LT Modbus interface</dd></div><div><dt>Source document</dt><dd><a href="https://www.daikin.eu/content/dam/document-library/installation-manuals/ctrl/bms/dcom-lt-mb/DCOM-LT-MB_reference%20and%20installation%20manual_English.pdf" rel="nofollow noopener" target="_blank">DCOM-LT/MB Reference Manual (English) &middot; 534-252-A3</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/daikin/dcom-lt-mb-easymodbus.csv">Copy for the phone app <small>32 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/daikin/dcom-lt-mb-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/daikin/dcom-lt-mb.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/daikin/dcom-lt-mb.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/daikin/dcom-lt-mb.json">JSON</a>
   <a class="btn" href="https://www.daikin.eu/content/dam/document-library/installation-manuals/ctrl/bms/dcom-lt-mb/DCOM-LT-MB_reference%20and%20installation%20manual_English.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps</h2>
 <div class="answer"><b>Integration in brief</b><p>Wire P1P2 to the Altherma user interface and RS-485 to the master, set the slave address on DIP switches SW1.3-SW1.8, wait for the green status LED, then poll input registers 21-50 with function 04 and write setpoints with function 06 or 16.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-4">HR 4</a></td><td class="n">Space heating/cooling on/off</td><td class="f">INT16</td><td>Space heating/cooling on/off</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-3">HR 3</a></td><td class="n">Operation mode</td><td class="f">INT16</td><td>Operation mode</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Leaving water main heating setpoint</td><td class="f">INT16</td><td>Heating leaving water setpoint</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-10">HR 10</a></td><td class="n">DHW reheat setpoint</td><td class="f">INT16</td><td>DHW setpoint</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-ir-21">IR 21</a></td><td class="n">Unit error</td><td class="f">INT16</td><td>Unit error</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-22">IR 22</a></td><td class="n">Unit error code</td><td class="f">UINT16</td><td>Error code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-42">IR 42</a></td><td class="n">Return water temperature</td><td class="f">INT16</td><td>Return water temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-43">IR 43</a></td><td class="n">Domestic hot water temperature</td><td class="f">INT16</td><td>DHW temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-44">IR 44</a></td><td class="n">Outside air temperature</td><td class="f">INT16</td><td>Outside temperature</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -412,9 +400,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Three special values can come back from any register when read as 16-bit: 32767 = register unsupported, 32766 = not available in the current configuration, 32765 = value not loaded yet. Expect 32765 everywhere while the DCOM synchronises with the Altherma (up to 8 minutes after power-up).</li><li>The manual types the setpoints and offsets as plain int16 with no scaling, so they are whole degrees; only the sensor temperatures (temp16) are in hundredths.</li><li>The DCOM can also run in Sequencer mode (used with the DCOM-LT/IO variant) and Smart Grid mode, chosen with DIP switches SW1.1-SW1.2 (SW1.1-SW1.4 in Smart Grid mode). Sequencer mode moves several input registers (for example outside air to 133); those alternative registers are not listed here.</li><li>Which functions actually work depends on the Altherma model and its user interface; unsupported ones return 32767 or 32766.</li><li>The unit error code is two ASCII characters packed into one register: high byte = first character, low byte = second (for example 14152 = &#x27;7H&#x27;). The sub code is a separate number.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps</h2><div class="faq"><details open><summary>What Modbus registers does the Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps have?</summary><p>This map lists 32 registers: 19 input registers, 13 holding registers. 13 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The manual numbers registers by offset with &#x27;Register Base 0&#x27;, so the printed offset is the wire address. Its own example: holding register 1 = Modicon 40002, input register 20 = Modicon 30021.</p></details><details><summary>What are the minimum Modbus registers to integrate the Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps?</summary><p>Start with HR 4 Space heating/cooling on/off (Space heating/cooling on/off); HR 3 Operation mode (Operation mode); HR 1 Leaving water main heating setpoint (Heating leaving water setpoint); HR 10 DHW reheat setpoint (DHW setpoint); IR 21 Unit error (Unit error); IR 22 Unit error code (Error code); IR 42 Return water temperature (Return water temperature); IR 43 Domestic hot water temperature (DHW temperature); IR 44 Outside air temperature (Outside temperature).</p></details><details><summary>How do I enable Modbus control of the Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps?</summary><p>No software enable. Choose the operating mode on SW1.1-SW1.2 and the address on SW1.3-SW1.8; the DCOM answers as a Modbus slave once it has synchronised with the Altherma master.</p></details><details><summary>What happens when the Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps loses Modbus communication?</summary><p>If P1P2 communication with the Altherma master fails for 60 seconds the DCOM falls back to waiting for the master; after 3 more minutes it reports Timeout (unit error 1, error code U8). No Modbus-side watchdog is documented.</p></details><details><summary>Where is the official Daikin DCOM-LT/MB Modbus interface for Daikin Altherma LT heat pumps Modbus documentation?</summary><p>The source is DCOM-LT/MB Reference Manual (English) (534-252-A3), published free by Daikin at https://www.daikin.eu/content/dam/document-library/installation-manuals/ctrl/bms/dcom-lt-mb/DCOM-LT-MB_reference%20and%20installation%20manual_English.pdf.</p></details></div>
@@ -426,10 +415,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -455,14 +444,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

@@ -233,12 +233,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/solaredge/sunspec-inverter-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/solaredge/sunspec-inverter.csv"
     },
     {
@@ -340,7 +334,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/solaredge/">SolarEdge</a></li><li aria-current="page">SolarEdge inverters (SunSpec logging)</li></ol>
@@ -352,16 +346,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 SolarEdge&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/solaredge/">SolarEdge</a></dd></div><div><dt>Model</dt><dd>SolarEdge inverters (SunSpec logging)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/solar-inverters/">Solar inverter</a></dd></div><div><dt>Registers</dt><dd>77 (0 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>115200 baud, 8N1</dd></div><div><dt>TCP port</dt><dd>1502</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Firmware</dt><dd>Technical note v3.3; the note restricts I_Status_Vendor (40108) to firmware up to 3.19.xx.</dd></div><div><dt>Also known as</dt><dd>SE5000, Synergy, SolarEdge SunSpec</dd></div><div><dt>Source document</dt><dd><a href="https://knowledge-center.solaredge.com/sites/kc/files/sunspec-implementation-technical-note.pdf" rel="nofollow noopener" target="_blank">Technical Note - SolarEdge Inverters - SunSpec Logging &middot; Version 3.3 &middot; rev. 2026-10</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/solaredge/sunspec-inverter-easymodbus.csv">Copy for the phone app <small>68 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/solaredge/sunspec-inverter-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/solaredge/sunspec-inverter.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/solaredge/sunspec-inverter.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/solaredge/sunspec-inverter.json">JSON</a>
   <a class="btn" href="https://knowledge-center.solaredge.com/sites/kc/files/sunspec-implementation-technical-note.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: SolarEdge SolarEdge inverters (SunSpec logging)</h2>
 <div class="answer"><b>Integration in brief</b><p>Enable Modbus TCP (LAN only) or set RS485-1 to the SunSpec (Non-SE Logger) protocol, then read 40069-40108 with function 03 at unit ID 1. Check that 40069 reads 101, 102 or 103 to confirm the addressing, then decode each value with its scale-factor register.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-40069">HR 40069</a></td><td class="n">C_SunSpec_DID</td><td class="f">UINT16</td><td>Inverter model ID (101/102/103) - proves the addressing is right</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40083">HR 40083</a></td><td class="n">I_AC_Power</td><td class="f">INT16</td><td>AC output power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40084">HR 40084</a></td><td class="n">I_AC_Power_SF</td><td class="f">INT16</td><td>AC power scale factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40085">HR 40085</a></td><td class="n">I_AC_Frequency</td><td class="f">UINT16</td><td>Grid frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40086">HR 40086</a></td><td class="n">I_AC_Frequency_SF</td><td class="f">INT16</td><td>Frequency scale factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40107">HR 40107</a></td><td class="n">I_Status</td><td class="f">UINT16</td><td>Operating state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40206">HR 40206</a></td><td class="n">Meter 1 M_AC_Power</td><td class="f">INT16</td><td>Meter 1 total real power (grid import/export)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40210">HR 40210</a></td><td class="n">Meter 1 M_AC_Power_SF</td><td class="f">INT16</td><td>Meter 1 power scale factor</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -457,9 +445,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>All registers are read with function 03; the note describes this SunSpec map as read-only monitoring data.</li><li>Value = raw x 10^SF, where SF is the signed int16 named in scale_factor_ref. Read a value and its SF in the same request so they belong to the same sample.</li><li>Word order: the meter section of the note says registers are big-endian with the most significant part first, but Appendix A states, for communicating with SolarEdge devices in general, that 32-bit values use little-endian word order (with a big-endian copy at +0x800). The appendix does not limit that statement to the proprietary registers, so every 32-bit register is left out: C_SunSpec_ID 40000, I_AC_Energy_WH 40093, I_Status_Vendor4 40119, meter 1 real-energy counters 40226-40240, apparent-energy totals 40243/40251 and M_Events 40293. Their scale-factor registers (40095, 40242, 40259) are kept.</li><li>I_AC_Energy_WH_SF (40095) is typed uint16 in this note although SunSpec scale factors are signed int16; the published type is kept. Its energy register is not listed (see word order).</li><li>The note attaches a footnote to I_AC_VoltageAN/BN/CN reading &#x27;Supported only in split-phase configurations&#x27;; the same footnote marker also appears on the status table. These registers may be unimplemented on some grid setups.</li><li>On the inverter table the footnote &#x27;use this field for versions up to 3.19.XX&#x27; is attached to I_Status_Vendor (40108) and also to I_AC_PF and I_AC_PF_SF (40091-40092).</li><li>Left out: Multiple MPPT extension model 160 (from 40121, Synergy three-phase inverters only, firmware 4.13+). On Synergy units it occupies the addresses where meter 1 sits on other inverters, and the meter blocks move by +50 (2-unit) or +70 (3-unit).</li><li>Left out: meter line-to-line voltages 40199-40202 (the note says SolarEdge meters do not report L-L voltage over SunSpec), per-phase meter VA/var/PF, per-phase apparent energies and the reactive-energy quadrant counters 40260-40292.</li><li>Meters 2 and 3 repeat the meter 1 layout at base 40295 and 40469 (base 0, default). Only enabled meters are readable and they are packed in order, so if meters 1 and 3 are enabled, meter 3 appears in the meter 2 slot.</li><li>The meter overview text mentions DID 4 or 5, while the register table lists 201-204; the table values are used here.</li><li>Active/reactive power control (curtailment) is documented in SolarEdge&#x27;s separate Power Control document and is not part of this map.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the SolarEdge SolarEdge inverters (SunSpec logging)</h2><div class="faq"><details open><summary>What Modbus registers does the SolarEdge SolarEdge inverters (SunSpec logging) have?</summary><p>This map lists 77 registers: 77 holding registers. 0 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the SolarEdge SolarEdge inverters (SunSpec logging) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The source prints two columns for every register: &#x27;base 0&#x27; (Modbus protocol address) and &#x27;base 1&#x27; (PLC address). &#x27;documented&#x27; holds the base-0 value, which goes on the wire unchanged: the SunSpec marker is requested at 40000, and the same register is listed as 40001 in the base-1 column.</p></details><details><summary>What are the minimum Modbus registers to integrate the SolarEdge SolarEdge inverters (SunSpec logging)?</summary><p>Start with HR 40069 C_SunSpec_DID (Inverter model ID (101/102/103) - proves the addressing is right); HR 40083 I_AC_Power (AC output power); HR 40084 I_AC_Power_SF (AC power scale factor); HR 40085 I_AC_Frequency (Grid frequency); HR 40086 I_AC_Frequency_SF (Frequency scale factor); HR 40107 I_Status (Operating state); HR 40206 Meter 1 M_AC_Power (Meter 1 total real power (grid import/export)); HR 40210 Meter 1 M_AC_Power_SF (Meter 1 power scale factor).</p></details><details><summary>How do I enable Modbus control of the SolarEdge SolarEdge inverters (SunSpec logging)?</summary><p>SolarEdge Go / SetApp: Commissioning &gt; Site Communication &gt; Modbus TCP &gt; Enable (port 1502 by default), or RS485-1 &gt; Protocol &gt; SunSpec (Non-SE Logger) with a unique Device ID 1-247. LCD inverters: Communication &gt; LAN Conf &gt; Modbus TCP (port 502 by default), or the RS485-1 Conf menu. Modbus TCP is off from the factory.</p></details><details><summary>What happens when the SolarEdge SolarEdge inverters (SunSpec logging) loses Modbus communication?</summary><p>No SunSpec communication watchdog is described. The note gives a 2-minute idle time for the Modbus TCP server and advises sending a request within that window to keep the connection open.</p></details><details><summary>Where is the official SolarEdge SolarEdge inverters (SunSpec logging) Modbus documentation?</summary><p>The source is Technical Note - SolarEdge Inverters - SunSpec Logging (Version 3.3), revision 2026-10, published free by SolarEdge at https://knowledge-center.solaredge.com/sites/kc/files/sunspec-implementation-technical-note.pdf.</p></details></div>
@@ -471,10 +460,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -500,14 +489,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

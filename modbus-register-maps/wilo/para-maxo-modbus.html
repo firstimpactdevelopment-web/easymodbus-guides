@@ -233,12 +233,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/wilo/para-maxo-modbus-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/wilo/para-maxo-modbus.csv"
     },
     {
@@ -340,7 +334,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/wilo/">Wilo</a></li><li aria-current="page">Para MAXO (built-in Modbus RTU)</li></ol>
@@ -352,16 +346,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Wilo&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/wilo/">Wilo</a></dd></div><div><dt>Model</dt><dd>Para MAXO (built-in Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/pumps/">Pump (high-efficiency circulator)</a></dd></div><div><dt>Registers</dt><dd>28 (10 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>101</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8E1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Firmware</dt><dd>Para MAXO Modbus module 1.00-99.99</dd></div><div><dt>Also known as</dt><dd>Para MAXO, Wilo-Para MAXO, Para MAXO Modbus</dd></div><div><dt>Source document</dt><dd><a href="https://cms.media.wilo.com/cdndoc/wilo458422/9310881/wilo458422.html" rel="nofollow noopener" target="_blank">WILO datapoint list MODBUS - Para MAXO (Modbus list of registers) &middot; wilo458422</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/wilo/para-maxo-modbus-easymodbus.csv">Copy for the phone app <small>28 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/wilo/para-maxo-modbus-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/wilo/para-maxo-modbus.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/wilo/para-maxo-modbus.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/wilo/para-maxo-modbus.json">JSON</a>
   <a class="btn" href="https://cms.media.wilo.com/cdndoc/wilo458422/9310881/wilo458422.html" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Wilo Para MAXO (built-in Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Talk to address 101 at 19200 8E1 by default. Write H 42 (control mode), then H 1 (duty point, 200 = 100 %) and H 40 = 1 to run; read I 200/I 400 for set and actual duty point, I 1/I 2/I 4 for pressure, flow and power, and I 404/I 940 for status and errors.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-40">HR 40</a></td><td class="n">Pump Command in</td><td class="f">BITMAP16</td><td>Pump on/off</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-42">HR 42</a></td><td class="n">Control Function</td><td class="f">UINT16</td><td>Control mode</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">duty point (rel.)</td><td class="f">INT16</td><td>Duty point (setpoint), 0.5 % steps</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-ir-404">IR 404</a></td><td class="n">Operation Status</td><td class="f">BITMAP16</td><td>Operation status bits</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-940">IR 940</a></td><td class="n">Warning/Error Message</td><td class="f">UINT16</td><td>Wilo error code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-4">IR 4</a></td><td class="n">power input</td><td class="f">UINT16</td><td>Electrical power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-7">IR 7</a></td><td class="n">Speed</td><td class="f">INT16</td><td>Speed</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2">IR 2</a></td><td class="n">Flow (calculated)</td><td class="f">UINT16</td><td>Calculated flow</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -408,9 +396,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>The register list is Wilo&#x27;s public HTML datapoint list (Wilo&#x27;s media CDN, reached from the short link qr.wilo.com/para-maxo-Modbus-registers printed in Wilo&#x27;s own guide). Addressing, communication defaults (address 101, 19200 baud, 8E1), the duty-point worked examples and the fallback procedure come from Wilo&#x27;s &#x27;OEM Technical guide Wilo-Para MAXO Modbus Communication Protocol&#x27; V01.01 (2025-02-13), https://cms.media.wilo.com/cdndoc/wilo698135/9854564/wilo698135.pdf, pp. 5, 8, 11, 17-25. That PDF carries a notice that it is Wilo property and may not be copied or extracted without Wilo&#x27;s written acceptance; only re-keyed facts are used here and the PDF is linked, not re-hosted.</li><li>Scale: physical value = raw x scale as listed in the datapoint list (e.g. Pressure raw x 10 = cm H2O, Operation Time raw x 10 = h, Flow raw x 0.1 = m³/h, duty point raw x 0.5 = %).</li><li>Duty point is relative: the engineering value at 100 % is published in input register 206 (&#x27;duty point 100 % value&#x27;, a 32-bit REAL). Head or speed = duty point % x that value / 100.</li><li>Left out because the 32-bit word order is not stated: duty point 100 % value (I 206, REAL), Heartbeat Count (I 500, UDINT), Vendor ID (I 702, DWORD) and parameter block acknowledge (61694, DWORD).</li><li>Flow error value: the datapoint list gives 9999, the technical guide&#x27;s warning cites 65535; treat both as invalid.</li><li>Removed where Wilo&#x27;s documents disagree: Bus Command Timer Time remain (I 504: UINT, scale 1 in the datapoint list but UDINT, scale 2 in the guide); Application Version (I 700: WORD in the guide and older list, UDINT in the current list); Control Function preset (H 403: the list codes the modes 1/3/4 but the guide&#x27;s fallback section codes them 1/2/3). Flow min-pres-value (I 25) is left out because the current list&#x27;s support reference does not include Para MAXO.</li><li>Speed (I 7) is INT in the current datapoint list and UINT in the guide and the older list; it is typed INT16 here. Real pump speeds are far below 32768 rpm, so both readings agree.</li><li>The control-mode lists (H 42, I 10) also include 140 = Gen_UsrDfd for Para MAXO in the current datapoint list; the guide only describes 1, 3 and 4.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Wilo Para MAXO (built-in Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Wilo Para MAXO (built-in Modbus RTU) have?</summary><p>This map lists 28 registers: 18 input registers, 10 holding registers. 10 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Wilo Para MAXO (built-in Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Wilo register numbers start at zero and equal the request address (Wilo&#x27;s Para MAXO Modbus technical guide states this explicitly), so Flow &#x27;I 2&#x27; is input register address 2 on the wire.</p></details><details><summary>What are the minimum Modbus registers to integrate the Wilo Para MAXO (built-in Modbus RTU)?</summary><p>Start with HR 40 Pump Command in (Pump on/off); HR 42 Control Function (Control mode); HR 1 duty point (rel.) (Duty point (setpoint), 0.5 % steps); IR 404 Operation Status (Operation status bits); IR 940 Warning/Error Message (Wilo error code); IR 4 power input (Electrical power); IR 7 Speed (Speed); IR 2 Flow (calculated) (Calculated flow).</p></details><details><summary>How do I enable Modbus control of the Wilo Para MAXO (built-in Modbus RTU)?</summary><p>No enable step is documented: the pump accepts Modbus writes directly. Use Bus Command Timer (H 300) = MANUAL to allow both local and bus operation (last write wins).</p></details><details><summary>What happens when the Wilo Para MAXO (built-in Modbus RTU) loses Modbus communication?</summary><p>Fallback emulation (guide p. 23): set H 400 (20-65534 s, default 300 s), the fallback on/off H 404 and the fallback duty point H 402, then write H 300 = 6 (SET_PRESET) and keep rewriting it before the timeout. If it lapses the pump runs on the preset values. The fallback control mode register H 403 is not listed here because Wilo&#x27;s documents give conflicting codes for it.</p></details><details><summary>Where is the official Wilo Para MAXO (built-in Modbus RTU) Modbus documentation?</summary><p>The source is WILO datapoint list MODBUS - Para MAXO (Modbus list of registers) (wilo458422), published free by Wilo at https://cms.media.wilo.com/cdndoc/wilo458422/9310881/wilo458422.html.</p></details></div>
@@ -422,10 +411,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -451,14 +440,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

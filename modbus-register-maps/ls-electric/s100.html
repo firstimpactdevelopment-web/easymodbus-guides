@@ -234,12 +234,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/ls-electric/s100-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/ls-electric/s100.csv"
     },
     {
@@ -341,7 +335,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/ls-electric/">LS Electric</a></li><li aria-current="page">LSLV-S100 AC drive (built-in RS-485 Modbus RTU)</li></ol>
@@ -353,16 +347,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 LS Electric&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/ls-electric/">LS Electric</a></dd></div><div><dt>Model</dt><dd>LSLV-S100 AC drive (built-in RS-485 Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>48 (21 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>1-based (subtract 1 for the wire address)</dd></div><div><dt>Also known as</dt><dd>LSLV-S100, LSIS S100, LS S100, LSLV0075S100-4EOFNS</dd></div><div><dt>Source document</dt><dd><a href="https://sol.ls-electric.com/us/en/product/document/8652" rel="nofollow noopener" target="_blank">S100 User Manual (LSLV-S100 AC Variable Speed Drive) &middot; S100_Manual_English_V4.3 &middot; rev. 2026-09</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/ls-electric/s100-easymodbus.csv">Copy for the phone app <small>48 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/ls-electric/s100-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/ls-electric/s100.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/ls-electric/s100.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/ls-electric/s100.json">JSON</a>
   <a class="btn" href="https://sol.ls-electric.com/us/en/product/document/8652" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: LS Electric LSLV-S100 AC drive (built-in RS-485 Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Set CM.01-CM.04 to match the master, set dr.06 = 3 (Int 485) and dr.07 = 6 (Int 485), then write 0h0380 (frequency, 0.01 Hz) and 0h0382 (0003h forward, 0001h reverse, 0000h stop). Poll 0h0305, 0h0310, 0h0311, 0h0315 and the trip words 0h0330-0h0334. Remember every printed address is sent minus 1.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-897">HR 897</a></td><td class="n">Operation command</td><td class="f">BITMAP16</td><td>0h0382 operation command (run/stop/direction/reset)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-895">HR 895</a></td><td class="n">Frequency command</td><td class="f">UINT16</td><td>0h0380 frequency command, 0.01 Hz</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-772">HR 772</a></td><td class="n">Inverter operation state</td><td class="f">BITMAP16</td><td>0h0305 operation state (ready/warning/fault, accel/decel, direction)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-784">HR 784</a></td><td class="n">Output frequency</td><td class="f">UINT16</td><td>0h0311 output frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-783">HR 783</a></td><td class="n">Output current</td><td class="f">UINT16</td><td>0h0310 output current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-788">HR 788</a></td><td class="n">DC link voltage</td><td class="f">UINT16</td><td>0h0315 DC link voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-815">HR 815</a></td><td class="n">Latch type trip information 1</td><td class="f">BITMAP16</td><td>0h0330 latch trip flags</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-819">HR 819</a></td><td class="n">Warning information</td><td class="f">BITMAP16</td><td>0h0334 warning flags</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -429,9 +417,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Direct PDF from LS Electric&#x27;s Solution Square CDN: https://sftpssqblobcdn.blob.core.windows.net/prod/largefile/document/17912520084750/S100_Manual_English_V4.3.pdf (V4.3, listed on the document page with update date 2026-10-06).</li><li>Left out because the sign is not stated and the values can go negative: 0h0317 output torque, 0h0318/0h0319 and 0h0388/0h0389 PID reference/feedback, 0h0390-0h0395 torque reference/limits/bias, 0h0324-0h032B analog inputs and outputs (V1 can be bipolar), and 0h032D module temperature.</li><li>Left out: 0h032E/0h032F energy (0.1 kWh and MWh registers; how they combine is not described) and the parameter-group registers other than those needed for setup.</li><li>0h0305 and 0h0306 hold packed 4-bit and 8-bit fields rather than single flags; the &#x27;bits&#x27; entries name the lowest bit of each field.</li><li>Pr.13 Lost Cmd Time (0h1B0D, 0.1-120 s) is not included because its register scaling is not printed; set it on the keypad.</li><li>The frequency command registers (0h0005, 0h0380) are never stored, even with parameter save; to keep a frequency through a power cycle set dr.07 = 1 (Keypad-1), write dr.01 at 0h1101 and save with 0h03E0.</li><li>The iS5/iP5A/iV5/iG5A-compatible area (0h0000-0h001B: command frequency 0h0005, operation command 0h0006, status 0h000E and so on) is left out: the manual starts that area at 0h0000, which cannot exist under the minus-1 rule shown in its only example frame, so the offset for that legacy area is not settled by the manual. Use the S100 area at 0h0300+ instead.</li><li>The manual prints a scale of &#x27;0&#x27; for 0h0312 output rpm, 0h0313 feedback speed and the 0h0340-0h0345 time counters; this map reads that as zero decimal places (whole rpm, days, minutes).</li><li>CM.04 option 1 (D8/PN/S2, two stop bits) appears in the chapter 7 parameter description but not in the CM group function table.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the LS Electric LSLV-S100 AC drive (built-in RS-485 Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the LS Electric LSLV-S100 AC drive (built-in RS-485 Modbus RTU) have?</summary><p>This map lists 48 registers: 48 holding registers. 21 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the LS Electric LSLV-S100 AC drive (built-in RS-485 Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The manual prints communication addresses in hex (0h0300, 0h1103). Its only Modbus-RTU worked example writes Acc time (0x1103) and Dec time (0x1104) with starting address 0x1102, labelled &#x27;Starting Address -1 (0x1103-1)&#x27;, and the CRCs printed for that request (0x1202) and response (0xE534) are the correct CRCs for 0x1102, so the wire address is the printed address minus 1: 0h0380 frequency command is sent as 0x037F. The protocol text only says the starting address is the communication address; this map follows the worked frame. The manual states no different rule per area.</p></details><details><summary>What are the minimum Modbus registers to integrate the LS Electric LSLV-S100 AC drive (built-in RS-485 Modbus RTU)?</summary><p>Start with HR 897 Operation command (0h0382 operation command (run/stop/direction/reset)); HR 895 Frequency command (0h0380 frequency command, 0.01 Hz); HR 772 Inverter operation state (0h0305 operation state (ready/warning/fault, accel/decel, direction)); HR 784 Output frequency (0h0311 output frequency); HR 783 Output current (0h0310 output current); HR 788 DC link voltage (0h0315 DC link voltage); HR 815 Latch type trip information 1 (0h0330 latch trip flags); HR 819 Warning information (0h0334 warning flags).</p></details><details><summary>How do I enable Modbus control of the LS Electric LSLV-S100 AC drive (built-in RS-485 Modbus RTU)?</summary><p>CM.01 station ID (1-250, default 1), CM.02 = 0 Modbus-RTU (default), CM.03 baud (default 3 = 9600), CM.04 frame (default 0 = 8N1), CM.05 response delay (default 5 ms). For control set dr.06 Cmd Source = 3 (Int 485) and dr.07 Freq Ref Src = 6 (Int 485); on the 7-segment keypad these are the drv and Frq codes. Virtual inputs: assign functions in CM.70-CM.77 and set bits in 0h0385.</p></details><details><summary>What happens when the LS Electric LSLV-S100 AC drive (built-in RS-485 Modbus RTU) loses Modbus communication?</summary><p>Pr.12 Lost Cmd Mode (0 none by default, 1 free-run, 2 decelerate with Pr.07, 3 hold average input, 4 hold average output, 5 run at Pr.14) acts when communication has been lost for longer than Pr.13 Lost Cmd Time (0.1-120 s, default 1.0 s). Relay 1 can signal it with OU.31 = 13 (Lost Command); 0h0332 bit 2 and 0h0334 bit 3 flag it.</p></details><details><summary>Where is the official LS Electric LSLV-S100 AC drive (built-in RS-485 Modbus RTU) Modbus documentation?</summary><p>The source is S100 User Manual (LSLV-S100 AC Variable Speed Drive) (S100_Manual_English_V4.3), revision 2026-09, published free by LS Electric at https://sol.ls-electric.com/us/en/product/document/8652.</p></details></div>
@@ -443,10 +432,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -472,14 +461,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

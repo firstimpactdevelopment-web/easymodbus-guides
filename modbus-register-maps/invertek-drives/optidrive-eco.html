@@ -235,12 +235,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/invertek-drives/optidrive-eco-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/invertek-drives/optidrive-eco.csv"
     },
     {
@@ -342,7 +336,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/invertek-drives/">Invertek Drives</a></li><li aria-current="page">Optidrive Eco (built-in Modbus RTU)</li></ol>
@@ -354,16 +348,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Invertek Drives&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/invertek-drives/">Invertek Drives</a></dd></div><div><dt>Model</dt><dd>Optidrive Eco (built-in Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>27 (16 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>115200 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>1-based (subtract 1 for the wire address)</dd></div><div><dt>Also known as</dt><dd>ODV-3, Optidrive Eco HVAC, Optidrive Eco IP20, Optidrive Eco IP55, Optidrive Eco IP66</dd></div><div><dt>Source document</dt><dd><a href="https://admin.invertekdrives.com/assets/56AFAD3C-CE1A-4D9D-A91D-F893F86B59D2/82-HEMAN-IN_V3.13%20Optidrive%20Eco%20User%20Guide.pdf" rel="nofollow noopener" target="_blank">Optidrive Eco User Guide &middot; 82-HEMAN-IN V3.13 &middot; rev. 2024-11</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/invertek-drives/optidrive-eco-easymodbus.csv">Copy for the phone app <small>27 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/invertek-drives/optidrive-eco-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/invertek-drives/optidrive-eco.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/invertek-drives/optidrive-eco.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/invertek-drives/optidrive-eco.json">JSON</a>
   <a class="btn" href="https://admin.invertekdrives.com/assets/56AFAD3C-CE1A-4D9D-A91D-F893F86B59D2/82-HEMAN-IN_V3.13%20Optidrive%20Eco%20User%20Guide.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Invertek Drives Optidrive Eco (built-in Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Put the drive in fieldbus control with P1-12 = 4, then write register 1 (control word) and register 2 (speed in 0.1 Hz) and poll registers 6-11 for status, fault code, frequency, current, torque and power. Subtract 1 from every register number the guide prints.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Command control word</td><td class="f">BITMAP16</td><td>Control word: run/stop, fault reset</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Command speed reference</td><td class="f">INT16</td><td>Speed reference, 0.1 Hz</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-5">HR 5</a></td><td class="n">Error code / drive status</td><td class="f">BITMAP16</td><td>Status bits (low byte) + fault code (high byte)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-6">HR 6</a></td><td class="n">Output frequency</td><td class="f">INT16</td><td>Output frequency, 0.1 Hz</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-7">HR 7</a></td><td class="n">Output current</td><td class="f">UINT16</td><td>Output current, 0.1 A</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-9">HR 9</a></td><td class="n">Output power</td><td class="f">INT16</td><td>Output power, 0.01 kW</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-22">HR 22</a></td><td class="n">DC link voltage</td><td class="f">UINT16</td><td>DC bus voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-111">HR 111</a></td><td class="n">P1-12 Primary command source</td><td class="f">UINT16</td><td>P1-12 command source (must be 4)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-33">HR 33</a></td><td class="n">Running time - hours</td><td class="f">UINT16</td><td>Total run time, hours</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -409,9 +397,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Register 6 packs two bytes: the low byte is the 8-bit status word, the high byte the fault code. Read the register, then take (value &gt;&gt; 8) for the fault number; 0 means no fault.</li><li>The guide does not say whether the output values are signed. Frequency, torque, power, analog levels and temperature are typed INT16 here: every value in their documented ranges is below 32768, so INT16 and UINT16 decode identically, and INT16 is also right if the drive sends a negative value.</li><li>Parameter registers follow the guide&#x27;s rule: register number = parameter number, and a parameter shown with one decimal place is sent x10 (the guide&#x27;s example: P1-01 = 500 means 50.0 Hz). When P1-10 Motor rated speed is non-zero, P1-01/P1-02 are in rpm instead and the decimal handling for rpm is not stated.</li><li>The guide says P5-01 (drive address), P5-03 (baud rate) and P5-04 (data format) are not accessible over Modbus, so they are not listed; P5-16 (alternative Modbus address) is left out for the same reason.</li><li>The register-4 text says ramp control needs &#x27;P5-08 = 1&#x27;, but the introduction and the P5-07 parameter description both put Fieldbus Ramp Control in P5-07; this map follows P5-07.</li><li>Left out: register 22 pre-ramp speed reference (units not stated), registers 30-33 kWh/MWh meters (resolution not stated, and the guide labels both the resettable and non-resettable pairs as P0-26/P0-27), register 35 run time minutes and seconds (packing not stated), register 3 (reserved), P1-08 motor current and P1-11 boost (decimal places not stated).</li><li>P1-12 values 1 and 2 are both printed as &#x27;Keypad control - uni-directional&#x27; in this guide edition.</li><li>The P5-05 text refers to &#x27;P5-07&#x27; for the loss action; the action itself is P5-06.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Invertek Drives Optidrive Eco (built-in Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Invertek Drives Optidrive Eco (built-in Modbus RTU) have?</summary><p>This map lists 27 registers: 27 holding registers. 16 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Invertek Drives Optidrive Eco (built-in Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The guide numbers registers from 1 and says masters that count from 0 must subtract 1, so register 1 (control word) is wire address 0 and register 6 (status) is address 5. Parameters use register = parameter number (P1-01 = register 101 = address 100; P5-05 = 505 = address 504).</p></details><details><summary>What are the minimum Modbus registers to integrate the Invertek Drives Optidrive Eco (built-in Modbus RTU)?</summary><p>Start with HR 0 Command control word (Control word: run/stop, fault reset); HR 1 Command speed reference (Speed reference, 0.1 Hz); HR 5 Error code / drive status (Status bits (low byte) + fault code (high byte)); HR 6 Output frequency (Output frequency, 0.1 Hz); HR 7 Output current (Output current, 0.1 A); HR 9 Output power (Output power, 0.01 kW); HR 22 DC link voltage (DC bus voltage); HR 111 P1-12 Primary command source (P1-12 command source (must be 4)); HR 33 Running time - hours (Total run time, hours).</p></details><details><summary>How do I enable Modbus control of the Invertek Drives Optidrive Eco (built-in Modbus RTU)?</summary><p>Set P1-14 = 101 to open the extended parameter groups, then set P5-01 node address (1-63; P5-16 for higher addresses), P5-03 baud rate and P5-04 data format, and set P1-12 = 4 (Fieldbus control) so registers 1-2 can run the drive. The hardware ENABLE input must be present before a start command from the fieldbus is accepted. With P1-12 = 6 the port runs BACnet MS/TP instead of Modbus.</p></details><details><summary>What happens when the Invertek Drives Optidrive Eco (built-in Modbus RTU) loses Modbus communication?</summary><p>P5-05 Communications loss timeout (0.0-5.0 s, default 1.0 s, 0 disables) with P5-06 action: 0 trip and coast, 1 ramp then trip, 2 ramp only, 3 run at preset speed 4. A timeout trips fault 50 (Built-in Modbus RTU communication timeout).</p></details><details><summary>Where is the official Invertek Drives Optidrive Eco (built-in Modbus RTU) Modbus documentation?</summary><p>The source is Optidrive Eco User Guide (82-HEMAN-IN V3.13), revision 2024-11, published free by Invertek Drives at https://admin.invertekdrives.com/assets/56AFAD3C-CE1A-4D9D-A91D-F893F86B59D2/82-HEMAN-IN_V3.13%20Optidrive%20Eco%20User%20Guide.pdf.</p></details></div>
@@ -423,10 +412,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -452,14 +441,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

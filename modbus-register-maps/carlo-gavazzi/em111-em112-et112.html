@@ -240,12 +240,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em111-em112-et112-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em111-em112-et112.csv"
     },
     {
@@ -347,7 +341,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></li><li aria-current="page">EM100 / ET100 series (EM111, EM112, ET112)</li></ol>
@@ -359,16 +353,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Carlo Gavazzi&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></dd></div><div><dt>Model</dt><dd>EM100 / ET100 series (EM111, EM112, ET112)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>48 (18 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>EM111, EM112, ET112, EM110, EM111-DIN, EM112-DIN, ET112-DIN, EM111DINAV81XS1X, EM112DINAV01XS1X, ET112DINAV01XS1X</dd></div><div><dt>Source document</dt><dd><a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM111_EM112_ET112_CP.pdf" rel="nofollow noopener" target="_blank">EM100 Series and ET100 Series Communication Protocol &middot; Version 2 Revision 14</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/em111-em112-et112-easymodbus.csv">Copy for the phone app <small>48 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em111-em112-et112-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em111-em112-et112.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/carlo-gavazzi/em111-em112-et112.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em111-em112-et112.json">JSON</a>
   <a class="btn" href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM111_EM112_ET112_CP.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112)</h2>
 <div class="answer"><b>Integration in brief</b><p>Read input registers 0000h-0023h with function 04 (or 03) in one request; decode INT32 values low word first and apply the fixed weights (V and W x10, A and PF x1000, energy x10).</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">V L-N</td><td class="f">INT32 CDAB</td><td>Voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2">IR 2</a></td><td class="n">A</td><td class="f">INT32 CDAB</td><td>Current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-4">IR 4</a></td><td class="n">W</td><td class="f">INT32 CDAB</td><td>Active power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-14">IR 14</a></td><td class="n">PF</td><td class="f">INT16</td><td>Power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-16">IR 16</a></td><td class="n">kWh(+) total</td><td class="f">INT32 CDAB</td><td>Imported energy</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-32">IR 32</a></td><td class="n">kWh(-) total</td><td class="f">INT32 CDAB</td><td>Exported energy</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -435,9 +423,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Word order: the protocol states INT32/UINT32/UINT64 are LSW first with bytes MSB first, so 32-bit values are CDAB.</li><li>Functions 03 and 04 are equivalent; up to 50 registers per request.</li><li>Table 2.4-4 (0100h-0189h) mirrors the same values, with PF as INT32; it is not duplicated here.</li><li>The integer/decimal split totalizers (0400h-040Fh) exist only on EM111/EM112 from firmware b.10, in units made from 1 January 2020 (serial YR2020 001xxxU onward).</li><li>Registers marked &#x27;not available, value = 0&#x27; (tariffs 3-4, negative partials, kVAh, THD) are left out.</li><li>Left out: the INT64 energy block at 0500h (no value weight given), kWh-per-pulse settings (1020h/1022h, no weight), the ASCII serial-number letters (5000h-5006h), and kWh(-) total integer part (0408h), whose Notes cell is empty in the document, so its weight is not stated (its decimal-part partner 040Ah is printed with a weight and is kept).</li><li>In measurement mode A (and PFA models) energy always counts as imported; mode B (PFB, ET112) separates kWh(+) and kWh(-) and current/power go negative when exporting.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112)</h2><div class="faq"><details open><summary>What Modbus registers does the Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112) have?</summary><p>This map lists 48 registers: 28 input registers, 20 holding registers. 18 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Registers are printed as a 6-digit Modicon number for function 04 (3xxxxx; use 4xxxxx for function 03) and as the hex physical address placed in the frame. Wire address = physical address (300001 / 0000h is address 0). Setup rows are written with function 06 and are listed as holding registers; 1010h/1012h are printed with the hex address only.</p></details><details><summary>What byte order does the Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112)?</summary><p>Start with IR 0 V L-N (Voltage); IR 2 A (Current); IR 4 W (Active power); IR 14 PF (Power factor); IR 16 kWh(+) total (Imported energy); IR 32 kWh(-) total (Exported energy).</p></details><details><summary>How do I enable Modbus control of the Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112)?</summary><p>S1 versions carry the RS485 Modbus RTU port. Address, baud rate, parity and stop bits are in registers 2000h-2003h (or the instrument&#x27;s own setup menu, see its manual).</p></details><details><summary>Where is the official Carlo Gavazzi EM100 / ET100 series (EM111, EM112, ET112) Modbus documentation?</summary><p>The source is EM100 Series and ET100 Series Communication Protocol (Version 2 Revision 14), published free by Carlo Gavazzi at https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM111_EM112_ET112_CP.pdf.</p></details></div>
@@ -449,10 +438,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -478,14 +467,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

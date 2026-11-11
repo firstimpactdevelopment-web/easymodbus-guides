@@ -242,12 +242,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/lochinvar/knight-armor-modbus-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/lochinvar/knight-armor-modbus.csv"
     },
     {
@@ -349,7 +343,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/lochinvar/">Lochinvar</a></li><li aria-current="page">Knight / Armor / Wall Mount boilers (ModBus communication board)</li></ol>
@@ -361,16 +355,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Lochinvar&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/lochinvar/">Lochinvar</a></dd></div><div><dt>Model</dt><dd>Knight / Armor / Wall Mount boilers (ModBus communication board)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/boilers/">Boiler / water heater</a></dd></div><div><dt>Registers</dt><dd>43 (11 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>Also known as</dt><dd>Knight, Knight XL, Outdoor Knight, Outdoor Knight XL, Armor, Outdoor Armor, Wall Mount Armor, Knight Wall Mount, Knight Wall Hung, AQUAS, FTXL, Shield</dd></div><div><dt>Source document</dt><dd><a href="https://assets.lochinvar.com/damroot/Original/10014/MODB-I-O_100161545_2000014822_Rev_T_(54850).pdf" rel="nofollow noopener" target="_blank">ModBus and BACnet Communication Instructions (Knight, Knight XL, Armor, Outdoor Knight, AQUAS, FTXL, Wall Mount, Wall Hung, Shield) &middot; MODB-I-O_100161545_2000014822 Rev T</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/lochinvar/knight-armor-modbus-easymodbus.csv">Copy for the phone app <small>43 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/lochinvar/knight-armor-modbus-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/lochinvar/knight-armor-modbus.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/lochinvar/knight-armor-modbus.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/lochinvar/knight-armor-modbus.json">JSON</a>
   <a class="btn" href="https://assets.lochinvar.com/damroot/Original/10014/MODB-I-O_100161545_2000014822_Rev_T_(54850).pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board)</h2>
 <div class="answer"><b>Integration in brief</b><p>Set the board address, baud and parity on its DIP switches, put the boiler control in ModBus mode, then write the configuration word 40001 followed by the command registers. For a simple enable, write 40001 = 0x0001 and 40002 = 0x0001; for a modulation or setpoint command also set bit 2 (40001 = 0x0005) and write 40003. Monitor 30009-30016.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Configuration</td><td class="f">BITMAP16</td><td>Configuration bits: which values come from the BAS</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Coils</td><td class="f">UINT16</td><td>Enable / thermostat command word</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-2">HR 2</a></td><td class="n">0-10 Volt Input / Rate Command / Setpoint Command</td><td class="f">UINT16</td><td>Rate (%) or setpoint command</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-ir-8">IR 8</a></td><td class="n">Outlet Temperature</td><td class="f">UINT16</td><td>Outlet temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-9">IR 9</a></td><td class="n">Inlet Temperature</td><td class="f">INT16</td><td>Inlet temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-11">IR 11</a></td><td class="n">Firing Rate</td><td class="f">UINT16</td><td>Firing rate</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-13">IR 13</a></td><td class="n">Boiler Status Code</td><td class="f">UINT16</td><td>Status code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-15">IR 15</a></td><td class="n">Boiler Lockout Code</td><td class="f">UINT16</td><td>Lockout code</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -432,9 +420,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Temperatures: the manual&#x27;s conversion section says the appliance passes temperatures in degrees C multiplied by 10 (worked examples: outdoor 26.7 C sent as 267; outlet 683 read as 68.3 C). Scale 0.1 is applied to every temperature register.</li><li>Removed: System/Cascade Setpoint (30004), Outlet Setpoint (30008) and Tank Setpoint (40004). The memory map gives these a 0.5 C resolution while the conversion section says all temperature data is degrees C x 10, and the worked examples only cover other registers (outdoor temperature and outlet temperature). Because the scaling of these three is not settled by the document, they are left out.</li><li>Signed types: registers whose published minimum is negative (inlet, flue, tank, outdoor, supply/return temperatures) are listed as INT16; the manual itself only says &#x27;16-bit word&#x27;.</li><li>Dip switch 8 on the communication board selects degrees C (OFF) or F (ON) for the display/data; units here assume C (switch OFF), matching the manual&#x27;s tables and conversion examples.</li><li>Holding register 40002 &#x27;Coils&#x27; has no bit list: the manual&#x27;s tables write 0x0001 to enable the unit but 0x0008 for the tank thermostat, which does not match the tank thermostat being coil 00005. Write only the exact values from the manual&#x27;s control-mode tables.</li><li>Input registers 30001-30003 are packed copies of the discrete inputs; the bit-to-input order is not stated, so they are listed as UINT16. Use the discrete inputs instead.</li><li>The same manual also covers AWH and KBX appliances (pp. 30-33) with similar holding-register use; this map follows the main memory map on pp. 13-14.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board)</h2><div class="faq"><details open><summary>What Modbus registers does the Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board) have?</summary><p>This map lists 43 registers: 4 coils, 18 discrete inputs, 14 input registers, 7 holding registers. 11 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Addresses are printed Modicon-style (00001 coils, 10001 discrete inputs, 30001 input registers, 40001 holding registers). Subtract the table base and 1 for the wire address, e.g. Outlet Temperature 30009 is input register 8.</p></details><details><summary>What are the minimum Modbus registers to integrate the Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board)?</summary><p>Start with HR 0 Configuration (Configuration bits: which values come from the BAS); HR 1 Coils (Enable / thermostat command word); HR 2 0-10 Volt Input / Rate Command / Setpoint Command (Rate (%) or setpoint command); IR 8 Outlet Temperature (Outlet temperature); IR 9 Inlet Temperature (Inlet temperature); IR 11 Firing Rate (Firing rate); IR 13 Boiler Status Code (Status code); IR 15 Boiler Lockout Code (Lockout code).</p></details><details><summary>How do I enable Modbus control of the Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board)?</summary><p>In the boiler installer menu go to CONTROL MODES and set ModBus to ACTIVE, then pick the control mode (enable only, enable + rate/setpoint, rate only, DHW). Set BMS TYPE to POWER or SETPOINT for rate commands. Re-send the configuration word in 40001 before each command.</p></details><details><summary>What happens when the Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board) loses Modbus communication?</summary><p>MODBUS T/O in the CONTROL MODES menu, 5-120 s (default 10 s): if BAS-supplied temperatures or the 0-10 V value are not refreshed in time the boiler falls back to its own sensors. Enable-type commands must be refreshed at least every 4 minutes or the boiler reverts to its own inputs.</p></details><details><summary>Where is the official Lochinvar Knight / Armor / Wall Mount boilers (ModBus communication board) Modbus documentation?</summary><p>The source is ModBus and BACnet Communication Instructions (Knight, Knight XL, Armor, Outdoor Knight, AQUAS, FTXL, Wall Mount, Wall Hung, Shield) (MODB-I-O_100161545_2000014822 Rev T), published free by Lochinvar at https://assets.lochinvar.com/damroot/Original/10014/MODB-I-O_100161545_2000014822_Rev_T_(54850).pdf.</p></details></div>
@@ -446,10 +435,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -475,14 +464,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

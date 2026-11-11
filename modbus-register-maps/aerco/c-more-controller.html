@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/aerco/c-more-controller-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/aerco/c-more-controller.csv"
     },
     {
@@ -351,7 +345,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/aerco/">AERCO</a></li><li aria-current="page">C-More Boiler Controller (Benchmark / KC series)</li></ol>
@@ -363,16 +357,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 AERCO&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/aerco/">AERCO</a></dd></div><div><dt>Model</dt><dd>C-More Boiler Controller (Benchmark / KC series)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/boilers/">Boiler / water heater controller</a></dd></div><div><dt>Registers</dt><dd>57 (34 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>9600 baud</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Firmware</dt><dd>C-More software 2.00 or higher</dd></div><div><dt>Also known as</dt><dd>C-More, Benchmark, KC1000, KC Series, Benchmark boiler, Benchmark water heater</dd></div><div><dt>Source document</dt><dd><a href="https://www.aerco.com/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/58215-source/639112726810000000/omm-0035-0b-gf-114-modbus-communications-manual-05-18-12-0.pdf" rel="nofollow noopener" target="_blank">Modbus Communications User Manual - C-More Controller, Boiler Management System (BMS/BMS II), AERCO Control System (ACS) &middot; OMM-0035_D / GF-114 &middot; rev. 2026-04-07</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/aerco/c-more-controller-easymodbus.csv">Copy for the phone app <small>57 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/aerco/c-more-controller-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/aerco/c-more-controller.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/aerco/c-more-controller.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/aerco/c-more-controller.json">JSON</a>
   <a class="btn" href="https://www.aerco.com/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/58215-source/639112726810000000/omm-0035-0b-gf-114-modbus-communications-manual-05-18-12-0.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: AERCO C-More Boiler Controller (Benchmark / KC series)</h2>
 <div class="answer"><b>Integration in brief</b><p>Give the C-More a Comm Address (1-127) in its Setup menu, set Boiler Mode to Remote Setpoint or Direct Drive and Remote Signal to Network, then write holding register 0 (setpoint counts) or 1 (fire rate %) at least every 10 seconds. Read input registers 1-16 for status, temperatures, fire rate and run hours.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Net Remote Set Point</td><td class="f">UINT16</td><td>Network setpoint (Remote Setpoint mode)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Net Direct Drive</td><td class="f">UINT16</td><td>Network fire rate (Direct Drive mode)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-12">HR 12</a></td><td class="n">Boiler Mode</td><td class="f">UINT16</td><td>Boiler mode</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-ir-1">IR 1</a></td><td class="n">Unit Status</td><td class="f">UINT16</td><td>Unit status</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2">IR 2</a></td><td class="n">Outlet Temp</td><td class="f">UINT16</td><td>Outlet temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-8">IR 8</a></td><td class="n">Fire Rate Out</td><td class="f">UINT16</td><td>Fire rate out</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-15">IR 15</a></td><td class="n">Flame Strength</td><td class="f">UINT16</td><td>Flame strength</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">Default Message Display Code</td><td class="f">UINT16</td><td>Status / fault message code</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -448,9 +436,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Temperature registers are raw counts (0-1000), not degrees, and are listed with scale 1 and units &#x27;counts&#x27;. AERCO Table A-3 converts them with integer (floor) brackets: DEGREES_1 °F = floor((counts x 230 + 500) / 1000) + 20; DEGREES_2 °F = floor((counts x 330 + 500) / 1000) - 80; DEGREES_3 °F = floor((counts x 520 + 500) / 1000) + 40 (Celsius versions: x128 - 7, x183 - 62, x289 - 4). Because the result is rounded to whole degrees the conversion is a step function, not an exact scale/offset, so it is not encoded as one. Table A-4 gives the reverse (degrees to counts) for writes, e.g. DEGREES_1 counts = floor(((°F - 20) x 1000 + 115) / 230).</li><li>ABS_DEG_1 registers (prop band, min/max load adjust, setpoint limit band) are temperature differences in counts (published range 0-1000): °F = floor((counts x 230 + 500) / 1000) for counts &gt;= 0 and floor((counts x 230 - 500) / 1000) for counts &lt; 0. They are typed INT16 because the manual gives a negative-count formula; within the published range INT16 and UINT16 read the same.</li><li>Exhaust Temp (input 6) is printed as DEGREES_2 while Sensor Log Exhaust Temp (input 32, not listed) is DEGREES_3; check the conversion on site.</li><li>32-bit counters (run cycles, run hours, fault-log cycle) are stored low word first (low word at the lower address), hence CDAB. The high word only ranges 0-15.</li><li>The Unit Status / message code list is Table A-2 in the manual even though the register table points to Table A-1.</li><li>Left out: reserved registers, the sensor-log and time-log history registers (28-43), the log pointers (68-70) and all BMS/BMS II/ACS registers (a separate controller covered in the same manual).</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the AERCO C-More Boiler Controller (Benchmark / KC series)</h2><div class="faq"><details open><summary>What Modbus registers does the AERCO C-More Boiler Controller (Benchmark / KC series) have?</summary><p>This map lists 57 registers: 23 input registers, 34 holding registers. 34 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the AERCO C-More Boiler Controller (Benchmark / KC series) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The manual lists generic Modbus data addresses in decimal and hex (e.g. Outlet Temp 2 (0x0002)) and states that BAS tools using 30001/40001 notation add 30001/40001 to them. The listed number is the wire address.</p></details><details><summary>What byte order does the AERCO C-More Boiler Controller (Benchmark / KC series) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the AERCO C-More Boiler Controller (Benchmark / KC series)?</summary><p>Start with HR 0 Net Remote Set Point (Network setpoint (Remote Setpoint mode)); HR 1 Net Direct Drive (Network fire rate (Direct Drive mode)); HR 12 Boiler Mode (Boiler mode); IR 1 Unit Status (Unit status); IR 2 Outlet Temp (Outlet temperature); IR 8 Fire Rate Out (Fire rate out); IR 15 Flame Strength (Flame strength); IR 0 Default Message Display Code (Status / fault message code).</p></details><details><summary>How do I enable Modbus control of the AERCO C-More Boiler Controller (Benchmark / KC series)?</summary><p>Setup menu: Comm Address 1-127 (0, the default, disables Modbus). Configuration menu: Boiler Mode = Direct Drive or Remote Setpoint and Remote Signal = Network. Changing settings needs the right password level; register 2 holds the Modbus-port password and writes to protected registers fail with exception 02 until it matches.</p></details><details><summary>What happens when the AERCO C-More Boiler Controller (Benchmark / KC series) loses Modbus communication?</summary><p>Fixed 10 s heartbeat: each received Net Direct Drive or Net Remote Setpoint write resets it. If it expires the controller shows MODBUS COMM FAULT and falls back to the Failsafe Mode in holding register 24 (Shutdown or Constant Setpoint).</p></details><details><summary>Where is the official AERCO C-More Boiler Controller (Benchmark / KC series) Modbus documentation?</summary><p>The source is Modbus Communications User Manual - C-More Controller, Boiler Management System (BMS/BMS II), AERCO Control System (ACS) (OMM-0035_D / GF-114), revision 2026-04-07, published free by AERCO at https://www.aerco.com/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/58215-source/639112726810000000/omm-0035-0b-gf-114-modbus-communications-manual-05-18-12-0.pdf.</p></details></div>
@@ -462,10 +451,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -491,14 +480,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

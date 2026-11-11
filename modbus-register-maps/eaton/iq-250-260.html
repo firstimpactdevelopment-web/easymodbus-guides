@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/eaton/iq-250-260-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/eaton/iq-250-260.csv"
     },
     {
@@ -343,7 +337,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/eaton/">Eaton</a></li><li aria-current="page">IQ 250 / IQ 260 Electronic Power Meter</li></ol>
@@ -355,16 +349,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Eaton&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/eaton/">Eaton</a></dd></div><div><dt>Model</dt><dd>IQ 250 / IQ 260 Electronic Power Meter</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter</a></dd></div><div><dt>Registers</dt><dd>97 (19 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus ASCII, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>1-based (subtract 1 for the wire address)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>IQ 250, IQ 260, IQ 250L, IQ 260L, IQ250, IQ260</dd></div><div><dt>Source document</dt><dd><a href="https://www.eaton.com/content/dam/eaton/products/low-voltage-power-distribution-controls-systems/power-energy-meters/power-xpert-meter-2000-series/iq250-260-and-pxm2k-modbus-register-map-ib02601006e.pdf" rel="nofollow noopener" target="_blank">Appendix B: IQ 250/260 Meter, IQ 250/260 Modbus Map &middot; IB02601006E</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/eaton/iq-250-260-easymodbus.csv">Copy for the phone app <small>93 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/eaton/iq-250-260-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/eaton/iq-250-260.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/eaton/iq-250-260.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/eaton/iq-250-260.json">JSON</a>
   <a class="btn" href="https://www.eaton.com/content/dam/eaton/products/low-voltage-power-distribution-controls-systems/power-energy-meters/power-xpert-meter-2000-series/iq250-260-and-pxm2k-modbus-register-map-ib02601006e.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Eaton IQ 250 / IQ 260 Electronic Power Meter</h2>
 <div class="answer"><b>Integration in brief</b><p>Poll holding registers 999-1028 (wire) with function 03 to get voltages, currents, totals, PF and frequency as big-endian floats in primary units; read the demand block at 1999 and the status word at 4500. Settings changes need a password-protected privileged session and settings-update mode.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-999">HR 999</a></td><td class="n">Volts A-N</td><td class="f">FLOAT32 ABCD</td><td>Volts A-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1011">HR 1011</a></td><td class="n">Amps A</td><td class="f">FLOAT32 ABCD</td><td>Amps A</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1017">HR 1017</a></td><td class="n">Watts, 3-Ph total</td><td class="f">FLOAT32 ABCD</td><td>Total watts</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1023">HR 1023</a></td><td class="n">Power Factor, 3-Ph total</td><td class="f">FLOAT32 ABCD</td><td>Total power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1025">HR 1025</a></td><td class="n">Frequency</td><td class="f">FLOAT32 ABCD</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2005">HR 2005</a></td><td class="n">Positive Watts, 3-Ph, Average</td><td class="f">FLOAT32 ABCD</td><td>Positive watt demand</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-4500">HR 4500</a></td><td class="n">Meter Status</td><td class="f">BITMAP16</td><td>Meter status (measurement state)</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -480,9 +468,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Word order: the map&#x27;s data-format preface says that for 32-bit integers and floats the lower-addressed register holds the high-order half, and its worked float example (C4E1 then 1DB9 = -1800.929) confirms it. All 32-bit values here are ABCD.</li><li>Eaton publishes this map on its Power Xpert Meter 2000 product page under a file name that also mentions the PXM 2000, but the document text itself only names the IQ 250/260. This entry is therefore limited to the IQ 250/260.</li><li>Left out: the integer Readings Block (registers 279-305). Its scale and decimal-point position come from the programmable settings, so a fixed scale cannot be given. Use the float Primary Readings Block instead.</li><li>Left out: every energy counter (Primary Energy Block 1500-1571, Uncompensated energy 3032-3103 and the secondary-block energy 40022-40061). They are signed or unsigned 32-bit integers whose implied decimal point and unit/kilo/mega multiplier depend on the Power &amp; Energy Format register (30006), which the schema cannot express as a fixed scale. Read 30006 and apply its energy scale and decimal digits yourself if you need them.</li><li>Left out: the secondary readings block 40002-40073. These values use offset formulas such as 150 x (raw - 2047) / 2047 that do not fit a simple scale and offset.</li><li>Left out: short-term and minimum/maximum blocks other than the maximum demand values, timestamped min/max blocks, option-card blocks, log setup and log retrieval blocks, TSTAMP registers (three-register date/time) and the limit setpoints.</li><li>Map typo, not used here: in the Short Term Primary Maximum block, Volts C-N Maximum is printed with hex 232F-2320 against decimal 8992-8993; the decimal column implies hex 231F.</li><li>Values marked &#x27;M&#x27; in the source range column mean a 1,000,000 multiplier on the range only; the floats themselves are in plain volts, amps, watts, VARs and VAs.</li><li>Command registers always read 0. If a password is wrong the meter still answers normally but does nothing; with passwords disabled the password is 5555.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Eaton IQ 250 / IQ 260 Electronic Power Meter</h2><div class="faq"><details open><summary>What Modbus registers does the Eaton IQ 250 / IQ 260 Electronic Power Meter have?</summary><p>This map lists 97 registers: 97 holding registers. 19 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Eaton IQ 250 / IQ 260 Electronic Power Meter Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each map row prints a hex address and a decimal register. The hex column is the wire address; the decimal column is one higher (the map&#x27;s own example: serial number at hex 0008 = register 9, entered as 40009 in a SCADA tool). Here &#x27;documented&#x27; is the decimal register and address = decimal minus 1.</p></details><details><summary>What byte order does the Eaton IQ 250 / IQ 260 Electronic Power Meter use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Eaton IQ 250 / IQ 260 Electronic Power Meter?</summary><p>Start with HR 999 Volts A-N (Volts A-N); HR 1011 Amps A (Amps A); HR 1017 Watts, 3-Ph total (Total watts); HR 1023 Power Factor, 3-Ph total (Total power factor); HR 1025 Frequency (Frequency); HR 2005 Positive Watts, 3-Ph, Average (Positive watt demand); HR 4500 Meter Status (Meter status (measurement state)).</p></details><details><summary>How do I enable Modbus control of the Eaton IQ 250 / IQ 260 Electronic Power Meter?</summary><p>Reads need no enabling. To change settings: write the password to Open Privileged Command Session (21002), then Initiate Programmable Settings Update (21003), write the settings, use the checksum registers 21004/21005 (writing 21005 saves the settings to non-volatile memory), then write Terminate (21007), which restarts the meter. Reset commands (20000, 20001) take the password directly.</p></details><details><summary>Where is the official Eaton IQ 250 / IQ 260 Electronic Power Meter Modbus documentation?</summary><p>The source is Appendix B: IQ 250/260 Meter, IQ 250/260 Modbus Map (IB02601006E), published free by Eaton at https://www.eaton.com/content/dam/eaton/products/low-voltage-power-distribution-controls-systems/power-energy-meters/power-xpert-meter-2000-series/iq250-260-and-pxm2k-modbus-register-map-ib02601006e.pdf.</p></details></div>
@@ -494,10 +483,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -523,14 +512,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

@@ -234,12 +234,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/siemens/sentron-pac3200-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/siemens/sentron-pac3200.csv"
     },
     {
@@ -341,7 +335,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/siemens/">Siemens</a></li><li aria-current="page">SENTRON PAC3200</li></ol>
@@ -353,16 +347,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Siemens&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/siemens/">Siemens</a></dd></div><div><dt>Model</dt><dd>SENTRON PAC3200</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter</a></dd></div><div><dt>Registers</dt><dd>179 (40 writable)</dd></div><div><dt>Transport</dt><dd>Modbus TCP, Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>126</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8N2</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>7KM2112-0BA00-2AA0, 7KM2112-0BA00-3AA0, 7KM2111-1BA00-3AA0, 7KM PAC3200</dd></div><div><dt>Source document</dt><dd><a href="https://cache.industry.siemens.com/dl/files/150/26504150/att_906558/v1/A5E01168664B-04_EN-US_122016_201612221316360495.pdf" rel="nofollow noopener" target="_blank">SENTRON PAC3200 Power Monitoring Device Manual &middot; A5E01168664B-04 &middot; rev. 2008-02</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/siemens/sentron-pac3200-easymodbus.csv">Copy for the phone app <small>179 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/siemens/sentron-pac3200-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/siemens/sentron-pac3200.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/siemens/sentron-pac3200.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/siemens/sentron-pac3200.json">JSON</a>
   <a class="btn" href="https://cache.industry.siemens.com/dl/files/150/26504150/att_906558/v1/A5E01168664B-04_EN-US_122016_201612221316360495.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Siemens SENTRON PAC3200</h2>
 <div class="answer"><b>Integration in brief</b><p>Set the IP address, subnet and gateway on the device, switch the Ethernet protocol to MODBUS TCP and restart. Then read floats from offset 1 upward with FC 0x03 or 0x04, two registers per value, high word first.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Voltage Va-n</td><td class="f">FLOAT32 ABCD</td><td>Voltage L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-13">HR 13</a></td><td class="n">Current a</td><td class="f">FLOAT32 ABCD</td><td>Current L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-55">HR 55</a></td><td class="n">Frequency</td><td class="f">FLOAT32 ABCD</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-65">HR 65</a></td><td class="n">Total Active Power</td><td class="f">FLOAT32 ABCD</td><td>Total active power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-69">HR 69</a></td><td class="n">Total Power Factor</td><td class="f">FLOAT32 ABCD</td><td>Total power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-801">HR 801</a></td><td class="n">Active Energy Import Tariff 1</td><td class="f">FLOAT64 ABCD</td><td>Active energy import tariff 1 (double)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-205">HR 205</a></td><td class="n">Device Diagnostics and Device Status</td><td class="f">UINT32 ABCD</td><td>Device diagnostics and status</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -560,9 +548,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>The PAC3200 manual does not name a word order. We record ABCD (high word first) because two official Siemens examples for this exact model map the registers straight into big-endian S7 types with no word swap: the S7-1200 library description for entry 40614428 (v1.0, 2010, pp. 12-15) receives PAC3200 floats directly into an Array of REAL / DB1.DBD0, and the Set 22 example (entry 40614428, V14 06/2017, p. 26) overlays the two-register buffer as REAL and UDInt. The manual&#x27;s own status tables also put byte 0 at mask 0x01000000 (most significant byte first).</li><li>Sources for addressing and word order: https://cache.industry.siemens.com/dl/files/428/40614428/att_923701/v2/40614428_Set22_DOC_v14_en.pdf ; https://cache.industry.siemens.com/dl/files/428/40614428/att_15029/v1/40614428_librarydescription_s7-1200_modbustcp_v1d0_en.pdf ; https://cache.industry.siemens.com/dl/files/762/109779762/att_1028292/v1/109779762_LOGO_ModbusTCP_DOC_en.pdf</li><li>All measured variables answer to both FC 0x03 and FC 0x04; they are listed here as holding registers. Settings use FC 0x03/0x04/0x10; command registers (60002-60009, 65300) use FC 0x06.</li><li>Read and write multi-register values from their first register only; starting a read or write in the middle of a value returns an exception.</li><li>The 32-bit status words (offsets 203-209) are listed with bit numbers of the whole 32-bit value (bit 0 = mask 0x00000001, bit 24 = mask 0x01000000).</li><li>Offset 221 (Counter Limit Violations) is omitted: the manual gives no format for it.</li><li>Offset 201 (Minimum Total Power Factor) is printed with the unit &#x27;var&#x27; in the manual; a power factor is unitless, so the unit is left empty.</li><li>Omitted: the six limit-value blocks (50063-50145), digital I/O and display settings (50025-50061), bootloader version (63007, packed characters) and the I&amp;M data blocks (64001+).</li><li>RS485 defaults (address 126, 19200 baud, 8N2, MODBUS RTU, response time 0 ms) are those of the optional PAC RS485 expansion module, listed in the manual&#x27;s RS485 MODULE settings (p. 150). Modbus TCP itself has no unit-ID setting in the manual.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Siemens SENTRON PAC3200</h2><div class="faq"><details open><summary>What Modbus registers does the Siemens SENTRON PAC3200 have?</summary><p>This map lists 179 registers: 20 discrete inputs, 159 holding registers. 40 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Siemens SENTRON PAC3200 Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Siemens lists every value by its register &#x27;offset&#x27;, which is the 0-based address sent in the request. Offset 1 (voltage L1-N) is requested as address 1, which a 1-based tool shows as 40002. Two official Siemens application examples for this model confirm it: entry 40614428 (Set 22, Table 3-12) reads offset 65 at S7 MB_CLIENT address 40001 + 65, and entry 109779762 (LOGO! example, p. 13) enters offset 1 as LOGO! register 2.</p></details><details><summary>What byte order does the Siemens SENTRON PAC3200 use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Siemens SENTRON PAC3200?</summary><p>Start with HR 1 Voltage Va-n (Voltage L1-N); HR 13 Current a (Current L1); HR 55 Frequency (Frequency); HR 65 Total Active Power (Total active power); HR 69 Total Power Factor (Total power factor); HR 801 Active Energy Import Tariff 1 (Active energy import tariff 1 (double)); HR 205 Device Diagnostics and Device Status (Device diagnostics and status).</p></details><details><summary>How do I enable Modbus control of the Siemens SENTRON PAC3200?</summary><p>On the device: SETTINGS &gt; COMMUNICATION. Enter IP address, subnet and gateway, change PROTOCOL from SEAbus TCP to MODBUS TCP and confirm the restart prompt. For RS485, fit the PAC RS485 expansion module and set its protocol to MODBUS RTU.</p></details><details><summary>Where is the official Siemens SENTRON PAC3200 Modbus documentation?</summary><p>The source is SENTRON PAC3200 Power Monitoring Device Manual (A5E01168664B-04), revision 2008-02, published free by Siemens at https://cache.industry.siemens.com/dl/files/150/26504150/att_906558/v1/A5E01168664B-04_EN-US_122016_201612221316360495.pdf.</p></details></div>
@@ -574,10 +563,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -603,14 +592,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

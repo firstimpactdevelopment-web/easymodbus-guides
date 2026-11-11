@@ -35,20 +35,20 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>How to write to a Modbus register | Easy Modbus</title>
-<meta name="description" content="How to safely write a value to a Modbus register, confirm it against a summary, and put the register back the way you found it.">
+<title>How to write to a Modbus register safely | Easy Modbus</title>
+<meta name="description" content="How to write a value to a Modbus holding register or coil: which function code to use, how scaling and word order change the raw value, reading it back, and putting it back.">
 <link rel="canonical" href="https://easymodbus.com/guides/how-to-write-to-a-modbus-register">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="How to write to a Modbus register | Easy Modbus">
-<meta property="og:description" content="How to safely write a value to a Modbus register, confirm it against a summary, and put the register back the way you found it.">
+<meta property="og:title" content="How to write to a Modbus register safely | Easy Modbus">
+<meta property="og:description" content="How to write a value to a Modbus holding register or coil: which function code to use, how scaling and word order change the raw value, reading it back, and putting it back.">
 <meta property="og:url" content="https://easymodbus.com/guides/how-to-write-to-a-modbus-register">
 <meta property="og:image" content="https://easymodbus.com/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="How to write to a Modbus register | Easy Modbus">
-<meta name="twitter:description" content="How to safely write a value to a Modbus register, confirm it against a summary, and put the register back the way you found it.">
+<meta name="twitter:title" content="How to write to a Modbus register safely | Easy Modbus">
+<meta name="twitter:description" content="How to write a value to a Modbus holding register or coil: which function code to use, how scaling and word order change the raw value, reading it back, and putting it back.">
 <meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,19 +124,19 @@
   "@graph": [
     {
       "@type": "FAQPage",
-      "datePublished": "2026-10-24",
-      "dateModified": "2026-10-24",
+      "datePublished": "2026-11-10",
+      "dateModified": "2026-11-10",
       "mainEntity": [{
         "@type": "Question",
-        "name": "How do I write to a Modbus register with Easy Modbus, and put it back afterwards?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Turn on Write mode from the main screen's ⋮ menu and accept the warning. Open the reading, tap Change Value, enter the new one, tap Review… and confirm against the summary with Write it. The app writes it, reads it back and logs it. When you are done, use Put It Back: the app remembered what the register said the first time it saw it this session, and offers to write that value again. Modbus has no priority levels, no release and no timeout — whatever you write simply is the value until something overwrites it — so Put It Back is the only undo you get." }
+        "name": "How do I write to a Modbus register safely, and put it back afterwards?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Use function code 06 to write one holding register, 16 to write several (a 32-bit value needs two, so it is always 16), and 05 to switch a single coil. Before writing, read the register and write down what it says. Convert the value you want into raw register contents using the register's scale and word order — a setpoint of 72.5 kept in tenths is written as 725. Afterwards, read it back. Modbus has no priority levels, no release and no timeout: whatever you write simply is the value until something overwrites it, so writing the original value back by hand is the only undo you get." }
       }]
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://easymodbus.com/" },
-        { "@type": "ListItem", "position": 2, "name": "How do I write to a Modbus register with Easy Modbus, and put it back afterwards?", "item": "https://easymodbus.com/guides/how-to-write-to-a-modbus-register" }
+        { "@type": "ListItem", "position": 2, "name": "How do I write to a Modbus register safely, and put it back afterwards?", "item": "https://easymodbus.com/guides/how-to-write-to-a-modbus-register" }
       ]
     }
   ]
@@ -147,25 +147,24 @@
 
 <header class="site">
   <a href="../" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
-  <span class="muted">&middot; plain-English Modbus reference</span>
+  <a class="muted" href="/modbus-register-maps/">Register maps &rarr;</a>
 </header>
 
 <article>
-  <h1>How do I write to a Modbus register with Easy Modbus, and put it back afterwards?</h1>
-  <p class="updated">Updated 24 October 2026</p>
+  <h1>How do I write to a Modbus register safely, and put it back afterwards?</h1>
+  <p class="updated">Updated 10 November 2026</p>
 
   <div class="answer">
     <strong>Short answer</strong>
-    <p>Turn on <strong>Write mode</strong> from the main screen's
-    &#8942; menu and accept the warning. Open the reading, tap <strong>Change
-    Value</strong>, enter the new one, tap <strong>Review&hellip;</strong> and
-    confirm against the summary with <strong>Write it</strong>. The app writes it, reads it back and
-    logs it. When you are done, use <strong>Put It Back</strong>: the app
-    remembered what the register said the first time it saw it this session,
-    and offers to write that value again. Modbus has no priority levels, no
-    release and no timeout &mdash; whatever you write simply <em>is</em> the
-    value until something overwrites it &mdash; so Put It Back is the only undo
-    you get.</p>
+    <p>Use <strong>function code 06</strong> to write one holding
+    register, <strong>16</strong> to write several (a 32-bit value needs two, so it is
+    always 16), and <strong>05</strong> to switch a single coil. Before writing,
+    <strong>read the register and write down what it says</strong>. Convert the value you
+    want into raw register contents using the register's scale and word order &mdash; a
+    setpoint of 72.5 kept in tenths is written as 725. Afterwards, read it back. Modbus has
+    no priority levels, no release and no timeout: whatever you write simply <em>is</em>
+    the value until something overwrites it, so writing the original value back by hand is
+    the only undo you get.</p>
   </div>
 
 
@@ -178,64 +177,67 @@
   <a href="is-it-safe-to-write-to-modbus">is it safe to write to a Modbus
   register?</a> before touching anything on live plant.</p>
 
-  <h2>Step 1 &mdash; Turn on write mode</h2>
-  <p>Write mode is off every time the app starts and is not remembered. Open the
-  main screen's &#8942; menu, tap <strong>Write mode</strong>, read the warning and
-  accept it (<em>I understand &mdash; turn it on</em>). Until
-  then no screen in the app offers a write.</p>
-  <figure class="shot">
-    <img src="../img/app-write-warning.png" alt="Easy Modbus write-mode warning dialog explaining that writes have no undo, before enabling writing" loading="lazy">
-    <figcaption>Write mode is off at every launch. You accept this warning before any write is possible.</figcaption>
-  </figure>
+  <h2>Step 1 &mdash; Read it and write down what it says</h2>
+  <p>Read the register first, from the right table at the right address, and note the
+  value and the time. That note is your way back. If the map has a configuration
+  section &mdash; unit ID, baud rate, parity &mdash; leave those addresses alone unless
+  that is the job: a wrong write there can make the device stop answering.</p>
 
-  <h2>Step 2 &mdash; Set limits, if you can</h2>
-  <p>A reading can carry a minimum and maximum (open the reading, &#8942; &rarr;
-  <em>Edit this reading</em> &rarr; <em>Lowest / Highest value allowed to
-  write</em>). Set them on anything you are
-  going to write to &mdash; a setpoint that should live between 60 and 80, a
-  speed reference that must stay under 100%. The app refuses a write outside
-  those bounds before it gets anywhere near the wire. A typo becomes a message
-  instead of a chiller trip.</p>
+  <h2>Step 2 &mdash; Work out the raw value</h2>
+  <p>A register holds a raw 16-bit number, not the engineering value you see on a
+  display. Before writing, turn the value you want into what the register actually
+  stores:</p>
+  <ul>
+    <li><strong>Scale.</strong> If the map says &times;0.1, a setpoint of 72.5 is written
+    as 725. Divide by the scale; do not write the engineering value as-is.</li>
+    <li><strong>Sign.</strong> A negative value in a signed 16-bit register is written in
+    two's complement: &minus;5 is 65531 (<code>0xFFFB</code>).</li>
+    <li><strong>32-bit values</strong> (floats, long counters) span two registers and must
+    go in the same word order the device reads them in &mdash; ABCD or CDAB, usually. The
+    <a href="../modbus-float-decoder">float decoder</a> shows how a value splits
+    across the pair.</li>
+    <li><strong>Coils</strong> are on or off. Function code 05 sends <code>0xFF00</code>
+    for on and <code>0x0000</code> for off; most tools hide this behind a switch.</li>
+  </ul>
 
-  <h2>Step 3 &mdash; Write</h2>
-  <p>Open the reading and tap <strong>Change Value</strong>. Enter the new value in the
-  same units the reading displays &mdash; the app applies the reading's
-  multiplier and word order to produce the raw register contents, so you type
-  <em>72.5</em>, not <em>725</em>. For an on/off coil you pick the state.</p>
-  <p>Confirm against the summary: the device, the register, the current value,
-  the new value, and the safety wording. The app then writes, waits for the
-  device to acknowledge, and <strong>reads the register back</strong> so what
-  is on screen is what the equipment actually holds, not what you asked for.
-  A refusal comes back with the device's exception in plain words.</p>
-  <figure class="shot">
-    <img src="../img/app-write-confirm.png" alt="Easy Modbus write confirmation summary showing device, register, current value and new value before writing" loading="lazy">
-    <figcaption>Every write is confirmed against a summary &mdash; device, register, current and new value &mdash; then read back.</figcaption>
-  </figure>
+  <h2>Step 3 &mdash; Write with the right function code</h2>
+  <table>
+    <tr><th>What you are writing</th><th>Function code</th></tr>
+    <tr><td>One coil (on/off)</td><td>05 &mdash; write single coil</td></tr>
+    <tr><td>Several coils</td><td>15 &mdash; write multiple coils</td></tr>
+    <tr><td>One 16-bit holding register</td><td>06 &mdash; write single register</td></tr>
+    <tr><td>Several registers, or any 32-bit value</td><td>16 &mdash; write multiple registers</td></tr>
+  </table>
+  <p>Some devices accept only 16, even for a single register; if 06 comes back with an
+  <em>illegal function</em> exception, try 16 with a count of one. See
+  <a href="modbus-function-codes-explained">Modbus function codes explained</a>.</p>
 
-  <h2>Step 4 &mdash; Put It Back</h2>
-  <p>The first time the app reads a register in a session it remembers the
-  value. Once the value has changed, the reading shows a <strong>Put It
-  Back</strong> button that offers to write that value again (a custom remote or
-  control panel can carry a <em>Put back</em> control for the same job). Use it
-  before you leave on anything you changed for a test. It is not a true undo
-  &mdash; if the equipment's own logic changed the register in between, "back"
-  means back to what <em>you</em> found, not to what would be there had you
-  never visited &mdash; but it is the closest Modbus allows.</p>
+  <h2>Step 4 &mdash; Read it back</h2>
+  <p>A successful reply only means the device accepted the request. Read the register
+  again: what it holds now is the truth, not what you asked for. A device can clamp a
+  value to its own limits, round it, or have its control logic overwrite it a second
+  later &mdash; all things you only see by reading back.</p>
+
+  <h2>Step 5 &mdash; Put it back</h2>
+  <p>When the test is over, write the value you noted in step 1. It is not a true undo
+  &mdash; if the equipment's own logic changed the register in between, "back" means
+  back to what <em>you</em> found, not to what would be there had you never visited
+  &mdash; but it is the closest Modbus allows.</p>
   <div class="callout">
   <p>If you overrode something to prove a point, put it back before you leave
   site. Nobody else can see that you did it, and nothing will time it out.</p>
   </div>
 
-  <h2>Readings you cannot write</h2>
+  <h2>Registers you cannot write</h2>
   <ul>
     <li><strong>Input registers and discrete inputs</strong> are read-only by
     definition &mdash; they report what the equipment measures.</li>
-    <li><strong>Text readings</strong> are not offered a write; a packed-ASCII
-    string in holding registers is nearly always a name or a serial number, and
-    changing it does nothing useful.</li>
+    <li><strong>Text</strong> packed as ASCII in holding registers is nearly always a name
+    or a serial number, and changing it does nothing useful.</li>
     <li>Some <strong>holding registers</strong> are read-only in practice; the
     device will answer your write with an <em>illegal data address</em> or
-    <em>illegal function</em> exception, which the app shows you.</li>
+    <em>illegal function</em> exception. See
+    <a href="modbus-exception-codes">Modbus exception codes</a>.</li>
   </ul>
 
 </article>
@@ -243,9 +245,9 @@
     <h2>Related</h2>
     <ul>
       <li><a href="../guides/is-it-safe-to-write-to-modbus">Is it safe to write to a Modbus register?</a></li>
-      <li><a href="../guides/how-to-use-easy-modbus">How do I use Easy Modbus to read a device?</a></li>
-      <li><a href="../guides/how-to-build-a-modbus-remote">How do I build a custom remote in Easy Modbus?</a></li>
       <li><a href="../guides/modbus-function-codes-explained">Modbus function codes explained</a></li>
+      <li><a href="../guides/modbus-value-wrong-scaling-byte-order">Why does my Modbus value look wrong?</a></li>
+      <li><a href="../modbus-register-maps/">Modbus register maps with scaling and access, by manufacturer</a></li>
     </ul>
   </nav>
 
@@ -253,9 +255,9 @@
   <p>Need a device&rsquo;s registers? Browse the free
   <a href="/modbus-register-maps/">Modbus register-map library</a> &mdash; verified addresses, data types,
   word order and scaling by manufacturer and model.</p>
-  <p>Published alongside <a href="../">Easy Modbus</a>, a free
-  Android app that finds Modbus TCP equipment on a network, helps you work out
-  what its registers mean, and exports the result as a CSV.</p>
+  <p>easymodbus.com is a free, plain-English Modbus reference: verified register maps,
+  short guides and browser calculators. Corrections and questions:
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
   <p><a href="../terms">Terms of use</a> &middot; <a href="../privacy">Privacy policy</a></p>
 </footer>
 

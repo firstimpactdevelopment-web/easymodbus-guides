@@ -14,7 +14,7 @@ Pages generated (clean URLs; build_site.write() strips .html/index.html):
   /modbus-register-maps/equipment/<type>/          every model of one equipment type
   /modbus-register-maps/<mfr>/<model>              the register table + downloads + integration
   /modbus-register-maps/<mfr>/<model>.csv          spreadsheet CSV (every column)
-  /modbus-register-maps/<mfr>/<model>-easymodbus.csv  Easy Modbus import format (app + PC)
+  /modbus-register-maps/<mfr>/<model>-easymodbus.csv  legacy import-format CSV (kept so old links work; not linked)
   /modbus-register-maps/<mfr>/<model>.json         machine-readable, for tools and AI agents
   /modbus-register-maps/index.json                 catalogue of everything above
 
@@ -43,6 +43,8 @@ UPDATED_HUMAN = "28 October 2026"
 # Per-page <lastmod> for the sitemap, filled in by build(): each model page is dated by its
 # own verification, collection pages by their newest model.
 LASTMOD = {}
+# Counts and link lists for the homepage, filled by build().
+STATS = {}
 
 # table -> (heading, short code, function codes, Modicon prefix, Easy Modbus app name)
 TABLES = {
@@ -341,7 +343,7 @@ def shell(relpath, title, description, h1_html, body, jsonld, crumbs, og_type="w
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/index.html"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/index.html" class="on">Register maps</a><a href="/index.html#guides">Guides</a><a href="/index.html">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/index.html" class="on">Register maps</a><a href="/index.html#tools">Tools</a><a href="/index.html#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb">%(crumbs)s</ol>
@@ -351,10 +353,10 @@ def shell(relpath, title, description, h1_html, body, jsonld, crumbs, og_type="w
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/index.html">Easy Modbus</a> &middot; <a href="/modbus-register-maps/index.html">Register maps</a> &middot;
+  <p><a href="/index.html">Home</a> &middot; <a href="/modbus-register-maps/index.html">Register maps</a> &middot;
   <a href="/index.html#guides">Guides</a> &middot; <a href="/terms.html">Terms of use</a> &middot; <a href="/privacy.html">Privacy policy</a></p>
 </div></footer>
 %(script)s
@@ -368,7 +370,7 @@ def shell(relpath, title, description, h1_html, body, jsonld, crumbs, og_type="w
 
 
 # One small script for every page: free-text filter + table chips, the
-# manufacturer picker, and "Copy for Easy Modbus". Pages are fully rendered
+# and the manufacturer picker. Pages are fully rendered
 # without it (crawlers and no-JS readers see every row).
 PAGE_JS = """<script>
 (function(){
@@ -393,14 +395,6 @@ PAGE_JS = """<script>
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>"""
 
@@ -813,7 +807,6 @@ def model_page(m, siblings):
               human_date(m["_date"])))
 
     base = "/" + model_path(m, "")
-    n_app = len(easymodbus_rows(m))
     body = """
 <div class="answer"><b>Short answer</b><p>%(summary)s</p>
 <p>This page lists <strong>%(n)d Modbus registers</strong> for the %(mfr)s %(model)s &mdash; %(w)d writable &mdash;
@@ -821,16 +814,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 %(mfr)s&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 %(facts)s
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="%(base)s-easymodbus.csv">Copy for the phone app <small>%(napp)d rows</small></button>
-  <a class="btn" href="%(base)s-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="%(base)s.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="%(base)s.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="%(base)s.json">JSON</a>
   <a class="btn" href="%(src)s" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 %(integ)s
 <h2 id="registers">%(mfr)s %(model)s Modbus registers</h2>
 <p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
@@ -841,9 +828,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 %(table)s
 %(notes)s
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/index.html">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder.html">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map.html">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one.html">why addresses are off by one</a>.</p></div>
 %(faq)s
@@ -851,7 +839,7 @@ decoded every way at once, so a wrong word order or scale is obvious. New to thi
 <p class="updated">Source: <a href="%(src)s" rel="nofollow noopener" target="_blank">%(srcline)s</a>.
 Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
 """ % {
-        "summary": esc(m.get("summary") or ""), "n": n, "w": w, "napp": n_app,
+        "summary": esc(m.get("summary") or ""), "n": n, "w": w,
         "mfr": esc(m["manufacturer"]), "model": esc(m["model"]), "facts": facts_html,
         "base": base, "src": esc(s["url"]), "chips": chips, "table": registers_table(m),
         "notes": notes_html, "faq": faq_html, "integ": integration_html(m),
@@ -876,8 +864,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
                              "Data type", "Word order", "Scale", "Engineering units", "Access",
                              "Enumeration / bit meanings"],
         "distribution": [
-            {"@type": "DataDownload", "encodingFormat": "text/csv", "name": "Easy Modbus import CSV",
-             "contentUrl": BASE_URL + base + "-easymodbus.csv"},
             {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": BASE_URL + base + ".csv"},
             {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": BASE_URL + base + ".json"},
         ],
@@ -1034,7 +1020,7 @@ def hub_page(groups):
     body = """
 <p class="lede"><strong>%(nm)d models from %(ng)d manufacturers</strong> &mdash; %(total)s registers &mdash; each with
 the 0-based address, data type, word order, scale, units and access, checked against the manufacturer&rsquo;s own
-document and ready to paste into Easy Modbus or download as CSV.</p>
+document, with CSV and JSON downloads.</p>
 <form class="tools" action="#" onsubmit="return false" aria-label="Choose a manufacturer">
   <label class="mono count" for="mfr-pick">Select manufacturer</label>
   <select class="pick" id="mfr-pick"><option value="">Choose a manufacturer&hellip;</option>%(options)s</select>
@@ -1188,14 +1174,13 @@ def build(write):
         paths.append(cat_path(c[0]))
         LASTMOD[cat_path(c[0])] = newest(ms)
     catalogue = {
-        "name": "Easy Modbus register-map library", "url": clean(hub_path()), "updated": newest(models),
+        "name": "easymodbus.com Modbus register-map library", "url": clean(hub_path()), "updated": newest(models),
         "address_note": "All addresses are 0-based Modbus wire addresses.",
         "models": [{
             "manufacturer": m["manufacturer"], "model": m["model"], "aliases": m.get("aliases") or [],
             "equipment_type": m.get("equipment_type"), "transport": m.get("transport") or [],
             "registers": len(m["registers"]), "writable": writable_count(m["registers"]),
             "page": clean(model_path(m)), "csv": BASE_URL + "/" + model_path(m, ".csv"),
-            "easymodbus_csv": BASE_URL + "/" + model_path(m, "-easymodbus.csv"),
             "json": BASE_URL + "/" + model_path(m, ".json"), "source": m["source"]["url"]}
             for g in groups.values() for m in g]}
     write(ROOT + "/index.json", json.dumps(catalogue, ensure_ascii=False, indent=1) + "\n")
@@ -1212,6 +1197,15 @@ def build(write):
         for m in ms:
             llms.append("  - [%s](%s): %d registers; JSON %s" % (
                 model_title(m), clean(model_path(m)), len(m["registers"]), BASE_URL + "/" + model_path(m, ".json")))
+    STATS.clear()
+    STATS.update(
+        models=len(models), mfr_count=len(groups),
+        registers=sum(len(m["registers"]) for m in models),
+        cats=[(cat_path(c[0]), c[1], len(ms),
+               ", ".join(sorted({mfr_short(x) for x in ms}, key=str.lower)[:5])
+               + (" and more" if len({mfr_short(x) for x in ms}) > 5 else ""))
+              for c, ms in cats],
+        mfrs=[(mfr_path(s), g[0]["manufacturer"], len(g)) for s, g in groups.items()])
     print("register library: %d manufacturers, %d models, %d registers" % (
         len(groups), len(models), sum(len(m["registers"]) for m in models)))
     return paths, llms

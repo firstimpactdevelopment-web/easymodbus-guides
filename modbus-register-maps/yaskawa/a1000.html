@@ -233,12 +233,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/yaskawa/a1000.csv"
     },
     {
@@ -340,7 +334,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/yaskawa/">Yaskawa</a></li><li aria-current="page">A1000 AC drive (MEMOBUS/Modbus RTU)</li></ol>
@@ -352,16 +346,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Yaskawa&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/yaskawa/">Yaskawa</a></dd></div><div><dt>Model</dt><dd>A1000 AC drive (MEMOBUS/Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>66 (13 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>31</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>Firmware</dt><dd>Drive software up to PRG 1021-1024 (per the manual&#x27;s revision history)</dd></div><div><dt>Also known as</dt><dd>CIMR-AU, CIMR-AUA, A1000 High Performance Vector Control Drive</dd></div><div><dt>Source document</dt><dd><a href="https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&amp;cmd=documents&amp;documentName=SIEPC71061641.pdf" rel="nofollow noopener" target="_blank">YASKAWA AC Drive-A1000 High Performance Vector Control Drive Technical Manual &middot; SIEP C710616 41H &middot; rev. 2022-03</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/yaskawa/a1000-easymodbus.csv">Copy for the phone app <small>66 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/yaskawa/a1000-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/yaskawa/a1000.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/yaskawa/a1000.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/yaskawa/a1000.json">JSON</a>
   <a class="btn" href="https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&amp;cmd=documents&amp;documentName=SIEPC71061641.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Set H5-01..H5-03 at the keypad and power-cycle, set b1-01 = 2 and b1-02 = 2 so the frequency reference and Run command come from Modbus, then write 0001H (run bits) and 0002H (frequency reference) together with function 10H and poll 0020H-002CH for status, faults and alarms.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Operation commands / multi-function inputs</td><td class="f">BITMAP16</td><td>Run/stop, direction, fault reset</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-2">HR 2</a></td><td class="n">Frequency reference</td><td class="f">UINT16</td><td>Frequency reference (o1-03 units)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-32">HR 32</a></td><td class="n">Drive Status 1</td><td class="f">BITMAP16</td><td>Drive Status 1: run/ready/fault</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-33">HR 33</a></td><td class="n">Fault Contents 1</td><td class="f">BITMAP16</td><td>Fault Contents 1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-36">HR 36</a></td><td class="n">Output frequency</td><td class="f">UINT16</td><td>Output frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-44">HR 44</a></td><td class="n">Drive Status 2</td><td class="f">BITMAP16</td><td>Drive Status 2 incl. comm timeout bit</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-49">HR 49</a></td><td class="n">DC bus voltage</td><td class="f">UINT16</td><td>DC bus voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-128">HR 128</a></td><td class="n">U2-01 Current Fault</td><td class="f">UINT16</td><td>U2-01 current fault code</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -446,9 +434,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Frequency registers (0002H reference, 0023H/0040H U1-01, 0024H/0041H U1-02) use the units chosen in o1-03 (0 = 0.01 Hz, 1 = 0.01% of E1-04, 2 = r/min, 3 = user units); o1-03&#x27;s default depends on A1-02, so they are left unscaled here.</li><li>0042H U1-03 output current is scaled 8192 = drive rated current (U-monitor footnotes); the map converts it to % of rated current.</li><li>Left out: 0025H output voltage (unit switched by H5-10; use 0045H), 0026H and 00FBH output current (0.01 A, 0.1 A or 1 A depending on drive model), 0027H/0047H output power (unit not printed in the data table), 0028H/0032H torque reference (sign not stated), 002FH frequency reference bias and 0068H U4-08 heatsink temperature (sign not stated), 003EH/003FH, 0044H and 00ACH-00B8H speed/frequency in r/min and % (sign not stated), 004EH-0050H analog input levels (bipolar inputs, sign not stated), 0007H/0008H FM/AM analog outputs and 001BH-001DH option-card outputs (10 V = 4000H, sign not stated), 00ABH drive rated current (model-dependent units), U4-10/U4-11 kWh, the 0082H-008FH fault-trace snapshot values, and option-card fault words 00D8H-00E4H.</li><li>Appendix C labels the ov bit of 0021H, 002AH and 00C0H and code ov in Tables C.6/C.7 &#x27;Drive Overheat Warning (ov)&#x27;. The manual&#x27;s own fault and alarm lists (pp. 401, 419, 431) define ov as (DC bus) overvoltage, so this map names it overvoltage and keeps the printed label in brackets.</li><li>0022H Data Link Status: bit 1 is reserved and bit 2 has no printed meaning, so only bits 0 and 3-6 are listed.</li><li>Values for 0080H/0081H/0090H (U2-01, U2-02, U3-01) and 007FH are the fault and alarm codes of Tables C.6 and C.7 converted from hex to decimal (e.g. 0021H CE = 33).</li><li>Appendix C lists reading and writing parameters among the things a master can do over MEMOBUS/Modbus, with the qualifier &#x27;not H5-oo&#x27;, and its setup steps have H5 entered at the digital operator, so the H5 registers are listed read-only and should be set at the keypad (reading them is not explicitly confirmed either).</li><li>Torque registers 0004H/0005H only act when torque control is enabled and the matching 000FH bit is set.</li><li>Broadcast (slave address 0) accepts only 0001H, with its own bit layout (bit 0 run, bit 1 direction, bit 4 external fault, bit 5 fault reset, bits C-F terminals S5-S8), and 0002H (30000 = 100%); slaves do not reply.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) have?</summary><p>This map lists 66 registers: 66 holding registers. 13 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Register numbers are printed in hex and go into the request unchanged: the manual&#x27;s read example asks for starting register 0020H by sending 00 20, and its write example starts at 0001H (00 01). Parameters use the hex address printed under each parameter in the parameter list (H5-01 (0425) -&gt; 0425H, b1-01 (0180) -&gt; 0180H).</p></details><details><summary>What are the minimum Modbus registers to integrate the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)?</summary><p>Start with HR 1 Operation commands / multi-function inputs (Run/stop, direction, fault reset); HR 2 Frequency reference (Frequency reference (o1-03 units)); HR 32 Drive Status 1 (Drive Status 1: run/ready/fault); HR 33 Fault Contents 1 (Fault Contents 1); HR 36 Output frequency (Output frequency); HR 44 Drive Status 2 (Drive Status 2 incl. comm timeout bit); HR 49 DC bus voltage (DC bus voltage); HR 128 U2-01 Current Fault (U2-01 current fault code).</p></details><details><summary>How do I enable Modbus control of the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU)?</summary><p>Set H5-01 slave address (default 1F hex = 31, range 0-FF hex), H5-02 speed (default 3 = 9600 bps) and H5-03 parity (default 0 = none), then cycle power. For control set b1-01 = 2 and b1-02 = 2 (b1-15/b1-16 for external reference 2). H5-12 decides whether 0001H bits 0/1 mean FWD/REV run or Run + direction. Network inputs are ORed with terminals S1-S8.</p></details><details><summary>What happens when the Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) loses Modbus communication?</summary><p>H5-05 = 1 (default) enables CE detection, H5-09 CE Detection Time (0.0-10.0 s, default 2.0 s) sets the timeout, and H5-04 selects the reaction: 0 ramp to stop, 1 coast, 2 fast stop, 3 alarm only and keep running (default). Drive Status 2 (002CH) bit F shows a communication timeout.</p></details><details><summary>Where is the official Yaskawa A1000 AC drive (MEMOBUS/Modbus RTU) Modbus documentation?</summary><p>The source is YASKAWA AC Drive-A1000 High Performance Vector Control Drive Technical Manual (SIEP C710616 41H), revision 2022-03, published free by Yaskawa at https://www.yaskawa.com/delegate/getAttachment?documentId=SIEPC71061641&amp;cmd=documents&amp;documentName=SIEPC71061641.pdf.</p></details></div>
@@ -460,10 +449,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -489,14 +478,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

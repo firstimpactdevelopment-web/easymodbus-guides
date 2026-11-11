@@ -232,12 +232,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/comap/inteligen4-200-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/comap/inteligen4-200.csv"
     },
     {
@@ -347,7 +341,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/comap/">ComAp</a></li><li aria-current="page">InteliGen4 200</li></ol>
@@ -359,16 +353,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 ComAp&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/comap/">ComAp</a></dd></div><div><dt>Model</dt><dd>InteliGen4 200</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/generator-controllers/">Generator controller</a></dd></div><div><dt>Registers</dt><dd>10 (7 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Firmware</dt><dd>2.2.0</dd></div><div><dt>Also known as</dt><dd>InteliGen 4 200, IG4 200</dd></div><div><dt>Source document</dt><dd><a href="https://www.comap-control.com/productfile/4aa6341a-0ba7-4064-8404-3d048728c9bd" rel="nofollow noopener" target="_blank">InteliGen4 200 Global Guide (SW version 2.2.0) &middot; rev. 2024-10-03 (revision 3)</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/comap/inteligen4-200-easymodbus.csv">Copy for the phone app <small>10 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/comap/inteligen4-200-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/comap/inteligen4-200.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/comap/inteligen4-200.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/comap/inteligen4-200.json">JSON</a>
   <a class="btn" href="https://www.comap-control.com/productfile/4aa6341a-0ba7-4064-8404-3d048728c9bd" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: ComAp InteliGen4 200</h2>
 <div class="answer"><b>Integration in brief</b><p>Export the configuration-specific Modbus table from InteliConfig for measurements. For control, write the password to 4211 if required, then write the 32-bit argument to 4207-4208 and the command code to 4209 (or all three in one FC16 write), and read 4207-4208 to confirm.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-4207">HR 4207</a></td><td class="n">Command Argument / Return Value</td><td class="f">UINT32 ABCD</td><td>Command argument / result</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-4209">HR 4209</a></td><td class="n">Command Code</td><td class="f">UINT16</td><td>Command code</td><td><span class="acc W">Write</span></td></tr><tr><td class="t"><a href="#r-hr-4211">HR 4211</a></td><td class="n">Password</td><td class="f">UINT16</td><td>Password for protected commands</td><td><span class="acc W">Write</span></td></tr><tr><td class="t"><a href="#r-hr-4205">HR 4205</a></td><td class="n">Last Application Error</td><td class="f">UINT32 ABCD</td><td>Error detail after exception 04</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-4214">HR 4214</a></td><td class="n">Alarm List Item Count</td><td class="f">UINT16</td><td>Number of active alarm list entries</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-5000">HR 5000</a></td><td class="n">RemoteControl2B 1</td><td class="f">INT16</td><td>Remote analog value into PLC logic</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -397,9 +385,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Everything else (measurements, binary I/O, setpoints) is placed by the controller configuration and must be exported from InteliConfig; the guide&#x27;s examples show such exported addresses but they are not fixed and are not listed here.</li><li>32-bit values are high word first: the guide maps byte 3 (MSB) to the first register, and its engine-start example sends argument 0x01FE0000 as 01FE then 0000.</li><li>Command arguments (write to 4207-4208, then code to 4209): code 1 with 0x01FE0000 = engine start, 0x02FD0000 = engine stop, 0x08F70000 = fault reset, 0x04FB0000 = horn reset. Code 2 with 0x11EE0000 = GCB toggle, 0x11EF0000 = GCB on, 0x11F00000 = GCB off, 0x12ED0000 = MCB toggle, 0x12EE0000 = MCB on, 0x12EF0000 = MCB off.</li><li>A successful command returns a fixed value in 4207-4208 (e.g. 0x000001FF after engine start); 0x00000001 means invalid argument and 0x00000002 means refused (wrong mode, breaker cannot be closed now, etc.).</li><li>User buttons 1-16: code 0x47 (buttons 1-8) or 0x48 (buttons 9-16) with argument 0x00nn0000, where nn = 10 x button number for PULSE, +1 for TOGGLE, +2 for ON, +3 for OFF (e.g. button 1 PULSE = 0x000A0000, button 16 OFF = 0x00A30000; table on p. 206). The button setpoint must be in COMMAND mode.</li><li>Left out: RTC time and date (4200-4203, BCD-coded pairs), the 16 alarm-list records at 4215-4646 (27-register structures holding level, status and a UTF-8 text), and RemoteControlBin_1..16 at 5210-5225 (no data type given).</li><li>The reserved-register table prints &#x27;4010&#x27; for the &#x27;Not implemented&#x27; row between 4209 and 4211; from its position this is 4210.</li><li>The same reserved-register scheme appears in other ComAp controller guides, but only the InteliGen4 200 guide was checked for this page.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the ComAp InteliGen4 200</h2><div class="faq"><details open><summary>What Modbus registers does the ComAp InteliGen4 200 have?</summary><p>This map lists 10 registers: 10 holding registers. 7 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the ComAp InteliGen4 200 Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The guide prints &#x27;register addresses&#x27; that go straight into the request: its engine-start example writes register 4207 as 0x106F. It sometimes also gives the Modicon number (44208 for address 4207). Reserved registers can be read with FC03 or FC04 and written with FC06 or FC16.</p></details><details><summary>What byte order does the ComAp InteliGen4 200 use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the ComAp InteliGen4 200?</summary><p>Start with HR 4207 Command Argument / Return Value (Command argument / result); HR 4209 Command Code (Command code); HR 4211 Password (Password for protected commands); HR 4205 Last Application Error (Error detail after exception 04); HR 4214 Alarm List Item Count (Number of active alarm list entries); HR 5000 RemoteControl2B 1 (Remote analog value into PLC logic).</p></details><details><summary>How do I enable Modbus control of the ComAp InteliGen4 200?</summary><p>RS485 on board: set RS485 Mode to MODBUS (default is Direct) and set RS485 Modbus Speed and RS485 Modbus Mode. CM-RS232-485 module: set COM1 Mode or COM2 Mode to MODBUS plus the matching speed. Ethernet (CM3-Ethernet module required): set MODBUS Server to ENABLED (default disabled). Modbus Server Address (1-247, default 1) sets the unit ID.</p></details><details><summary>What happens when the ComAp InteliGen4 200 loses Modbus communication?</summary><p>No control watchdog is documented. On Modbus TCP the controller closes a client socket that has been silent longer than MODBUS Client Inactivity Timeout (0-600 s, default 60 s).</p></details><details><summary>Where is the official ComAp InteliGen4 200 Modbus documentation?</summary><p>The source is InteliGen4 200 Global Guide (SW version 2.2.0), revision 2024-10-03 (revision 3), published free by ComAp at https://www.comap-control.com/productfile/4aa6341a-0ba7-4064-8404-3d048728c9bd.</p></details></div>
@@ -411,10 +400,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -440,14 +429,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

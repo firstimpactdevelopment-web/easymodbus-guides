@@ -241,12 +241,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/victron-energy/gx-modbus-tcp-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/victron-energy/gx-modbus-tcp.csv"
     },
     {
@@ -348,7 +342,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/victron-energy/">Victron Energy</a></li><li aria-current="page">GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX)</li></ol>
@@ -360,16 +354,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Victron Energy&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/victron-energy/">Victron Energy</a></dd></div><div><dt>Model</dt><dd>GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/solar-inverters/">Battery inverter (GX gateway for inverter/chargers, batteries and solar chargers)</a></dd></div><div><dt>Registers</dt><dd>128 (21 writable)</dd></div><div><dt>Transport</dt><dd>Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>100</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Firmware</dt><dd>Venus OS; register list 3.81. Some registers need a minimum Venus version (e.g. 2716 needs 3.50+).</dd></div><div><dt>Also known as</dt><dd>Cerbo GX, Cerbo-S GX, Venus GX, Color Control GX, CCGX, Ekrano GX, Octo GX, MultiPlus-II GX, EasySolar-II GX, Venus OS, dbus-modbustcp</dd></div><div><dt>Source document</dt><dd><a href="https://www.victronenergy.com/upload/documents/CCGX-Modbus-TCP-register-list-3.81.xlsx" rel="nofollow noopener" target="_blank">Modbus-TCP register list (CCGX-Modbus-TCP-register-list-3.81.xlsx) &middot; Register list 3.81, document revision Rev 54</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/victron-energy/gx-modbus-tcp-easymodbus.csv">Copy for the phone app <small>128 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/victron-energy/gx-modbus-tcp-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/victron-energy/gx-modbus-tcp.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/victron-energy/gx-modbus-tcp.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/victron-energy/gx-modbus-tcp.json">JSON</a>
   <a class="btn" href="https://www.victronenergy.com/upload/documents/CCGX-Modbus-TCP-register-list-3.81.xlsx" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Victron Energy GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX)</h2>
 <div class="answer"><b>Integration in brief</b><p>Enable the Modbus-TCP service on the GX, read the &#x27;Available services&#x27; list to get each device&#x27;s unit ID, then poll unit ID 100 (registers 817-866) for the system picture and the VE.Bus unit ID (registers 3-36) for the inverter/charger. All listed values are one 16-bit register each: apply the scale, and treat INT16 rows as signed.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-843">HR 843</a></td><td class="n">Battery state of charge (system) [unit ID 100]</td><td class="f">UINT16</td><td>System battery state of charge (unit ID 100)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-842">HR 842</a></td><td class="n">Battery power (system) [unit ID 100]</td><td class="f">INT16</td><td>System battery power, + charging / - discharging (unit ID 100)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-820">HR 820</a></td><td class="n">Grid power L1 [unit ID 100]</td><td class="f">INT16</td><td>Grid power L1 (unit ID 100)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-817">HR 817</a></td><td class="n">AC consumption L1 [unit ID 100]</td><td class="f">UINT16</td><td>AC consumption L1 (unit ID 100)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-850">HR 850</a></td><td class="n">DC-coupled PV power [unit ID 100]</td><td class="f">UINT16</td><td>Total DC-coupled PV power (unit ID 100)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-31">HR 31</a></td><td class="n">VE.Bus state [VE.Bus unit ID]</td><td class="f">UINT16</td><td>VE.Bus state (VE.Bus unit ID)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-32">HR 32</a></td><td class="n">VE.Bus error [VE.Bus unit ID]</td><td class="f">UINT16</td><td>VE.Bus error (VE.Bus unit ID)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-33">HR 33</a></td><td class="n">Switch position (mode) [VE.Bus unit ID]</td><td class="f">UINT16</td><td>Switch position: remote on/off/charger-only (VE.Bus unit ID)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-22">HR 22</a></td><td class="n">Active input current limit [VE.Bus unit ID]</td><td class="f">INT16</td><td>AC input current limit (VE.Bus unit ID)</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -516,9 +504,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Scale: Victron&#x27;s &#x27;Scalefactor&#x27; column is a divisor (engineering value = raw / scalefactor). It is converted here to a multiplier: scalefactor 10 -&gt; scale 0.1, 100 -&gt; 0.01, 0.1 -&gt; 10, 0.01 -&gt; 100, -10 -&gt; -0.1 (consumed Ah is published as a positive raw number that means a negative Ah figure).</li><li>Left out on purpose: every 32-bit and 64-bit register (int32/uint32/uint64, e.g. system 868-918, VE.Bus energy counters 74-93 and ESS setpoints 96-101, battery 256 and 330, solar charger 792 and 3728, ESS 2716/2720/2722). Neither the register list nor Victron&#x27;s GX Modbus-TCP manual or data communication whitepaper states the word order of multi-register values, so they are not listed. Each has a 16-bit equivalent listed here except the VE.Bus energy counters.</li><li>Left out: 2704 (ESS max inverter power). The register list gives scalefactor 0.1 (raw x 10 W) while Victron&#x27;s ESS mode 2 and 3 guide describes the value as plain watts; the scale cannot be settled from the sources.</li><li>Left out: deprecated registers whose value is always 0 (267, 276-277, 297-300, 781), the deprecated ESS percentage switches 2701/2702, and the microgrid block 200-246 (213-222 are marked unsupported).</li><li>Not every product fills every register. A register that the selected device does not provide returns Modbus exception 02 (illegal data address); a block read that includes one fails as a whole.</li><li>ESS details (setpoint sign, 60-second rewrite rule in mode 3, inverted logic of 2708, 100 W units of 2706, -1 for no limit) come from Victron&#x27;s &#x27;ESS mode 2 and 3&#x27; guide, https://www.victronenergy.com/live/ess:ess_mode_2_and_3 (last modified 2024-10-14). Function codes, unit ID 0/100 and the error codes come from the &#x27;GX Modbus-TCP Manual&#x27;, https://www.victronenergy.com/live/ccgx:modbustcp_faq. Port 502 is stated in &#x27;Data communication with Victron Energy products&#x27; (whitepaper on victronenergy.com).</li><li>Enum meanings are copied from the register list&#x27;s dbus-unit column; VE.Bus error 32 and solar charger error 788 list only the codes the register list defines.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Victron Energy GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX)</h2><div class="faq"><details open><summary>What Modbus registers does the Victron Energy GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX) have?</summary><p>This map lists 128 registers: 128 holding registers. 21 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Victron Energy GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The &#x27;Address&#x27; column of Victron&#x27;s register list goes into the request as-is. Victron&#x27;s GX Modbus-TCP manual reads VE.Bus input voltage (register 3) by setting the first request register to 3, so the listed number is the wire address. Clients that add or subtract one (Modicon 4xxxx entry) will be off by one register. Function codes 3 and 4 return identical data; all registers are listed here as holding registers, and writes use 6 or 16.</p></details><details><summary>What are the minimum Modbus registers to integrate the Victron Energy GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX)?</summary><p>Start with HR 843 Battery state of charge (system) [unit ID 100] (System battery state of charge (unit ID 100)); HR 842 Battery power (system) [unit ID 100] (System battery power, + charging / - discharging (unit ID 100)); HR 820 Grid power L1 [unit ID 100] (Grid power L1 (unit ID 100)); HR 817 AC consumption L1 [unit ID 100] (AC consumption L1 (unit ID 100)); HR 850 DC-coupled PV power [unit ID 100] (Total DC-coupled PV power (unit ID 100)); HR 31 VE.Bus state [VE.Bus unit ID] (VE.Bus state (VE.Bus unit ID)); HR 32 VE.Bus error [VE.Bus unit ID] (VE.Bus error (VE.Bus unit ID)); HR 33 Switch position (mode) [VE.Bus unit ID] (Switch position: remote on/off/charger-only (VE.Bus unit ID)); HR 22 Active input current limit [VE.Bus unit ID] (AC input current limit (VE.Bus unit ID)).</p></details><details><summary>How do I enable Modbus control of the Victron Energy GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX)?</summary><p>Modbus-TCP is off by default. On the GX, enable it under Settings &gt; Services &gt; Modbus TCP (newer Venus OS: Settings &gt; Integrations &gt; Modbus TCP server). The same menu lists &#x27;Available services&#x27; with each device&#x27;s unit ID and shows the last Modbus error. ESS mode 3 control needs ESS mode set to external control (register 2902 = 3, or the GUI).</p></details><details><summary>What happens when the Victron Energy GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX) loses Modbus communication?</summary><p>ESS mode 3: the VE.Bus power setpoints (37, 40, 41) must be rewritten at least every 60 seconds or the Multi drops to passthru. No general Modbus timeout is documented for other writes.</p></details><details><summary>Where is the official Victron Energy GX device Modbus-TCP (Cerbo GX, Venus GX, Color Control GX) Modbus documentation?</summary><p>The source is Modbus-TCP register list (CCGX-Modbus-TCP-register-list-3.81.xlsx) (Register list 3.81, document revision Rev 54), published free by Victron Energy at https://www.victronenergy.com/upload/documents/CCGX-Modbus-TCP-register-list-3.81.xlsx.</p></details></div>
@@ -530,10 +519,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -559,14 +548,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

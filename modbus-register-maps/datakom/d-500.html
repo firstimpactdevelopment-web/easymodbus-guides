@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/datakom/d-500-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/datakom/d-500.csv"
     },
     {
@@ -335,7 +329,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/datakom/">Datakom</a></li><li aria-current="page">D-300 / D-500 / D-700 genset controllers</li></ol>
@@ -347,16 +341,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Datakom&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/datakom/">Datakom</a></dd></div><div><dt>Model</dt><dd>D-300 / D-500 / D-700 genset controllers</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/generator-controllers/">Generator controller</a></dd></div><div><dt>Registers</dt><dd>29 (1 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>8N1</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Firmware</dt><dd>Manual revision 03 (10.09.2015) updated for firmware 5.6</dd></div><div><dt>Also known as</dt><dd>D-300, D-500, D-700, D300, D500, D700</dd></div><div><dt>Source document</dt><dd><a href="https://www.datakom.com.tr/upload/Files/500_MODBUS.pdf" rel="nofollow noopener" target="_blank">D-300 / 500 / 700 Modbus Application Manual &middot; 500-MODBUS V5.6 &middot; rev. 2016-04-25</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/datakom/d-500-easymodbus.csv">Copy for the phone app <small>29 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/datakom/d-500-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/datakom/d-500.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/datakom/d-500.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/datakom/d-500.json">JSON</a>
   <a class="btn" href="https://www.datakom.com.tr/upload/Files/500_MODBUS.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Datakom D-300 / D-500 / D-700 genset controllers</h2>
 <div class="answer"><b>Integration in brief</b><p>Read 10604 (operation status), 10605 (mode) and the summary flags at 11558 with function 3, then 10338-10341 for frequencies and battery voltage. Remote control is done by writing a single bit to 8193 to simulate a panel key (Stop, Run/Manual, Auto, Test).</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-10604">HR 10604</a></td><td class="n">Unit operation status</td><td class="f">UINT16</td><td>Genset sequence state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-10605">HR 10605</a></td><td class="n">Unit mode</td><td class="f">UINT16</td><td>STOP / RUN / AUTO / TEST mode</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-11558">HR 11558</a></td><td class="n">Function flags 48-63</td><td class="f">BITMAP16</td><td>Shutdown, loaddump and warning summary flags</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-11557">HR 11557</a></td><td class="n">Function flags 32-47</td><td class="f">BITMAP16</td><td>Mains fail and engine running flags</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-10339">HR 10339</a></td><td class="n">Genset frequency</td><td class="f">UINT16</td><td>Genset frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-10341">HR 10341</a></td><td class="n">Battery voltage</td><td class="f">UINT16</td><td>Battery voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-10376">HR 10376</a></td><td class="n">Engine rpm</td><td class="f">UINT16</td><td>Engine speed</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-8193">HR 8193</a></td><td class="n">Pushbutton simulation</td><td class="f">BITMAP16</td><td>Remote key presses</td><td><span class="acc W">Write</span></td></tr></tbody></table></div>
@@ -404,9 +392,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Left out: every 32-bit value (all phase voltages, currents and powers at 10240-10327, average voltage and current at 10377-10384, the run/crank/hour/energy counters at 10616-10647 and 11569-11581, GPS position and the multi-genset totals). The manual contradicts itself on word order: one paragraph says the least significant register comes first, the next says the high-order 16 bits are in the first register. Until Datakom settles it, those registers are not listed.</li><li>Left out: the power factor registers (10328-10335 and 11376). The table prints a x10 coefficient for them, which would give power factor in steps of 0.1 and looks doubtful; they are omitted rather than published with a possibly wrong scale.</li><li>COEFF. in the manual is how many times larger the raw value is than the real one: x10 means divide by 10 (scale 0.1), x100 means divide by 100 (scale 0.01).</li><li>Left out: the engine, oil, canopy and ambient temperature registers (10362, 10364-10366 and the _2 copies at 10368 and 10370-10372). The manual gives them only as &#x27;16bit&#x27; in tenths of a degree C and never says whether they are signed, so readings below zero cannot be decoded with certainty.</li><li>Alarm and flag arrays are packed with alarm/flag 0 in bit 0 of the first register. The shutdown array is 10504-10519, loaddump 10520-10535 and warning 10536-10551; only the words holding the named engine and genset alarms are listed (words 1-3 are digital-input and expansion-input alarms, words 5-6 ambient-temperature and sender alarms). The loaddump array uses the same bit layout as the other two.</li><li>The function-flag array is 224 bits at 11555-11568. Page 15 of the manual repeats a corrupted copy of the counter table that wrongly reuses address 11555; the first table on the page (flags at 11555, counters from 11569) is the consistent one.</li><li>8193 lists a x10 coefficient but is a bit field; the coefficient is ignored. Writing 14536 to 8210 forces a hard reset of the unit and is deliberately not listed.</li><li>Also not listed: the harmonic-analysis and scope-meter block (8194, 10386-10503), analog input ohm values, the LCD buffer and LED, output and expansion status bits.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Datakom D-300 / D-500 / D-700 genset controllers</h2><div class="faq"><details open><summary>What Modbus registers does the Datakom D-300 / D-500 / D-700 genset controllers have?</summary><p>This map lists 29 registers: 29 holding registers. 1 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Datakom D-300 / D-500 / D-700 genset controllers Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The register tables print decimal addresses and they go on the wire unchanged. The manual&#x27;s read example asks for 16 registers &#x27;starting from address 20h (32 decimal)&#x27; with the frame 01 03 00 20 00 10, and its write example puts register 40h in the frame as 00 40. So 10338 (mains frequency) is requested as 10338, with no 40001 offset and no minus 1.</p></details><details><summary>What are the minimum Modbus registers to integrate the Datakom D-300 / D-500 / D-700 genset controllers?</summary><p>Start with HR 10604 Unit operation status (Genset sequence state); HR 10605 Unit mode (STOP / RUN / AUTO / TEST mode); HR 11558 Function flags 48-63 (Shutdown, loaddump and warning summary flags); HR 11557 Function flags 32-47 (Mains fail and engine running flags); HR 10339 Genset frequency (Genset frequency); HR 10341 Battery voltage (Battery voltage); HR 10376 Engine rpm (Engine speed); HR 8193 Pushbutton simulation (Remote key presses).</p></details><details><summary>How do I enable Modbus control of the Datakom D-300 / D-500 / D-700 genset controllers?</summary><p>Set a Modbus slave address (1-240). For RS-485 set &#x27;RS-485 Enable&#x27; to 1 and pick a baud rate; for Ethernet set &#x27;Ethernet Enable&#x27; to 1, the Modbus TCP port (usually 502) and the IP, gateway and subnet; the first User IP Mask should be 255.255.255.0.</p></details><details><summary>Where is the official Datakom D-300 / D-500 / D-700 genset controllers Modbus documentation?</summary><p>The source is D-300 / 500 / 700 Modbus Application Manual (500-MODBUS V5.6), revision 2016-04-25, published free by Datakom at https://www.datakom.com.tr/upload/Files/500_MODBUS.pdf.</p></details></div>
@@ -418,10 +407,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -447,14 +436,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

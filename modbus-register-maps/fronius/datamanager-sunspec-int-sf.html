@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/fronius/datamanager-sunspec-int-sf-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/fronius/datamanager-sunspec-int-sf.csv"
     },
     {
@@ -343,7 +337,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/fronius/">Fronius</a></li><li aria-current="page">Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF)</li></ol>
@@ -355,16 +349,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Fronius&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/fronius/">Fronius</a></dd></div><div><dt>Model</dt><dd>Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/solar-inverters/">Solar inverter</a></dd></div><div><dt>Registers</dt><dd>152 (31 writable)</dd></div><div><dt>Transport</dt><dd>Modbus TCP, Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>1-based (subtract 1 for the wire address)</dd></div><div><dt>Firmware</dt><dd>Register map archive version 1.1.7-0 (int+SF map with Symo Hybrid model 124); manual 42,0410,2049 rev. 033-24022026.</dd></div><div><dt>Also known as</dt><dd>Fronius Symo, Fronius Primo, Fronius Galvo, Fronius Symo Hybrid, Fronius IG Plus, Datamanager 2.0</dd></div><div><dt>Source document</dt><dd><a href="https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2049.pdf" rel="nofollow noopener" target="_blank">Fronius Datamanager Modbus TCP &amp; RTU (operating instructions) + Inverter_Register_Map_Int&amp;SF_v1.0_with_SYMOHYBRID_MODEL_124.xlsx &middot; 42,0410,2049 (033-24022026) &middot; rev. 2026-02</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/fronius/datamanager-sunspec-int-sf-easymodbus.csv">Copy for the phone app <small>144 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/fronius/datamanager-sunspec-int-sf-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/fronius/datamanager-sunspec-int-sf.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/fronius/datamanager-sunspec-int-sf.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/fronius/datamanager-sunspec-int-sf.json">JSON</a>
   <a class="btn" href="https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2049.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF)</h2>
 <div class="answer"><b>Integration in brief</b><p>Enable &#x27;Data output via Modbus&#x27; = tcp in the Datamanager web UI, choose SunSpec Model Type int+SF, and poll unit ID = inverter number (inverter 00 = 100) on port 502. Read registers 40070-40109 (wire addresses 40069-40108) in one request and scale each value with its _SF register.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-40069">HR 40069</a></td><td class="n">Inverter ID</td><td class="f">UINT16</td><td>Inverter model ID (101/102/103) - confirms int+SF layout</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40083">HR 40083</a></td><td class="n">W</td><td class="f">INT16</td><td>AC power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40084">HR 40084</a></td><td class="n">W_SF</td><td class="f">INT16</td><td>AC power scale factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40107">HR 40107</a></td><td class="n">St</td><td class="f">UINT16</td><td>Operating state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40232">HR 40232</a></td><td class="n">WMaxLimPct</td><td class="f">UINT16</td><td>Active power limit %</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-40236">HR 40236</a></td><td class="n">WMaxLim_Ena</td><td class="f">UINT16</td><td>Enable/disable the power limit</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-40250">HR 40250</a></td><td class="n">WMaxLimPct_SF</td><td class="f">INT16</td><td>Power limit scale factor</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -535,9 +523,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Register table comes from Fronius&#x27; official XLSX in the &#x27;Modbus Sunspec Maps, State Codes and Events&#x27; ZIP (same download page as the PDF); behaviour and settings come from the PDF.</li><li>All addresses here assume SunSpec Model Type = int+SF. With the default float setting the inverter model is 111-113 and every later model starts 10 registers higher (e.g. nameplate 40131 instead of 40121).</li><li>Fronius warns the map is dynamic: the correct method is to walk the SunSpec model chain from 40001 (ID, L) and use offsets. The fixed addresses below are the published layout for a single inverter.</li><li>Word order: neither the PDF nor the XLSX states the order of 32/64-bit values, so every 32/64-bit register is left out: SID 40001-40002, WH lifetime energy 40094-40095, Evt1/Evt2/EvtVnd1-4 40110-40121, ActWh 40187-40190, StActCtl 40217-40218, Tms 40223-40224, model 160 Evt/DCWH/Tms, and site totals F_Site_Power/Energy 500-513. The SID is documented as 0x53756E53 &#x27;SunS&#x27;, which suggests high word first, but this is not stated.</li><li>Registers marked &#x27;Not supported&#x27; in the XLSX are left out (temperatures, VMax/VMin, quadrant 2/3 ratings, ride-through, Ris, StorAval, InBatV, and similar).</li><li>Unsupported values read as: int16 0x8000, uint16/enum16/bitfield16 0xFFFF, sunssf 0x8000. Some &#x27;supported&#x27; points also return these, e.g. phase B/C on single-phase inverters, DCA/DCV on multi-input inverters (use model 160).</li><li>The XLSX notes that WH (lifetime energy) may be imprecise; ActWh in model 122 is the alternative (both 32/64-bit, omitted here).</li><li>Access is taken from the XLSX R/W column. VAMax (40157) and WMaxLimPct_RmpTms (40236) are marked RW but list only function code 0x03; the PDF says writes to unsupported RmpTms are ignored (ramp supported from Datamanager 3.13.3-2 / Hybridmanager 1.11.3-2).</li><li>Model 124 (storage) is only meaningful on Fronius Symo Hybrid with battery.</li><li>The PDF describes PVConn bit 1 as &#x27;responsive&#x27;; the XLSX calls it &#x27;Available&#x27;. The XLSX wording is used.</li><li>Energy meters (Fronius Smart Meter) are published at unit ID 240-244 with their own common block and meter model 201-203 starting again at 40001; they are not part of this inverter map.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF)</h2><div class="faq"><details open><summary>What Modbus registers does the Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF) have?</summary><p>This map lists 152 registers: 152 holding registers. 31 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Fronius numbers registers from 1 (SunSpec base register 40001) and says to send the register number minus one: register 40001 is requested at address 40000 (0x9C40). The manual&#x27;s RTU example reads register 40005 with address bytes 9C 44. Fronius registers 212-217 follow the same rule (212 -&gt; 211).</p></details><details><summary>What are the minimum Modbus registers to integrate the Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF)?</summary><p>Start with HR 40069 Inverter ID (Inverter model ID (101/102/103) - confirms int+SF layout); HR 40083 W (AC power); HR 40084 W_SF (AC power scale factor); HR 40107 St (Operating state); HR 40232 WMaxLimPct (Active power limit %); HR 40236 WMaxLim_Ena (Enable/disable the power limit); HR 40250 WMaxLimPct_SF (Power limit scale factor).</p></details><details><summary>How do I enable Modbus control of the Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF)?</summary><p>Datamanager web interface &gt; Settings &gt; Modbus: set &#x27;Data output via Modbus&#x27; to tcp (or rtu on Datamanager 2.0, factory default rtu there), pick SunSpec Model Type int+SF, and tick &#x27;Inverter control via Modbus&#x27; to allow writes to models 123/124. &#x27;Limit control&#x27; can restrict write access to listed IP addresses. Turning Modbus output off cancels any active Modbus control commands.</p></details><details><summary>What happens when the Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF) loses Modbus communication?</summary><p>Each control in model 123 has a *_RvrtTms fallback timer (0-28800 s) that restarts with every Modbus message received; when it expires the control ends and the next-priority control (e.g. dynamic power reduction) takes over. RvrtTms = 0 (default) means the setting stays until disabled.</p></details><details><summary>Where is the official Fronius Symo / Primo / Galvo / Symo Hybrid via Datamanager (SunSpec int+SF) Modbus documentation?</summary><p>The source is Fronius Datamanager Modbus TCP &amp; RTU (operating instructions) + Inverter_Register_Map_Int&amp;SF_v1.0_with_SYMOHYBRID_MODEL_124.xlsx (42,0410,2049 (033-24022026)), revision 2026-02, published free by Fronius at https://www.fronius.com/en/~/downloads/Solar%20Energy/Operating%20Instructions/42,0410,2049.pdf.</p></details></div>
@@ -549,10 +538,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -578,14 +567,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

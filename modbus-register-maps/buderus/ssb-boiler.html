@@ -234,12 +234,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/buderus/ssb-boiler-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/buderus/ssb-boiler.csv"
     },
     {
@@ -341,7 +335,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/buderus/">Buderus</a></li><li aria-current="page">SSB condensing boilers (built-in Modbus RTU)</li></ol>
@@ -353,16 +347,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Buderus&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/buderus/">Buderus</a></dd></div><div><dt>Model</dt><dd>SSB condensing boilers (built-in Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/boilers/">Boiler</a></dd></div><div><dt>Registers</dt><dd>50 (10 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N2</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Also known as</dt><dd>SSB, Buderus SSB boiler, Bosch SSB, 6720818450</dd></div><div><dt>Source document</dt><dd><a href="https://www.bosch-homecomfort.com/us/media/country_pool/service/technical_guides/6720818450_ssb_boiler_modbus_installation_instructions_en_10.2015_us_us.pdf" rel="nofollow noopener" target="_blank">Modbus for Buderus SSB Boilers - Installation and Service Instructions for Contractors &middot; 6720818450 (2015/10) US Rev.0 &middot; rev. 2015-10</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/buderus/ssb-boiler-easymodbus.csv">Copy for the phone app <small>50 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/buderus/ssb-boiler-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/buderus/ssb-boiler.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/buderus/ssb-boiler.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/buderus/ssb-boiler.json">JSON</a>
   <a class="btn" href="https://www.bosch-homecomfort.com/us/media/country_pool/service/technical_guides/6720818450_ssb_boiler_modbus_installation_instructions_en_10.2015_us_us.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Buderus SSB condensing boilers (built-in Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Wire Modbus + and - to the MOD BUS terminals of the boiler&#x27;s terminal strip, set the master to 9600 8-N-2 and read holding registers 100-142 with function 03. To change a setpoint, first write register 99 = 1 (Write Enable), then write the value x10 within 4 seconds.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-101">HR 101</a></td><td class="n">Status</td><td class="f">UINT16</td><td>Boiler status</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-102">HR 102</a></td><td class="n">Error code</td><td class="f">UINT16</td><td>Error code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-120">HR 120</a></td><td class="n">Supply temperature</td><td class="f">UINT16</td><td>Supply temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-121">HR 121</a></td><td class="n">Return temperature</td><td class="f">UINT16</td><td>Return temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-140">HR 140</a></td><td class="n">Firing rate</td><td class="f">UINT16</td><td>Firing rate</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-502">HR 502</a></td><td class="n">CH set-point</td><td class="f">UINT16</td><td>CH setpoint</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-503">HR 503</a></td><td class="n">DHW set-point</td><td class="f">UINT16</td><td>DHW setpoint</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-99">HR 99</a></td><td class="n">Control register</td><td class="f">BITMAP16</td><td>Write enable / lockout reset</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -431,9 +419,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Scaling follows the document&#x27;s data-type table: temperatures, pressures, voltages, flame current and percentages are sent x10 (one decimal). Registers marked &#x27;automatic conversion&#x27; use it; state, status and error codes and the counters do not.</li><li>Temperatures follow the unit chosen in register 98 (°C or °F) for both reads and writes; the document does not say which bit value means which unit or what the default is, so check a known reading first.</li><li>The document never says whether values are signed. Outside temperature (125) and the outdoor reset-curve points (506 Outdoor Mild Weather, 507 Outdoor Design) can be below zero, so they are left out rather than guessed; the other temperatures are typed unsigned.</li><li>Left out: successful ignition counter 200 (printed with &#x27;resolution 16&#x27;, meaning not explained); CH mode 500 and DHW mode 501 (range &#x27;0..x&#x27; with no value list).</li><li>Only the first slot of the lockout and blocking histories is listed; slots 2-16 follow at consecutive addresses (lockouts 221-235, blockings 261-275). The history is not in order of occurrence.</li><li>Dependent registers 300-339 report the cascade dependents (01-07) in the same state/error code tables; the document leaves their access column blank, so they are listed read-only.</li><li>Left out: the &#x27;time after lockout&#x27; (236-251) and &#x27;time after blocking&#x27; (276-291) hour stamps. They are marked &#x27;automatic conversion&#x27; yet hours are not one of the x10 data types in the document&#x27;s data-type table, so their scaling is unclear; the burn-hour counters 203-204 carry no such mark.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Buderus SSB condensing boilers (built-in Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Buderus SSB condensing boilers (built-in Modbus RTU) have?</summary><p>This map lists 50 registers: 50 holding registers. 10 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Buderus SSB condensing boilers (built-in Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The document prints decimal register numbers with their hex form (98 = 0x0062) and says to use them as printed when the master counts from 0x0000, and to add 1 only if the master counts from 0x0001. So register 100 is wire address 100.</p></details><details><summary>What are the minimum Modbus registers to integrate the Buderus SSB condensing boilers (built-in Modbus RTU)?</summary><p>Start with HR 101 Status (Boiler status); HR 102 Error code (Error code); HR 120 Supply temperature (Supply temperature); HR 121 Return temperature (Return temperature); HR 140 Firing rate (Firing rate); HR 502 CH set-point (CH setpoint); HR 503 DHW set-point (DHW setpoint); HR 99 Control register (Write enable / lockout reset).</p></details><details><summary>How do I enable Modbus control of the Buderus SSB condensing boilers (built-in Modbus RTU)?</summary><p>Writes are refused unless register 99 bit 0 (Write Enable) is set. The bit clears itself after each write sequence or after 4 seconds, so set it again before every write.</p></details><details><summary>What happens when the Buderus SSB condensing boilers (built-in Modbus RTU) loses Modbus communication?</summary><p>If no Modbus read or write arrives for more than 4 seconds the control register 99 is cleared. No other comm-loss behaviour is documented.</p></details><details><summary>Where is the official Buderus SSB condensing boilers (built-in Modbus RTU) Modbus documentation?</summary><p>The source is Modbus for Buderus SSB Boilers - Installation and Service Instructions for Contractors (6720818450 (2015/10) US Rev.0), revision 2015-10, published free by Buderus at https://www.bosch-homecomfort.com/us/media/country_pool/service/technical_guides/6720818450_ssb_boiler_modbus_installation_instructions_en_10.2015_us_us.pdf.</p></details></div>
@@ -445,10 +434,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -474,14 +463,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

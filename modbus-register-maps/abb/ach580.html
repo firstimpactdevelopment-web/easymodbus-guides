@@ -235,12 +235,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/abb/ach580-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/abb/ach580.csv"
     },
     {
@@ -350,7 +344,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/abb/">ABB</a></li><li aria-current="page">ACH580 HVAC drive (embedded Modbus RTU)</li></ol>
@@ -362,16 +356,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 ABB&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/abb/">ABB</a></dd></div><div><dt>Model</dt><dd>ACH580 HVAC drive (embedded Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive</a></dd></div><div><dt>Registers</dt><dd>58 (7 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8E1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Firmware</dt><dd>ACH580 HVAC control program, manual revision J</dd></div><div><dt>Also known as</dt><dd>ACH580-01, ACH580-07, ACH580-31, ACH580-34, ACH580 HVAC control program</dd></div><div><dt>Source document</dt><dd><a href="https://search.abb.com/library/Download.aspx?DocumentID=3AXD50000027537&amp;LanguageCode=en&amp;DocumentPartId=1&amp;Action=Launch" rel="nofollow noopener" target="_blank">ACH580 HVAC control program firmware manual &middot; 3AXD50000027537 Rev J &middot; rev. 2026-02-23</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/abb/ach580-easymodbus.csv">Copy for the phone app <small>58 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/abb/ach580-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/abb/ach580.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/abb/ach580.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/abb/ach580.json">JSON</a>
   <a class="btn" href="https://search.abb.com/library/Download.aspx?DocumentID=3AXD50000027537&amp;LanguageCode=en&amp;DocumentPartId=1&amp;Action=Launch" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: ABB ACH580 HVAC drive (embedded Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Enable Modbus RTU in group 58, point the start/stop and reference sources at the embedded fieldbus, then write the ABB Drives control word and Reference 1 at 400001/400002 and poll the status word and actual values at 400004-400006. Read further monitoring values straight from their parameter registers (400000 + 100*group + index).</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Control word (EFB CW)</td><td class="f">BITMAP16</td><td>Control word: start/stop/reset</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Reference 1 (EFB Ref1)</td><td class="f">INT16</td><td>Reference 1 (speed/frequency setpoint, 20000 = 46.01/46.02)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-3">HR 3</a></td><td class="n">Status word (EFB SW)</td><td class="f">BITMAP16</td><td>Status word: ready/running/fault/remote</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-4">HR 4</a></td><td class="n">Actual value 1 (EFB Act1)</td><td class="f">INT16</td><td>Actual value 1 (speed/frequency feedback)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-110">HR 110</a></td><td class="n">01.11 DC voltage</td><td class="f">UINT16</td><td>01.11 DC voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-400">HR 400</a></td><td class="n">04.01 Tripping fault</td><td class="f">UINT16</td><td>04.01 Tripping fault code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-20211">HR 20211</a></td><td class="n">01.06 Output frequency (32-bit)</td><td class="f">INT32 CDAB</td><td>01.06 Output frequency, 0.01 Hz (32-bit)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-20213">HR 20213</a></td><td class="n">01.07 Motor current (32-bit)</td><td class="f">UINT32 CDAB</td><td>01.07 Motor current, 0.01 A (32-bit)</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -448,9 +436,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Registers 400001-400006 are the factory defaults of Data I/O 1-6 (58.101-58.106) and can be re-pointed; 400007-400014 are user-selectable via 58.107-58.114 and are not listed.</li><li>Control and status word bits are shown for the ABB Drives profile (58.25 = 0, default). With the DCU profile (58.25 = 5) the words are passed through unconverted with a different bit layout (bit 0 STOP, bit 1 START, bit 2 REVERSE, bit 4 RESET...).</li><li>Reference/actual registers are signed 16-bit; 20000 corresponds to the value of 46.01 Speed scaling or 46.02 Frequency scaling (46.03 torque, 46.04 power), so their engineering value depends on drive settings and is left unscaled here.</li><li>32-bit registers use 58.34 Word order; the default LO-HI sends the low word first (CDAB). If 58.34 is set to HI-LO the order becomes ABCD. Within each register the high byte is sent first.</li><li>16-bit parameter scaling is the manual&#x27;s FbEq16 column (e.g. &#x27;10 = 1 V&#x27; -&gt; scale 0.1). Parameters whose 16-bit scaling is &#x27;See par. 46.xx&#x27; (01.01 speed, 01.06 frequency, 01.07 current, 01.10 torque, 01.14 power, 01.72-01.74 phase currents) are listed only in their 32-bit form, which has a fixed FbEq32 scaling.</li><li>Left out: 01.50-01.53 hour/day kWh logs and 05.03 in 16-bit form (ranges exceed 16 bits), 05.20-05.22 diagnostic words (bit lists not fully captured), group 46 scaling parameters and all configuration parameters other than the comm-loss settings.</li><li>Coils (CW bits) and discrete inputs (SW bits, DI status) also exist but are omitted: the manual&#x27;s wording on how their 1-based references map to wire addresses is ambiguous.</li><li>ACH580 has no jogging: control-word bits 8-9 are reserved (unlike the ACS580).</li><li>01.66 16-bit scaling is 10 = 1% in the ACH580 manual (the ACS580 manual lists 1 = 1%).</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the ABB ACH580 HVAC drive (embedded Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the ABB ACH580 HVAC drive (embedded Modbus RTU) have?</summary><p>This map lists 58 registers: 58 holding registers. 7 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the ABB ACH580 HVAC drive (embedded Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The manual prints holding registers as 6-digit references and maps 400001-465536 onto the 65536-register address field, so 400001 = wire address 0 (its setup table also pairs the parameter range with addresses 100-65535). Masters limited to 5 digits can use 40001-49999 for 400001-409999; 32-bit parameter registers (420000+) need 6-digit or raw addressing. With 58.33 Addressing mode = Mode 0 (default) a 16-bit parameter gg.ii sits at 400000 + 100*gg + ii (e.g. 01.11 -&gt; 400111, wire 110) and a 32-bit copy at 420000 + 200*gg + 2*ii (e.g. 01.07 -&gt; 420214, wire 20213). Mode 1 uses 400000 + 256*gg + ii and Mode 2 uses 400000 + 512*gg + 2*ii; this map assumes Mode 0. All 32-bit registers are listed CDAB, which assumes 58.34 Word order = LO-HI, the default.</p></details><details><summary>What byte order does the ABB ACH580 HVAC drive (embedded Modbus RTU) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the ABB ACH580 HVAC drive (embedded Modbus RTU)?</summary><p>Start with HR 0 Control word (EFB CW) (Control word: start/stop/reset); HR 1 Reference 1 (EFB Ref1) (Reference 1 (speed/frequency setpoint, 20000 = 46.01/46.02)); HR 3 Status word (EFB SW) (Status word: ready/running/fault/remote); HR 4 Actual value 1 (EFB Act1) (Actual value 1 (speed/frequency feedback)); HR 110 01.11 DC voltage (01.11 DC voltage); HR 400 04.01 Tripping fault (04.01 Tripping fault code); HR 20211 01.06 Output frequency (32-bit) (01.06 Output frequency, 0.01 Hz (32-bit)); HR 20213 01.07 Motor current (32-bit) (01.07 Motor current, 0.01 A (32-bit)).</p></details><details><summary>How do I enable Modbus control of the ABB ACH580 HVAC drive (embedded Modbus RTU)?</summary><p>Set 58.01 Protocol enable = Modbus RTU, then 58.03 node address, 58.04 baud and 58.05 parity, and apply them with 58.06 Communication control = Refresh settings (or power-cycle). For control set 20.01 Ext1 commands (and 20.06 for EXT2) = Embedded fieldbus and the reference source, e.g. 22.11 Ext1 speed ref1 or 28.11 Ext1 frequency ref1 = EFB ref1. Every start/stop control-word value in the manual sets bit 10 (REMOTE_CMD); the manual&#x27;s own description of that bit is truncated. Save parameter writes permanently with 96.07 Parameter save manually.</p></details><details><summary>What happens when the ABB ACH580 HVAC drive (embedded Modbus RTU) loses Modbus communication?</summary><p>58.14 Communication loss action (default No action; options No action / Fault / Last speed / Speed ref safe / Fault always / Warning) with 58.16 Communication loss time (0-6000 s, default 30.0 s) and 58.15 Communication loss mode (any message, or only control word/reference writes, resets the timer). A loss trips 6681 EFB comm loss or warns A7CE; &#x27;Speed ref safe&#x27; runs at 22.41/28.41. There is a 30 s boot-up delay before monitoring starts.</p></details><details><summary>Where is the official ABB ACH580 HVAC drive (embedded Modbus RTU) Modbus documentation?</summary><p>The source is ACH580 HVAC control program firmware manual (3AXD50000027537 Rev J), revision 2026-02-23, published free by ABB at https://search.abb.com/library/Download.aspx?DocumentID=3AXD50000027537&amp;LanguageCode=en&amp;DocumentPartId=1&amp;Action=Launch.</p></details></div>
@@ -462,10 +451,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -491,14 +480,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

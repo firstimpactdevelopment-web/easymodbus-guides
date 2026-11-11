@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generates the Easy Modbus public site (GitHub Pages).
+Generates easymodbus.com: the free Modbus register-map library, guides and tools.
 
 The pages are written for two audiences at once. A facility manager who lands
 here from a search gets a direct answer in the first paragraph, in language that
@@ -40,8 +40,8 @@ BASE_URL = "https://easymodbus.com"
 INDEXNOW_KEY = "04c386653e0efc62f1f8fdfb5f466541"
 
 # Freshness signal. Bump when guide content is meaningfully revised.
-UPDATED = "2026-10-24"              # ISO, for JSON-LD and sitemap <lastmod>
-UPDATED_HUMAN = "24 October 2026"
+UPDATED = "2026-11-10"              # ISO, for JSON-LD and sitemap <lastmod>
+UPDATED_HUMAN = "10 November 2026"
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -229,7 +229,7 @@ def page(slug, title, question, answer_html, body_html, related, description):
 
 <header class="site">
   <a href="%(prefix)sindex.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
-  <span class="muted">&middot; plain-English Modbus reference</span>
+  <a class="muted" href="/modbus-register-maps/index.html">Register maps &rarr;</a>
 </header>
 
 <article>
@@ -248,9 +248,9 @@ def page(slug, title, question, answer_html, body_html, related, description):
   <p>Need a device&rsquo;s registers? Browse the free
   <a href="/modbus-register-maps/index.html">Modbus register-map library</a> &mdash; verified addresses, data types,
   word order and scaling by manufacturer and model.</p>
-  <p>Published alongside <a href="%(prefix)sindex.html">Easy Modbus</a>, a free
-  Android app that finds Modbus TCP equipment on a network, helps you work out
-  what its registers mean, and exports the result as a CSV.</p>
+  <p>easymodbus.com is a free, plain-English Modbus reference: verified register maps,
+  short guides and browser calculators. Corrections and questions:
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
   <p><a href="%(prefix)sterms.html">Terms of use</a> &middot; <a href="%(prefix)sprivacy.html">Privacy policy</a></p>
 </footer>
 
@@ -559,7 +559,7 @@ GUIDES.append(dict(
     <p>Before any of that, check the free
     <a href="../modbus-register-maps/index.html">Modbus register-map library</a>: it has
     verified maps for common meters, drives, generator controllers, inverters and HVAC
-    equipment, ready to import into Easy Modbus.</p>""",
+    equipment, each checked against the manufacturer&rsquo;s own document.</p>""",
     body_html="""
   <h2>1. The manufacturer's website</h2>
   <p>Search for the exact model number from the equipment label plus the word
@@ -609,29 +609,15 @@ GUIDES.append(dict(
   <p>Values that change when you change something physical are the most reliable
   evidence of all. Turn the fan up and see which register moves.</p>
 
-  <h2>Doing this from a phone</h2>
-  <p><a href="../index.html">Easy Modbus</a> is built for exactly this job. It
-  sweeps the network for equipment, reads blocks of registers and shows them in hex
-  and decimal, and for each one offers the plausible interpretations with the
-  reasoning &mdash; &ldquo;12.75 as a 32-bit float with the words swapped, which is
-  a sensible engineering magnitude&rdquo;. When a number looks right, you name it
-  and the app remembers the whole interpretation, so nobody has to work it out
-  again. The result exports as a CSV, which is how an undocumented device ends up
-  documented.</p>
-  <div class="shots">
-    <figure class="shot">
-      <img src="../img/app-register-browser.png" alt="Easy Modbus Pro-mode register browser listing raw registers in hex and decimal" loading="lazy">
-      <figcaption>Read a block and see every register in hex and decimal.</figcaption>
-    </figure>
-    <figure class="shot">
-      <img src="../img/app-analyzer.png" alt="Easy Modbus showing ranked interpretations of a register such as a word-swapped 32-bit float, with reasoning" loading="lazy">
-      <figcaption>&ldquo;What could this be?&rdquo; ranks each interpretation and explains why.</figcaption>
-    </figure>
-  </div>
-  <figure class="shot">
-    <img src="../img/app-readings.png" alt="Easy Modbus reading list showing named readings with their live values and units, ready to export as CSV" loading="lazy">
-    <figcaption>Name each value you identify and it becomes your register map &mdash; export it as a CSV.</figcaption>
-  </figure>
+  <h2>Write it down as you go</h2>
+  <p>Each time a number makes sense, record the whole interpretation, not just the
+  address: the table, the 0-based wire address, the data type, the word order, the
+  multiplier and the units. A spreadsheet with those columns <em>is</em> a register
+  map, and filing it with the equipment means nobody has to work it out again. The
+  <a href="../modbus-float-decoder.html">float and byte-order decoder</a> shows a pair
+  of registers in all four word orders at once, and the
+  <a href="../modbus-address-converter.html">address converter</a> settles which
+  register a 40001-style address really is on the wire.</p>
 
   <h2>When none of it works</h2>
   <p>Ask the vendor directly, with the model and firmware version, for the Modbus
@@ -718,10 +704,13 @@ GUIDES.append(dict(
   counted from zero. Forty-five years of documents later, both conventions are
   still in active use, often in the same building, sometimes in the same PDF.</p>
 
-  <p><a href="../index.html">Easy Modbus</a> sidesteps the problem: type the
+  <p>The quickest way to settle it is the
+  <a href="../modbus-address-converter.html">Modbus address converter</a>: type the
   address however your manual writes it &mdash; <code>40007</code>,
-  <code>4x00007</code> or <code>6</code> &mdash; and it tells you how it read it
-  and which register that actually is, before you save anything.</p>
+  <code>4x00007</code> or <code>6</code> &mdash; and it shows the table, the function
+  code and the 0-based wire address. Every map in the
+  <a href="../modbus-register-maps/index.html">register-map library</a> lists the wire
+  address, with the documented number beside it when the two differ.</p>
 """,
     related=[
         ("modbus-register-maps/index", "Modbus register maps with both printed and 0-based wire addresses"),
@@ -810,10 +799,11 @@ GUIDES.append(dict(
     truth, and it settles scaling and addressing in one move.</li>
     <li>Change one thing at a time: signedness, then multiplier, then word order.</li>
   </ol>
-  <p><a href="../index.html">Easy Modbus</a> does the arithmetic for you: it shows
-  the raw registers in hex and binary, lists every plausible interpretation with
-  the reasoning, and warns when a value is outside the range the quantity can
-  physically have &mdash; a humidity of 452% being the obvious case.</p>
+  <p>For a 32-bit value, the <a href="../modbus-float-decoder.html">float and
+  byte-order decoder</a> does the arithmetic for you: paste the two raw registers and
+  it shows the result in all four word orders, highlighting the ones that land on a
+  sensible engineering magnitude. Then ask whether the number is physically possible
+  &mdash; a humidity of 452% is the obvious case of one that is not.</p>
 """,
     related=[
         ("modbus-register-maps/index", "Modbus register maps with word order and scaling, by manufacturer"),
@@ -890,14 +880,14 @@ GUIDES.append(dict(
   knock the BMS off. Close other software first, and be aware of what you might be
   interrupting.</p>
 
-  <h2>Checking from Easy Modbus</h2>
-  <p>The network card on the main screen shows the <strong>Phone IP</strong> and
-  <strong>Subnet</strong> the phone is on, with <strong>Copy</strong> and
-  <strong>Open Wi-Fi settings</strong>. Compare that IP with the device's. If a
-  scan finds nothing, the <em>No devices found</em> page has a short checklist and
-  a <strong>Device IP (or IP:port)</strong> field: type the address, tap
-  <strong>Test</strong>, and it tells you whether the port is open, refused or not
-  answering.</p>
+  <h2>Checking the basics yourself</h2>
+  <p>Compare your own IP address and subnet with the device's: on a laptop,
+  <code>ipconfig</code> (Windows) or <code>ip addr</code> (Linux and macOS); on a phone,
+  the Wi-Fi details screen. If the first three numbers of a typical /24 address differ,
+  you are on a different network. Then test the port on its own &mdash; for example
+  <code>Test-NetConnection 192.168.1.50 -Port 502</code> in Windows PowerShell &mdash;
+  which tells you whether the port is open, refused or not answering before any Modbus
+  software is involved.</p>
 
   <h2>What an error message is telling you</h2>
   <table>
@@ -972,9 +962,10 @@ GUIDES.append(dict(
   button press and resolves this more often than any other single check.</p>
 
   <div class="callout">
-  <p><a href="../index.html">Easy Modbus</a> has a <em>Test connection</em> action
-  that tries both framings and tells you which one answered, then offers to switch
-  the device over. This one problem is the reason that feature exists.</p>
+  <p>Most Modbus tools have a setting for this, usually called <em>RTU over
+  TCP</em>, <em>encapsulated RTU</em> or <em>RTU framing</em>. If a device accepts the
+  connection but never replies, flip that setting before anything else &mdash; this
+  one problem is behind a large share of &ldquo;dead&rdquo; devices.</p>
   </div>
 
   <h2>Things that only matter on the serial side</h2>
@@ -1052,9 +1043,9 @@ GUIDES.append(dict(
   247 is several minutes. Start with 1 to 32, because installers rarely go higher
   than they need to.</p>
 
-  <p><a href="../index.html">Easy Modbus</a> has a <em>Find unit IDs</em> action
-  that does this with a progress display and a cancel button, then offers to add
-  each one it found as its own device.</p>
+  <p>Most Modbus masters ask one unit ID at a time, so a sweep is a loop: note every
+  ID that replies &mdash; an exception reply counts, because it still proves something
+  is there &mdash; and only widen the range if you need to.</p>
 
   <h2>Special values</h2>
   <ul>
@@ -1062,8 +1053,8 @@ GUIDES.append(dict(
     acts on the command and none replies. Some gateways also use 0 to mean
     &ldquo;whatever is there&rdquo;. Not something to rely on.</li>
     <li><strong>255</strong> is used by some Modbus TCP devices and other tools to mean
-    &ldquo;this device, no serial side involved&rdquo;. Easy Modbus takes unit IDs
-    0&ndash;247 only, so if 1 gets nothing, try 0 there.</li>
+    &ldquo;this device, no serial side involved&rdquo;. If your tool only accepts
+    0&ndash;247 and 1 gets nothing, try 0.</li>
     <li><strong>248&ndash;254</strong> are reserved and should not be used.</li>
   </ul>
 
@@ -1158,7 +1149,7 @@ GUIDES.append(dict(
     slug="guides/is-it-safe-to-write-to-modbus",
     title="Is it safe to write to a Modbus register? | Easy Modbus",
     question="Is it safe to write to a Modbus register?",
-    description="Modbus writes take effect instantly and have no undo. What that means, when writing is safe, and how Easy Modbus reduces the risk.",
+    description="Modbus writes take effect instantly and have no undo. What that means, when writing is safe, and the habits that reduce the risk.",
     answer_html="""<p>Reading is completely safe: a read request cannot change
     anything. Writing is a different matter, and Modbus gives you fewer safety nets
     than almost any comparable protocol. There is <strong>no undo, no automatic
@@ -1227,24 +1218,25 @@ GUIDES.append(dict(
   a physical reset or a serial cable. If a register map has a configuration section,
   treat those addresses as off limits unless you mean it.</p>
 
-  <h2>How Easy Modbus handles this</h2>
-  <p><a href="../index.html">Easy Modbus</a> is read-only until you deliberately
-  turn write mode on, and it turns itself off again every time the app starts. When
-  it is on:</p>
+  <h2>Habits that make writing safer</h2>
+  <p>Whatever tool you use, these habits do most of the work:</p>
   <ul>
-    <li>Every write is confirmed against a summary showing the old value, the new
-    value, and which register on which device.</li>
-    <li>The app remembers what each register said the first time it saw it, and
-    offers a <em>Put It Back</em> action &mdash; the closest honest equivalent to a
-    release that Modbus permits.</li>
-    <li>Each reading can carry a minimum and maximum, so a fat-fingered setpoint is
-    refused before it is sent.</li>
-    <li>Every write is read back, and a value that came back different is reported
-    rather than assumed.</li>
-    <li>Every write and failure is logged for the session.</li>
+    <li>Keep the tool read-only, or writing switched off, until you actually mean to
+    change something.</li>
+    <li>Before every write, check the device, the register, the old value and the new
+    value side by side.</li>
+    <li><strong>Write down what each register said before you changed it.</strong>
+    Modbus has no release, so putting the original value back by hand is the only undo
+    there is.</li>
+    <li>Know the sensible range for a setpoint before you type it, so a slipped decimal
+    point is caught by you rather than by the equipment.</li>
+    <li>Read the register back after writing, and treat a value that came back
+    different as information, not a glitch.</li>
+    <li>Keep a note of every write you made and when, so the next person knows what
+    changed.</li>
   </ul>
-  <p>None of that makes writing safe. It makes it deliberate, which is the most any
-  tool can honestly offer on a protocol with no undo.</p>
+  <p>None of that makes writing safe. It makes it deliberate, which is the most anyone
+  can honestly offer on a protocol with no undo.</p>
 """,
     related=[
         ("guides/modbus-function-codes-explained", "Modbus function codes in plain English"),
@@ -1302,10 +1294,12 @@ GUIDES.append(dict(
   moment. It proves the equipment is reachable, settles every addressing and scaling
   question at a stroke, and gives them real numbers to sanity-check their own
   results against.</p>
-  <p><a href="../index.html">Easy Modbus</a> produces this directly: it exports
-  device name, IP, port, unit ID, framing, reading name, table, the address in all
-  three conventions, data type, word order, multiplier, units, and the live value.
-  That is a complete and self-explanatory handover document.</p>
+  <p>Any spreadsheet will do, as long as it has the columns: device name, IP address,
+  port, unit ID, framing (TCP or RTU over TCP), register name, table, address (and which
+  convention you used), data type, word order, multiplier, units, and the live value with
+  the time you read it. That is a complete and self-explanatory handover document. If the
+  equipment is in the <a href="../modbus-register-maps/index.html">register-map library</a>,
+  send that link too &mdash; it cites the manufacturer's own document.</p>
 
   <h2>What not to send</h2>
   <ul>
@@ -1471,10 +1465,9 @@ GUIDES.append(dict(
     total cable length.</li>
     <li>If values look shuffled rather than wrong, reconnect.</li>
   </ol>
-  <p>Block size, timeout and gap are adjustable per device in Pro mode in
-  <a href="../index.html">Easy Modbus</a> (device &#8942; &rarr; <strong>Device
-  settings</strong>), which also groups nearby readings into
-  single block requests automatically.</p>
+  <p>Most Modbus masters let you set the timeout, the number of registers per request
+  and the delay between requests for each device. Grouping nearby registers into a single
+  block request is usually the biggest single speed-up on a slow device.</p>
 """,
     related=[
         ("guides/modbus-tcp-vs-rtu-vs-rs485", "Modbus TCP, RTU or RS-485 &mdash; which do I have?"),
@@ -1489,178 +1482,20 @@ GUIDES.append(dict(
 # ---------------------------------------------------------------------------
 
 
-# ---------------------------------------------------------------------------
-# How-to guides for the app itself (added 2026-09-15)
-# ---------------------------------------------------------------------------
-
-GUIDES.append(dict(
-    slug="guides/how-to-use-easy-modbus",
-    title="How to use Easy Modbus to read a device | Easy Modbus",
-    question="How do I use Easy Modbus to read values from a Modbus device?",
-    description="Step by step: find or add the device, test the connection, add your first reading with the Easy wizard, and export the register map with live values.",
-    answer_html="""<p>Connect your phone to the same network as the equipment,
-    open Easy Modbus and either tap <strong>Find Devices</strong> to sweep the
-    network or tap <strong>Add by IP Address</strong>. Test the connection,
-    then add a reading: in Easy mode the app asks what kind of value it is
-    &mdash; a temperature, a kilowatt figure, an on/off &mdash; and picks the
-    data type, scaling and units for you, reads it straight away, and warns you
-    if the answer is not plausible. Name it and it is saved. Once you have the
-    readings you want, <strong>Export Report</strong> hands you a CSV with live
-    values.</p>""",
-    body_html="""
-  <h2>The thing to understand first</h2>
-  <p>A Modbus device will tell you the contents of register 7 and will never
-  tell you what register 7 <em>is</em>. Unlike BACnet, there is no list to ask
-  for. So most of what Easy Modbus does is help you build that list yourself
-  &mdash; and then remember it, so nobody has to work it out twice. See
-  <a href="what-is-a-modbus-register-map.html">what a Modbus register map is</a>.</p>
-
-  <h2>Step 1 &mdash; Get on the network</h2>
-  <p>Join the building's Wi-Fi or plug the phone into the controls network with
-  a USB-Ethernet adapter. Modbus TCP normally uses port 502; if the equipment
-  has an Ethernet socket that is almost certainly what it speaks. Serial
-  equipment behind a gateway box is covered below.</p>
-  <p>The network card on the main screen shows the <strong>Phone IP</strong> and
-  <strong>Subnet</strong>, with <strong>Copy</strong> and <strong>Open Wi-Fi
-  settings</strong>. Check the phone is on the same subnet as the equipment.</p>
-
-  <h2>Step 2 &mdash; Find or add the device</h2>
-  <ul>
-    <li><strong>Find Devices</strong> sweeps your local subnet for anything
-    answering on port 502. The app tells you first that this is a port scan of
-    someone's network, because it is; on a customer site, ask before you tap.
-    A typical /24 takes a few seconds.</li>
-    <li><strong>Add by IP Address</strong> when you already know the IP, or when the
-    equipment is on another subnet the sweep cannot reach. This is the normal
-    route in practice.</li>
-  </ul>
-  <p>If a scan finds nothing, the <em>No devices found</em> page lists what to
-  check. Type an address in <strong>Device IP (or IP:port)</strong> and tap
-  <strong>Test</strong> to see whether the port is open.</p>
-  <p>In Pro mode the scan settings (port, framing, unit IDs) have a
-  <strong>Thorough scan</strong> option. In Easy mode, the <strong>Thorough
-  scan&hellip;</strong> button on the <em>No devices found</em> page gets you there. A normal
-  sweep speaks plain Modbus TCP. Some serial gateways open port 502 but only
-  answer Modbus RTU over TCP, so a normal sweep never sees them; with Thorough
-  scan on, any address that accepts the connection but stays silent to the first
-  framing is asked again in the other framing before being written off. It is
-  slower — it roughly doubles the time spent on addresses that open the port
-  without answering — so it is off by default and worth turning on when you know
-  a gateway is out there but the sweep is not finding it.</p>
-  <figure class="shot">
-    <img src="../img/app-devices.png" alt="Easy Modbus device list showing saved Modbus devices with their addresses and unit IDs" loading="lazy">
-    <figcaption>Your saved devices. Tap <strong>Find Devices</strong> to sweep the network, or <strong>Add by IP Address</strong> to type one in.</figcaption>
-  </figure>
-  <p>Then open the device and choose &#8942; &rarr; <strong>Test connection</strong>. The app tries plain Modbus TCP and
-  Modbus RTU-over-TCP and tells you which one answered. This matters because a
-  serial gateway that needs RTU framing looks <em>exactly</em> like a device
-  that is switched off. An error reply counts as success here &mdash; an
-  exception from the device proves something is listening. Only silence means
-  absent. See <a href="cannot-find-modbus-devices.html">cannot find Modbus
-  devices</a>.</p>
-  <p>If the device is a gateway with several units behind it, <strong>Find unit
-  IDs</strong> sweeps a range of unit IDs and offers to add each one that
-  answers. See <a href="modbus-unit-id-slave-id.html">Modbus unit IDs</a>.</p>
-
-  <h2>Step 3 &mdash; Add a reading (Easy mode)</h2>
-  <p>Open the device and tap <strong>Add a Reading</strong>. Easy mode asks <strong>what kind of
-  reading is it?</strong> &mdash; temperature, humidity, pressure, power,
-  energy, a count, an on/off status &mdash; and picks the data type, word
-  order, multiplier and units that are usual for that quantity. You give it the
-  register address, typed however your manual writes it (40007, 4x0007,
-  "register 7", "address 6" all mean the same thing; the app shows you how it
-  read it &mdash; see <a href="modbus-address-off-by-one.html">why the address
-  is off by one</a>).</p>
-  <p>The app reads the register immediately and shows the value. If the answer
-  is not plausible for that kind of quantity &mdash; a humidity of 452%, a
-  room at 1,847 degrees &mdash; it says so, because that means the scaling or
-  word order is wrong, not the sensor. Adjust and read again. When it looks
-  right, name the reading and it is saved.</p>
-  <figure class="shot">
-    <img src="../img/app-reading-detail.png" alt="A saved reading in Easy Modbus showing its decoded value, address, data type, scaling and units" loading="lazy">
-    <figcaption>A saved reading, decoded with its data type, word order, scaling and units &mdash; and read back live.</figcaption>
-  </figure>
-  <div class="callout">
-  <p>That saved reading &mdash; address, type, word order, scaling, units, name
-  &mdash; is the product. It is the register map the vendor never gave you,
-  built one row at a time, and it is there next visit.</p>
-  </div>
-
-  <h2>When you do not know what a register is</h2>
-  <p>Switch to <strong>Pro mode</strong> (tap the <em>Easy mode &middot; tap to
-  switch</em> row on the main screen) and open the device's &#8942; &rarr;
-  <strong>Register browser</strong>. Read a block and the app shows each
-  register in hex and decimal alongside its best guesses: "12.75 as a 32-bit
-  float, words swapped", "a counter", "packed text", each with the reasoning.
-  A wrong guess is visibly wrong. See
-  <a href="modbus-value-wrong-scaling-byte-order.html">why the value looks
-  wrong</a>.</p>
-  <div class="shots">
-    <figure class="shot">
-      <img src="../img/app-register-browser.png" alt="Easy Modbus Pro-mode register browser listing raw registers in hex and decimal" loading="lazy">
-      <figcaption>The Pro-mode register browser: every register in hex and decimal.</figcaption>
-    </figure>
-    <figure class="shot">
-      <img src="../img/app-analyzer.png" alt="Easy Modbus showing ranked interpretations of a register such as a word-swapped 32-bit float, with reasoning" loading="lazy">
-      <figcaption>&ldquo;What could this be?&rdquo; ranks each interpretation and explains why.</figcaption>
-    </figure>
-  </div>
-
-  <h2>Step 4 &mdash; Read them all, and export</h2>
-  <p><strong>Read All</strong> on the device screen refreshes every saved reading
-  in one tap, grouping neighbouring registers into as few requests as the
-  equipment allows. <strong>Export Report</strong> on the main screen produces a
-  CSV of every device's map with live values and hands it to your email or file
-  app; you choose who gets it (the free version asks first whether you will watch
-  a short ad). One device's map goes out with &#8942; &rarr; <strong>Export this
-  map</strong>. If a vendor gives you a CSV register map, &#8942; &rarr;
-  <strong>Import map from CSV</strong> reads it in rather than making you type
-  forty rows. See <a href="how-to-export-modbus-data.html">collecting and
-  exporting Modbus data</a> and <a href="vendor-asking-for-modbus-information.html">a
-  vendor asked for my Modbus information</a>.</p>
-  <figure class="shot">
-    <img src="../img/app-readings.png" alt="Easy Modbus reading list showing several named readings with their live values and units" loading="lazy">
-    <figcaption>The device's reading list &mdash; your register map &mdash; refreshed in one tap, ready to export.</figcaption>
-  </figure>
-
-  <h2>Things worth knowing</h2>
-  <ul>
-    <li><strong>Reading cannot change anything.</strong> Writing is a separate
-    mode that is off by default &mdash; see
-    <a href="how-to-write-to-a-modbus-register.html">how to write to a
-    register</a>.</li>
-    <li><strong>Nothing you build leaves the phone</strong> except a file you
-    export yourself. No account, no server. (The free version's optional ads come
-    from Google AdMob &mdash; see the <a href="../privacy.html">privacy
-    policy</a>.)</li>
-    <li><strong>Pro mode changes what you see, not what is sent.</strong> The
-    same requests go on the wire either way; Pro just stops hiding the hex,
-    function codes, per-device timeouts and the frame log.</li>
-  </ul>
-""",
-    related=[
-        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
-        ("guides/how-to-build-a-modbus-remote", "How do I build a custom remote in Easy Modbus?"),
-        ("guides/how-to-export-modbus-data", "How do I collect and export Modbus data with Easy Modbus?"),
-        ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
-    ],
-))
-
 GUIDES.append(dict(
     slug="guides/how-to-write-to-a-modbus-register",
-    title="How to write to a Modbus register | Easy Modbus",
-    question="How do I write to a Modbus register with Easy Modbus, and put it back afterwards?",
-    description="How to safely write a value to a Modbus register, confirm it against a summary, and put the register back the way you found it.",
-    answer_html="""<p>Turn on <strong>Write mode</strong> from the main screen's
-    &#8942; menu and accept the warning. Open the reading, tap <strong>Change
-    Value</strong>, enter the new one, tap <strong>Review&hellip;</strong> and
-    confirm against the summary with <strong>Write it</strong>. The app writes it, reads it back and
-    logs it. When you are done, use <strong>Put It Back</strong>: the app
-    remembered what the register said the first time it saw it this session,
-    and offers to write that value again. Modbus has no priority levels, no
-    release and no timeout &mdash; whatever you write simply <em>is</em> the
-    value until something overwrites it &mdash; so Put It Back is the only undo
-    you get.</p>""",
+    title="How to write to a Modbus register safely | Easy Modbus",
+    question="How do I write to a Modbus register safely, and put it back afterwards?",
+    description="How to write a value to a Modbus holding register or coil: which function code to use, how scaling and word order change the raw value, reading it back, and putting it back.",
+    answer_html="""<p>Use <strong>function code 06</strong> to write one holding
+    register, <strong>16</strong> to write several (a 32-bit value needs two, so it is
+    always 16), and <strong>05</strong> to switch a single coil. Before writing,
+    <strong>read the register and write down what it says</strong>. Convert the value you
+    want into raw register contents using the register's scale and word order &mdash; a
+    setpoint of 72.5 kept in tenths is written as 725. Afterwards, read it back. Modbus has
+    no priority levels, no release and no timeout: whatever you write simply <em>is</em>
+    the value until something overwrites it, so writing the original value back by hand is
+    the only undo you get.</p>""",
     body_html="""
   <h2>Why writing to Modbus deserves more care than BACnet</h2>
   <p>BACnet keeps a priority array: your override sits in a slot, and releasing
@@ -1671,535 +1506,139 @@ GUIDES.append(dict(
   <a href="is-it-safe-to-write-to-modbus.html">is it safe to write to a Modbus
   register?</a> before touching anything on live plant.</p>
 
-  <h2>Step 1 &mdash; Turn on write mode</h2>
-  <p>Write mode is off every time the app starts and is not remembered. Open the
-  main screen's &#8942; menu, tap <strong>Write mode</strong>, read the warning and
-  accept it (<em>I understand &mdash; turn it on</em>). Until
-  then no screen in the app offers a write.</p>
-  <figure class="shot">
-    <img src="../img/app-write-warning.png" alt="Easy Modbus write-mode warning dialog explaining that writes have no undo, before enabling writing" loading="lazy">
-    <figcaption>Write mode is off at every launch. You accept this warning before any write is possible.</figcaption>
-  </figure>
+  <h2>Step 1 &mdash; Read it and write down what it says</h2>
+  <p>Read the register first, from the right table at the right address, and note the
+  value and the time. That note is your way back. If the map has a configuration
+  section &mdash; unit ID, baud rate, parity &mdash; leave those addresses alone unless
+  that is the job: a wrong write there can make the device stop answering.</p>
 
-  <h2>Step 2 &mdash; Set limits, if you can</h2>
-  <p>A reading can carry a minimum and maximum (open the reading, &#8942; &rarr;
-  <em>Edit this reading</em> &rarr; <em>Lowest / Highest value allowed to
-  write</em>). Set them on anything you are
-  going to write to &mdash; a setpoint that should live between 60 and 80, a
-  speed reference that must stay under 100%. The app refuses a write outside
-  those bounds before it gets anywhere near the wire. A typo becomes a message
-  instead of a chiller trip.</p>
+  <h2>Step 2 &mdash; Work out the raw value</h2>
+  <p>A register holds a raw 16-bit number, not the engineering value you see on a
+  display. Before writing, turn the value you want into what the register actually
+  stores:</p>
+  <ul>
+    <li><strong>Scale.</strong> If the map says &times;0.1, a setpoint of 72.5 is written
+    as 725. Divide by the scale; do not write the engineering value as-is.</li>
+    <li><strong>Sign.</strong> A negative value in a signed 16-bit register is written in
+    two's complement: &minus;5 is 65531 (<code>0xFFFB</code>).</li>
+    <li><strong>32-bit values</strong> (floats, long counters) span two registers and must
+    go in the same word order the device reads them in &mdash; ABCD or CDAB, usually. The
+    <a href="../modbus-float-decoder.html">float decoder</a> shows how a value splits
+    across the pair.</li>
+    <li><strong>Coils</strong> are on or off. Function code 05 sends <code>0xFF00</code>
+    for on and <code>0x0000</code> for off; most tools hide this behind a switch.</li>
+  </ul>
 
-  <h2>Step 3 &mdash; Write</h2>
-  <p>Open the reading and tap <strong>Change Value</strong>. Enter the new value in the
-  same units the reading displays &mdash; the app applies the reading's
-  multiplier and word order to produce the raw register contents, so you type
-  <em>72.5</em>, not <em>725</em>. For an on/off coil you pick the state.</p>
-  <p>Confirm against the summary: the device, the register, the current value,
-  the new value, and the safety wording. The app then writes, waits for the
-  device to acknowledge, and <strong>reads the register back</strong> so what
-  is on screen is what the equipment actually holds, not what you asked for.
-  A refusal comes back with the device's exception in plain words.</p>
-  <figure class="shot">
-    <img src="../img/app-write-confirm.png" alt="Easy Modbus write confirmation summary showing device, register, current value and new value before writing" loading="lazy">
-    <figcaption>Every write is confirmed against a summary &mdash; device, register, current and new value &mdash; then read back.</figcaption>
-  </figure>
+  <h2>Step 3 &mdash; Write with the right function code</h2>
+  <table>
+    <tr><th>What you are writing</th><th>Function code</th></tr>
+    <tr><td>One coil (on/off)</td><td>05 &mdash; write single coil</td></tr>
+    <tr><td>Several coils</td><td>15 &mdash; write multiple coils</td></tr>
+    <tr><td>One 16-bit holding register</td><td>06 &mdash; write single register</td></tr>
+    <tr><td>Several registers, or any 32-bit value</td><td>16 &mdash; write multiple registers</td></tr>
+  </table>
+  <p>Some devices accept only 16, even for a single register; if 06 comes back with an
+  <em>illegal function</em> exception, try 16 with a count of one. See
+  <a href="modbus-function-codes-explained.html">Modbus function codes explained</a>.</p>
 
-  <h2>Step 4 &mdash; Put It Back</h2>
-  <p>The first time the app reads a register in a session it remembers the
-  value. Once the value has changed, the reading shows a <strong>Put It
-  Back</strong> button that offers to write that value again (a custom remote or
-  control panel can carry a <em>Put back</em> control for the same job). Use it
-  before you leave on anything you changed for a test. It is not a true undo
-  &mdash; if the equipment's own logic changed the register in between, "back"
-  means back to what <em>you</em> found, not to what would be there had you
-  never visited &mdash; but it is the closest Modbus allows.</p>
+  <h2>Step 4 &mdash; Read it back</h2>
+  <p>A successful reply only means the device accepted the request. Read the register
+  again: what it holds now is the truth, not what you asked for. A device can clamp a
+  value to its own limits, round it, or have its control logic overwrite it a second
+  later &mdash; all things you only see by reading back.</p>
+
+  <h2>Step 5 &mdash; Put it back</h2>
+  <p>When the test is over, write the value you noted in step 1. It is not a true undo
+  &mdash; if the equipment's own logic changed the register in between, "back" means
+  back to what <em>you</em> found, not to what would be there had you never visited
+  &mdash; but it is the closest Modbus allows.</p>
   <div class="callout">
   <p>If you overrode something to prove a point, put it back before you leave
   site. Nobody else can see that you did it, and nothing will time it out.</p>
   </div>
 
-  <h2>Readings you cannot write</h2>
+  <h2>Registers you cannot write</h2>
   <ul>
     <li><strong>Input registers and discrete inputs</strong> are read-only by
     definition &mdash; they report what the equipment measures.</li>
-    <li><strong>Text readings</strong> are not offered a write; a packed-ASCII
-    string in holding registers is nearly always a name or a serial number, and
-    changing it does nothing useful.</li>
+    <li><strong>Text</strong> packed as ASCII in holding registers is nearly always a name
+    or a serial number, and changing it does nothing useful.</li>
     <li>Some <strong>holding registers</strong> are read-only in practice; the
     device will answer your write with an <em>illegal data address</em> or
-    <em>illegal function</em> exception, which the app shows you.</li>
+    <em>illegal function</em> exception. See
+    <a href="modbus-exception-codes.html">Modbus exception codes</a>.</li>
   </ul>
 """,
     related=[
         ("guides/is-it-safe-to-write-to-modbus", "Is it safe to write to a Modbus register?"),
-        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
-        ("guides/how-to-build-a-modbus-remote", "How do I build a custom remote in Easy Modbus?"),
         ("guides/modbus-function-codes-explained", "Modbus function codes explained"),
-    ],
-))
-
-GUIDES.append(dict(
-    slug="guides/how-to-build-a-modbus-remote",
-    title="How to build a custom remote in Easy Modbus | Easy Modbus",
-    question="How do I build a custom remote for a Modbus device in Easy Modbus?",
-    description="Step by step: build a drag-and-drop control screen for one Modbus device with readouts, setpoints, toggles, buttons and Put back, then use it live.",
-    answer_html="""<p>Open a device, tap the <strong>&#8942;</strong> menu and choose
-    <strong>Custom Remote</strong>. Tap <strong>Edit</strong>, then <strong>Add
-    Control</strong>, pick one of the device's saved readings (or enter an address by
-    hand), and choose the kind of control &mdash; Readout, Setpoint, Toggle, Button,
-    Multi-state or Put back. Drag tiles to arrange them, tap a tile to rename, resize
-    or recolour it, then tap <strong>Done</strong>. The remote reads live values;
-    controls that write work only while <strong>Write mode</strong> is on. The free
-    version keeps one remote; a one-time unlock gives unlimited remotes and removes
-    the optional ad shown when you open one.</p>""",
-    body_html="""
-  <h2>Before you start</h2>
-  <ul>
-    <li><strong>Add the device</strong> (Find Devices or Add by IP Address) and
-    check it answers &mdash; device &#8942; menu &rarr; <em>Test connection</em>.</li>
-    <li><strong>Save the readings you want on the remote.</strong> A control is
-    built from one of the device's saved readings, so it inherits the reading's data
-    type, word order, multiplier, units, named states and write limits. Add them first
-    with <strong>Add a Reading</strong> (see <a href="how-to-use-easy-modbus.html">how
-    to use Easy Modbus</a>), or use <em>Enter an address by hand</em> while building,
-    which runs the same add-a-reading wizard.</li>
-  </ul>
-
-  <h2>Step 1 &mdash; Open the remote</h2>
-  <p>Tap the device in your list, open its <strong>&#8942;</strong> menu and choose
-  <strong>Custom Remote</strong>. A new remote opens empty: &ldquo;No controls yet.
-  Tap Edit, then Add Control.&rdquo; Tap <strong>Edit</strong> at the top right.
-  Nothing is sent to the device while you are in Edit mode.</p>
-
-  <h2>Step 2 &mdash; Add controls</h2>
-  <p>Tap <strong>Add Control</strong>, then either <em>Pick from this device&rsquo;s
-  readings</em> or <em>Enter an address by hand</em>. Choose the reading, then the
-  control type &mdash; each row shows a small picture of the control:</p>
-  <table>
-    <tr><th>Control</th><th>What it does</th><th>Use it for</th></tr>
-    <tr><td>Readout</td><td>Shows the live value. Never writes.</td><td>Leaving water temp, kW, a status word.</td></tr>
-    <tr><td>Setpoint</td><td>Minus, value, plus. Tap the value to type one.</td><td>A setpoint or speed reference.</td></tr>
-    <tr><td>Toggle</td><td>Tap to flip between the off and on values.</td><td>A coil: run enable, remote start.</td></tr>
-    <tr><td>Button</td><td>Writes one fixed value, after a confirmation.</td><td>A reset, a fixed mode.</td></tr>
-    <tr><td>Multi-state</td><td>Tap to pick from named states.</td><td>Off/Hand/Auto, a mode register.</td></tr>
-    <tr><td>Put back</td><td>Rewrites the value the register held the first time the app read it this session.</td><td>Put one beside every control that writes.</td></tr>
-  </table>
-  <p>Each new control drops into the first free space on the four-column grid.</p>
-
-  <h2>Step 3 &mdash; Arrange and configure</h2>
-  <ul>
-    <li><strong>Drag</strong> a tile to move it. It snaps to the grid and will not land
-    on another tile &mdash; a drop on an occupied spot snaps back.</li>
-    <li><strong>Tap</strong> a tile for its options: <em>Rename control</em>,
-    <em>Width</em> (setpoints and multi-state are at least two cells wide), <em>Step
-    size</em> (setpoints), <em>Value to send</em> (buttons), <em>State names</em>
-    (multi-state and toggles, one per line as <code>value=name</code>, e.g.
-    <code>0=Off</code>), <em>Value limits</em>, <em>Colour</em>, <em>Card style</em>,
-    <em>Toggle large value text</em> and <em>Delete control</em>.</li>
-    <li>Use <strong>Value limits</strong> to narrow what this remote may write &mdash; it
-    can be tighter than the reading's own limits, which still apply.</li>
-    <li>While editing, the &#8942; menu has <strong>Rename remote</strong> to name it and
-    <strong>Delete remote</strong> to remove it from the phone (nothing on the
-    equipment changes).</li>
-  </ul>
-  <figure class="shot">
-    <img src="../img/app-remote.png" alt="A custom remote in Easy Modbus: readout tiles, a setpoint with minus and plus, and an on/off toggle on a grid" loading="lazy">
-    <figcaption>A finished remote &mdash; readouts, a setpoint and a toggle on a grid, sized for gloves.</figcaption>
-  </figure>
-  <div class="callout">
-  <p>Give the control that stops the pump a red, bold card and leave the temperature
-  readouts plain. With gloves on, at arm's length, colour is what you see first.</p>
-  </div>
-
-  <h2>Step 4 &mdash; Use it</h2>
-  <p>Tap <strong>Done</strong>. The remote reads every control in as few Modbus
-  requests as the device allows. The status line says <strong>Answering</strong>
-  with the time of the last reply, <strong>Some readings not answering</strong>, or
-  <strong>No response from device</strong> &mdash; and values that did not come back
-  are dimmed instead of looking current. <strong>Refresh</strong> reads them all
-  again.</p>
-  <p>Controls that write need <strong>Write mode</strong> on (main screen &#8942;
-  menu &rarr; <em>Write mode</em>); until then the remote says it is read-only. A
-  toggle or setpoint will not write until a value has been read, so a timed-out read
-  can never switch something on by accident. Every write is read back and recorded
-  in the <em>Session write log</em>. See <a href="how-to-write-to-a-modbus-register.html">how
-  to write to a Modbus register</a>, including why <em>Put back</em> matters.</p>
-
-  <h2>Free version, unlock, and where remotes live</h2>
-  <ul>
-    <li>The free version keeps <strong>one</strong> custom remote. Opening it asks
-    whether you want to watch a short rewarded ad; if no ad is available (no signal,
-    for example) it just opens.</li>
-    <li>The one-time unlock (<em>Remove ads &amp; unlimited remotes</em>) removes the
-    ads and lets you build a remote for every device. Remotes never expire.</li>
-    <li>Remotes are stored on the phone only, under the device they belong to, and
-    are excluded from cloud backup. Deleting a device deletes its remote.</li>
-    <li>Need one screen for several devices? Use the
-    <a href="how-to-build-a-modbus-control-panel.html">Control Panel Builder</a>.</li>
-  </ul>
-""",
-    related=[
-        ("guides/how-to-build-a-modbus-control-panel", "How do I build a control panel for several Modbus devices?"),
-        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
-        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
-        ("guides/is-it-safe-to-write-to-modbus", "Is it safe to write to a Modbus register?"),
-    ],
-))
-
-GUIDES.append(dict(
-    slug="guides/how-to-build-a-modbus-control-panel",
-    title="Build a Modbus control panel for 32 devices | Easy Modbus",
-    question="How do I build a control panel for several Modbus devices in Easy Modbus?",
-    description="Step by step: the Control Panel Builder (beta) puts readouts and controls for up to 32 Modbus devices on one screen. Devices, controls, export and limits.",
-    answer_html="""<p>On the main screen tap <strong>Control Panel Builder &middot;
-    Beta</strong> (or &#8942; menu &rarr; <em>Control panels (beta)</em>), then
-    <strong>Create a Panel</strong>. Pick the first device and name the panel; it
-    opens in Edit mode. Add more devices from &#8942; &rarr; <strong>Devices&hellip;</strong>
-    &rarr; <em>Add a device</em> (up to 32 per panel), then <strong>Add Control</strong>,
-    choose which device each control is for, pick a reading and a control type, and
-    arrange the tiles. Tap <strong>Done</strong> to run it. The free version keeps one
-    panel on one device; the one-time unlock gives unlimited panels of up to 32 devices
-    each.</p>""",
-    body_html="""
-  <p><strong>Beta.</strong> The Control Panel Builder is new. It uses the same
-  controls and safety rules as <a href="how-to-build-a-modbus-remote.html">custom
-  remotes</a>, but test a panel on non-critical equipment before you rely on it.</p>
-
-  <h2>What a control panel is</h2>
-  <p>A custom remote is one screen for <em>one</em> device. A control panel is one
-  screen for a whole set of equipment &mdash; the four energy meters behind one
-  gateway, a row of VFDs, a boiler and its pumps. Each control on the panel carries
-  its own target device, so one tap reads all of them and every write goes to the
-  device that control belongs to. A device here is exactly what it is everywhere
-  else in Easy Modbus: a host (IP address or name), a port, a unit ID and a framing
-  (Modbus TCP, or RTU over TCP for a serial gateway). Two meters behind one gateway
-  are two devices with the same IP and different unit IDs.</p>
-
-  <h2>Before you start</h2>
-  <ul>
-    <li>Add each device to your device list (Find Devices, Add by IP Address, or
-    <em>Find unit IDs</em> on a gateway) and save the readings you want on the panel.
-    You can also add devices and readings while building.</li>
-    <li>Readings you save on a device are reused by the panel, with their data type,
-    word order, multiplier, units, named states and write limits.</li>
-  </ul>
-
-  <h2>Step 1 &mdash; Create the panel</h2>
-  <ol>
-    <li>Main screen &rarr; <strong>Control Panel Builder &middot; Beta</strong>.</li>
-    <li>Tap <strong>Create a Panel</strong> (or <strong>+</strong> in the top bar once
-    you have one).</li>
-    <li>Choose the device to start with &mdash; this becomes the panel's
-    <em>primary</em> device &mdash; and give the panel a name.</li>
-  </ol>
-  <p>The new panel opens in <strong>Edit</strong> mode. Nothing is sent to any device
-  while you edit.</p>
-
-  <h2>Step 2 &mdash; Add the other devices</h2>
-  <ol>
-    <li>&#8942; menu &rarr; <strong>Devices&hellip;</strong>. The title shows how many
-    of the 32 you are using.</li>
-    <li>Tap <strong>Add a device</strong> and pick one of your saved devices, or
-    <em>Enter a device by hand</em> (IP address or hostname, port, unit ID, framing,
-    optional name). A device entered by hand is also added to your device list, so you
-    can build readings for it.</li>
-    <li>To take a device off the panel, tap it in the list. The app tells you how many
-    controls use it first. Those controls are then disconnected and command nothing
-    until you reassign them: in Edit mode, tap the control and choose <em>Change
-    device</em>. The primary itself stays.</li>
-  </ol>
-
-  <h2>Step 3 &mdash; Add controls</h2>
-  <ol>
-    <li>Tap <strong>Add Control</strong> and choose which device the control is for.</li>
-    <li>Choose <em>Pick from this device&rsquo;s readings</em> or <em>Enter an address by
-    hand</em>.</li>
-    <li>Pick the control type: Readout, Setpoint, Toggle, Button, Multi-state or Put
-    back (the same six as a remote &mdash; see the
-    <a href="how-to-build-a-modbus-remote.html">custom remote guide</a> for what each
-    does).</li>
-  </ol>
-  <p>Tap a tile for its options. Panels add <strong>Change device</strong>, which
-  points a control at another device on the panel while keeping its register and
-  scaling &mdash; the quick way to repeat &ldquo;kW&rdquo; for meter 2, 3 and 4. With
-  more than one device, the options title shows which device the control talks to,
-  so give controls clear names (&ldquo;M2 kW&rdquo;, not just &ldquo;kW&rdquo;).</p>
-
-  <h2>Step 4 &mdash; Lay it out</h2>
-  <ul>
-    <li>&#8942; &rarr; <strong>Grid width</strong> sets 2 to 6 columns (a wide panel
-    for a tablet, a narrow one for a phone in your pocket).</li>
-    <li>Drag tiles to arrange them; tap for Width, Colour, Card style and Large
-    value text.</li>
-    <li>&#8942; &rarr; <strong>Rename panel</strong> or <strong>Delete panel</strong>.</li>
-  </ul>
-
-  <h2>Step 5 &mdash; Run it</h2>
-  <p>Tap <strong>Done</strong>. The panel reads each device's controls in as few
-  requests as that device allows, one device after another, and skips a device for
-  the rest of the pass once it stops answering &mdash; so one dead meter does not hold
-  up the other thirty-one. The status line shows how many devices the panel drives,
-  or how many controls failed. Writing works exactly as it does everywhere else: turn
-  on <strong>Write mode</strong> from the main screen first, every write is read back
-  and logged, and a toggle will not write until a value has been read.</p>
-
-  <h2>Share or move a panel</h2>
-  <ul>
-    <li><strong>Export:</strong> on the Control Panels list, <em>long-press</em> a
-    panel and choose where to save it. It is saved as a <code>.empanel</code> file
-    (plain JSON: the layout, each device's host, port, unit ID and framing, and each
-    control's register and scaling).</li>
-    <li><strong>Import:</strong> &#8942; &rarr; <strong>Import panel</strong> and pick the
-    file. An import always becomes a new panel. Devices you do not have on this phone
-    are reached using the addresses saved in the file.</li>
-    <li>Panels are stored on the phone only and excluded from cloud backup; the
-    export file is the way to move one.</li>
-  </ul>
-  <div class="callout">
-  <p>A <code>.empanel</code> file contains IP addresses and unit IDs of a customer's
-  equipment. Treat it like the register map it is.</p>
-  </div>
-
-  <h2>Free version and unlock</h2>
-  <table>
-    <tr><th></th><th>Free</th><th>After the one-time unlock</th></tr>
-    <tr><td>Panels</td><td>1</td><td>Unlimited</td></tr>
-    <tr><td>Devices per panel</td><td>1 (the primary)</td><td>Up to 32</td></tr>
-    <tr><td>Ads</td><td>Opening a saved panel asks to show one short optional ad (skipped if none loads)</td><td>None anywhere</td></tr>
-  </table>
-  <p>Importing a multi-device panel on the free version keeps the primary device.
-  Controls for the other devices are disconnected and command nothing until you
-  reassign them with <em>Change device</em>.</p>
-""",
-    related=[
-        ("guides/how-to-build-a-modbus-remote", "How do I build a custom remote for a Modbus device in Easy Modbus?"),
-        ("guides/modbus-unit-id-slave-id", "What is a Modbus unit ID or slave ID?"),
-        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register with Easy Modbus, and put it back?"),
-        ("guides/how-to-export-modbus-data", "How do I collect and export Modbus data with Easy Modbus?"),
-    ],
-))
-
-GUIDES.append(dict(
-    slug="guides/how-to-export-modbus-data",
-    title="Collect and export Modbus data to CSV | Easy Modbus",
-    question="How do I collect and export Modbus data with Easy Modbus?",
-    description="Step by step: read your saved Modbus registers, export a full CSV report or one device's register map, what each CSV column means, and how to move panels.",
-    answer_html="""<p>Save the readings you care about on each device, then on the
-    main screen tap <strong>Export Report</strong>. The app reads every saved reading
-    on every device, builds one CSV with names, addresses in three conventions, data
-    type, word order, scaling, units, the live value and any error, and hands it to
-    your email or file app. To send just one device's register map, open the device
-    and choose &#8942; &rarr; <strong>Export this map</strong>. The free version asks
-    whether you want to watch a short ad before an Export Report; the one-time unlock
-    removes it.</p>""",
-    body_html="""
-  <h2>Step 1 &mdash; Collect: save the readings</h2>
-  <p>An export contains the readings you have <em>saved</em> &mdash; Modbus will not
-  tell anyone what its registers are, so the map you build is the content. For each
-  device:</p>
-  <ol>
-    <li>Open the device and tap <strong>Add a Reading</strong>. In Easy mode choose
-    what kind of value it is; in Pro mode fill in the full editor. Give it a name
-    (&ldquo;AHU-1 supply air temp&rdquo;), the address as your manual writes it, and
-    check the test read looks right.</li>
-    <li>Have a vendor spreadsheet? &#8942; &rarr; <strong>Import map from CSV</strong>
-    and paste it instead of typing forty rows.</li>
-    <li>Tap <strong>Read All</strong> to read every saved reading in as few requests as
-    the device allows. Rows that fail show why when you tap them.</li>
-  </ol>
-
-  <h2>Step 2 &mdash; Export the report</h2>
-  <ol>
-    <li>Back on the main screen, tap <strong>Export Report</strong>.</li>
-    <li>Free version: you are asked <em>Watch a short ad?</em> &mdash; choose
-    <em>Watch ad</em>, <em>Remove ads</em> (the one-time unlock, shown when the purchase
-    is available) or <em>Cancel</em>. With
-    no signal, no ad loads and the export simply goes ahead.</li>
-    <li>The app reads every device again, so the values are current, then opens the
-    share sheet with <code>EasyModbus_YYYYMMDD_HHMM.csv</code> attached. Pick email,
-    Drive, Teams or anything else; nothing is uploaded anywhere by the app.</li>
-  </ol>
-
-  <h2>What is in the CSV</h2>
-  <table>
-    <tr><th>Column</th><th>Meaning</th></tr>
-    <tr><td>Device Name, Host, Port, Unit ID, Transport</td><td>Which device the row came from (Transport is TCP or RTU_OVER_TCP).</td></tr>
-    <tr><td>Reading Name</td><td>The name you gave the reading.</td></tr>
-    <tr><td>Table</td><td>Coil, discrete input, input register or holding register.</td></tr>
-    <tr><td>Wire Address, Register Number, Modicon</td><td>The same address three ways: 0-based on the wire, 1-based, and 40001-style. See <a href="modbus-address-off-by-one.html">why addresses are off by one</a>.</td></tr>
-    <tr><td>Data Type, Word Order, Bit</td><td>How the raw registers are decoded.</td></tr>
-    <tr><td>Multiplier, Offset Value, Units</td><td>Scaling applied to get the value shown.</td></tr>
-    <tr><td>Value</td><td>The live value at export time.</td></tr>
-    <tr><td>Status</td><td>Blank when the read worked; otherwise the reason it failed.</td></tr>
-    <tr><td>Notes</td><td>Your notes from the manual.</td></tr>
-  </table>
-  <p>A device with no readings yet still gets a row, so nothing on site vanishes from
-  the report.</p>
-
-  <h2>Other ways to get data out</h2>
-  <ul>
-    <li><strong>One device&rsquo;s map:</strong> device &#8942; &rarr; <em>Export this
-    map</em> &mdash; the same columns, one device, no ad. It is also the way to move a
-    map to another phone (import it there with <em>Import map from CSV</em>), because
-    the app's data is deliberately not included in phone backups.</li>
-    <li><strong>A control panel:</strong> long-press it on the Control Panels screen
-    to save a <code>.empanel</code> file. See
-    <a href="how-to-build-a-modbus-control-panel.html">building a control panel</a>.</li>
-    <li><strong>A trend:</strong> export at intervals; each file name carries the date
-    and time, so a series lines up in Excel. See
-    <a href="log-modbus-to-csv-on-phone.html">log Modbus data to CSV</a>.</li>
-    <li><strong>What you changed:</strong> main screen &#8942; &rarr; <em>Session write
-    log</em> lists every write this session with the before and after values.</li>
-  </ul>
-  <div class="callout">
-  <p>A register map names a customer's equipment and the addresses that control it.
-  Send it to the people who need it, not to everyone.</p>
-  </div>
-""",
-    related=[
-        ("guides/log-modbus-to-csv-on-phone", "How do I log Modbus data to CSV, and trend a register over time?"),
-        ("guides/vendor-asking-for-modbus-information", "A vendor asked for my Modbus information — what do I send?"),
-        ("guides/what-is-a-modbus-register-map", "What is a Modbus register map?"),
-        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
+        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
+        ("modbus-register-maps/index", "Modbus register maps with scaling and access, by manufacturer"),
     ],
 ))
 
 GUIDES.append(dict(
     slug="guides/modbus-poll-alternative",
-    title="Free Modbus Poll alternative | Easy Modbus",
+    title="Free Modbus Poll alternatives | Easy Modbus",
     question="What is a good free alternative to Modbus Poll?",
-    description="Modbus Poll is a paid Windows master. If you want a free tool, or one that runs on your phone in front of the equipment, here are the honest trade-offs.",
+    description="Modbus Poll is a paid Windows master with a time-limited trial. The free tools people use instead, what they are good at, and the step none of them does for you.",
     answer_html="""<p>Modbus Poll is a good, mature Modbus master, and if you live
     at a Windows desk it is worth what it costs. But it is paid, Windows-only, and a
-    master only &mdash; simulating a slave is a second product (Modbus Slave) you buy
-    separately. If what you actually want is a <strong>free</strong> tool, or one you
-    can carry <strong>in front of the equipment on a phone</strong>, that is the gap
-    <a href="../index.html">Easy Modbus</a> is built for: it finds equipment, reads
-    and writes registers, works out what each value means, and saves the result &mdash;
-    for free, on Android, with a Windows version as well.</p>""",
+    master only &mdash; simulating a slave is a second product (Modbus Slave) bought
+    separately &mdash; and its free evaluation stops communicating after about ten
+    minutes per session. The free tools people most often use instead are
+    <strong>QModMaster</strong>, <strong>modpoll</strong> (command line) and
+    <strong>CAS Modbus Scanner</strong>. They read and write registers fine. What none of
+    them can do is tell you what a register <em>means</em> &mdash; for that you need the
+    device's register map.</p>""",
     body_html="""
   <h2>What people are really asking</h2>
   <p>&ldquo;Modbus Poll alternative&rdquo; is almost always one of three wishes:
-  <em>I don't want to pay for it</em>, <em>I don't have a Windows laptop where the
-  equipment is</em>, or <em>I want it to also decode the value, not just show me a
-  raw register</em>. It is worth being clear which one you have, because the honest
-  answer is different for each.</p>
+  <em>I don't want to pay for it</em>, <em>the trial keeps disconnecting</em>, or
+  <em>I want it to also decode the value, not just show me a raw register</em>. It is
+  worth being clear which one you have, because the honest answer is different for
+  each.</p>
 
-  <h2>An honest comparison</h2>
-  <table>
-    <tr><th></th><th>Modbus Poll</th><th>Easy Modbus</th></tr>
-    <tr><td>Platform</td><td>Windows desktop</td><td>Android phone or tablet, plus a Windows version</td></tr>
-    <tr><td>Price</td><td>Paid licence, master and slave sold separately</td><td>Free; an optional one-time purchase unlocks unlimited custom remotes and control panels and removes ads</td></tr>
-    <tr><td>Reads</td><td>Yes, mature and fast</td><td>Yes &mdash; TCP and RTU-over-TCP, function codes 1&ndash;4</td></tr>
-    <tr><td>Writes</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with a <em>Put It Back</em> action</td></tr>
-    <tr><td>Works out data types for you</td><td>You set type and word order yourself</td><td>Yes &mdash; ranks the plausible readings of a raw register and explains each</td></tr>
-    <tr><td>Saves what a register means</td><td>Saves a poll definition</td><td>Yes &mdash; names, scaling and units per register, exported as CSV</td></tr>
-    <tr><td>Simulates a slave for the bench</td><td>Separate product (Modbus Slave)</td><td>Built-in device emulator in the Windows version</td></tr>
-    <tr><td>Best at</td><td>Desk and bench work on Windows, heavy scripting, long soak tests</td><td>Fieldwork on a phone, decoding unknown equipment, leaving a documented map behind</td></tr>
-  </table>
+  <h2>The ten-minute trial</h2>
+  <p>Modbus Poll's free download is a fully featured evaluation that disconnects after
+  roughly ten minutes, so you reconnect to keep going. That is how the trial is meant to
+  work, not a bug, and there is no legitimate way round it other than buying the licence
+  &mdash; which is the right call if it is your daily desk tool.</p>
+
+  <h2>The free tools people compare</h2>
+  <p>If you specifically want a free desktop master, the names that come up most are
+  <strong>QModMaster</strong>, <strong>modpoll</strong> (a command-line tool) and
+  <strong>CAS Modbus Scanner</strong>. They read and write fine. What they mostly do not
+  do is the part that eats your afternoon: telling you that a raw <code>0x2A3D</code>
+  across two registers is 12.75 as a word-swapped float rather than nonsense. See
+  <a href="modbus-value-wrong-scaling-byte-order.html">why your Modbus value looks
+  wrong</a> for why that step matters.</p>
+
+  <h2>The part no tool does for you</h2>
+  <p>Every Modbus master, paid or free, shows you the contents of a numbered slot. None
+  of them knows what the slot is. That knowledge lives in the manufacturer's register
+  map, so the fastest way to a working setup is usually to find the map first:</p>
+  <ul>
+    <li>The free <a href="../modbus-register-maps/index.html">register-map library</a>
+    lists verified addresses, data types, word order and scaling for common meters,
+    drives, generator controllers, inverters and HVAC equipment.</li>
+    <li>The <a href="../modbus-float-decoder.html">float and byte-order decoder</a> shows
+    two raw registers in all four word orders at once.</li>
+    <li>The <a href="../modbus-address-converter.html">address converter</a> turns a
+    40001-style address into the 0-based number your tool sends.</li>
+  </ul>
 
   <div class="callout">
-  <p>This is not a &ldquo;Modbus Poll is bad&rdquo; page. For desk-bound
-  development and bench simulation it is genuinely good. The point is narrower: if
-  you are paying for it only to read a meter from a plant room, or fighting to get a
-  laptop onto a control network, there is a free tool in your pocket that does that
-  part.</p>
+  <p>This is not a &ldquo;Modbus Poll is bad&rdquo; page. It is mature, fast, scriptable,
+  and excellent for desk and bench work, and if that is your world the licence pays for
+  itself.</p>
   </div>
-
-  <h2>Other free tools people compare</h2>
-  <p>If you specifically want a free Windows desktop master, the names that come up
-  most are <strong>QModMaster</strong>, <strong>modpoll</strong> (a command-line
-  tool), and <strong>CAS Modbus Scanner</strong>. They read and write fine. What
-  they mostly do not do is the part that eats your afternoon: telling you that a raw
-  <code>0x2A3D</code> across two registers is 12.75 as a word-swapped float rather
-  than nonsense. See <a href="modbus-value-wrong-scaling-byte-order.html">why your
-  Modbus value looks wrong</a> for why that step matters.</p>
-
-  <h2>Where Easy Modbus fits</h2>
-  <p>Easy Modbus is the tool for the moment you are standing in front of equipment
-  with a phone and a question: <em>what is on this network, what do these registers
-  mean, and can I change this one safely?</em> It sweeps the subnet for Modbus on
-  port 502, reads blocks of registers, offers the sensible interpretations of each
-  with the reasoning, lets you write with guard rails, and &mdash; the part the free
-  desktop tools skip &mdash; <strong>remembers the whole register map</strong> so the
-  next person does not start from zero. See <a href="how-to-use-easy-modbus.html">how
-  to use Easy Modbus</a> to read a device end to end.</p>
 """,
     related=[
-        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
         ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
-        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register, and put it back?"),
-        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
-    ],
-))
-
-GUIDES.append(dict(
-    slug="guides/modbus-scanner-app-android",
-    title="Modbus scanner app for Android | Easy Modbus",
-    question="Is there a Modbus scanner app for Android?",
-    description="Yes. How to scan for, read and write Modbus TCP equipment from an Android phone, what a phone can and cannot reach, and the RTU-over-gateway catch.",
-    answer_html="""<p>Yes &mdash; <a href="../index.html">Easy Modbus</a> is an
-    Android app that finds Modbus TCP equipment on the network you are joined to,
-    reads its registers, helps you work out what they mean, and writes to them with
-    guard rails. The one thing to understand first is that <strong>Modbus has no
-    discovery</strong>: no device ever announces itself, so &ldquo;scanning&rdquo;
-    means sweeping the local network for anything answering on port 502. A phone does
-    that just as well as a laptop, as long as it is on the same network as the
-    equipment.</p>""",
-    body_html="""
-  <h2>Why a phone is often the right tool</h2>
-  <p>The equipment is in a plant room, a riser, or on a roof. The register you need
-  to check is a two-minute job. Carrying a laptop, finding a network port, and
-  getting an IP on the right subnet is not a two-minute job. A phone already on the
-  building Wi-Fi, or tethered to a small travel router plugged into the panel, gets
-  you there faster &mdash; and it is the difference between documenting a device on
-  the spot and promising to come back.</p>
-
-  <h2>What &ldquo;scanning&rdquo; actually does</h2>
-  <p>Because Modbus has no <em>who-is-out-there</em> broadcast, Easy Modbus sweeps
-  the addresses on your subnet and connects to each in turn on port 502, listing
-  whatever accepts. From there you open a device and read blocks of registers. If
-  the sweep finds nothing, the cause is almost always the network rather than the
-  app &mdash; see <a href="cannot-find-modbus-devices.html">why can't I find my
-  Modbus devices?</a> for the six things to check.</p>
-
-  <h2>What an Android app can and cannot reach</h2>
-  <table>
-    <tr><th>Situation</th><th>Works from the phone?</th></tr>
-    <tr><td>Modbus TCP equipment on the same Wi-Fi / subnet</td><td>Yes &mdash; the normal case</td></tr>
-    <tr><td>Serial RS-485 (RTU) behind a network gateway</td><td>Yes &mdash; switch the device to <em>Modbus RTU over TCP</em></td></tr>
-    <tr><td>Equipment on a different subnet or VLAN with no route</td><td>No &mdash; nothing can reach it until there is a route. See <a href="cannot-find-modbus-devices.html">the checklist</a></td></tr>
-    <tr><td>A bare RS-485 cable with no gateway, straight into the phone</td><td>No &mdash; Easy Modbus speaks over the network, not a USB-to-serial adapter</td></tr>
-  </table>
-  <p>That last row is the honest limit worth knowing up front: Easy Modbus reaches
-  serial RTU equipment <strong>through a gateway</strong> (very common in the field),
-  not by plugging an RS-485 dongle into the phone. If everything you touch is bare
-  two-wire RS-485 with no network anywhere, a laptop with a USB adapter is still the
-  tool.</p>
-
-  <h2>The catch that looks like a dead device</h2>
-  <p>The most common false alarm on a phone is the same as on a laptop: the
-  equipment is really serial RTU behind a transparent gateway, so it stays silent
-  when you speak proper Modbus TCP to it. The fix is one setting &mdash; <em>Modbus
-  RTU over TCP</em> &mdash; and Easy Modbus can test both framings and tell you which
-  one answered. See <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or RS-485
-  &mdash; which do I have?</a></p>
-
-  <h2>Beyond reading: what the app remembers</h2>
-  <p>Reading a raw register is the easy half. The half that takes time is working
-  out that slot 7 is a leaving-water temperature in tenths of a degree, and that a
-  32-bit float two slots along is word-swapped. Easy Modbus does that arithmetic for
-  you and, crucially, <strong>saves the answer</strong> as a named, scaled register
-  map you can export as a CSV &mdash; so an undocumented device on your phone becomes
-  a documented one for everyone after you. Walk through it in
-  <a href="how-to-use-easy-modbus.html">how to use Easy Modbus</a>.</p>
-""",
-    related=[
-        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
-        ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
-        ("guides/modbus-tcp-vs-rtu-vs-rs485", "Modbus TCP, RTU or RS-485 &mdash; which do I have?"),
-        ("guides/modbus-poll-alternative", "What is a good free alternative to Modbus Poll?"),
+        ("guides/how-to-write-to-a-modbus-register", "How do I write to a Modbus register safely?"),
+        ("guides/modbus-function-codes-explained", "Modbus function codes explained"),
+        ("modbus-register-maps/index", "Modbus register maps by manufacturer"),
     ],
 ))
 
@@ -2239,8 +1678,7 @@ GUIDES.append(dict(
   <h3>2. Wrong unit ID</h3>
   <p>Behind a gateway, the unit ID selects which device on the serial chain
   answers. The wrong one gives either total silence or a gateway exception. Try 1
-  first, then 0, then sweep. (Some tools and gateways use 255; Easy Modbus takes
-  0&ndash;247.) See <a href="modbus-unit-id-slave-id.html">what is a
+  first, then 0, then sweep. (Some tools and gateways use 255.) See <a href="modbus-unit-id-slave-id.html">what is a
   Modbus unit ID?</a></p>
 
   <h3>3. No route to the device</h3>
@@ -2282,14 +1720,12 @@ GUIDES.append(dict(
     <li><strong>Switch to RTU-over-TCP and retry.</strong> This one move fixes more
     timeouts than any other.</li>
     <li><strong>Try unit ID 1, then 0, then sweep a small range.</strong> Some tools and
-    gateways use 255; Easy Modbus takes 0&ndash;247.</li>
+    gateways use 255.</li>
     <li><strong>Ask for one register instead of a block.</strong></li>
   </ol>
   <div class="callout">
-  <p><a href="../index.html">Easy Modbus</a> has a <em>Test connection</em> action
-  that tries both framings and reports which one answered, and a <em>Find unit
-  IDs</em> sweep &mdash; between them they settle causes 1 and 2, which are most of
-  all Modbus timeouts, without guesswork.</p>
+  <p>Trying the other framing and sweeping a small range of unit IDs settle causes 1
+  and 2 between them &mdash; and those two are most of all Modbus timeouts.</p>
   </div>
 """,
     related=[
@@ -2359,9 +1795,9 @@ GUIDES.append(dict(
   unit ID, or the wiring to that one device. That is a much smaller haystack.</p>
 
   <div class="callout">
-  <p><a href="../index.html">Easy Modbus</a> shows the exception name in full rather
-  than a bare hex code, and for an 02 it points you at the addressing guide, because
-  that is what it almost always is.</p>
+  <p>For an 02 (illegal data address), check the addressing first: it is almost
+  always an off-by-one or the wrong table. See
+  <a href="modbus-address-off-by-one.html">why Modbus addresses are off by one</a>.</p>
   </div>
 """,
     related=[
@@ -2459,75 +1895,6 @@ GUIDES.append(dict(
 ))
 
 GUIDES.append(dict(
-    slug="guides/modbus-poll-vs-easy-modbus",
-    title="Modbus Poll vs Easy Modbus, compared | Easy Modbus",
-    question="Modbus Poll vs Easy Modbus — which should I use?",
-    description="A straight comparison of Modbus Poll and Easy Modbus: platform, price, reading, writing, data-type decoding and simulation, with a clear rule for choosing.",
-    answer_html="""<p>They are built for different moments. <strong>Modbus Poll</strong>
-    is a mature Windows master for the desk and the bench &mdash; excellent for
-    development, scripted polling and long soak tests, and paid, with slave simulation
-    sold as a second product. <strong>Easy Modbus</strong> is built for the field: it
-    runs on the phone in your pocket, it is free, it works out what unknown registers
-    mean, and it saves that register map to reuse and export. If your work is at a
-    Windows workstation, Modbus Poll. If it is in front of equipment, or you want a
-    free tool that decodes and remembers, Easy Modbus.</p>""",
-    body_html="""
-  <h2>Side by side</h2>
-  <table>
-    <tr><th></th><th>Modbus Poll</th><th>Easy Modbus</th></tr>
-    <tr><td>Made by</td><td>Witte Software</td><td>First Impact Development</td></tr>
-    <tr><td>Platform</td><td>Windows desktop</td><td>Android, plus a Windows version</td></tr>
-    <tr><td>Price</td><td>Paid licence; Modbus Slave is a separate purchase</td><td>Free; optional rewarded ads on export and on opening a saved remote or control panel; a one-time purchase removes ads and unlocks unlimited custom remotes and control panels</td></tr>
-    <tr><td>Transports</td><td>TCP, RTU, ASCII, RTU-over-TCP</td><td>Modbus TCP and RTU-over-TCP</td></tr>
-    <tr><td>Direct serial (USB&ndash;RS485)</td><td>Yes, with a COM port</td><td>No &mdash; reaches serial through a gateway</td></tr>
-    <tr><td>Reading</td><td>Fast, mature, many concurrent windows</td><td>Block reads, live values, hex and decimal</td></tr>
-    <tr><td>Writing</td><td>Yes</td><td>Yes &mdash; off by default, confirmed, read back, with a <em>Put It Back</em> action</td></tr>
-    <tr><td>Works out data type &amp; word order</td><td>You choose them</td><td>Ranks the plausible readings and explains each &mdash; the standout feature</td></tr>
-    <tr><td>Saves what a register means</td><td>Saves poll definitions</td><td>Named, scaled register map exported as CSV</td></tr>
-    <tr><td>Simulate a slave</td><td>Yes, via Modbus Slave (separate)</td><td>Built-in emulator in the Windows version</td></tr>
-    <tr><td>Scripting / automation</td><td>Excel DDE/OLE, strong</td><td>Not a scripting tool</td></tr>
-  </table>
-
-  <h2>Choose Modbus Poll if&hellip;</h2>
-  <ul>
-    <li>You work at a Windows workstation and want the established, heavily-featured
-    master.</li>
-    <li>You need to plug a USB-to-RS485 adapter straight into a bare serial chain with
-    no network anywhere.</li>
-    <li>You script Modbus from Excel, or run many polling windows and long unattended
-    soak tests.</li>
-    <li>You do bench simulation and don't mind buying Modbus Slave alongside it.</li>
-  </ul>
-
-  <h2>Choose Easy Modbus if&hellip;</h2>
-  <ul>
-    <li>You are standing in front of the equipment and would rather use the phone in
-    your pocket than find a laptop and a network port.</li>
-    <li>The registers are undocumented and you need the tool to <em>work out</em> what
-    they are &mdash; float versus integer, word order, scaling &mdash; not just show a
-    raw number. See <a href="modbus-value-wrong-scaling-byte-order.html">why your value
-    looks wrong</a>.</li>
-    <li>You want to <strong>save the register map</strong> and leave a documented
-    device behind, exported as a CSV.</li>
-    <li>You want it to be free.</li>
-  </ul>
-
-  <div class="callout">
-  <p>Plenty of people use both: Modbus Poll on the workbench, Easy Modbus in the
-  field. They are not really rivals so much as tools for two different places. If you
-  only want the free options in general &mdash; desktop included &mdash; see
-  <a href="modbus-poll-alternative.html">free Modbus Poll alternatives</a>.</p>
-  </div>
-""",
-    related=[
-        ("guides/modbus-poll-alternative", "What is a good free alternative to Modbus Poll?"),
-        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
-        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
-        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
-    ],
-))
-
-GUIDES.append(dict(
     slug="guides/modbus-register-reads-zero",
     title="Modbus register reads 0? The 3 usual causes | Easy Modbus",
     question="Why does my Modbus register read 0?",
@@ -2580,10 +1947,10 @@ GUIDES.append(dict(
     split; a solid wall of zeros points at the wrong table or reserved space.</li>
     <li><strong>Compare with the device's own display.</strong> If it shows 72.5 and
     the register reads 0, the value is elsewhere &mdash; keep moving the address.</li>
-    <li><strong>Let the app decode it.</strong> <a href="../index.html">Easy
-    Modbus</a> shows the raw registers in hex and, through its Analyzer, flags when a
-    zero is really the empty half of a 32-bit value next door &mdash; the case people
-    miss most.</li>
+    <li><strong>Decode the neighbours.</strong> A zero is often the empty half of a
+    32-bit value next door &mdash; the case people miss most. Paste it and its
+    neighbour into the <a href="../modbus-float-decoder.html">float decoder</a> and see
+    whether the pair makes sense.</li>
   </ol>
   <div class="callout">
   <p>If instead of a zero you got an <em>error</em> reply &mdash; illegal data
@@ -2653,9 +2020,9 @@ GUIDES.append(dict(
     <li><strong>Close anything else talking to it</strong> and retry.</li>
   </ol>
   <div class="callout">
-  <p><a href="../index.html">Easy Modbus</a> reports refused and timed-out
-  differently, so you know at a glance whether to chase the port or the network &mdash;
-  and its sweep tries the common Modbus ports for you. If the device is really serial
+  <p>Refused and timed out are different answers: refused means something is at that
+  address and said no, so chase the port; timed out means nothing answered, so chase the
+  network. Port 502 is standard, but 503 and 5020 both turn up. If the device is really serial
   behind a gateway, also see <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or
   RS-485 &mdash; which do I have?</a></p>
   </div>
@@ -2665,79 +2032,6 @@ GUIDES.append(dict(
         ("guides/cannot-find-modbus-devices", "Why can't I find my Modbus devices?"),
         ("guides/modbus-tcp-vs-rtu-vs-rs485", "Modbus TCP, RTU or RS-485 &mdash; which do I have?"),
         ("guides/modbus-exception-codes", "What do Modbus exception codes mean?"),
-    ],
-))
-
-GUIDES.append(dict(
-    slug="guides/log-modbus-to-csv-on-phone",
-    title="Log Modbus data to CSV on your phone | Easy Modbus",
-    question="How do I log Modbus data to CSV, and trend a register over time?",
-    description="How to record Modbus register values to a CSV you can open in Excel, from a phone with no laptop or SCADA, and what to capture to make the log useful.",
-    answer_html="""<p>You do not need a SCADA system or a laptop to trend a Modbus
-    value. Read the registers you care about, name them once so the numbers mean
-    something, and export the result as a CSV you can open in Excel or email to
-    whoever needs it. <a href="../index.html">Easy Modbus</a> does this from an
-    Android phone: it saves the register map you build, so every export already has
-    real names, scaling and units attached rather than a wall of raw numbers.</p>""",
-    body_html="""
-  <h2>Why log to CSV at all</h2>
-  <p>Two jobs come up constantly in the field and both are a CSV underneath. The
-  first is <strong>proof</strong> &mdash; capturing what a meter or drive was doing at
-  a moment, to send to a vendor or file with a commissioning record. The second is
-  <strong>trend</strong> &mdash; watching a value move over minutes or hours to catch
-  something intermittent. A phone that can read Modbus and write a CSV covers both
-  without dragging out a laptop or standing up a logging server.</p>
-
-  <h2>Make the numbers mean something first</h2>
-  <p>A raw Modbus dump is a column of integers, and a column of integers is close to
-  useless a week later. Before you export, give each register the four things the
-  protocol leaves out:</p>
-  <ul>
-    <li><strong>A name</strong> &mdash; &ldquo;Supply air temp&rdquo;, not
-    &ldquo;40007&rdquo;.</li>
-    <li><strong>A data type and word order</strong> &mdash; so a 32-bit float reads as
-    72.5, not as two random halves. See <a href="modbus-value-wrong-scaling-byte-order.html">why
-    your value looks wrong</a>.</li>
-    <li><strong>A multiplier</strong> &mdash; so a raw 725 becomes 72.5.</li>
-    <li><strong>Units</strong> &mdash; &deg;F, kW, ppm.</li>
-  </ul>
-  <p>Do this once and it is saved. Every later reading and every export carries it,
-  which is the whole point of building a register map rather than re-deciphering the
-  device each visit. See <a href="what-is-a-modbus-register-map.html">what a Modbus
-  register map is</a>.</p>
-
-  <h2>Capturing a trend</h2>
-  <p>For a snapshot, read the device and export &mdash; the CSV holds each named
-  register with its value, type and units. For a trend, re-read on an interval and
-  export the set; each export file is named with its date and time
-  (<code>EasyModbus_YYYYMMDD_HHMM.csv</code>), so a sequence of them lines up into a
-  time series in Excel. Step by step: <a href="how-to-export-modbus-data.html">collect
-  and export Modbus data</a>. Keep the interval sane: on a serial chain each read costs real
-  wire time, and hammering a device that the building controls also rely on is a way
-  to make enemies. See <a href="modbus-reading-slow-or-unreliable.html">why is my
-  Modbus reading slow or unreliable?</a></p>
-
-  <h2>What the CSV is good for</h2>
-  <ul>
-    <li><strong>Open it in Excel</strong> and chart a column to see a value drift or
-    spike.</li>
-    <li><strong>Send it to a vendor</strong> as evidence of what the equipment
-    reported, with names they can read.</li>
-    <li><strong>Leave it as documentation</strong> &mdash; a CSV of a device's real,
-    named registers is worth more to the next person than the undocumented device they
-    would otherwise inherit.</li>
-  </ul>
-  <div class="callout">
-  <p>The CSV lives on your phone and in the email you choose to send. Easy Modbus has
-  no account and no server, and a register map names a customer's equipment &mdash; so
-  nothing leaves the phone unless you send it.</p>
-  </div>
-""",
-    related=[
-        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
-        ("guides/what-is-a-modbus-register-map", "What is a Modbus register map?"),
-        ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
-        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
     ],
 ))
 
@@ -2795,11 +2089,10 @@ GUIDES.append(dict(
   ID?</a> for reading DIP switches.</p>
 
   <div class="callout">
-  <p>Easy Modbus reaches serial equipment through a network gateway rather than a
-  bare RS-485 cable, so the baud rate and framing are set on the <em>gateway</em>, and
-  the app hunts the <em>unit ID</em> with a <em>Find unit IDs</em> sweep. If you are
-  wiring straight into RS-485 with a USB adapter, a Windows master is the tool for the
-  baud/framing hunt &mdash; see <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or
+  <p>If the device sits behind a network gateway, the baud rate and framing are set
+  on the <em>gateway</em>, not in your Modbus software; only the unit ID travels with
+  each request. If you are wiring straight into RS-485 with a USB adapter, your Modbus
+  master's serial settings are where the baud/framing hunt happens &mdash; see <a href="modbus-tcp-vs-rtu-vs-rs485.html">TCP, RTU or
   RS-485 &mdash; which do I have?</a></p>
   </div>
 """,
@@ -2812,65 +2105,10 @@ GUIDES.append(dict(
 ))
 
 GUIDES.append(dict(
-    slug="guides/modbus-poll-10-minute-limit",
-    title="Modbus Poll 10-minute limit? A free option | Easy Modbus",
-    question="How do I get around the Modbus Poll 10-minute trial limit?",
-    description="Modbus Poll's trial disconnects after 10 minutes until you buy a licence. To just read or write registers, Easy Modbus is free with no timer.",
-    answer_html="""<p>Modbus Poll's free download is a trial: it stops communicating
-    after about ten minutes per session until you buy a licence. There is no trick to
-    remove that &mdash; it is how the trial is meant to work, and buying the licence is
-    the right thing to do if you rely on Modbus Poll's desktop features. But if you
-    just need to read or write a few registers without a countdown, <a href="../index.html">Easy
-    Modbus</a> is genuinely free with no time limit, and it runs on the phone already
-    in your pocket.</p>""",
-    body_html="""
-  <h2>What the limit actually is</h2>
-  <p>Modbus Poll by Witte Software is commercial software with a free evaluation. The
-  evaluation is fully featured but disconnects after roughly ten minutes, so you
-  reconnect to keep going. It is a fair trial design, not a bug &mdash; the intent is
-  that people who use it for real buy a licence (around US$129, with the matching
-  Modbus Slave sold separately). If Modbus Poll is your daily desk tool, that licence
-  is worth it.</p>
-
-  <h2>When you don't need to buy anything</h2>
-  <p>Plenty of Modbus jobs are not &ldquo;sit at a Windows desk for an hour&rdquo;
-  jobs. They are &ldquo;walk up to a meter, read six registers, maybe change a
-  setpoint, leave.&rdquo; For those, a free tool with no timer is simply less
-  friction &mdash; and a phone beats finding a laptop and a network port in a plant
-  room.</p>
-  <table>
-    <tr><th></th><th>Modbus Poll (trial)</th><th>Easy Modbus</th></tr>
-    <tr><td>Time limit</td><td>~10 minutes per session until licensed</td><td>None &mdash; free, no timer</td></tr>
-    <tr><td>Cost to use fully</td><td>Paid licence (Slave sold separately)</td><td>Free; a one-time purchase removes the optional ads and unlocks unlimited custom remotes and control panels</td></tr>
-    <tr><td>Platform</td><td>Windows desktop</td><td>Android phone/tablet, plus a Windows version</td></tr>
-    <tr><td>Reads &amp; writes registers</td><td>Yes</td><td>Yes, with guard rails and a <em>Put It Back</em> action</td></tr>
-    <tr><td>Works out data type for you</td><td>You set it</td><td>Yes &mdash; ranks the plausible readings</td></tr>
-    <tr><td>Direct USB&ndash;RS485 serial</td><td>Yes</td><td>No &mdash; reaches serial through a gateway</td></tr>
-  </table>
-
-  <h2>Being fair about it</h2>
-  <p>This is not a knock on Modbus Poll. It is mature, fast, scriptable from Excel,
-  and excellent for bench and development work, and if that is your world the licence
-  pays for itself. The point is narrower: if the ten-minute limit is the only thing in
-  your way and you just need to read or write a register in the field, you do not have
-  to buy anything &mdash; there is a free tool that does that part. For the fuller
-  comparison see <a href="modbus-poll-vs-easy-modbus.html">Modbus Poll vs Easy
-  Modbus</a> and <a href="modbus-poll-alternative.html">free Modbus Poll
-  alternatives</a>.</p>
-""",
-    related=[
-        ("guides/modbus-poll-vs-easy-modbus", "Modbus Poll vs Easy Modbus &mdash; which should I use?"),
-        ("guides/modbus-poll-alternative", "What is a good free alternative to Modbus Poll?"),
-        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
-        ("guides/how-to-use-easy-modbus", "How do I use Easy Modbus to read a device?"),
-    ],
-))
-
-GUIDES.append(dict(
     slug="guides/read-eastron-sdm-modbus",
     title="Read Eastron SDM120/SDM630 over Modbus | Easy Modbus",
     question="How do I read an Eastron SDM power meter over Modbus?",
-    description="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them from a phone.",
+    description="Eastron SDM120/SDM220/SDM630 meters report each value as a 32-bit float over Modbus. The settings, function code, word order, and how to read them over a network.",
     answer_html="""<p>Eastron's SDM range &mdash; the SDM120, SDM220, SDM630 and their
     relatives &mdash; is one of the most common Modbus devices in the field, and it is
     refreshingly consistent: <strong>every measurement is a 32-bit IEEE-754 float</strong>,
@@ -2914,15 +2152,14 @@ GUIDES.append(dict(
   that is why &mdash; see <a href="modbus-address-off-by-one.html">Modbus address off
   by one</a>.</p>
 
-  <h2>Reading one from a phone</h2>
-  <p>If the meter is on a network (native Ethernet, or RS-485 behind a gateway),
-  <a href="../index.html">Easy Modbus</a> reads it directly. Point it at the meter,
-  read the input-register block, and its Analyzer confirms each pair as a float in
-  ABCD order &mdash; so you are not trusting the numbers above blind, you are watching
-  the app decode the live value and match it to what the meter's own display shows.
-  Name each register once, and the map is saved and exportable as a CSV. To trend
-  energy or power over time, see <a href="log-modbus-to-csv-on-phone.html">log Modbus
-  data to CSV on your phone</a>.</p>
+  <h2>Reading one over the network</h2>
+  <p>If the meter is on a network (native Ethernet, or RS-485 behind a gateway), any
+  Modbus TCP master reads it directly. Read a block of input registers with function
+  code 4 and decode each pair as a float in ABCD order; the
+  <a href="../modbus-float-decoder.html">float decoder</a> confirms a pair by hand.
+  Compare the result with the meter's own display before you trust the addresses. For
+  the full, verified register list of each model, see the
+  <a href="../modbus-register-maps/eastron/index.html">Eastron register maps</a>.</p>
 
   <div class="callout">
   <p>If the meter is straight RS-485 with no gateway, you will read it with a Windows
@@ -2936,7 +2173,6 @@ GUIDES.append(dict(
         ("modbus-register-maps/eastron/index", "Eastron SDM Modbus register maps (SDM120CT, SDM230, SDM630)"),
         ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
         ("guides/find-modbus-baud-rate-parity", "How do I find an unknown Modbus baud rate?"),
-        ("guides/log-modbus-to-csv-on-phone", "How do I log Modbus data to CSV?"),
         ("guides/modbus-function-codes-explained", "What are Modbus function codes?"),
     ],
 ))
@@ -3043,9 +2279,9 @@ TOOL_TEMPLATE = """<!doctype html>
 </article>{{REL}}
 
 <footer>
-  <p>Published alongside <a href="index.html">Easy Modbus</a>, a free Android app
-  that finds Modbus equipment on a network, works out what its registers mean, and
-  exports the result as a CSV. This tool runs entirely in your browser.</p>
+  <p>This tool runs entirely in your browser. Need a device&rsquo;s registers? Browse the free
+  <a href="modbus-register-maps/index.html">Modbus register-map library</a> &mdash; verified addresses,
+  data types, word order and scaling by manufacturer and model.</p>
   <p><a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Privacy policy</a></p>
 </footer>
 
@@ -3062,8 +2298,8 @@ TOOLS.append(dict(
     two halves in one of four orders. Guess wrong and a perfectly good 12.75 reads as
     wild nonsense. Paste the two registers below and this decoder shows the float and
     the integers in <strong>all four orders at once</strong>, and highlights the ones
-    that land on a sensible engineering magnitude &mdash; the same reasoning the
-    <a href="index.html">Easy Modbus</a> Analyzer does on the phone. Read the
+    that land on a sensible engineering magnitude &mdash; the check you would otherwise
+    do by hand, four times over. Read the
     background in <a href="guides/modbus-value-wrong-scaling-byte-order.html">why does
     my Modbus value look wrong?</a></p>""",
     tool_html="""
@@ -3143,7 +2379,6 @@ window.addEventListener('DOMContentLoaded',decodeFloat);
         ("guides/modbus-value-wrong-scaling-byte-order", "Why does my Modbus value look wrong?"),
         ("guides/modbus-register-reads-zero", "Why does my Modbus register read 0?"),
         ("modbus-address-converter", "Modbus address converter (40001 &harr; 0)"),
-        ("guides/modbus-scanner-app-android", "Is there a Modbus scanner app for Android?"),
     ],
 ))
 
@@ -3225,8 +2460,8 @@ INDEX = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>Easy Modbus &mdash; read &amp; control Modbus TCP devices</title>
-<meta name="description" content="Free Android app to find Modbus TCP equipment, decode what its registers mean, save the register map, and export it all as a CSV.">
+<title>Modbus Register Maps &amp; Lists, Free | Easy Modbus</title>
+<meta name="description" content="Free Modbus register maps for {{NMODELS}} meters, drives, generator controllers, inverters and HVAC units: 0-based addresses, data types, word order, scaling. CSV/JSON.">
 <link rel="canonical" href="{{BASE}}/index.html">
 <meta name="robots" content="index, follow">
 <meta name="google-site-verification" content="HxMj_NPDl3R9Axg40Y-NMb3WkXU5nK-otX92OkhI3Z4">
@@ -3234,13 +2469,13 @@ INDEX = """<!doctype html>
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Easy Modbus &mdash; read &amp; control Modbus TCP devices">
-<meta property="og:description" content="Free Android app to find Modbus TCP equipment, decode what its registers mean, save the register map, and export it all as a CSV.">
+<meta property="og:title" content="Free Modbus register maps &mdash; Easy Modbus">
+<meta property="og:description" content="Verified Modbus register maps for {{NMODELS}} models from {{NMFRS}} manufacturers, with plain-English Modbus guides and free browser tools.">
 <meta property="og:url" content="{{BASE}}/index.html">
 <meta property="og:image" content="{{BASE}}/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Easy Modbus &mdash; read &amp; control Modbus TCP devices">
-<meta name="twitter:description" content="Free Android app to find Modbus TCP equipment, decode what its registers mean, save the register map, and export it all as a CSV.">
+<meta name="twitter:title" content="Free Modbus register maps &mdash; Easy Modbus">
+<meta name="twitter:description" content="Verified Modbus register maps for {{NMODELS}} models from {{NMFRS}} manufacturers, with plain-English Modbus guides and free browser tools.">
 <meta name="twitter:image" content="{{BASE}}/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3278,30 +2513,29 @@ strong{color:#fff}
 .brand{display:inline-flex; align-items:center; gap:.6rem; color:var(--fg)!important}
 .brand img{width:30px; height:30px; border-radius:8px; display:block}
 .brand b{font-family:"Archivo",sans-serif; font-weight:900; text-transform:uppercase; letter-spacing:.02em; font-size:1.05rem}
-.top .tag{margin-left:auto; color:var(--mut); font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase}
+.top nav{margin-left:auto; display:flex; gap:1.1rem; font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase}
+.top nav a{color:var(--mut)}
 
 .hero{padding:clamp(2.5rem,6vw,5rem) 0 clamp(2rem,4vw,3.5rem)}
 .hero .wrap{display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(2rem,5vw,4rem); align-items:center}
 .hero .lede{font-size:1.12rem; color:#e7ebee; max-width:46ch}
 .hero .sub{color:var(--mut); font-size:1rem}
 .hero .sub b{color:var(--accent)}
-.phone{
-  border:2px solid var(--accent); border-radius:34px; padding:10px;
-  background:var(--ink); box-shadow:0 30px 70px rgba(0,0,0,.5); max-width:290px; margin:0 auto;
-}
-.phone img{width:100%; height:auto; display:block; border-radius:24px}
+.finder{border:2px solid var(--accent); border-radius:18px; padding:1.4rem 1.3rem; background:var(--panel); box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.finder .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin:0 0 1.2rem}
+.finder .stat b{display:block; font-family:"Archivo",sans-serif; font-weight:900; font-size:1.7rem; color:#fff; line-height:1.1}
+.finder .stat span{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mut)}
+.finder label{display:block; font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mut); margin:0 0 .4rem}
+.finder select{width:100%; font:inherit; font-size:1rem; padding:.7rem .8rem; border-radius:10px; border:1px solid var(--line); background:var(--ink); color:var(--fg)}
+.finder .go{display:block; margin-top:1rem; text-align:center; font-weight:700; padding:.75rem 1rem; border-radius:10px; background:var(--accent); color:var(--ink)!important}
 
 .features{padding:clamp(2rem,4vw,3.5rem) 0; border-top:1px solid var(--line)}
 .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line)}
 .cell{background:var(--panel); padding:1.6rem 1.4rem; border-top:3px solid var(--accent)}
+a.cell{display:block; color:var(--fg)}
+a.cell:hover{text-decoration:none; background:#232a30}
 .cell .n{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--accent); font-size:.78rem; letter-spacing:.12em; margin-bottom:.8rem}
 .cell p{color:var(--mut); font-size:.95rem; margin:0}
-
-.shots{padding:clamp(2rem,4vw,3.5rem) 0; border-top:1px solid var(--line)}
-.shotrow{display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; justify-items:center}
-.shotrow figure{margin:0; max-width:270px}
-.shotrow img{width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:18px; background:var(--ink)}
-.shotrow figcaption{color:var(--mut); font-size:.85rem; margin-top:.6rem; text-align:center}
 
 .band{padding:clamp(2rem,4vw,3.5rem) 0; border-top:1px solid var(--line)}
 .band p{color:#e7ebee}
@@ -3320,10 +2554,8 @@ footer a{color:var(--mut); text-decoration:underline}
 @media (max-width:760px){
   body{font-size:16px}
   .hero .wrap{grid-template-columns:1fr}
-  .hero .art{order:-1}
   .grid{grid-template-columns:1fr}
-  .shotrow{grid-template-columns:1fr}
-  .top .tag{display:none}
+  .top nav{display:none}
 }
 </style>
 <script type="application/ld+json">
@@ -3335,23 +2567,16 @@ footer a{color:var(--mut); text-decoration:underline}
       "@id": "{{BASE}}/#org",
       "name": "Easy Modbus",
       "url": "{{BASE}}/",
-      "logo": "{{BASE}}/icon.svg"
+      "logo": "{{BASE}}/icon.svg",
+      "email": "webmaster@easymodbus.com"
     },
     {
       "@type": "WebSite",
       "@id": "{{BASE}}/#site",
       "name": "Easy Modbus",
       "url": "{{BASE}}/",
+      "description": "Free Modbus register-map library with plain-English Modbus guides and browser tools.",
       "publisher": { "@id": "{{BASE}}/#org" }
-    },
-    {
-      "@type": "SoftwareApplication",
-      "name": "Easy Modbus",
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "Android 8.0 or later",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "publisher": { "@id": "{{BASE}}/#org" },
-      "description": "Finds Modbus TCP and Modbus RTU-over-TCP equipment on a local network, helps work out what its registers mean, saves the register map, and exports the result as a CSV."
     }
   ]
 }
@@ -3362,114 +2587,81 @@ footer a{color:var(--mut); text-decoration:underline}
 <div class="top">
   <div class="wrap">
     <a class="brand" href="index.html"><img src="icon.svg" alt=""><b>Easy Modbus</b></a>
-    <span class="tag">Modbus made Easy</span>
+    <nav aria-label="Site"><a href="modbus-register-maps/index.html">Register maps</a><a href="#tools">Tools</a><a href="#guides">Guides</a></nav>
   </div>
 </div>
 
 <section class="hero">
   <div class="wrap">
     <div class="copy">
-      <p class="eyebrow">Modbus TCP / RTU &middot; Android</p>
-      <h1>Read, <span>decode</span> and control Modbus, straight from your phone</h1>
-      <p class="lede">Easy Modbus is a free Android app for facility managers, building
-      engineers and controls technicians. It finds Modbus TCP equipment on a network,
-      helps you work out what its registers actually mean, remembers that so nobody has
-      to work it out twice, and exports the result as a CSV you can hand to anybody.</p>
-      <p class="sub">No account, no server. <b>Easy.</b> Everything happens on your phone
-      and your local network.</p>
+      <p class="eyebrow">Free library &middot; {{NMODELS}} models &middot; {{NMFRS}} manufacturers</p>
+      <h1>Modbus register maps, <span>checked</span> against the manual</h1>
+      <p class="lede">A Modbus device will tell you what is in register 7 and never what
+      register 7 <em>is</em>. This free library has the answer for {{NMODELS}} meters,
+      drives, generator controllers, inverters, boilers, pumps and HVAC units: every
+      register with its 0-based address, data type, word order, scaling, units and
+      access, re-typed from the manufacturer&rsquo;s own document and linked to it.</p>
+      <p class="sub">No sign-up. <b>Free.</b> Every map downloads as CSV or JSON.</p>
     </div>
     <div class="art">
-      <div class="phone"><img src="img/app-readings.png" alt="Easy Modbus reading list with named readings, live values and units"></div>
+      <form class="finder" action="modbus-register-maps/index.html" onsubmit="return false" aria-label="Find a register map">
+        <div class="stats">
+          <div class="stat"><b>{{NMODELS}}</b><span>models</span></div>
+          <div class="stat"><b>{{NMFRS}}</b><span>makers</span></div>
+          <div class="stat"><b>{{NREGS}}</b><span>registers</span></div>
+        </div>
+        <label for="mfr-pick">Find a register map</label>
+        <select id="mfr-pick"><option value="">Choose a manufacturer&hellip;</option>{{MFR_OPTIONS}}</select>
+        <a class="go" href="modbus-register-maps/index.html">Browse the whole library &rarr;</a>
+      </form>
     </div>
   </div>
 </section>
 
 <section class="features">
   <div class="wrap">
-    <h2>What the app does</h2>
+    <h2>Browse by equipment</h2>
     <div class="grid">
-      <div class="cell"><div class="n">01 / FIND</div>
-        <h3>Finds equipment</h3>
-        <p>Sweeps the local network for anything answering Modbus, because Modbus has no
-        discovery of its own &mdash; or add a device by typing its address.</p></div>
-      <div class="cell"><div class="n">02 / DECODE</div>
-        <h3>Two modes, one answer</h3>
-        <p>Easy mode picks the settings for the reading you want; Pro mode exposes raw
-        hex, word order, function codes and the frame log. Ranked interpretations, with
-        the reasoning, so a wrong guess is visibly wrong.</p></div>
-      <div class="cell"><div class="n">03 / REMEMBER</div>
-        <h3>Remembers the map</h3>
-        <p>Name a reading once and its address, data type, word order, scaling and units
-        are saved for next time &mdash; nobody works it out twice.</p></div>
-      <div class="cell"><div class="n">04 / IMPORT &amp; EXPORT</div>
-        <h3>Bring a map, hand one on</h3>
-        <p>Paste a vendor's CSV register map instead of retyping forty rows, and export
-        the whole thing with live values to hand to anybody.</p></div>
-      <div class="cell"><div class="n">05 / WRITE</div>
-        <h3>Writes carefully</h3>
-        <p>Off by default and off again every launch, confirmed against a summary, bounded
-        by limits you set, read back afterwards, with a <em>Put It Back</em> action that
-        restores what the register said when you arrived.</p></div>
-      <div class="cell"><div class="n">06 / BUILD</div>
-        <h3>Custom control screens</h3>
-        <p>Build a drag-and-drop panel of readouts, setpoints and switches for one device,
-        sized for a gloved finger &mdash; the handful of registers you actually use, one tap away.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="shots">
-  <div class="wrap">
-    <div class="shotrow">
-      <figure><img src="img/app-register-browser.png" alt="Pro-mode register browser listing raw registers in hex and decimal" loading="lazy"><figcaption>Browse and decode raw registers</figcaption></figure>
-      <figure><img src="img/app-write-confirm.png" alt="Write confirmation summary showing device, register, current and new value" loading="lazy"><figcaption>Every write confirmed before it is sent</figcaption></figure>
-      <figure><img src="img/app-remote.png" alt="A custom remote with readout tiles, a setpoint and an on/off toggle" loading="lazy"><figcaption>Build your own custom remote</figcaption></figure>
+{{CATEGORIES}}
     </div>
   </div>
 </section>
 
 <section class="band">
   <div class="wrap">
-    <h2>Start here</h2>
-    <p>If Modbus is new to you, read <a href="guides/what-is-modbus.html">what is Modbus?</a>
-    first. It explains the one thing that causes most of the difficulty: a Modbus device
-    will happily tell you the contents of slot number 7, and will never tell you what
-    slot 7 is.</p>
-    <h2 style="margin-top:2.2rem">Using the app</h2>
-    <ul class="linklist">
-      <li><a href="guides/how-to-use-easy-modbus.html">How do I use Easy Modbus to read values from a device?</a></li>
-      <li><a href="guides/how-to-write-to-a-modbus-register.html">How do I write to a register, and put it back afterwards?</a></li>
-      <li><a href="guides/how-to-build-a-modbus-remote.html">How do I build a custom remote for a device?</a></li>
-      <li><a href="guides/how-to-build-a-modbus-control-panel.html">How do I build a control panel for up to 32 devices? (beta)</a></li>
-      <li><a href="guides/how-to-export-modbus-data.html">How do I collect and export Modbus data?</a></li>
+    <h2>What every map gives you</h2>
+    <ul class="notes">
+      <li><strong>The address on the wire.</strong> Every register is listed by its 0-based
+      protocol address, with the manual&rsquo;s own 40001-style number beside it when the two
+      differ &mdash; the off-by-one is settled for you.</li>
+      <li><strong>Data type and word order.</strong> 16-bit, 32-bit, float or text, and for
+      32-bit values whether the high word comes first (ABCD) or second (CDAB).</li>
+      <li><strong>Scale, units and access.</strong> The multiplier that turns the raw number
+      into an engineering value, the units, and which registers are writable.</li>
+      <li><strong>The source.</strong> A link to the manufacturer&rsquo;s free public document,
+      so you can check any row yourself, plus CSV and JSON downloads.</li>
     </ul>
   </div>
 </section>
 
-<section class="band">
-  <div class="wrap">
-    <h2>Register maps</h2>
-    <p>A device&rsquo;s Modbus registers are useless without its register map. The
-    <a href="modbus-register-maps/index.html">free Modbus register-map library</a> has verified maps for
-    power meters, generator controllers, drives, solar inverters, boilers, pumps and HVAC equipment
-    &mdash; each with 0-based addresses, data types, word order and scaling, ready to import into Easy Modbus.</p>
-  </div>
-</section>
-
-<section class="band">
+<section class="band" id="tools">
   <div class="wrap">
     <h2>Free tools</h2>
-    <p>Quick browser calculators &mdash; nothing is uploaded, and they do the same
-    arithmetic the app does on the phone.</p>
+    <p>Quick browser calculators for the two arithmetic problems that come up most.
+    Nothing is uploaded.</p>
     <ul class="linklist">
 {{TOOLS}}
     </ul>
   </div>
 </section>
 
-<section class="band">
+<section class="band" id="guides">
   <div class="wrap">
     <h2>Guides</h2>
+    <p>If Modbus is new to you, read <a href="guides/what-is-modbus.html">what is Modbus?</a>
+    first. It explains the one thing that causes most of the difficulty: a Modbus device
+    will happily tell you the contents of slot number 7, and will never tell you what
+    slot 7 is.</p>
     <ul class="linklist">
 {{GUIDES}}
     </ul>
@@ -3496,13 +2688,22 @@ footer a{color:var(--mut); text-decoration:underline}
 
 <footer>
   <div class="wrap">
+    <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation and
+    checked against it. Brand names identify the equipment only; easymodbus.com is not
+    affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+    <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
     <p><a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Privacy policy</a></p>
   </div>
 </footer>
 
+<script>
+(function(){var p=document.getElementById('mfr-pick');if(p){p.addEventListener('change',function(){if(p.value)location.href=p.value;});}})();
+</script>
 </body>
 </html>
 """
+
+
 
 PRIVACY = """<!doctype html>
 <html lang="en">
@@ -3511,19 +2712,19 @@ PRIVACY = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Privacy policy &mdash; Easy Modbus</title>
-<meta name="description" content="Easy Modbus privacy policy: no account, no analytics in the app; optional AdMob rewarded ads with consent, Play Billing, all data kept on your phone.">
+<meta name="description" content="easymodbus.com privacy policy: no accounts or forms, Google Analytics only after you accept the cookie banner, browser tools that run locally.">
 <link rel="canonical" href="%(base)s/privacy.html">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Privacy policy &mdash; Easy Modbus">
-<meta property="og:description" content="Easy Modbus privacy policy: no account, no analytics in the app; optional AdMob rewarded ads with consent, Play Billing, all data kept on your phone.">
+<meta property="og:description" content="easymodbus.com privacy policy: no accounts or forms, Google Analytics only after you accept the cookie banner, browser tools that run locally.">
 <meta property="og:url" content="%(base)s/privacy.html">
 <meta property="og:image" content="%(base)s/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Privacy policy &mdash; Easy Modbus">
-<meta name="twitter:description" content="Easy Modbus privacy policy: no account, no analytics in the app; optional AdMob rewarded ads with consent, Play Billing, all data kept on your phone.">
+<meta name="twitter:description" content="easymodbus.com privacy policy: no accounts or forms, Google Analytics only after you accept the cookie banner, browser tools that run locally.">
 <meta name="twitter:image" content="%(base)s/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3534,264 +2735,59 @@ PRIVACY = """<!doctype html>
 
 <header class="site">
   <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
-  <span class="muted">&middot; privacy policy</span>
+  <a class="muted" href="/modbus-register-maps/index.html">Register maps &rarr;</a>
 </header>
 
 <h1>Privacy policy</h1>
-<p class="muted">Effective 30 September 2026 &middot; Last updated: %(updated)s</p>
+<p class="muted">Last updated: %(updated)s</p>
 
 <div class="answer">
   <strong>Summary</strong>
-  <p>The Easy Modbus <em>app</em> has no account and no analytics, and the
-  developer runs no server: everything you build in the app stays on your phone
-  and goes only to the equipment on the network you connect it to. Two Google
-  services are involved, and only these two: <strong>Google AdMob</strong>, which
-  shows the free version's optional rewarded video ads (and may use your
-  device's advertising ID), and <strong>Google Play Billing</strong>, which
-  handles the one-time purchase that removes ads. This <em>website</em>
-  (easymodbus.com) uses Google Analytics, but only after you accept the cookie
-  banner &mdash; see <a href="#website-analytics">Website analytics</a>.</p>
+  <p>easymodbus.com is a static website: register maps, guides and browser tools. There
+  are no accounts, no sign-up and no forms, and nothing you type into the tools leaves
+  your browser. The site uses <strong>Google Analytics</strong>, but only after you accept
+  the cookie banner &mdash; see <a href="#website-analytics">Website analytics</a>.</p>
 </div>
-
-<h2>What the app stores, and where</h2>
-<p>Easy Modbus saves the following on your phone only, in the app's private
-storage:</p>
-<ul>
-  <li>The devices you add &mdash; host name or IP address, port, unit (slave)
-  ID, framing (Modbus TCP or RTU over TCP), timeouts, and the name you give
-  each one.</li>
-  <li>The register maps you build &mdash; addresses, data types, word order,
-  scaling, units, named states, write limits and notes.</li>
-  <li>Your <strong>custom remotes</strong> and <strong>control panels</strong>:
-  the controls you place and the registers they read and write. A control panel
-  also keeps the last-known address (host, port, unit ID) of every device it
-  drives, so it can still reach them if a device is later removed from your
-  list.</li>
-  <li>Your settings: Easy or Pro mode, language, the last port you used, and
-  whether you have accepted the Terms of Use.</li>
-  <li>Whether this install has the one-time unlock (cached so it keeps working
-  offline).</li>
-</ul>
-<p>The app sets <code>allowBackup="false"</code> and excludes all of this from
-Android cloud backup and from device-to-device transfer, because a register map
-or panel names a customer's equipment and the addresses that command it. That
-means it does not follow you to a new phone; the exports below are the way to
-move it.</p>
-
-<h2>Advertising (Google AdMob)</h2>
-<p>The free version offers short <strong>rewarded video ads</strong>, supplied by
-Google AdMob, before exporting a report and before opening a saved custom remote
-or a saved control panel.
-The app always asks first &mdash; <em>Watch ad</em>, <em>Remove ads</em> (shown when
-the purchase is available) or <em>Cancel</em> &mdash; and never starts an ad on its own. If no ad can be loaded
-(no signal, no consent, nothing to show) the action simply goes ahead.</p>
-<p>To serve ads, Google's Mobile Ads SDK may collect your device's
-<strong>advertising ID</strong> (the app declares the <code>AD_ID</code>
-permission for this), your IP address, and standard ad-delivery and diagnostic
-information. How Google uses that data is described in
-<a href="https://policies.google.com/privacy">Google's Privacy Policy</a> and in
-<a href="https://policies.google.com/technologies/partner-sites">How Google uses
-information from sites or apps that use its services</a>. The developer receives
-only aggregate earnings figures from AdMob &mdash; never your data. No ads are
-requested before you have accepted the Terms of Use, and none are shown after the
-one-time purchase.</p>
-
-<h2>Consent (EEA, UK and Switzerland)</h2>
-<p>Where the law requires it, the app uses Google's User Messaging Platform (UMP)
-to ask for your consent before any ad is requested; you may refuse personalised
-ads and still use everything. The consent form appears only after you accept the
-Terms of Use. You can change your answer at any time from
-<strong>Ad privacy choices</strong> in the app's menu (on the main screen and on
-the Control Panels screen), which appears wherever UMP says it is required.</p>
-
-<h2>Purchases (Google Play Billing)</h2>
-<p>The one-time in-app purchase (&ldquo;Remove ads &amp; unlimited remotes&rdquo;)
-is processed entirely by Google Play. The app asks Play whether this account
-owns the purchase so a reinstall gets it back, and records the answer on the
-phone. The developer never sees your payment details. Google's handling of
-purchase data is covered by Google Play's own terms and privacy policy.</p>
-
-<h2>What leaves the phone</h2>
-<ul>
-  <li><strong>Modbus requests</strong> to the equipment you point the app at, on
-  your local network (or over a VPN you set up). Finding devices sweeps your own
-  subnet for port 502 (or the port you set) &mdash; the app explains this before the
-  first scan of a session.</li>
-  <li><strong>Exports you ask for</strong>, handed to whichever app you choose
-  (email, Drive, and so on): the <em>Export Report</em> CSV of every device and
-  reading with live values; a single device's register map as CSV (<em>Export
-  this map</em>); and a control panel as a <code>.empanel</code> file (a JSON
-  layout including each device's address and unit ID), when you long-press a
-  panel. Easy Modbus has no server and uploads none of these anywhere.</li>
-  <li><strong>Google AdMob, UMP and Play Billing traffic</strong>, as described
-  above.</li>
-</ul>
 
 <h2 id="website-analytics">Website analytics</h2>
-<p>This website, easymodbus.com, uses Google Analytics (GA4) to understand which
-guides are useful and how visitors arrive. It is loaded with Google Consent Mode:
-no analytics cookie is set and no data is sent until you choose <em>Accept</em> on
-the cookie banner. If you decline, or ignore the banner, Analytics stays off. Your
-choice is remembered in your browser and you can clear it any time by clearing this
-site's data. IP addresses are anonymised, and no advertising or cross-site tracking
-signals are collected on the website. Google's handling of Analytics data is
-described in <a href="https://policies.google.com/privacy">Google's Privacy
-Policy</a>. This is separate from the app, which contains no analytics at all.</p>
+<p>easymodbus.com uses Google Analytics (GA4) to understand which pages are useful and
+how visitors arrive. It is loaded with Google Consent Mode: no analytics cookie is set
+and no data is sent until you choose <em>Accept</em> on the cookie banner. If you
+decline, or ignore the banner, Analytics stays off. Your choice is remembered in your
+browser and you can clear it any time by clearing this site's data. IP addresses are
+anonymised, and no advertising or cross-site tracking signals are collected. Google's
+handling of Analytics data is described in
+<a href="https://policies.google.com/privacy">Google's Privacy Policy</a>.</p>
 
-<h2>What the app does not do</h2>
-<ul>
-  <li>No account, sign-in, or registration.</li>
-  <li>No analytics, telemetry, or crash reporting inside the app itself. (The
-  website uses Google Analytics with consent &mdash; see Website analytics above.)</li>
-  <li>No location, contacts, photos, camera, microphone or file-storage
-  permission. Imports and exports go through Android's own file picker and share
-  sheet.</li>
-  <li>No selling or sharing of your data by the developer.</li>
-</ul>
+<h2>Hosting and fonts</h2>
+<p>The site is served by Cloudflare. Like any web host, Cloudflare processes the
+technical details of each request &mdash; your IP address, the page requested, your
+browser's user-agent &mdash; to deliver the page and protect the site from abuse; see
+<a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>. Page
+fonts are loaded from Google Fonts, which receives your IP address when it serves them.</p>
 
-<h2>Permissions</h2>
-<ul>
-  <li><strong>Internet</strong> and <strong>network state</strong> &mdash; to open
-  TCP connections to Modbus equipment, to find out which local network the phone
-  is on so it can be swept, and to keep that traffic on Wi-Fi or Ethernet when the
-  network has no internet. Also used by the ad and billing services.</li>
-  <li><strong>Wi-Fi state</strong> &mdash; to read the local address and subnet.</li>
-  <li><strong>Advertising ID</strong> (<code>AD_ID</code>, and the related Android
-  ad-services permissions added by the Google Mobile Ads SDK) &mdash; used only by
-  AdMob, as described above.</li>
-  <li><strong>Google Play billing</strong> &mdash; for the one-time purchase.</li>
-</ul>
+<h2>The browser tools</h2>
+<p>The float decoder, the address converter and the register filters on each map run
+entirely in your browser. The values you type are not sent anywhere.</p>
 
-<h2>Your choices</h2>
+<h2>Downloads</h2>
+<p>The CSV and JSON register-map downloads are plain static files. Downloading one does
+not require or record anything beyond the ordinary request described under Hosting.</p>
+
+<h2>Email</h2>
+<p>If you email us, we receive your email address and whatever you write, and use them
+only to reply. We do not add you to any list.</p>
+
+<h2>What the site does not do</h2>
 <ul>
-  <li>Decline any ad prompt with <em>Cancel</em>; nothing plays unless you choose
-  <em>Watch ad</em>.</li>
-  <li>Change your ad-consent answer any time from <strong>Ad privacy
-  choices</strong> in the app's menu (where that applies).</li>
-  <li>Reset or delete your advertising identifier, or turn off ad personalisation,
-  in Android <em>Settings &rarr; Privacy &rarr; Ads</em>.</li>
-  <li>The one-time purchase removes advertising entirely.</li>
-  <li>To erase everything the app has stored, uninstall it or clear its storage
-  &mdash; nothing is kept anywhere else.</li>
+  <li>No accounts, sign-in or registration.</li>
+  <li>No advertising or cross-site tracking.</li>
+  <li>No selling or sharing of your data.</li>
 </ul>
 
 <h2>Children</h2>
-<p>Easy Modbus is a tool for building and industrial equipment and is not directed
+<p>This site is a reference for building and industrial equipment and is not directed
 at children. It does not knowingly collect personal information from anyone.</p>
-
-<h2>Changes to this policy</h2>
-<p>If this policy changes, the &ldquo;last updated&rdquo; date above changes with
-it. Material changes will be reflected here before they take effect in a new
-release.</p>
-
-<h2>Contact</h2>
-<p>Questions about this policy: %(contact)s</p>
-
-<footer>
-  <p><a href="index.html">Easy Modbus</a> &middot; <a href="terms.html">Terms of use</a> &middot; <a href="pc-privacy.html">Easy Modbus PC (Windows) privacy policy</a></p>
-</footer>
-
-</body>
-</html>
-"""
-
-PC_PRIVACY = """<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>Privacy policy &mdash; Easy Modbus PC</title>
-<meta name="description" content="Privacy policy for Easy Modbus PC, the Windows desktop app. No account, no analytics, no ads; everything stays on your PC and your local network.">
-<link rel="canonical" href="%(base)s/pc-privacy.html">
-<meta name="robots" content="index, follow">
-<meta name="theme-color" content="#14171a">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Easy Modbus">
-<meta property="og:title" content="Privacy policy &mdash; Easy Modbus PC">
-<meta property="og:description" content="Privacy policy for Easy Modbus PC, the Windows desktop app. No account, no analytics, no ads; everything stays on your PC.">
-<meta property="og:url" content="%(base)s/pc-privacy.html">
-<meta property="og:image" content="%(base)s/img/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Privacy policy &mdash; Easy Modbus PC">
-<meta name="twitter:description" content="Privacy policy for Easy Modbus PC, the Windows desktop app. No account, no analytics, no ads; everything stays on your PC.">
-<meta name="twitter:image" content="%(base)s/img/og-image.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<style>%(css)s</style>
-</head>
-<body>
-
-<header class="site">
-  <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
-  <span class="muted">&middot; PC version privacy policy</span>
-</header>
-
-<h1>Privacy policy &mdash; Easy Modbus PC</h1>
-<p class="muted">Windows desktop application &middot; last updated: %(updated)s</p>
-
-<div class="answer">
-  <strong>Summary</strong>
-  <p>Easy Modbus PC has no account, no analytics, and no advertising. The app
-  sends nothing to the developer or to any server. Everything it does happens on
-  your own computer and on the local network you connect it to. A license, if you
-  buy one, is checked on your own machine without contacting anyone. (This
-  <em>website</em>, easymodbus.com, uses Google Analytics only after you accept
-  the cookie banner &mdash; that is separate from the desktop app, which contains
-  no analytics.)</p>
-</div>
-
-<h2>What the app stores, and where</h2>
-<p>Easy Modbus PC saves the following on your computer, and nowhere else, under
-<code>%%APPDATA%%\\EasyModbusPC</code>:</p>
-<ul>
-  <li>The devices you add &mdash; address, port, unit ID and name.</li>
-  <li>The register maps you build &mdash; addresses, data types, scaling, units and notes.</li>
-  <li>The custom remotes (control panels) you create.</li>
-  <li>The emulator units you configure, and their register values.</li>
-  <li>Your settings, and your license key if you enter one.</li>
-</ul>
-<p>This file never leaves your computer unless you copy it yourself.</p>
-
-<h2>What leaves your computer</h2>
-<p>Only the network traffic you ask for, all of it on your own network:</p>
-<ul>
-  <li><strong>Modbus requests</strong> to the equipment you point the Explorer at.</li>
-  <li><strong>A network scan</strong>, when you use &ldquo;Find devices&rdquo; &mdash; the app
-  connects to port 502 on the addresses of your local subnet to see what answers.
-  It is a scan of your own network and nothing is transmitted off it.</li>
-  <li><strong>Inbound connections you host</strong> &mdash; when you run the built-in
-  device emulator, the app opens a listening socket on the port you choose so other
-  software on your network can connect to it. It answers with the register values
-  you configured and makes no outbound connection of its own.</li>
-</ul>
-<p>None of this reaches the developer. Easy Modbus PC has no server.</p>
-
-<h2>Licensing</h2>
-<p>Custom Remotes are free for one control panel; a one-time license unlocks
-unlimited remotes. The license key is verified entirely on your own computer
-&mdash; the app does not contact a license server, and no information about you or
-your machine is sent when you enter a key.</p>
-
-<h2>What the app does not do</h2>
-<ul>
-  <li>No account, sign-in, or registration.</li>
-  <li>No analytics, telemetry, or crash reporting.</li>
-  <li>No advertising and no advertising identifiers.</li>
-  <li>No access to your files beyond its own settings folder, and no access to
-  location, camera, or microphone.</li>
-  <li>No internet use beyond the local-network Modbus traffic described above.</li>
-</ul>
-
-<h2>Your choices</h2>
-<p>To erase everything the app has stored, delete the
-<code>%%APPDATA%%\\EasyModbusPC</code> folder or uninstall the app. Nothing is kept
-anywhere else, so there is nothing to request from us and nothing for us to delete.</p>
-
-<h2>Children</h2>
-<p>Easy Modbus PC is a tool for building and industrial equipment and is not
-directed at children. It collects no personal information from anyone.</p>
 
 <h2>Changes to this policy</h2>
 <p>If this policy changes, the &ldquo;last updated&rdquo; date above changes with it.</p>
@@ -3800,12 +2796,14 @@ directed at children. It collects no personal information from anyone.</p>
 <p>Questions about this policy: %(contact)s</p>
 
 <footer>
-  <p><a href="index.html">Easy Modbus</a> &middot; <a href="terms.html">Terms of use</a> &middot; <a href="privacy.html">Android app privacy policy</a></p>
+  <p><a href="index.html">Home</a> &middot; <a href="modbus-register-maps/index.html">Register maps</a> &middot; <a href="terms.html">Terms of use</a></p>
 </footer>
 
 </body>
 </html>
 """
+
+
 
 TERMS = """<!doctype html>
 <html lang="en">
@@ -3814,19 +2812,19 @@ TERMS = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Terms of use &mdash; Easy Modbus</title>
-<meta name="description" content="Terms of use for Easy Modbus (Android) and Easy Modbus PC (Windows): acceptance, user safety responsibilities, no warranty, and limitation of liability.">
+<meta name="description" content="Terms of use for easymodbus.com: register-map accuracy, industrial-control safety, no warranty, and limitation of liability.">
 <link rel="canonical" href="%(base)s/terms.html">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#14171a">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Easy Modbus">
 <meta property="og:title" content="Terms of use &mdash; Easy Modbus">
-<meta property="og:description" content="Terms of use for Easy Modbus and Easy Modbus PC: user safety responsibilities, no warranty, and limitation of liability.">
+<meta property="og:description" content="Terms of use for easymodbus.com: register-map accuracy, industrial-control safety, no warranty, and limitation of liability.">
 <meta property="og:url" content="%(base)s/terms.html">
 <meta property="og:image" content="%(base)s/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Terms of use &mdash; Easy Modbus">
-<meta name="twitter:description" content="Terms of use for Easy Modbus and Easy Modbus PC: user safety responsibilities, no warranty, and limitation of liability.">
+<meta name="twitter:description" content="Terms of use for easymodbus.com: register-map accuracy, industrial-control safety, no warranty, and limitation of liability.">
 <meta name="twitter:image" content="%(base)s/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3837,7 +2835,7 @@ TERMS = """<!doctype html>
 
 <header class="site">
   <a href="index.html" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none"><img src="icon.svg" alt="" width="26" height="26" style="border-radius:6px"><span>Easy Modbus</span></a>
-  <span class="muted">&middot; terms of use</span>
+  <a class="muted" href="/modbus-register-maps/index.html">Register maps &rarr;</a>
 </header>
 
 <h1>Terms of use</h1>
@@ -3845,18 +2843,17 @@ TERMS = """<!doctype html>
 
 <div class="answer">
   <strong>Please read this first</strong>
-  <p>These terms apply to <strong>Easy Modbus</strong> for Android and
-  <strong>Easy Modbus PC</strong> for Windows (together, the &ldquo;app&rdquo;).
-  By installing or using the app you agree to them. If you do not agree, do not
-  use the app. The app talks to real industrial and building equipment; the
+  <p>These terms apply to the easymodbus.com website: its register maps, guides,
+  downloads and browser tools (together, the &ldquo;site&rdquo;). By using the site you
+  agree to them. The register maps describe real industrial and building equipment; the
   safety section below is the part that matters most.</p>
 </div>
 
 <h2>1. Industrial-control safety &mdash; your responsibility</h2>
-<p>The app can read from, write to, and simulate Modbus equipment that controls
-real machinery, building services and industrial processes. Working with control
-systems is inherently hazardous when it is done without a full understanding of
-the equipment.</p>
+<p>The register maps and guides describe how to read from and write to Modbus
+equipment that controls real machinery, building services and industrial processes.
+Working with control systems is inherently hazardous when it is done without a full
+understanding of the equipment.</p>
 <ul>
   <li><strong>Do not change a value, register, point or control logic unless you
   understand exactly what it does and what will happen when it changes.</strong>
@@ -3864,104 +2861,101 @@ the equipment.</p>
   something else overwrites it.</li>
   <li><strong>Always consult the equipment manufacturer's documentation &mdash;
   the register/points list, control drawings and user manual &mdash; before
-  reading, writing, or changing any point or logic.</strong> The meaning,
-  scaling, and safe range of every register comes from that documentation, not
-  from the app.</li>
+  reading, writing, or changing any point or logic.</strong></li>
   <li>You are responsible for correctly identifying addresses, data types,
   scaling and units, and for verifying the effect of any change on non-critical
   equipment first where possible.</li>
   <li>You are responsible for having the authority and permission to access and
   modify the equipment you connect to, and for complying with all applicable
   site rules, codes, standards and laws.</li>
-  <li>Do not use the app on life-safety, emergency, medical, or other systems
+  <li>Do not rely on the site for life-safety, emergency, medical, or other systems
   where a fault, an incorrect value, or a communication interruption could cause
   injury, loss of life, or significant damage.</li>
 </ul>
 <p>If you are not certain what you are doing, stop, and consult a qualified
 controls engineer and the manufacturer before proceeding.</p>
 
-<h2>2. The app is a tool, not advice</h2>
-<p>The app and its guides are general information and utilities. They are not
-engineering, safety, or professional advice, and they are not a substitute for
-the manufacturer's documentation or a qualified professional. The datatype
-&ldquo;analyzer&rdquo; offers <em>possible</em> interpretations of raw registers
-and can be wrong; you must confirm any interpretation against the equipment's
-documentation before relying on it.</p>
+<h2>2. Register maps: accuracy</h2>
+<p>Each register map is re-typed from the manufacturer's free public documentation,
+checked against it, and linked to it. Registers still vary by model, firmware,
+options and configuration, and a transcription can be wrong. Treat every map as a
+starting point and <strong>confirm it against the manufacturer's current document and
+the live device</strong> before you rely on it, and especially before you write to
+anything. If you find an error, please tell us so it can be fixed.</p>
 
-<h2>3. No warranty</h2>
-<p>The app is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;, without
+<h2>3. Information, not advice</h2>
+<p>The site's maps, guides and tools are general information. They are not
+engineering, safety, or professional advice, and they are not a substitute for the
+manufacturer's documentation or a qualified professional. The browser tools show
+<em>possible</em> interpretations of raw values and can be wrong.</p>
+
+<h2>4. Trademarks and sources</h2>
+<p>Manufacturer and product names are used only to identify the equipment a map
+describes. easymodbus.com is not affiliated with, endorsed by, or sponsored by any
+manufacturer listed. The original documents remain the property of their publishers;
+we link to them rather than host them. A manufacturer who would like a map removed can
+ask at the address below.</p>
+
+<h2>5. Using the content</h2>
+<p>You may use the register maps, downloads and guides in your own work, including
+commercial work. Please link back to the page when you quote or republish part of
+it.</p>
+
+<h2>6. No warranty</h2>
+<p>The site is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;, without
 warranty of any kind, whether express, implied or statutory, to the maximum extent
 permitted by law. This includes, without limitation, any implied warranties of
 merchantability, fitness for a particular purpose, accuracy, and non-infringement.
-The developer does not warrant that the app will be uninterrupted, error-free, or
-that any reading, interpretation or write will be correct or safe for your
-equipment.</p>
+We do not warrant that any register map, guide, or tool output will be correct,
+complete, or safe for your equipment.</p>
 
-<h2>4. Limitation of liability</h2>
+<h2>7. Limitation of liability</h2>
 <p>To the maximum extent permitted by applicable law, in no event will First
-Impact Development, or anyone involved in creating or supplying the app, be liable
+Impact Development, or anyone involved in creating or supplying the site, be liable
 for any damages of any kind arising out of or in connection with your use of, or
-inability to use, the app. This includes, without limitation, direct, indirect,
+inability to use, the site. This includes, without limitation, direct, indirect,
 incidental, special, consequential, exemplary or punitive damages; loss of profits,
 revenue, data or goodwill; and damage to, malfunction of, or downtime of any
 equipment, process or property, and any resulting injury &mdash; whether based on
 warranty, contract, tort (including negligence), or any other legal theory, and
-whether or not the developer has been advised of the possibility of such damage.</p>
-<p>Where liability cannot be excluded as a matter of law, it is limited to the
-greatest extent that law permits, and in no case will the developer's total
-liability exceed the amount you paid, if any, for the app in the twelve months
-before the event giving rise to the claim.</p>
+whether or not we have been advised of the possibility of such damage.</p>
 
-<h2>5. Your responsibilities</h2>
-<ul>
-  <li>Use the app lawfully, and only on equipment and networks you are authorised
-  to access.</li>
-  <li>Keep your own backups of any configuration you rely on; the app stores your
-  data only on your own device.</li>
-  <li>Supervise any write, and put values back when you have finished testing.</li>
-</ul>
+<h2>8. Links to other sites</h2>
+<p>The site links to manufacturers' documents and other third-party sites. We do not
+control them, and your use of them is subject to their own terms.</p>
 
-<h2>6. Third-party services</h2>
-<p>The Android version's free tier shows advertising supplied by Google AdMob and
-offers an in-app purchase through Google Play; those services are governed by
-Google's own terms and by our <a href="privacy.html">privacy policy</a>. The
-Windows version contains no advertising. Your use of any third-party equipment or
-software remains subject to that third party's terms.</p>
+<h2>9. Changes</h2>
+<p>The site and these terms may change over time. The &ldquo;last updated&rdquo; date
+above shows the current version.</p>
 
-<h2>7. Licence and acceptable use</h2>
-<p>You are granted a personal, non-exclusive, non-transferable licence to use the
-app for its intended purpose. You may not resell, redistribute, or reverse
-engineer the app except to the extent that law expressly permits.</p>
-
-<h2>8. Changes</h2>
-<p>The app and these terms may change over time. Material changes to these terms
-will be reflected here, and the app may ask you to accept the updated terms. The
-&ldquo;last updated&rdquo; date above shows the current version.</p>
-
-<h2>9. Contact</h2>
+<h2>10. Contact</h2>
 <p>Questions about these terms: %(contact)s</p>
 
 <p class="muted">These terms are provided in good faith and in plain language;
 they are not legal advice.</p>
 
 <footer>
-  <p><a href="index.html">Easy Modbus</a> &middot; <a href="privacy.html">Privacy policy</a> &middot; <a href="pc-privacy.html">PC privacy policy</a></p>
+  <p><a href="index.html">Home</a> &middot; <a href="modbus-register-maps/index.html">Register maps</a> &middot; <a href="privacy.html">Privacy policy</a></p>
 </footer>
 
 </body>
 </html>
 """
 
-LLMS = """# Easy Modbus
 
-> Free Android app that finds Modbus TCP and Modbus RTU-over-TCP equipment on a
-> local network, helps work out what its registers mean, saves that register map,
-> and exports it as CSV. Published with a set of plain-English Modbus guides
-> written for facility managers and building engineers rather than for protocol
-> specialists.
 
-The guides below each answer one question directly in their first paragraph and
-are free to quote with attribution.
+LLMS = """# Easy Modbus (easymodbus.com)
+
+> A free Modbus register-map library: verified register maps for power meters,
+> drives, generator controllers, solar inverters, boilers, pumps and HVAC equipment,
+> each listing every register's 0-based wire address, documented address, data type,
+> word order, scale, units and access, re-typed from the manufacturer's public
+> document and linked to it. Published with plain-English Modbus guides for facility
+> managers and building engineers, and two free browser calculators.
+
+The register maps and guides are free to quote with attribution. Every map is also
+available as CSV and JSON.
+%(library)s
 
 ## Free tools
 
@@ -3970,22 +2964,6 @@ are free to quote with attribution.
 ## Guides
 
 %(guides)s
-
-## About the app
-
-- Platform: Android 8.0 or later. Free; optional opt-in rewarded ads (AdMob) before an export or opening a saved remote or control panel, removable by a one-time purchase that also unlocks unlimited custom remotes and control panels; no account, no analytics.
-- Custom Remotes: drag-and-drop control screens for one device. Control Panel Builder (beta): one screen for up to 32 devices.
-- Protocols: Modbus TCP and Modbus RTU over TCP, function codes 1, 2, 3, 4, 5, 6,
-  15, 16, and 43/14 device identification.
-- Finds equipment by sweeping the local subnet for open port 502, because Modbus
-  has no discovery mechanism.
-- Decodes INT16, UINT16, INT32, UINT32, FLOAT32, INT64, UINT64, FLOAT64, single
-  bits within a register, and packed ASCII, in ABCD, CDAB, BADC and DCBA word
-  order, with per-reading multiplier and offset.
-- Accepts addresses in Modicon (40007), prefixed (4x00007), one-based and
-  zero-based forms, and explains how it read them.
-- Writes are off by default and off again at every launch; each write is
-  confirmed, bounded by per-reading limits, read back afterwards, and logged.
 
 ## Key facts about Modbus that these guides cover
 
@@ -4004,6 +2982,7 @@ are free to quote with attribution.
 - An exception reply proves a device is present and reachable; only silence means
   absent.
 """
+
 
 
 NOT_FOUND = """<!doctype html>
@@ -4032,10 +3011,29 @@ NOT_FOUND = """<!doctype html>
 <body>
   <h1>Page not found</h1>
   <p>Sorry, that page does not exist or has moved.</p>
-  <p><a href="/">Go to Easy Modbus</a></p>
+  <p><a href="/modbus-register-maps/">Browse the Modbus register maps</a> &middot; <a href="/">Home</a></p>
 </body>
 </html>
 """
+
+
+
+# Pages removed 2026-11-10 when easymodbus.com became a register-map library only.
+# Cloudflare Pages applies these before serving static files. Both the clean URL
+# and the old .html form are listed.
+REMOVED_PAGES = [
+    ("guides/how-to-use-easy-modbus", "/modbus-register-maps/"),
+    ("guides/how-to-build-a-modbus-remote", "/guides/is-it-safe-to-write-to-modbus"),
+    ("guides/how-to-build-a-modbus-control-panel", "/guides/is-it-safe-to-write-to-modbus"),
+    ("guides/how-to-export-modbus-data", "/guides/vendor-asking-for-modbus-information"),
+    ("guides/log-modbus-to-csv-on-phone", "/guides/vendor-asking-for-modbus-information"),
+    ("guides/modbus-scanner-app-android", "/guides/cannot-find-modbus-devices"),
+    ("guides/modbus-poll-vs-easy-modbus", "/guides/modbus-poll-alternative"),
+    ("guides/modbus-poll-10-minute-limit", "/guides/modbus-poll-alternative"),
+    ("pc-privacy", "/privacy"),
+]
+REDIRECTS = "".join("/%s %s 301\n/%s.html %s 301\n" % (old, new, old, new)
+                    for old, new in REMOVED_PAGES)
 
 
 def ping_indexnow(urls):
@@ -4091,7 +3089,17 @@ def main(ping=False):
         % (t["slug"], t["question"], summarise(t["description"]))
         for t in TOOLS
     )
+    st = register_library.STATS
+    cat_cells = "\n".join(
+        '      <a class="cell" href="/%s"><div class="n">%02d / %d MODEL%s</div><h3>%s</h3><p>%s</p></a>'
+        % (path, i, n, "" if n == 1 else "S", html_module.escape(label), html_module.escape(mfrs))
+        for i, (path, label, n, mfrs) in enumerate(st["cats"], 1))
+    mfr_opts = "".join('<option value="/%s">%s (%d)</option>' % (
+        _to_clean_url(path), html_module.escape(name), n) for path, name, n in st["mfrs"])
     write("index.html", INDEX.replace("{{BASE}}", BASE_URL)
+          .replace("{{NMODELS}}", str(st["models"])).replace("{{NMFRS}}", str(st["mfr_count"]))
+          .replace("{{NREGS}}", "{:,}".format(st["registers"]))
+          .replace("{{CATEGORIES}}", cat_cells).replace("{{MFR_OPTIONS}}", mfr_opts)
           .replace("{{TOOLS}}", tool_links).replace("{{GUIDES}}", links))
 
     write(
@@ -4099,18 +3107,8 @@ def main(ping=False):
         PRIVACY % {
             "base": BASE_URL,
             "css": CSS,
-            "updated": "30 September 2026",
-            "contact": "webmaster@easymodbus.com",
-        },
-    )
-
-    write(
-        "pc-privacy.html",
-        PC_PRIVACY % {
-            "base": BASE_URL,
-            "css": CSS,
-            "updated": "15 September 2026",
-            "contact": "webmaster@easymodbus.com",
+            "updated": "10 November 2026",
+            "contact": '<a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>',
         },
     )
 
@@ -4119,13 +3117,13 @@ def main(ping=False):
         TERMS % {
             "base": BASE_URL,
             "css": CSS,
-            "updated": "15 September 2026",
-            "contact": "webmaster@easymodbus.com",
+            "updated": "10 November 2026",
+            "contact": '<a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>',
         },
     )
 
     # sitemap + robots so crawlers and agents can enumerate the whole set
-    urls = (["index.html", "privacy.html", "pc-privacy.html", "terms.html"]
+    urls = (["index.html", "privacy.html", "terms.html"]
             + [t["slug"] + ".html" for t in TOOLS]
             + [g["slug"] + ".html" for g in GUIDES]
             + lib_paths)
@@ -4152,7 +3150,8 @@ def main(ping=False):
         "- [%s](%s/%s): %s" % (t["question"], BASE_URL, t["slug"], t["description"])
         for t in TOOLS
     )
-    write("llms.txt", LLMS % {"guides": llm_links, "tools": tool_llm_links} + "\n".join(lib_llms) + "\n")
+    write("llms.txt", LLMS % {"guides": llm_links, "tools": tool_llm_links,
+                              "library": "\n".join(lib_llms)})
 
     # IndexNow key file (its contents ARE the ownership proof) + optional ping.
     write(INDEXNOW_KEY + ".txt", INDEXNOW_KEY + "\n")
@@ -4164,6 +3163,7 @@ def main(ping=False):
     write("CNAME", "easymodbus.com\n")
     write(".nojekyll", "")
     write("404.html", NOT_FOUND)
+    write("_redirects", REDIRECTS)
 
     print()
     print("%d guides, %d pages total." % (len(GUIDES), len(urls)))

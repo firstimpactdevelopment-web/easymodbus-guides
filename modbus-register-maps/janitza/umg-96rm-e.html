@@ -234,12 +234,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/janitza/umg-96rm-e-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/janitza/umg-96rm-e.csv"
     },
     {
@@ -341,7 +335,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/janitza/">Janitza</a></li><li aria-current="page">UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU)</li></ol>
@@ -353,16 +347,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Janitza&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/janitza/">Janitza</a></dd></div><div><dt>Model</dt><dd>UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter (power analyser)</a></dd></div><div><dt>Registers</dt><dd>71 (13 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>115200 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Firmware</dt><dd>From firmware 3.01 / hardware release 104</dd></div><div><dt>Also known as</dt><dd>UMG96RM-E, UMG 96 RM-E, UMG96RME, Janitza UMG96RM-E</dd></div><div><dt>Source document</dt><dd><a href="https://www.janitza.com/files/download/manuals/current/UMG96RM/E/janitza-mal-umg96rme-en.pdf" rel="nofollow noopener" target="_blank">Power Analyser UMG 96RM-E - Modbus-address list and Formulary (from firmware version 3.01 / hardware release 104) &middot; 1.040.085.8.n &middot; rev. 2024-06</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/janitza/umg-96rm-e-easymodbus.csv">Copy for the phone app <small>71 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/janitza/umg-96rm-e-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/janitza/umg-96rm-e.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/janitza/umg-96rm-e.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/janitza/umg-96rm-e.json">JSON</a>
   <a class="btn" href="https://www.janitza.com/files/download/manuals/current/UMG96RM/E/janitza-mal-umg96rme-en.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Janitza UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Read holding registers (function 03) from 19000: 60 registers give volts, amps, power, CosPhi, frequency and per-phase energy as big-endian floats, and 19060-19077 adds total, consumed and delivered real energy in Wh. Over Ethernet use Modbus TCP; on RS-485 use RTU at the device address (parameter 0).</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-19000">HR 19000</a></td><td class="n">Voltage L1-N</td><td class="f">FLOAT32 ABCD</td><td>Voltage L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19012">HR 19012</a></td><td class="n">Current L1</td><td class="f">FLOAT32 ABCD</td><td>Current L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19026">HR 19026</a></td><td class="n">Real power total</td><td class="f">FLOAT32 ABCD</td><td>Total real power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19034">HR 19034</a></td><td class="n">Apparent power total</td><td class="f">FLOAT32 ABCD</td><td>Total apparent power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-834">HR 834</a></td><td class="n">Power factor total</td><td class="f">FLOAT32 ABCD</td><td>Total power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19050">HR 19050</a></td><td class="n">Frequency</td><td class="f">FLOAT32 ABCD</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19068">HR 19068</a></td><td class="n">Real energy L1-L3, consumed</td><td class="f">FLOAT32 ABCD</td><td>Consumed energy total</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19076">HR 19076</a></td><td class="n">Real energy L1-L3, delivered</td><td class="f">FLOAT32 ABCD</td><td>Delivered energy total</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -452,9 +440,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Byte order: the list says its addresses return data big-endian (high byte first, high word in the lower register = ABCD). Adding 32768 to an address returns the same value little-endian; that mirror block is not listed.</li><li>Access (R / RW) is copied from the list&#x27;s RD/WR column. Digital output status rows (10080-10084) are marked read-only.</li><li>Unlike the basic UMG 96RM list, 19068 is printed here as the L1-L3 consumed total (index [0]), so it is included.</li><li>Transfer parameters conflict: p. 5 says 2 stop bits with no parity, while parameter 3 defaults to 0 = 1 stop bit, no parity. Default stop bits are left blank; check parameter 3.</li><li>Left out: the SHORT and INT copies of measured values (fixed resolutions, and short values skip the CT/VT ratios), tariff energy, harmonics, min/max/mean blocks, comparators and the network rows at 25646-25719 (strings whose layout is not clear enough to decode).</li><li>Left out: 508 (write to EEPROM) because the list does not say when it is needed.</li><li>The address list covers registers and serial framing only; it does not name the Modbus TCP port, so the port is left blank here.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Janitza UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Janitza UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU) have?</summary><p>This map lists 71 registers: 71 holding registers. 13 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Janitza UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Addresses are printed as the protocol address and sent unchanged: 19000 is requested as 19000. The parameter list starts at address 0 (device address), which only fits 0-based numbering. In a 1-based or Modicon tool enter 19001 / 419001.</p></details><details><summary>What byte order does the Janitza UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU) use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Janitza UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU)?</summary><p>Start with HR 19000 Voltage L1-N (Voltage L1-N); HR 19012 Current L1 (Current L1); HR 19026 Real power total (Total real power); HR 19034 Apparent power total (Total apparent power); HR 834 Power factor total (Total power factor); HR 19050 Frequency (Frequency); HR 19068 Real energy L1-L3, consumed (Consumed energy total); HR 19076 Real energy L1-L3, delivered (Delivered energy total).</p></details><details><summary>How do I enable Modbus control of the Janitza UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU)?</summary><p>Modbus TCP runs on the Ethernet port; RS-485 address, baud rate and stop bits/parity are parameters 0, 1 and 3 (front buttons or Modbus).</p></details><details><summary>Where is the official Janitza UMG 96RM-E power analyser (Ethernet, Modbus TCP / RTU) Modbus documentation?</summary><p>The source is Power Analyser UMG 96RM-E - Modbus-address list and Formulary (from firmware version 3.01 / hardware release 104) (1.040.085.8.n), revision 2024-06, published free by Janitza at https://www.janitza.com/files/download/manuals/current/UMG96RM/E/janitza-mal-umg96rme-en.pdf.</p></details></div>
@@ -466,10 +455,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -495,14 +484,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

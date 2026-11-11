@@ -241,12 +241,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em530-em540.csv"
     },
     {
@@ -348,7 +342,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></li><li aria-current="page">EM530 / EM540 three-phase energy meters (RS485 Modbus)</li></ol>
@@ -360,16 +354,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Carlo Gavazzi&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></dd></div><div><dt>Model</dt><dd>EM530 / EM540 three-phase energy meters (RS485 Modbus)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>109 (16 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>EM530, EM540, EM530DINAV53XS1X, EM530DINAV53XS1PFA, EM530DINAV53XS1PFB, EM530DINAV53XS1PFC, EM540DINAV23XS1X, EM540DINAV23XS1PFA, EM540DINAV23XS1PFB, EM540DINAV23XS1PFC, EM500 series</dd></div><div><dt>Source document</dt><dd><a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf" rel="nofollow noopener" target="_blank">EM530/EM540 Modbus Communication Protocol (public version) &middot; Version 1.3 &middot; rev. 2024-02-13</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/em530-em540-easymodbus.csv">Copy for the phone app <small>108 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em530-em540-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em530-em540.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/carlo-gavazzi/em530-em540.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em530-em540.json">JSON</a>
   <a class="btn" href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)</h2>
 <div class="answer"><b>Integration in brief</b><p>Read input registers 0000h-0033h (function 04 or 03) for live values and 0034h-005Dh for energy, in blocks of up to 20 registers. Decode INT32 low word first and apply the fixed weights: V, W, VA, var and kWh x0.1, A and PF x0.001, Hz x0.1.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">V L1-N</td><td class="f">INT32 CDAB</td><td>V L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-12">IR 12</a></td><td class="n">A L1</td><td class="f">INT32 CDAB</td><td>A L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-40">IR 40</a></td><td class="n">W sys</td><td class="f">INT32 CDAB</td><td>W sys</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-49">IR 49</a></td><td class="n">PF sys</td><td class="f">INT16</td><td>PF sys</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-51">IR 51</a></td><td class="n">Hz</td><td class="f">INT16</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-52">IR 52</a></td><td class="n">kWh (+) TOT</td><td class="f">INT32 CDAB</td><td>kWh(+) total</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-78">IR 78</a></td><td class="n">kWh (-) TOT</td><td class="f">INT32 CDAB</td><td>kWh(-) total</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-11">IR 11</a></td><td class="n">Carlo Gavazzi identification code</td><td class="f">UINT16</td><td>Model check</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -497,9 +485,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Word order: section 3.1 says bytes are MSB first inside each word and INT32/UINT32/UINT64 values are sent LSW first, so every 32-bit value here is CDAB.</li><li>Functions 03 and 04 return the same data; configuration rows are listed as holding registers because they are written with 06/10.</li><li>Left out: the INT64 Wh/varh energy block at 0500h-0533h, because the data-format section states word order for INT32, UINT32 and UINT64 but not INT64. The INT32 kWh x0.1 registers carry the same totals.</li><li>Left out: the energy offset registers (4100h-4214h), factory reset (4020h), alarm and pulse-output settings, display/screen-saver pages and the configurable name, to keep the map to what an integrator needs.</li><li>Left out: table 4.2 (00F6h onward), which repeats the same values grouped by phase.</li><li>The identification code is printed at 000Bh (300012), which is also the high word of V L3-L1 (000Ah-000Bh). The document lists both and says the ID table is read one word at a time; read 000Bh on its own to get the model code.</li><li>Rows printed as &#x27;n.a.&#x27; or &#x27;not available, value = 0&#x27; are skipped.</li><li>The revision history inside the PDF ends at Rev. 1.3 dated 3 June 2021 while the cover says 13 February 2024; the cover date is used.</li><li>The frame tables show 1-20 registers per read while the text says up to 125; keep read blocks to 20 registers to be safe.</li><li>Table 4.12 prints Modicon 304357 for both 1104h and 1105h; the physical address 1105h is used for the wrong-connection status (304357 is the Modicon number of 1104h).</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)</h2><div class="faq"><details open><summary>What Modbus registers does the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) have?</summary><p>This map lists 109 registers: 92 input registers, 17 holding registers. 16 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each row shows a 6-digit Modicon number for function 04 (3xxxxx; swap the leading 3 for 4 with function 03) and the hex physical address that goes in the frame. Wire address = physical address: 300001 / 0000h is address 0.</p></details><details><summary>What byte order does the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)?</summary><p>Start with IR 0 V L1-N (V L1-N); IR 12 A L1 (A L1); IR 40 W sys (W sys); IR 49 PF sys (PF sys); IR 51 Hz (Frequency); IR 52 kWh (+) TOT (kWh(+) total); IR 78 kWh (-) TOT (kWh(-) total); IR 11 Carlo Gavazzi identification code (Model check).</p></details><details><summary>How do I enable Modbus control of the Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus)?</summary><p>Only the S1 versions have the RS485 Modbus port. Set address, baud, parity and stop bits from the front menu or registers 2000h-2003h.</p></details><details><summary>Where is the official Carlo Gavazzi EM530 / EM540 three-phase energy meters (RS485 Modbus) Modbus documentation?</summary><p>The source is EM530/EM540 Modbus Communication Protocol (public version) (Version 1.3), revision 2024-02-13, published free by Carlo Gavazzi at https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM500_CPP_Mod_V1.3_13022024.pdf.</p></details></div>
@@ -511,10 +500,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -540,14 +529,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

@@ -242,12 +242,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em330-em340-et330-et340-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em330-em340-et330-et340.csv"
     },
     {
@@ -349,7 +343,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></li><li aria-current="page">EM300 / ET300 series (EM330, EM340, ET330, ET340)</li></ol>
@@ -361,16 +355,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Carlo Gavazzi&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></dd></div><div><dt>Model</dt><dd>EM300 / ET300 series (EM330, EM340, ET330, ET340)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>83 (23 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>EM330, EM340, ET330, ET340, EM331, EM341, EM330-DIN, EM340-DIN, ET340-DIN, EM340DINAV23XS1X, EM340DINAV23XS1PFA, EM340DINAV23XS1PFB</dd></div><div><dt>Source document</dt><dd><a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM330_EM340_ET330_ET340_CP.pdf" rel="nofollow noopener" target="_blank">EM300 Series and ET300 Series Communication Protocol &middot; Version 2 Revision 17 &middot; rev. 2021-07-05</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/em330-em340-et330-et340-easymodbus.csv">Copy for the phone app <small>83 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em330-em340-et330-et340-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em330-em340-et330-et340.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/carlo-gavazzi/em330-em340-et330-et340.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em330-em340-et330-et340.json">JSON</a>
   <a class="btn" href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM330_EM340_ET330_ET340_CP.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340)</h2>
 <div class="answer"><b>Integration in brief</b><p>Read input registers 0000h-0033h (function 04, or 03) for live values and 0034h onward for energy; decode INT32 low word first and apply the fixed weights (V and W x10, A and PF x1000).</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">V L1-N</td><td class="f">INT32 CDAB</td><td>V L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-12">IR 12</a></td><td class="n">A L1</td><td class="f">INT32 CDAB</td><td>A L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-40">IR 40</a></td><td class="n">W system</td><td class="f">INT32 CDAB</td><td>W system</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-49">IR 49</a></td><td class="n">PF system</td><td class="f">INT16</td><td>PF system</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-51">IR 51</a></td><td class="n">Frequency</td><td class="f">INT16</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-52">IR 52</a></td><td class="n">kWh(+) total</td><td class="f">INT32 CDAB</td><td>kWh(+) total</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-78">IR 78</a></td><td class="n">kWh(-) total</td><td class="f">INT32 CDAB</td><td>kWh(-) total</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-11">IR 11</a></td><td class="n">Carlo Gavazzi identification code</td><td class="f">UINT16</td><td>Model ID check</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -472,9 +460,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Word order: the protocol states bytes are MSB first within a word and INT32/UINT32/UINT64 values are LSW first, so all 32-bit values are CDAB.</li><li>One exception is printed in the identification table: an EM340 engineering sample (ID 340) uses MSW-LSW order. Production EM340 units report ID 341.</li><li>Functions 03 and 04 are equivalent; up to 50 registers per request. Reading unlisted configuration addresses returns an illegal-address exception.</li><li>Table 2.6 (0F6h-1B4h) repeats the same values grouped by phase, with PF as INT32; it is not duplicated here.</li><li>Registers marked &#x27;not available, value = 0&#x27; (THD, kVAh, tariffs 3-8, kWh(-)/kvarh(-) partial) are left out.</li><li>The integer/decimal split totalizers (0400h-040Fh) are documented as available only on EM340 units made from 1 October 2018 (serial YR2018 274xxxS onward).</li><li>Left out: the INT64 energy block at 0500h because the table gives no value weight; kWh-per-pulse settings (1020h, 1022h) for the same reason; and the ASCII serial-number letters (5000h-5006h).</li><li>On 1-phase and 2-phase installations the unused phase registers still answer, with value 0.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340)</h2><div class="faq"><details open><summary>What Modbus registers does the Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340) have?</summary><p>This map lists 83 registers: 58 input registers, 25 holding registers. 23 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each register is printed as a 6-digit Modicon number for function 04 (3xxxxx; use 4xxxxx for function 03) next to the hex physical address that goes in the frame. Wire address = physical address (300001 / 0000h is address 0). Configuration rows are written with function 06 and are listed here as holding registers; a few rows (1010h, 1012h) are printed with the hex address only.</p></details><details><summary>What byte order does the Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340)?</summary><p>Start with IR 0 V L1-N (V L1-N); IR 12 A L1 (A L1); IR 40 W system (W system); IR 49 PF system (PF system); IR 51 Frequency (Frequency); IR 52 kWh(+) total (kWh(+) total); IR 78 kWh(-) total (kWh(-) total); IR 11 Carlo Gavazzi identification code (Model ID check).</p></details><details><summary>How do I enable Modbus control of the Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340)?</summary><p>S1 versions carry the RS485 Modbus RTU port. Address, baud rate, parity and stop bits are in registers 2000h-2003h (or the instrument&#x27;s own setup menu, see its manual).</p></details><details><summary>Where is the official Carlo Gavazzi EM300 / ET300 series (EM330, EM340, ET330, ET340) Modbus documentation?</summary><p>The source is EM300 Series and ET300 Series Communication Protocol (Version 2 Revision 17), revision 2021-07-05, published free by Carlo Gavazzi at https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM330_EM340_ET330_ET340_CP.pdf.</p></details></div>
@@ -486,10 +475,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -515,14 +504,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

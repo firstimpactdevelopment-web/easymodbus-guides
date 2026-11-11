@@ -235,12 +235,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/inepro-metering/pro380-mod-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/inepro-metering/pro380-mod.csv"
     },
     {
@@ -342,7 +336,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/inepro-metering/">inepro Metering</a></li><li aria-current="page">PRO380-Mod three-phase energy meter</li></ol>
@@ -354,16 +348,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 inepro Metering&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/inepro-metering/">inepro Metering</a></dd></div><div><dt>Model</dt><dd>PRO380-Mod three-phase energy meter</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>75 (8 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8E1</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>PRO380 Mod, PRO380-Mod CT, PRO380-MOD, inepro PRO380, PRO380 MID</dd></div><div><dt>Source document</dt><dd><a href="https://cdn.prod.website-files.com/6617f74190bf0a53bfd776e8/69f0b42e8df8da5157fb250d_PRO380%20user%20manual%20V2.18-8.pdf" rel="nofollow noopener" target="_blank">PRO380 Series MID Three phase energy meter PRO380-S, PRO380-Mb, PRO380-Mod - User manual &middot; Version 2.18-8 &middot; rev. 2026</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/inepro-metering/pro380-mod-easymodbus.csv">Copy for the phone app <small>75 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/inepro-metering/pro380-mod-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/inepro-metering/pro380-mod.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/inepro-metering/pro380-mod.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/inepro-metering/pro380-mod.json">JSON</a>
   <a class="btn" href="https://cdn.prod.website-files.com/6617f74190bf0a53bfd776e8/69f0b42e8df8da5157fb250d_PRO380%20user%20manual%20V2.18-8.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: inepro Metering PRO380-Mod three-phase energy meter</h2>
 <div class="answer"><b>Integration in brief</b><p>Wire RS485 to terminals 22/23, poll unit 1 at 9600 baud 8E1 with function 03, and decode each value as a high-word-first float. Live values sit at 5002h-5031h, energy at 6000h-6047h.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-20482">HR 20482</a></td><td class="n">L1 voltage</td><td class="f">FLOAT32 ABCD</td><td>L1 voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-20492">HR 20492</a></td><td class="n">L1 current</td><td class="f">FLOAT32 ABCD</td><td>L1 current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-20498">HR 20498</a></td><td class="n">Total active power</td><td class="f">FLOAT32 ABCD</td><td>Total active power (kW)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-20522">HR 20522</a></td><td class="n">Power factor</td><td class="f">FLOAT32 ABCD</td><td>Power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-20488">HR 20488</a></td><td class="n">Grid frequency</td><td class="f">FLOAT32 ABCD</td><td>Grid frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-24588">HR 24588</a></td><td class="n">Forward active energy</td><td class="f">FLOAT32 ABCD</td><td>Forward (import) active energy</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-24600">HR 24600</a></td><td class="n">Reverse active energy</td><td class="f">FLOAT32 ABCD</td><td>Reverse (export) active energy</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -457,9 +445,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>The PDF is the user manual linked from the official PRO380-Mod product page (ineprometering.com/product/pro380-mod-electricity-meter, documentation tab).</li><li>&#x27;Float ABCD&#x27; in the map = IEEE 754 32-bit float, high word first. &#x27;Signed&#x27; rows are 16-bit integers.</li><li>Units are as printed: power in kW, kvar and kVA (not W), energy in kWh and kvarh.</li><li>Left out: Voltage (5000h), Current (500Ah) and Error code (4015h) - the map marks them &#x27;PRO1 only&#x27;.</li><li>Left out: serial number (4000h), meter code (4002h), CT ratio (400Ch), LCD cycle time (4010h), checksum (401Bh) and active status word (401Dh). They are typed only as &#x27;HEX&#x27; with no encoding given; the LCD-time example writes 0025 for 25 s, which suggests BCD. Current direction (4012h-4014h, &#x27;ASCII&#x27;) and CT mode (401Fh) are left out because their values are not described.</li><li>S0 output rate (400Dh) accepts 10000, 2000, 1000, 100, 10, 1, 0.1 or 0.01 imp/kWh.</li><li>The manual says the older V1.14 register map still works; it is not covered here.</li><li>Baud rates differ between sections: the RS485 spec lists 1200-9600, the Modbus appendix and display menu also list 300 and 600 (and 2400). 9600, 4800 and 1200 appear in every list.</li><li>The day-counter write row prints a register length of 1, but its example frame writes 2 registers (4 zero bytes) with function 16; it is listed here as a 2-register float.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the inepro Metering PRO380-Mod three-phase energy meter</h2><div class="faq"><details open><summary>What Modbus registers does the inepro Metering PRO380-Mod three-phase energy meter have?</summary><p>This map lists 75 registers: 75 holding registers. 8 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the inepro Metering PRO380-Mod three-phase energy meter Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The map prints addresses in hex and they go into the request unchanged: the manual&#x27;s example frames are 01 06 4003 000A (set Modbus ID) and 01 06 6048 0002 (set tariff). So 4003h is wire address 16387 and 5012h (total active power) is 20498. Do not enter the hex numbers as decimal.</p></details><details><summary>What byte order does the inepro Metering PRO380-Mod three-phase energy meter use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the inepro Metering PRO380-Mod three-phase energy meter?</summary><p>Start with HR 20482 L1 voltage (L1 voltage); HR 20492 L1 current (L1 current); HR 20498 Total active power (Total active power (kW)); HR 20522 Power factor (Power factor); HR 20488 Grid frequency (Grid frequency); HR 24588 Forward active energy (Forward (import) active energy); HR 24600 Reverse active energy (Reverse (export) active energy).</p></details><details><summary>How do I enable Modbus control of the inepro Metering PRO380-Mod three-phase energy meter?</summary><p>The manual describes no enable step for Modbus on the -Mod variant. Set the address in display Program mode 2, and baud/parity in Program mode 3 (4-digit password, default 0000), with the inepro IR software, or over Modbus at 4003h/4004h/4011h.</p></details><details><summary>Where is the official inepro Metering PRO380-Mod three-phase energy meter Modbus documentation?</summary><p>The source is PRO380 Series MID Three phase energy meter PRO380-S, PRO380-Mb, PRO380-Mod - User manual (Version 2.18-8), revision 2026, published free by inepro Metering at https://cdn.prod.website-files.com/6617f74190bf0a53bfd776e8/69f0b42e8df8da5157fb250d_PRO380%20user%20manual%20V2.18-8.pdf.</p></details></div>
@@ -471,10 +460,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -500,14 +489,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

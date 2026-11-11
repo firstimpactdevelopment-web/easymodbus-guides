@@ -239,12 +239,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em24-din-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/carlo-gavazzi/em24-din.csv"
     },
     {
@@ -346,7 +340,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></li><li aria-current="page">EM24-DIN (PFA, PFB and X models)</li></ol>
@@ -358,16 +352,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Carlo Gavazzi&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/carlo-gavazzi/">Carlo Gavazzi</a></dd></div><div><dt>Model</dt><dd>EM24-DIN (PFA, PFB and X models)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter (energy analyzer)</a></dd></div><div><dt>Registers</dt><dd>78 (20 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>EM24, EM24DIN, EM24DINAV93XISPFA, EM24DINAV93XISPFB, EM24DINAV93XISX, EM24DINAV53XISX, EM24DINAV23XISX, EM24 DIN AV9, EM24 DIN AV5</dd></div><div><dt>Source document</dt><dd><a href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM24_IS_CP.pdf" rel="nofollow noopener" target="_blank">EM24-DIN PFA, PFB &amp; X models Communication Protocol &middot; Version 4 Revision 0 &middot; rev. 2012-12-03</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/carlo-gavazzi/em24-din-easymodbus.csv">Copy for the phone app <small>78 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em24-din-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em24-din.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/carlo-gavazzi/em24-din.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/carlo-gavazzi/em24-din.json">JSON</a>
   <a class="btn" href="https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM24_IS_CP.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Carlo Gavazzi EM24-DIN (PFA, PFB and X models)</h2>
 <div class="answer"><b>Integration in brief</b><p>Poll input registers (function 04, or 03) in blocks of at most 11 registers; decode INT32 values low word first and apply the fixed weights. Energy is kWh x10 in 2 registers.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-0">IR 0</a></td><td class="n">V L1-N</td><td class="f">INT32 CDAB</td><td>V L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-12">IR 12</a></td><td class="n">A L1</td><td class="f">INT32 CDAB</td><td>A L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-40">IR 40</a></td><td class="n">W system</td><td class="f">INT32 CDAB</td><td>W system</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-53">IR 53</a></td><td class="n">PF system</td><td class="f">INT16</td><td>PF system</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-55">IR 55</a></td><td class="n">Frequency</td><td class="f">INT16</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-62">IR 62</a></td><td class="n">kWh(+) total</td><td class="f">INT32 CDAB</td><td>kWh(+) total</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-92">IR 92</a></td><td class="n">kWh(-) total</td><td class="f">INT32 CDAB</td><td>kWh(-) total</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -464,9 +452,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Word order: the protocol states that within a word bytes are MSB first and that INT32/UINT32/UINT64 values are sent LSW first, so all 32-bit values here are CDAB.</li><li>Functions 03 and 04 return the same data; only 11 registers can be read per request.</li><li>A register&#x27;s &#x27;value weight&#x27; means raw = value x weight, so V*10 becomes scale 0.1, A*1000 becomes 0.001.</li><li>Left out: counters 1-3 (0062h-0066h), whose weight depends on the digital-input format setting (x10, x100 or x1000); display page selectors, user ID codes, input prescaler/format, M-Bus secondary address and the ASCII serial-number letters (1300h-1306h).</li><li>The identification code is printed at 300012 / 000Bh, which is also the second word of V L3-L1 (000Ah-000Bh). Read it as a single register; it is listed exactly as the protocol prints it.</li><li>Application types: A, B, C, G exist on PFA only; E, F, H on PFB only; all on X models. PFA/PFB support only the 3Pn measuring system.</li><li>Reset 3001h clears the total meters (kWh/kvarh import and export totals, phase kWh and all tariff registers); 3002h clears the partial kWh/kvarh.</li><li>SFA/SFB &#x27;IS&#x27; models documented separately (EM24-IS SFA/SFB protocol) expose a reduced map; see the em24-is-sfa-sfb file.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Carlo Gavazzi EM24-DIN (PFA, PFB and X models)</h2><div class="faq"><details open><summary>What Modbus registers does the Carlo Gavazzi EM24-DIN (PFA, PFB and X models) have?</summary><p>This map lists 78 registers: 58 input registers, 20 holding registers. 20 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Carlo Gavazzi EM24-DIN (PFA, PFB and X models) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each register is printed twice: a 6-digit Modicon number for function 04 (3xxxxx; the same data is readable with function 03 by changing the leading 3 to 4) and the hex &#x27;physical address&#x27; that goes in the frame. Wire address = physical address, e.g. 300001 / 0000h is address 0. Configuration rows are also printed as 3xxxxx but are written with function 06, so they are listed here as holding registers.</p></details><details><summary>What byte order does the Carlo Gavazzi EM24-DIN (PFA, PFB and X models) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Carlo Gavazzi EM24-DIN (PFA, PFB and X models)?</summary><p>Start with IR 0 V L1-N (V L1-N); IR 12 A L1 (A L1); IR 40 W system (W system); IR 53 PF system (PF system); IR 55 Frequency (Frequency); IR 62 kWh(+) total (kWh(+) total); IR 92 kWh(-) total (kWh(-) total).</p></details><details><summary>How do I enable Modbus control of the Carlo Gavazzi EM24-DIN (PFA, PFB and X models)?</summary><p>Modbus RTU is on the IS (RS485) versions. Set the address and baud rate in the serial port menu or via registers 110Ah/110Bh.</p></details><details><summary>Where is the official Carlo Gavazzi EM24-DIN (PFA, PFB and X models) Modbus documentation?</summary><p>The source is EM24-DIN PFA, PFB &amp; X models Communication Protocol (Version 4 Revision 0), revision 2012-12-03, published free by Carlo Gavazzi at https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/EM24_IS_CP.pdf.</p></details></div>
@@ -478,10 +467,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -507,14 +496,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

@@ -232,12 +232,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/accuenergy/acuvim-ii-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/accuenergy/acuvim-ii.csv"
     },
     {
@@ -339,7 +333,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/accuenergy/">Accuenergy</a></li><li aria-current="page">Acuvim II Series</li></ol>
@@ -351,16 +345,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Accuenergy&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/accuenergy/">Accuenergy</a></dd></div><div><dt>Model</dt><dd>Acuvim II Series</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter</a></dd></div><div><dt>Registers</dt><dd>102 (48 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>Acuvim IIR, Acuvim IIW</dd></div><div><dt>Source document</dt><dd><a href="https://www.accuenergy.com/wp-content/uploads/Acuvim-II-Power-Meter-User-Manual-1040E1303.pdf" rel="nofollow noopener" target="_blank">Acuvim II Series Power Meter User Manual &middot; V3.2.16 &middot; rev. 2026-09</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/accuenergy/acuvim-ii-easymodbus.csv">Copy for the phone app <small>102 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/accuenergy/acuvim-ii-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/accuenergy/acuvim-ii.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/accuenergy/acuvim-ii.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/accuenergy/acuvim-ii.json">JSON</a>
   <a class="btn" href="https://www.accuenergy.com/wp-content/uploads/Acuvim-II-Power-Meter-User-Manual-1040E1303.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Accuenergy Acuvim II Series</h2>
 <div class="answer"><b>Integration in brief</b><p>Poll 4000H-403BH with function 03 (30 floats, high word first) for frequency, voltages, currents, power and PF, and 4048H-4059H for energy counters. Set Basic Parameter Mode 101DH = 1 so floats are already primary values.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-16384">HR 16384</a></td><td class="n">Frequency</td><td class="f">FLOAT32 ABCD</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-16386">HR 16386</a></td><td class="n">Phase 1 voltage</td><td class="f">FLOAT32 ABCD</td><td>Phase 1 voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-16402">HR 16402</a></td><td class="n">Phase A current</td><td class="f">FLOAT32 ABCD</td><td>Phase A current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-16418">HR 16418</a></td><td class="n">Total system power</td><td class="f">FLOAT32 ABCD</td><td>Total system power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-16442">HR 16442</a></td><td class="n">Total power factor</td><td class="f">FLOAT32 ABCD</td><td>Total power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-16456">HR 16456</a></td><td class="n">Import active energy</td><td class="f">UINT32 ABCD</td><td>Import active energy</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-16458">HR 16458</a></td><td class="n">Export active energy</td><td class="f">UINT32 ABCD</td><td>Export active energy</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-4125">HR 4125</a></td><td class="n">Basic parameter mode</td><td class="f">UINT16</td><td>Primary/secondary mode for float readings</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -481,9 +469,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Word order: the manual&#x27;s read example returns frequency 50.00 Hz as 42 48 00 00 and voltages as 42 C7 CC CD, high word first; dword values are defined as high word first (Rx = high word x 65536 + low word). All 32-bit values here are ABCD.</li><li>IMPORTANT - primary vs secondary: Basic Parameter Mode (101DH) controls the real-time float block (4000H-4047H and 4600H-4605H). Its default is 0 = Secondary. Only with 101DH = 1 do the registers hold primary values, and only then are the scales and units in this map correct for voltage, current, power and demand. In secondary mode the manual gives primary voltage = value x PT1/PT2, current = value x CT1/CT2, power = value x (PT1/PT2) x (CT1/CT2) / 1000 (kW, kvar, kVA). For 333 mV, Rogowski (100 mV/50 Hz) and 80/100/200 mA CT options the manual says to use CT2 = 1 in that calculation, so the raw current value is then not a secondary-side ampere reading. This map cannot express a ratio taken from other registers, and PT1 is not mapped (see below), so set 101DH = 1 before using these registers. Frequency, power factor, unbalance and load type are the same in both modes.</li><li>Power, reactive power, apparent power and power demand floats are divided by 1000 to give kW, kvar and kVA (primary mode), so scale 0.001 is used with those units.</li><li>Energy scale depends on Energy Display Mode (1019H), default 0 = Primary: the energy table gives Rx/10 for primary mode, and the worked write example (0A9D4089H = 17807783.3 kWh) matches. Mode 1 (Secondary) is Rx/1000. Mode 2 is labelled &#x27;Primary in 0.01kWh&#x27; in the settings table but grouped with Rx/1000 in the energy table and shown as 1 Wh resolution on the display menu, so its resolution is unclear. Scale 0.1 in this map is valid only with 1019H = 0, and each energy register says so.</li><li>Left out: Reactive and apparent power demand (4044H/4046H), because the table gives them each other&#x27;s formula and unit.</li><li>Left out: channel 1/2 baud rate (1002H, 102FH): listed as 16-bit words with a 2400-115200 range, which cannot fit a word, so the encoding is unclear.</li><li>Left out: PT1 (1005H-1006H) and PT2 (1007H) because their decimal ranges (50.0 ...) are not matched by a stated scale.</li><li>The 0FFEH protocol register lists &#x27;2: BACnet MS/TP&#x27; in the table but its note says 1 selects BACnet, so only 0 = Modbus is given.</li><li>Not covered: 100 ms metering block (3000H), max/min, harmonics per order, sequence components, TOU, alarms, data logs, I/O module settings and SunSpec registers.</li><li>When writing with function 10H, one command may only modify one register region (system parameters, status, clock, alarm settings, I/O settings, logs).</li><li>Left out: net active and net reactive energy (4052H, 4056H). The table types them &#x27;int32&#x27;, but the manual&#x27;s data-type section defines only word, int, dword (high word first) and float, so the signed 32-bit encoding and word order are not stated.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Accuenergy Acuvim II Series</h2><div class="faq"><details open><summary>What Modbus registers does the Accuenergy Acuvim II Series have?</summary><p>This map lists 102 registers: 2 coils, 4 discrete inputs, 96 holding registers. 48 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Accuenergy Acuvim II Series Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The manual lists each register as a hex address (e.g. 4000H) with its decimal equivalent (16384); that number is sent on the wire unchanged. Its example query for frequency uses start address 40 00H.</p></details><details><summary>What byte order does the Accuenergy Acuvim II Series use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Accuenergy Acuvim II Series?</summary><p>Start with HR 16384 Frequency (Frequency); HR 16386 Phase 1 voltage (Phase 1 voltage); HR 16402 Phase A current (Phase A current); HR 16418 Total system power (Total system power); HR 16442 Total power factor (Total power factor); HR 16456 Import active energy (Import active energy); HR 16458 Export active energy (Export active energy); HR 4125 Basic parameter mode (Primary/secondary mode for float readings).</p></details><details><summary>How do I enable Modbus control of the Accuenergy Acuvim II Series?</summary><p>Channel 1 must be set to Modbus (0FFEH = 0) from the front panel or software. Writable registers are changed with function 10H; relays on I/O modules are switched with function 05.</p></details><details><summary>Where is the official Accuenergy Acuvim II Series Modbus documentation?</summary><p>The source is Acuvim II Series Power Meter User Manual (V3.2.16), revision 2026-09, published free by Accuenergy at https://www.accuenergy.com/wp-content/uploads/Acuvim-II-Power-Meter-User-Manual-1040E1303.pdf.</p></details></div>
@@ -495,10 +484,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -524,14 +513,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

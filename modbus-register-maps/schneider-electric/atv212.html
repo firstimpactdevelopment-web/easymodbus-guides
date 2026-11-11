@@ -236,12 +236,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/schneider-electric/atv212-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/schneider-electric/atv212.csv"
     },
     {
@@ -343,7 +337,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/schneider-electric/">Schneider Electric</a></li><li aria-current="page">Altivar 212 (embedded Modbus RTU)</li></ol>
@@ -355,16 +349,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Schneider Electric&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/schneider-electric/">Schneider Electric</a></dd></div><div><dt>Model</dt><dd>Altivar 212 (embedded Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive (HVAC fans and pumps)</a></dd></div><div><dt>Registers</dt><dd>55 (25 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8E1</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>Also known as</dt><dd>ATV212, Altivar 212, ATV212H, ATV212W, ATV212HU15N4, ATV212WD11N4</dd></div><div><dt>Source document</dt><dd><a href="https://download.schneider-electric.com/files?p_Doc_Ref=S1A53844" rel="nofollow noopener" target="_blank">Altivar 212 - Variable speed drives for asynchronous motors - Modbus communication manual &middot; S1A53844 (file revision 02) &middot; rev. 2012-09</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/schneider-electric/atv212-easymodbus.csv">Copy for the phone app <small>55 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/schneider-electric/atv212-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/schneider-electric/atv212.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/schneider-electric/atv212.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/schneider-electric/atv212.json">JSON</a>
   <a class="btn" href="https://download.schneider-electric.com/files?p_Doc_Ref=S1A53844" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Schneider Electric Altivar 212 (embedded Modbus RTU)</h2>
 <div class="answer"><b>Integration in brief</b><p>Give the drive a unique F802 address (factory 1), make sure F807 points at the port you are wired to, then either set CMOd = 2 and FMOd = 4 (drive stopped) or keep them and set bits 15/14 in FA00. Write FA01 in 0.01 Hz and FA00 = 0400h (run forward) or C400h (run forward with command and reference priority). Poll Fd00, Fd01, FE03 and FC90 one register at a time.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-64000">HR 64000</a></td><td class="n">FA00 - Command word 1</td><td class="f">BITMAP16</td><td>FA00: run/stop/reset and priority bits</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-64001">HR 64001</a></td><td class="n">FA01 - Frequency reference from comm.</td><td class="f">UINT16</td><td>FA01: frequency reference, 0.01 Hz</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-64768">HR 64768</a></td><td class="n">Fd00 - Output frequency</td><td class="f">UINT16</td><td>Fd00: output frequency, 0.01 Hz</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-64769">HR 64769</a></td><td class="n">Fd01 - Status word</td><td class="f">BITMAP16</td><td>Fd01: status word</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-65027">HR 65027</a></td><td class="n">FE03 - Output current</td><td class="f">UINT16</td><td>FE03: output current, 0.01 %</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-64656">HR 64656</a></td><td class="n">FC90 - Trip code</td><td class="f">UINT16</td><td>FC90: present trip code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-64657">HR 64657</a></td><td class="n">FC91 - Alarm code</td><td class="f">BITMAP16</td><td>FC91: alarm flags</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2129">HR 2129</a></td><td class="n">F851 - Com. fault setting</td><td class="f">UINT16</td><td>F851: reaction to comm loss</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -438,9 +426,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Second source: Altivar 212 Programming Manual S1A53838 rev 04 (06/2025), https://download.schneider-electric.com/files?p_Doc_Ref=S1A53838 - used for the F207 value list (p. 88), parameters that can only be changed while stopped (p. 41), the CMOd/FMOd notes and the F851/F829 remarks (pp. 87, 148-149), and the keypad meaning of the percent monitors (pp. 20-22).</li><li>Every register is one 16-bit word; the map has no 32-bit values. The manual gives no signed/unsigned type and no ranges for the monitors. The ones kept (frequencies, speed, current, voltages, loads, input power) are magnitudes with no negative case in the manual&#x27;s descriptions (direction is a separate status bit) and are typed UINT16; the writable registers have ranges from 0 upward.</li><li>Output current FE03, DC bus voltage FE04 and output voltage FE05 are in 0.01 % steps, not amps or volts. The Modbus manual does not state the 100 % base. On the keypad, current in % is relative to the drive&#x27;s rated output current and voltage in % to 200 V (240 V class) or 400 V (480 V class) (programming manual p. 20).</li><li>Monitors marked &#x27;value before trip&#x27; in the manual&#x27;s description column (FE02, FE05, FE15, FE16, FE22, FE26, FE27, FE29) are kept with that wording; Fd00, Fd06 and Fd07 are tagged as current values, and FE03, FE04 and FE90 carry no tag.</li><li>FA00, FA01, FA13, FA20, FA50 and FA51 live in RAM only: they return to 0 at power-off, reset or factory setting, so the priority bits and reference must be rewritten after a power cycle.</li><li>Left out: torque FE18, torque current FE20, exciting current FE21 and output power FE30, because they can plausibly be negative and the manual gives no signedness; input/output energy FE76/FE77 (1 Wh in a 16-bit word while the keypad shows kWh per F749, unclear) and run-time counters FE14/FE80 (manual says 0.01 h, keypad says 0.01 = 1 hour, conflicting).</li><li>Left out: ACC (address 9) because the Modbus manual&#x27;s worked example gives both 0.1 s and 0.01 s as its unit; other drive parameters (FH, UL, LL, motor data) because the Modbus manual does not print their addresses and the current programming manual has no address column.</li><li>Left out: FE06/FE07 (I/O at last trip; FE07&#x27;s decimal address is misprinted as 65030), Fd42/Fd49 trip copies FE42/FE49, FA49 damper feedback (address not printed), drive model code F805/FB05 (two different codes printed) and LI selection F112 (long function list).</li><li>Trip codes Err1 (speed reference alarm) and CFI2 (download transfer fault) have no numeric code in the manual and are not in the value list.</li><li>Indirect blocks: after setting F875-F879 (power cycle), one FC03 read at 16#1875 with quantity 1-5 returns those monitors in order; after setting F870/F871, one FC16 write of 2 registers at 16#1870 writes both items. These block addresses only accept those exact request shapes.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Schneider Electric Altivar 212 (embedded Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Schneider Electric Altivar 212 (embedded Modbus RTU) have?</summary><p>This map lists 55 registers: 55 holding registers. 25 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Schneider Electric Altivar 212 (embedded Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each parameter&#x27;s communication number is its register address in hex: Fd00 is 16#FD00 = 64768, FA01 is 16#FA01 = 64001, and F802 is 16#0802 = 2050 (the leading F of Fxxx parameters is not part of the address). The manual prints both forms, and its example frame reads output frequency with starting address FD 00, so the address goes on the wire unchanged, with no 40001 offset and no minus 1.</p></details><details><summary>What are the minimum Modbus registers to integrate the Schneider Electric Altivar 212 (embedded Modbus RTU)?</summary><p>Start with HR 64000 FA00 - Command word 1 (FA00: run/stop/reset and priority bits); HR 64001 FA01 - Frequency reference from comm. (FA01: frequency reference, 0.01 Hz); HR 64768 Fd00 - Output frequency (Fd00: output frequency, 0.01 Hz); HR 64769 Fd01 - Status word (Fd01: status word); HR 65027 FE03 - Output current (FE03: output current, 0.01 %); HR 64656 FC90 - Trip code (FC90: present trip code); HR 64657 FC91 - Alarm code (FC91: alarm flags); HR 2129 F851 - Com. fault setting (F851: reaction to comm loss).</p></details><details><summary>How do I enable Modbus control of the Schneider Electric Altivar 212 (embedded Modbus RTU)?</summary><p>All communication settings are in [PROGRAMMING MENU] &gt; [COMMUNICATION MENU] COM. F807 chooses which port may command the drive: 0 = RJ45, 1 = open-style terminal (factory). On the open-style port also set F829 = 1 (Modbus RTU, factory). F802 is the address for both ports (0 disables). Full network control: CMOd = 2 (Communication) and FMOd = 4 (Serial com ref.), changed only while stopped. Alternatively leave CMOd/FMOd on terminals and set FA00 bit 15 (commands) and bit 14 (reference) to take priority over the bus; the LOC/REM key and a logic input set to function 48 (Forced local) can still take control back.</p></details><details><summary>What happens when the Schneider Electric Altivar 212 (embedded Modbus RTU) loses Modbus communication?</summary><p>F803 [Com. time out], 0-100 s, factory 3 s (0 disables). The timer starts at the first valid frame addressed to the drive and is restarted by any request (read, write or identification). F851 lists the reactions 0 ramp stop and hand control back to CMOd/FMOd (LonWorks board only), 1 ignore, 2 ramp stop, 3 freewheel and 4 trip Err5 (RJ45) or Err8 (network port, factory). The programming manual adds that on Modbus only setting 1 is honoured and every other setting trips in Err5/Err8, so on Modbus expect either no reaction (1) or a trip. Detection is active when CMOd = 2 or FMOd = 4.</p></details><details><summary>Where is the official Schneider Electric Altivar 212 (embedded Modbus RTU) Modbus documentation?</summary><p>The source is Altivar 212 - Variable speed drives for asynchronous motors - Modbus communication manual (S1A53844 (file revision 02)), revision 2012-09, published free by Schneider Electric at https://download.schneider-electric.com/files?p_Doc_Ref=S1A53844.</p></details></div>
@@ -452,10 +441,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -481,14 +470,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

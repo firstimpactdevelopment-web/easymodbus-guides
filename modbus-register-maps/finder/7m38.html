@@ -235,12 +235,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/finder/7m38-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/finder/7m38.csv"
     },
     {
@@ -342,7 +336,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/finder/">Finder</a></li><li aria-current="page">7M.38 three-phase energy meter (Modbus RS485)</li></ol>
@@ -354,16 +348,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Finder&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/finder/">Finder</a></dd></div><div><dt>Model</dt><dd>7M.38 three-phase energy meter (Modbus RS485)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Energy meter</a></dd></div><div><dt>Registers</dt><dd>72 (13 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>7M.38, 7M38, 7M.38.8.400.0212, 7M3884000212, Finder 7M38 Modbus</dd></div><div><dt>Source document</dt><dd><a href="https://cdn.findernet.com/app/uploads/Modbus-7M24-7M38_v2_30062021.pdf" rel="nofollow noopener" target="_blank">Modbus Communication Protocol 7M24 - 7M38 &middot; v2 (footer 07/2026) &middot; rev. 07/2026</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/finder/7m38-easymodbus.csv">Copy for the phone app <small>70 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/finder/7m38-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/finder/7m38.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/finder/7m38.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/finder/7m38.json">JSON</a>
   <a class="btn" href="https://cdn.findernet.com/app/uploads/Modbus-7M24-7M38_v2_30062021.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Finder 7M.38 three-phase energy meter (Modbus RS485)</h2>
 <div class="answer"><b>Integration in brief</b><p>Read input registers with function 04 and decode the IEEE 754 float block, high word first: subtract 30000 from the printed number (Pt at 32490 is wire 2490). Energy comes as floats in Wh/varh at 32752 onward.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-2500">IR 2500</a></td><td class="n">U1</td><td class="f">FLOAT32 ABCD</td><td>U1 voltage (float, V)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2516">IR 2516</a></td><td class="n">I1</td><td class="f">FLOAT32 ABCD</td><td>I1 current (float, A)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2490">IR 2490</a></td><td class="n">Active power total (Pt)</td><td class="f">FLOAT32 ABCD</td><td>Total active power (float, W)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2496">IR 2496</a></td><td class="n">Power factor total (PFt)</td><td class="f">FLOAT32 ABCD</td><td>Total power factor</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2498">IR 2498</a></td><td class="n">Frequency</td><td class="f">FLOAT32 ABCD</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2752">IR 2752</a></td><td class="n">Energy counter n1</td><td class="f">FLOAT32 ABCD</td><td>Energy counter n1 (float, Wh)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-2756">IR 2756</a></td><td class="n">Energy counter n3</td><td class="f">FLOAT32 ABCD</td><td>Energy counter n3 (float, Wh)</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
@@ -454,9 +442,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Wire address = printed number - 30000 (input registers) or - 40000 (holding registers); see the 30107 / 0x006B example in the document.</li><li>T_float is IEEE 754 single precision sent high word first; the document&#x27;s example stores 123.45 as 42F6 E666, so floats are ABCD. T3 (signed 32-bit) is also high word first.</li><li>Measurements at 30105-30190 refresh once per second; the integer energy counters every 40 ms.</li><li>Left out: the integer measurement block (30105-30175 and the 355xx-357xx average/max/min copies). It uses Finder types T5/T6/T7, which pack a signed decade exponent in the top byte and the value in the low 24 bits (or sign flags for power factor); that needs custom decoding rather than a plain integer with a fixed scale. Use the float block instead.</li><li>Left out: integer energy counters 30406-30445 (&#x27;mantissa x EXP(exponent register)&#x27;) because the document does not define the EXP operation, and the &#x27;1000 x energy counter&#x27; block, because the intro text places it at 30426-30441 while the table lists it at 30462-30501.</li><li>Left out: a second float copy of counters n1-n4 at 32638-32645 that has no function code printed; the ENERGY block at 32752-32759 is used.</li><li>Energy counters n1-n4 are non-resettable, counters 1-16 are user counters that can be reset via 40031. What each counter integrates (active/reactive/apparent, which phase, which quadrants = import or export) is set in the counter&#x27;s parameter and configuration registers (40421 onward); the document does not list factory assignments, so check them on the meter.</li><li>Left out: CAP/IND power factor floats (32562-32569) because the sign convention is not explained, alarm flag words, logic functions, data logger, LCD, Ethernet/WiFi/M-Bus settings and the alarm/pulse-output configuration groups.</li><li>The 7M.24 single-phase meter uses a separate, shorter table in the same document and is not covered here.</li><li>Verifier: the document does not name a specific order code for the RS485 version; it only says &#x27;7M.38.8.400.XXXX with serial communication&#x27;. The 0212 alias comes from Finder&#x27;s catalogue, not this PDF.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Finder 7M.38 three-phase energy meter (Modbus RS485)</h2><div class="faq"><details open><summary>What Modbus registers does the Finder 7M.38 three-phase energy meter (Modbus RS485) have?</summary><p>This map lists 72 registers: 59 input registers, 13 holding registers. 13 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Finder 7M.38 three-phase energy meter (Modbus RS485) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Registers are printed as 3xxxx (input, function 04) and 4xxxx (holding, functions 03/06/16), and the document gives 30000 / 40000 as the memory reference - not 30001. Its request example reads U1 (30107) by sending start address 0x006B = 107. So the wire address is the printed number minus 30000 or 40000: Pt float 32490 is input register 2490.</p></details><details><summary>What byte order does the Finder 7M.38 three-phase energy meter (Modbus RS485) use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Finder 7M.38 three-phase energy meter (Modbus RS485)?</summary><p>Start with IR 2500 U1 (U1 voltage (float, V)); IR 2516 I1 (I1 current (float, A)); IR 2490 Active power total (Pt) (Total active power (float, W)); IR 2496 Power factor total (PFt) (Total power factor); IR 2498 Frequency (Frequency); IR 2752 Energy counter n1 (Energy counter n1 (float, Wh)); IR 2756 Energy counter n3 (Energy counter n3 (float, Wh)).</p></details><details><summary>How do I enable Modbus control of the Finder 7M.38 three-phase energy meter (Modbus RS485)?</summary><p>Modbus RTU runs on the RS485 serial versions (7M.38.8.400.XXXX). Port 1 address, baud, stop bits and parity sit in registers 40202-40205; writing settings needs the access level raised first by writing the user password to 40001 (function 16), then save with operator command 40012 = 1.</p></details><details><summary>Where is the official Finder 7M.38 three-phase energy meter (Modbus RS485) Modbus documentation?</summary><p>The source is Modbus Communication Protocol 7M24 - 7M38 (v2 (footer 07/2026)), revision 07/2026, published free by Finder at https://cdn.findernet.com/app/uploads/Modbus-7M24-7M38_v2_30062021.pdf.</p></details></div>
@@ -468,10 +457,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -497,14 +486,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>

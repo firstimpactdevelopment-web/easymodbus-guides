@@ -235,12 +235,6 @@ footer a{color:var(--mut);text-decoration:underline}
     {
      "@type": "DataDownload",
      "encodingFormat": "text/csv",
-     "name": "Easy Modbus import CSV",
-     "contentUrl": "https://easymodbus.com/modbus-register-maps/janitza/umg-512-pro-easymodbus.csv"
-    },
-    {
-     "@type": "DataDownload",
-     "encodingFormat": "text/csv",
      "contentUrl": "https://easymodbus.com/modbus-register-maps/janitza/umg-512-pro.csv"
     },
     {
@@ -342,7 +336,7 @@ footer a{color:var(--mut);text-decoration:underline}
 <body>
 <div class="top"><div class="wrap">
   <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
-  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#guides">Guides</a><a href="/">The app</a></nav>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
 </div></div>
 <main class="wrap">
 <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/janitza/">Janitza</a></li><li aria-current="page">UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP)</li></ol>
@@ -354,16 +348,10 @@ with the table, 0-based wire address, data type, word order, scale, units and ac
 Janitza&rsquo;s own free documentation (linked below) and checked against it.</p></div>
 <dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/janitza/">Janitza</a></dd></div><div><dt>Model</dt><dd>UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/power-meters/">Power meter (power quality analyser)</a></dd></div><div><dt>Registers</dt><dd>72 (17 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>8N2</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>UMG512-PRO, UMG 512, UMG512, UMG 512 PRO, Janitza UMG512-PRO</dd></div><div><dt>Source document</dt><dd><a href="https://www.janitza.com/files/download/manuals/current/UMG512-PRO/janitza-mal-umg512pro-en.pdf" rel="nofollow noopener" target="_blank">Power Quality Analyser UMG 512-PRO - Modbus-address and Formulary &middot; 1.054.016.3.k &middot; rev. 2023-08</a></dd></div></dl>
 <div class="dl">
-  <button type="button" class="btn primary" id="copy-em" data-src="/modbus-register-maps/janitza/umg-512-pro-easymodbus.csv">Copy for the phone app <small>72 rows</small></button>
-  <a class="btn" href="/modbus-register-maps/janitza/umg-512-pro-easymodbus.csv" download>Download Easy Modbus CSV</a>
-  <a class="btn" href="/modbus-register-maps/janitza/umg-512-pro.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn primary" href="/modbus-register-maps/janitza/umg-512-pro.csv" download>Download CSV <small>all columns</small></a>
   <a class="btn" href="/modbus-register-maps/janitza/umg-512-pro.json">JSON</a>
   <a class="btn" href="https://www.janitza.com/files/download/manuals/current/UMG512-PRO/janitza-mal-umg512pro-en.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
-  <span class="toast" id="copy-msg" role="status"></span>
 </div>
-<p class="count">Phone app: tap <em>Copy for the phone app</em>, open the device in Easy Modbus, then
-&#8942; &rarr; <strong>Import map from CSV</strong> and paste (the phone app does not open files or links).
-Easy Modbus PC: Explorer &rarr; Import, pick the downloaded Easy Modbus CSV. Addresses import as wire addresses whatever your address style is.</p>
 <section class="integ" id="integration"><h2>Integration notes: Janitza UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP)</h2>
 <div class="answer"><b>Integration in brief</b><p>Read holding registers (function 03) from 19000 over Modbus TCP or RTU: the block gives volts, amps, power, CosPhi, frequency, energy and THD as big-endian floats. For all-tariff energy totals read 6508 (consumed) and 6520 (delivered); 19636 gives the total power factor.</p></div>
 <h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-19000">HR 19000</a></td><td class="n">Voltage L1-N</td><td class="f">FLOAT32 ABCD</td><td>Voltage L1-N</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19012">HR 19012</a></td><td class="n">Current L1</td><td class="f">FLOAT32 ABCD</td><td>Current L1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19026">HR 19026</a></td><td class="n">Real power total</td><td class="f">FLOAT32 ABCD</td><td>Total real power</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-19636">HR 19636</a></td><td class="n">Power factor total</td><td class="f">FLOAT32 ABCD</td><td>Total power factor</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-19050">HR 19050</a></td><td class="n">Frequency</td><td class="f">FLOAT32 ABCD</td><td>Frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-6508">HR 6508</a></td><td class="n">Real energy L1-L3, consumed</td><td class="f">FLOAT32 ABCD</td><td>Consumed real energy, all tariffs</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-6520">HR 6520</a></td><td class="n">Real energy L1-L3, delivered</td><td class="f">FLOAT32 ABCD</td><td>Delivered real energy, all tariffs</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
@@ -454,9 +442,10 @@ Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering
 </tbody></table></div>
 <h2>Notes on this map</h2><ul class="notes"><li>Byte order: the list says its addresses return data big-endian (high byte first, high word in the lower register = ABCD). Adding 32768 to an address returns the same value little-endian; that mirror block is not listed.</li><li>Data types in the list: short = signed 16-bit, int = signed 32-bit, uint = unsigned 32-bit, float = IEEE 754 32-bit. Float and integer values include the CT/VT ratios; short values do not.</li><li>19068 in the frequently-read block is the consumed energy of tariff 1 (rate 1) only, so it is left out; the all-tariff consumed and delivered totals are taken from the energy table (6508 / 6520).</li><li>The energy-table rows 6464-6594 are marked RD/WR in the list (counters can be preset), so they are listed as RW; the same totals in the 19000 block are read-only.</li><li>19636 (total power factor) is printed RD/WR; it is a measured value, so do not write it.</li><li>Transfer parameters (p. 5): 9.6 to 921.6 kbps, 8 data bits, no parity, the device sends 2 stop bits. The list gives no default baud rate or device address, and no Modbus TCP port.</li><li>Left out: device serial number, RS-485 address, mode and baud rows (6856-6864), because the list marks them &#x27;only for internal use&#x27;; the strings and internal configuration rows; harmonics, flicker, min/max/mean blocks, event and transient settings.</li><li>The list itself does not name Modbus TCP or a TCP port; TCP is listed as a transport because the list carries IP address, mask and gateway settings. Confirm in the device user manual.</li></ul>
 <div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
-controller <em>can</em> expose; the unit in front of you may differ by firmware or options. <a href="/">Easy
-Modbus</a> reads these registers from an Android phone or a Windows PC, and its datatype Analyzer shows a value
-decoded every way at once, so a wrong word order or scale is obvious. New to this? Read
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
 <a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
 <a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
 <h2>Questions about the Janitza UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP)</h2><div class="faq"><details open><summary>What Modbus registers does the Janitza UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP) have?</summary><p>This map lists 72 registers: 72 holding registers. 17 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Janitza UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Addresses are printed as the protocol address and sent unchanged: 19000 is requested as 19000. The list starts at address 0 (real-time clock), which only fits 0-based numbering. In a 1-based or Modicon tool enter 19001 / 419001.</p></details><details><summary>What byte order does the Janitza UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP) use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Janitza UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP)?</summary><p>Start with HR 19000 Voltage L1-N (Voltage L1-N); HR 19012 Current L1 (Current L1); HR 19026 Real power total (Total real power); HR 19636 Power factor total (Total power factor); HR 19050 Frequency (Frequency); HR 6508 Real energy L1-L3, consumed (Consumed real energy, all tariffs); HR 6520 Real energy L1-L3, delivered (Delivered real energy, all tariffs).</p></details><details><summary>How do I enable Modbus control of the Janitza UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP)?</summary><p>The address list does not describe how to enable Modbus or pick the port; it only lists the RS-485 and IP settings rows (several marked internal use).</p></details><details><summary>Where is the official Janitza UMG 512-PRO power quality analyser (Modbus RTU / Modbus TCP) Modbus documentation?</summary><p>The source is Power Quality Analyser UMG 512-PRO - Modbus-address and Formulary (1.054.016.3.k), revision 2023-08, published free by Janitza at https://www.janitza.com/files/download/manuals/current/UMG512-PRO/janitza-mal-umg512pro-en.pdf.</p></details></div>
@@ -468,10 +457,10 @@ Register numbers, types, scaling and units are reproduced as published; descript
 <footer><div class="wrap">
   <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
   second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
-  confirm against the live device before you write to it. Brand names identify the equipment only; Easy Modbus is
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
   not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
   <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
-  <p><a href="/">Easy Modbus</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
   <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
 </div></footer>
 <script>
@@ -497,14 +486,6 @@ Register numbers, types, scaling and units are reproduced as published; descript
       chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
     box.addEventListener('input',run);
   });
-  var cp=document.getElementById('copy-em');
-  if(cp){cp.addEventListener('click',function(){
-    var msg=document.getElementById('copy-msg');
-    fetch(cp.getAttribute('data-src')).then(function(r){return r.text();}).then(function(t){
-      return navigator.clipboard.writeText(t);
-    }).then(function(){if(msg)msg.textContent='Copied. In Easy Modbus open the device, tap ⋮, choose Import map from CSV, and paste.';},
-      function(){if(msg)msg.textContent='Copy blocked by the browser. Use the download instead.';});
-  });}
 })();
 </script>
 </body>
