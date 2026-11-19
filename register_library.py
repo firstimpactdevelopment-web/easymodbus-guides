@@ -432,6 +432,12 @@ CATEGORIES = [
     ("pumps", "Pumps", "pump", ["pump"]),
     ("chillers-heat-pumps", "Chillers & heat pumps", "chiller / heat pump", ["chiller", "heat pump"]),
     ("hvac", "HVAC equipment", "HVAC", ["air handl", "rooftop", "thermostat", "fan coil", "hvac", "ahu", "doas"]),
+    ("gas-detectors", "Gas detectors", "gas detector", ["gas detect", "gas transmitter", "leak detector", "leak monitor", "gas analy", "co2 / gas"]),
+    ("temperature-process-controllers", "Temperature & process controllers", "controller",
+     ["temperature controller", "process controller", "pid controller", "multi-input controller", "counter-timer"]),
+    ("remote-io", "Remote I/O modules", "I/O module", ["i/o module", "input module"]),
+    ("ups", "UPS", "UPS", ["ups ", "ups network"]),
+    ("motor-protection", "Soft starters & protection relays", "relay / soft starter", ["soft starter", "protection relay"]),
     ("valves-actuators-sensors", "Valves, actuators & sensors", "valve / actuator / sensor", ["valve", "actuator", "sensor"]),
 ]
 OTHER_CAT = ("other-equipment", "Other equipment", "device", [])
@@ -802,6 +808,13 @@ def model_page(m, siblings):
     if sib:
         sib_html = ('<h2>More %s Modbus register maps</h2><ul class="grid">%s</ul>'
                     % (esc(m["manufacturer"]), "".join(card(x) for x in sib)))
+    rel = m.get("_related") or []
+    if rel:
+        c = category_of(m)
+        sib_html += ('<h2>Other %s register maps</h2><ul class="grid">%s</ul>'
+                     '<p><a href="%s">All %s Modbus register maps &rarr;</a></p>'
+                     % (esc(c[1].lower()), "".join(card(x) for x in rel),
+                        clean(cat_path(c[0])), esc(c[1].lower())))
 
     faq_html = '<h2>Questions about the %s %s</h2><div class="faq">%s</div>' % (
         esc(m["manufacturer"]), esc(m["model"]),
@@ -1161,6 +1174,24 @@ def build(write):
         if len(ms) > 1:
             for m in ms:
                 m["_full_title"] = True
+    # Related maps: up to 6 same-category models from OTHER makers, picked as the
+    # neighbours in a stable alphabetical ring so every model gets inbound links.
+    bycat = {}
+    for ms in groups.values():
+        for m in ms:
+            bycat.setdefault(category_of(m)[0], []).append(m)
+    for ring in bycat.values():
+        ring.sort(key=lambda x: (x["manufacturer"].lower(), x["model"].lower()))
+        n = len(ring)
+        for i, m in enumerate(ring):
+            rel = []
+            for k in range(1, n):
+                x = ring[(i + k * 7) % n]
+                if x["manufacturer_slug"] != m["manufacturer_slug"] and x not in rel:
+                    rel.append(x)
+                if len(rel) == 6:
+                    break
+            m["_related"] = rel
     LASTMOD.clear()
     paths = [hub_path()]
     LASTMOD[hub_path()] = newest(models)

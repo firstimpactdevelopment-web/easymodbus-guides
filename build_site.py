@@ -3034,6 +3034,9 @@ REMOVED_PAGES = [
 ]
 REDIRECTS = "".join("/%s %s 301\n/%s.html %s 301\n" % (old, new, old, new)
                     for old, new in REMOVED_PAGES)
+# Equipment categories that were split up (round 8): send the old page to the hub.
+REDIRECTS += "/modbus-register-maps/equipment/other-equipment/ /modbus-register-maps/ 301\n"
+REDIRECTS += "/modbus-register-maps/equipment/other-equipment /modbus-register-maps/ 301\n"
 
 
 def ping_indexnow(urls):
