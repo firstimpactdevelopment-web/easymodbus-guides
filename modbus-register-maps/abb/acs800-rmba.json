@@ -1,0 +1,327 @@
+{
+ "manufacturer": "ABB",
+ "manufacturer_slug": "abb",
+ "model": "ACS800 drive, Standard Control Program 7.x (RMBA-01 Standard Modbus Link)",
+ "model_slug": "acs800-rmba",
+ "short_model": "ACS800 RMBA-01",
+ "aliases": [
+  "ACS800-01",
+  "ACS800-02",
+  "ACS800-04",
+  "ACS800-07",
+  "ACS800-11",
+  "ACS800-17",
+  "ACS800-31",
+  "ACS800-37",
+  "RMBA-01",
+  "ACS800 Standard Control Program"
+ ],
+ "equipment_type": "Variable frequency drive",
+ "applies_to": "ACS800 drives running Standard Control Program 7.x with an RMBA-01 Modbus Adapter in option slot 1 or 2 (Standard Modbus Link, RTU only), ABB Drives communication profile.",
+ "summary": "ABB's older industrial AC drive family. Modbus RTU is added with the RMBA-01 adapter module, which the firmware calls the Standard Modbus Link. The drive exposes two three-word data sets in each direction: control word, two references and three auxiliary references from the master, and status word plus five actual values back. This map covers those twelve holding registers with the ABB Drives control and status word bits.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The manual places the data words at Modicon references 40001-40012, so 40001 (control word) is wire address 0 and 40004 (status word) is wire address 3."
+ },
+ "default_word_order": null,
+ "firmware": "Standard Control Program 7.x",
+ "source": {
+  "title": "ACS800 Standard Control Program 7.x Firmware Manual",
+  "doc_number": "3AFE64527592 Rev L",
+  "revision_date": "2011-08-25",
+  "url": "https://search.abb.com/library/Download.aspx?DocumentID=3AFE64527592&LanguageCode=en&DocumentPartId=1&Action=Launch",
+  "pages": "Group 52 p. 166; groups 90/92 pp. 174-175; Standard Modbus Link setup and Modbus addressing pp. 195-196; comm-fault and data-set parameters pp. 200-201; block diagrams pp. 208-209; ABB Drives profile control word, status word, state machine and reference scaling pp. 210-214"
+ },
+ "notes": [
+  "Only the twelve data-set words that the manual maps to Modicon addresses are listed. The manual gives no Modbus address rule for reaching other drive parameters through the RMBA-01, so none are listed.",
+  "Actual values 1-5 and the destinations of references 3-5 are user-selected through parameters 92.02-92.06 and 90.01-90.03 (format xxyy = group and index), so their meaning and scaling depend on the drive setup and they are left unscaled.",
+  "Control and status word bits are for parameter 98.07 = ABB DRIVES. With the Generic Drive profile the manual says only Rxxx adapters are supported, and with CSA 2.8/3.0 a different word layout applies (not listed).",
+  "REF1/REF2 scaling is the ABB Drives profile scaling: for speed or frequency 20000 corresponds to parameter 11.05 (REF1) or 11.08 (REF2); for torque and PID references the manual gives other end points per macro (10000 or 20000 = par. 11.08).",
+  "Station number, baud rate and parity are set in parameters 52.01-52.03; the manual does not print their factory values, so the defaults are left empty."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "Control Word",
+   "description": "Main control word (03.01), ABB Drives profile.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "OFF1 CONTROL: 1 = enter ready to operate, 0 = stop along active deceleration ramp",
+    "1": "OFF2 CONTROL: 1 = continue, 0 = emergency off, coast to stop",
+    "2": "OFF3 CONTROL: 1 = continue, 0 = emergency stop within par. 22.07 time",
+    "3": "INHIBIT_OPERATION: 1 = enable operation (run enable needed), 0 = inhibit",
+    "4": "RAMP_OUT_ZERO: 1 = normal, 0 = force ramp output to zero",
+    "5": "RAMP_HOLD: 1 = enable ramping, 0 = hold ramp output",
+    "6": "RAMP_IN_ZERO: 1 = normal, 0 = force ramp input to zero",
+    "7": "RESET: 0 to 1 edge resets an active fault",
+    "8": "INCHING_1: not in use",
+    "9": "INCHING_2: not in use",
+    "10": "REMOTE_CMD: 1 = fieldbus control enabled",
+    "11": "EXT CTRL LOC: 1 = select EXT2, 0 = EXT1 (when par. 11.02 = COMM.CW)"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "Reference 1",
+   "description": "REF1. Speed/frequency: 20000 = par. 11.05.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40003",
+   "name": "Reference 2",
+   "description": "REF2. Speed/frequency: 20000 = par. 11.08; torque/PID per macro.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "40004",
+   "name": "Status Word",
+   "description": "Main status word (03.02), ABB Drives profile.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "RDY_ON: ready to switch on",
+    "1": "RDY_RUN: ready to operate (0 = OFF1 active)",
+    "2": "RDY_REF: operation enabled",
+    "3": "TRIPPED: fault",
+    "4": "OFF_2_STA: 1 = OFF2 inactive",
+    "5": "OFF_3_STA: 1 = OFF3 inactive",
+    "6": "SWC_ON_INHIB: switch-on inhibited",
+    "7": "ALARM: warning/alarm active",
+    "8": "AT_SETPOINT: actual value within tolerance of reference",
+    "9": "REMOTE: 1 = remote (EXT1/EXT2), 0 = local",
+    "10": "ABOVE_LIMIT by default; source set by par. 92.07",
+    "11": "EXT CTRL LOC: 1 = EXT2 selected",
+    "12": "EXT RUN ENABLE: external run enable received",
+    "13": "User bit, source set by par. 92.08 (none by default)",
+    "14": "User bit, source set by par. 92.09 (none by default)",
+    "15": "Fieldbus adapter (CH0) communication error"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40005",
+   "name": "Actual 1",
+   "description": "Signal or parameter chosen by par. 92.02.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40006",
+   "name": "Actual 2",
+   "description": "Signal or parameter chosen by par. 92.03.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40007",
+   "name": "Reference 3",
+   "description": "Written to the parameter chosen by par. 90.01.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "40008",
+   "name": "Reference 4",
+   "description": "Written to the parameter chosen by par. 90.02.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40009",
+   "name": "Reference 5",
+   "description": "Written to the parameter chosen by par. 90.03.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "40010",
+   "name": "Actual 3",
+   "description": "Signal or parameter chosen by par. 92.04.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "40011",
+   "name": "Actual 4",
+   "description": "Signal or parameter chosen by par. 92.05.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "40012",
+   "name": "Actual 5",
+   "description": "Signal or parameter chosen by par. 92.06.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Fit the RMBA-01, set 98.02 = STD MODBUS and 98.07 = ABB DRIVES, then set station, baud and parity in group 52. Write the control word and REF1 at 40001/40002 and poll the status word and actual values at 40004-40006; pick what the actuals carry with parameters 92.02-92.06.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Control word: start/stop/reset"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Reference 1 (20000 = par. 11.05 for speed/frequency)"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Status word: ready/running/fault/remote"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Actual 1 (selected by 92.02)"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Actual 2 (selected by 92.03)"
+   }
+  ],
+  "enable": "Install the RMBA-01 in slot 1 or 2. Set 98.02 Comm. module link = STD MODBUS (this activates group 52) and 98.07 = ABB DRIVES. Set 52.01 station number (1-247), 52.02 baud rate (600-19200) and 52.03 parity. For fieldbus control set the control-location parameters (10.01/10.02 = COMM.CW) and the reference selection (11.03 = COMM.REF1, 11.06 = COMM.REF2). Parameter writes are saved to permanent memory with 16.07 = SAVE.",
+  "watchdog": "30.18 COMM FAULT FUNC picks the action when the main or auxiliary reference data set stops arriving: FAULT (trip, coast), NO, CONST SP 15 (warning, run at par. 12.16) or LAST SPEED (warning, hold 10 s average speed). 30.19 sets the main data set delay (0.1-60 s), 30.21 the auxiliary data set delay, and 30.20 decides whether fieldbus-driven relay and analogue outputs go to zero or hold their last value.",
+  "quirks": [
+   "Only twelve words exist on the Standard Modbus Link: 40001-40003 and 40007-40009 are written by the master, 40004-40006 and 40010-40012 are read from the drive.",
+   "References and actual values are scaled integers, not engineering units: 20000 equals the maximum set in group 11 for speed/frequency references.",
+   "Status word bits 10, 13 and 14 are user-assignable through parameters 92.07-92.09."
+  ],
+  "setup": [
+   "Modbus RTU only; the RMBA-01 does not do Modbus TCP.",
+   "Set 52.01 station number, 52.02 baud and 52.03 parity (NONE1STOPBIT, NONE2STOPBIT, ODD, EVEN) to match the master.",
+   "With 98.02 = CUSTOMISED, 90.04 = 81 and 90.05 = 83 select the Standard Modbus data sets as the main and auxiliary reference sources."
+  ],
+  "gotchas": [
+   "Bit 10 REMOTE_CMD must be 1 for the fieldbus to command the drive; with it at 0 and a non-zero control word or reference, the drive keeps the last values.",
+   "Starting follows the ABB Drives state machine: first a word with bit 10 set and bits 1-2 set but bit 0 clear (ready to switch on), then bit 0, then bit 3, then bits 4-6 to reach OPERATING.",
+   "REF3 bits 13-15 can drive relay outputs RO1-RO3 (14.01-14.03 = COM.REF3), and REF4/REF5 can drive AO1/AO2 (15.01 = COMM.REF4, 15.06 = COMM.REF5, 20000 = 20 mA)."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/abb/acs800-rmba",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

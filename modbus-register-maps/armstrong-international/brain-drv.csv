@@ -1,0 +1,48 @@
+﻿# Armstrong International Brain DRV25 / DRV40 / DRV80 digital recirculation valve (Modbus RTU) Modbus register map - easymodbus.com - source: https://armstronginternational.com/wp-content/uploads/IOM_TheBrain_DRV_Networking_IOM_NA_EN_20241209.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0,40001,Unit Address,Modbus address 1-31.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,1,40002,Setpoint Temperature,Blend (outlet) setpoint.,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,4,40005,Valve Status,Write 0/1/2 only; set Off before changing registers 400-411.,UINT16,1,,1,0,,Read/write,0 = Off (R/W); 1 = On (R/W); 2 = Full cold (R/W); 6 = Disinfection (read only); 7 = Error (read only)
+Holding register,"FC03 read / FC06, FC16 write",6,6,40007,Valve Outlet Temperature,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,8,40009,Valve Error Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",10,10,40011,Hot Inlet Temperature,,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",11,11,40012,Cold Inlet Temperature,,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",23,23,40024,Disinfection Target Temperature,From the DRV maximum setpoint up to 99.9 °C.,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",110,110,40111,Valve Firmware Type Number,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",111,111,40112,Valve Firmware Version Number,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",112,112,40113,Valve Configuration ID,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",113,113,40114,Valve Configuration Version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",115,115,40116,Adaptor (Bluetooth) Firmware Type,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",127,127,40128,ID of Valve Service Engineer,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",155,155,40156,Hours Since Last Disinfection,,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",159,159,40160,Last Completed Disinfection Result,Logic value; meaning not listed.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",306,306,40307,Arm Disinfection Command,Write 0x6172 to arm; trigger within 10 s.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",307,307,40308,Trigger Disinfection Command,Write 0x5452 after arming to start disinfection.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",308,308,40309,Abort Disinfection Command,Write any value to stop disinfection; from full hot the valve goes full cold (Error Temp).,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",309,309,40310,Soft Valve Reset Command,Write 0x1.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",314,314,40315,Disinfection Cool Down,Write any value to end disinfection with full cold flow.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",400,400,40401,DRV Serial Line Address,,UINT16,1,,1,0,,Read/write,0 = Standard; 1 = Alternate
+Holding register,"FC03 read / FC06, FC16 write",401,401,40402,Disinfection Enable,,UINT16,1,,1,0,,Read/write,0 = Disable; 64 = Enable
+Holding register,"FC03 read / FC06, FC16 write",402,402,40403,Disinfection Timeout,Alerts/errors suppressed for this time; max 1800 min.,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",403,403,40404,High Alert,,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",404,404,40405,Low Alert,,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",405,405,40406,Error Temperature,Outlet above this drives the valve full cold and latches an error.,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",406,406,40407,Relay Active,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",408,408,40409,Valve Temperature Units,,UINT16,1,,1,0,,Read/write,0 = °F; 1 = °C
+Holding register,"FC03 read / FC06, FC16 write",409,409,40410,DRV Maximum Setpoint,,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",410,410,40411,DRV Minimum Setpoint,,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",411,411,40412,DRV Default Setpoint,Setpoint used after a power cycle.,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",412,412,40413,Spare/Remote Thermistor 1,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",413,413,40414,Thermistor 2,Printed as 'DRV Default Setpoint Thermistor 2'.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",433,433,40434,Reset Usage Logs Command,Write any value.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",434,434,40435,Reset Error Logs,Write any value.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",435,435,40436,Error 1 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",438,438,40439,Error 2 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",441,441,40442,Error 3 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",444,444,40445,Error 4 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",447,447,40448,Error 5 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",450,450,40451,Error 6 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",453,453,40454,Error 7 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",456,456,40457,Error 8 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",459,459,40460,Error 9 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error
+Holding register,"FC03 read / FC06, FC16 write",462,462,40463,Error 10 Code,,UINT16,1,,1,0,,Read,0 = No error; 1 = Over temperature; 2 = Stuck motor; 3 = Motor calibration; 4 = Valve failure; 5 = Thermistor failure; 6 = Unconfigured; 7 = A to D error; 8 = RAM error; 9 = EE error; 10 = Flash error; 11 = Algorithm error; 12 = Controller error; 13 = Battery error; 14 = Scheduler error

@@ -1,0 +1,562 @@
+{
+  "manufacturer": "Swegon",
+  "manufacturer_slug": "swegon",
+  "model": "REACT Parasol Zenith with Belimo actuator (Modbus RTU)",
+  "model_slug": "react-parasol-zenith",
+  "short_model": "REACT Parasol Zenith",
+  "aliases": [
+    "Parasol Zenith REACT",
+    "REACT damper actuator"
+  ],
+  "equipment_type": "Actuator / valve (comfort module air damper)",
+  "applies_to": "Swegon REACT Parasol Zenith comfort modules fitted with the Belimo Modbus actuator; Swegon Modbus settings sheet dated 2022-08-10.",
+  "summary": "The REACT version of the Parasol Zenith comfort module uses a Belimo actuator with a Modbus RTU interface. Over the bus a BMS can set the damper or flow setpoint, force open/close/min/max, run adaption or test, and read position, relative and absolute airflow, sensor input, service flags and the bus-watchdog settings.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 19200,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "Every table gives both a register number (No.) and the protocol Address, with Address = No. - 1 (No. 1 = address 0). The Address column is used here; the 'documented' field shows both."
+  },
+  "default_word_order": "CDAB",
+  "firmware": null,
+  "source": {
+    "title": "REACT Parasol Zenith - Modbus settings / Modbus-installningar (Belimo actuator)",
+    "doc_number": null,
+    "revision_date": "2022-08-10",
+    "url": "https://www.swegon.com/siteassets/_products-documents-archive/room-management-systems/_en/react_parasol_zenith-modbus-m.pdf",
+    "pages": "p. 1-2 communication settings and register overview, pp. 3-5 register descriptions"
+  },
+  "notes": [
+    "The two 32-bit flow values are split as LowWord (lower 16 bits) at the first register and HighWord at the next, so they are CDAB; scale 0.001 in the unit chosen in No. 118.",
+    "Registers No. 10, 112, 115 and 116 are unused (dash) and not listed.",
+    "Absolute position (No. 6) is in degrees or mm depending on the actuator type.",
+    "Default communication setting 14: 19200 baud, 8 data bits, even parity, 1 stop bit, 0 ms delay; also selectable 9600-115200 baud and 8N2, 8N1, 8E1, 8O1.",
+    "Bus termination (No. 100) is read-only in the register overview but marked R/W in the description table, which also says it is set with the configuration tools; it is listed here as read-only.",
+    "The Swedish column on page 5 places the LW/HW labels one row higher than the English text; the English description (No. 113 = lower 16 bits, No. 114 = upper 16 bits) and the overview table are followed here."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "No. 1 / Address 0",
+      "name": "Setpoint",
+      "description": "Actuator setpoint between Min (No. 106) and Max (No. 107).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "No. 2 / Address 1",
+      "name": "Override Control",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Open",
+        "2": "Close",
+        "3": "Min",
+        "4": "Mid",
+        "5": "Max"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "No. 3 / Address 2",
+      "name": "Command",
+      "description": "Returns to 0 after the command; Reset clears service info.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Adaption",
+        "2": "Test",
+        "3": "Sync",
+        "4": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "No. 4 / Address 3",
+      "name": "Actuator Type",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Actuator not connected",
+        "1": "Air / Water",
+        "2": "VAV / EPIV",
+        "3": "Fire",
+        "4": "Energy Valve",
+        "5": "6-way EPIV"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "No. 5 / Address 4",
+      "name": "Relative Position",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "No. 6 / Address 5",
+      "name": "Absolute Position",
+      "description": "Degrees for rotary, mm for linear actuators.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "No. 7 / Address 6",
+      "name": "Relative volumetric flow",
+      "description": "Percent of Vnom.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "No. 8 / Address 7",
+      "name": "Absolute volumetric flow",
+      "description": "0 to Vnom; the unit column reads 'm³/h Pa'.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "m³/h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "No. 9 / Address 8",
+      "name": "Sensor 1 Value",
+      "description": "mV if sensor type is Active, 0/1 if Switch.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "No. 11 / Address 10",
+      "name": "Absolute volumetric flow (unit selected)",
+      "description": "Flow in the unit chosen in No. 118; low word at No. 11.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 12,
+      "documented": "No. 13 / Address 12",
+      "name": "Setpoint Analog",
+      "description": "Setpoint when the actuator follows the analog signal.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 99,
+      "documented": "No. 100 / Address 99",
+      "name": "Bus Termination",
+      "description": "Shows whether the 120 ohm terminator is on; set it with the configuration tools.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active (120 ohm)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 100,
+      "documented": "No. 101 / Address 100",
+      "name": "Series Number 1st part",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 101,
+      "documented": "No. 102 / Address 101",
+      "name": "Series Number 2nd part",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 102,
+      "documented": "No. 103 / Address 102",
+      "name": "Series Number 4th part",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 103,
+      "documented": "No. 104 / Address 103",
+      "name": "Firmware Version",
+      "description": "e.g. 302 = version 3.02.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 104,
+      "documented": "No. 105 / Address 104",
+      "name": "Malfunction and Service Information",
+      "description": "Bit-coded; more than one bit can be set.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "1": "Mechanical travel increased",
+        "2": "Actuator cannot move",
+        "8": "Internal activity",
+        "9": "Gear disengaged",
+        "10": "Bus watchdog triggered"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 105,
+      "documented": "No. 106 / Address 105",
+      "name": "Vmin",
+      "description": "Must be at most Vmax.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 106,
+      "documented": "No. 107 / Address 106",
+      "name": "Vmax",
+      "description": "Must be at least Vmin and above 20 %.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 107,
+      "documented": "No. 108 / Address 107",
+      "name": "Sensor 1 Type",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Active / Hybrid",
+        "4": "Switch"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 108,
+      "documented": "No. 109 / Address 108",
+      "name": "Bus Fail Position",
+      "description": "Position taken when the bus watchdog expires.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None / last setpoint",
+        "1": "Fast close",
+        "2": "Fast open",
+        "3": "Mid position"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 109,
+      "documented": "No. 110 / Address 109",
+      "name": "Timeout for Bus Watchdog",
+      "description": "0 = watchdog off, max 3600 s.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 110,
+      "documented": "No. 111 / Address 110",
+      "name": "Nominal volumetric flow",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "m³/h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 112,
+      "documented": "No. 113 / Address 112",
+      "name": "Nominal volumetric flow (unit selected)",
+      "description": "Vnom in the unit chosen in No. 118; low word at No. 113.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.001,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 116,
+      "documented": "No. 117 / Address 116",
+      "name": "Control Mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Position control",
+        "1": "Flow control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 117,
+      "documented": "No. 118 / Address 117",
+      "name": "Unit Selection Flow",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "m³/s",
+        "1": "m³/h",
+        "2": "l/s",
+        "3": "l/min",
+        "4": "l/h",
+        "5": "gpm",
+        "6": "cfm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 118,
+      "documented": "No. 119 / Address 118",
+      "name": "Setpoint Source",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Analog (0-10 V on wire 3)",
+        "1": "Bus (Modbus No. 1)"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Write the setpoint in 0.01 % to address 0 (with Setpoint Source = Bus) and read relative position (address 4) and relative or absolute flow (addresses 6-7). Use Override Control (address 1) to force open/close and the bus watchdog (addresses 108-109) for a safe position on comms loss.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Setpoint %"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Override control"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Relative position"
+      },
+      {
+        "table": "holding_register",
+        "address": 6,
+        "why": "Relative flow"
+      },
+      {
+        "table": "holding_register",
+        "address": 7,
+        "why": "Absolute flow m³/h"
+      },
+      {
+        "table": "holding_register",
+        "address": 104,
+        "why": "Malfunction flags"
+      },
+      {
+        "table": "holding_register",
+        "address": 118,
+        "why": "Setpoint source"
+      }
+    ],
+    "enable": "Setpoint Source (address 118) must be Bus for Modbus setpoints. Bus termination is set with the actuator configuration tools.",
+    "watchdog": "Bus Fail Position (address 108) and Timeout for Bus Watchdog (address 109, 0-3600 s; 0 = off). If neither setpoint nor override is rewritten within the timeout, the actuator goes to the fail position and sets bit 10 in address 104.",
+    "quirks": [
+      "Register numbers in the sheet start at 1; send Address = No. - 1.",
+      "32-bit flows are low word first."
+    ],
+    "setup": [
+      "External 120 ohm termination at the line ends; No. 100 shows whether the built-in terminator is active.",
+      "Max 32 nodes without a repeater."
+    ],
+    "gotchas": [
+      "Vmax must stay above 20 % and at or above Vmin."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

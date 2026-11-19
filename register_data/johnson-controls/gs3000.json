@@ -1,0 +1,112 @@
+{
+  "manufacturer": "Johnson Controls",
+  "manufacturer_slug": "johnson-controls",
+  "model": "GS3000 indoor Modbus carbon monoxide transmitter",
+  "model_slug": "gs3000",
+  "short_model": "GS3000 CO",
+  "aliases": [
+    "GS3000",
+    "GS3001",
+    "24-11484-00021"
+  ],
+  "equipment_type": "Sensor",
+  "applies_to": "Johnson Controls GS3000 / GS3001 electrochemical CO transmitters with RS-485 Modbus RTU, per installation guide 24-11484-00021 (2020-10-01).",
+  "summary": "Wall-mounted electrochemical carbon monoxide transmitter (0-500 ppm) for garages and plant rooms. It is a Modbus RTU subordinate with fixed 9600 8N1 serial settings and a DIP-switch address, and it exposes just two holding registers: sensor status and the CO reading in ppm.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Table 4 lists Modbus address 40001 with offset +0 and 40002 with offset +1, and the example query frames (Figure 11) send start address 0x0000 for status and 0x0001 for CO, so the wire addresses are 0 and 1."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "GS3000 Indoor Modbus Carbon Monoxide Transmitter Installation Guide",
+    "doc_number": "24-11484-00021 Rev. --",
+    "revision_date": "2020-10-01",
+    "url": "https://docs.johnsoncontrols.com/bas/r/Johnson-Controls/en-US/GS3000-Indoor-Modbus-Carbon-Monoxide-Transmitter-Installation-Guide",
+    "pages": "p. 3 (network communication, Table 1 DIP address), p. 4 (Tables 2-4 RTU format and register addressing), p. 6 (specifications)"
+  },
+  "notes": [
+    "Source is Johnson Controls' documentation portal; the guide's PDF attachment is 241148400021.pdf.",
+    "Both registers are unsigned 16-bit words and read-only. Figure 11 shows both being read with function 03 (Read Holding Registers), one register per request; exception codes 01, 02 and 03 are returned for bad requests.",
+    "Serial settings other than the address are fixed at the factory (the guide notes they may be factory-customised)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "40001",
+      "name": "CO Sensor Status",
+      "description": "0x0000 normal, 0x0001 abnormal status.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Abnormal"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40002",
+      "name": "CO Concentration",
+      "description": "Measured carbon monoxide, 0-500 ppm range.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set a unique address on the 8-way DIP switch, wire A-/B+/shield, and poll holding registers 0-1 at 9600 8N1: status then CO in ppm.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "CO level in ppm"
+      },
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Sensor status (abnormal = fault)"
+      }
+    ],
+    "enable": "Modbus is always on; set the address (1-255) with the DIP switch before connecting to the network.",
+    "watchdog": null,
+    "quirks": [
+      "Address is binary on DIP switches weighted 128-64-32-16-8-4-2-1.",
+      "Baud, parity and stop bits are fixed (9600, none, 1)."
+    ],
+    "setup": [
+      "Fit the PCB EOL jumper (121 ohm) only on the devices at each end of the segment.",
+      "Use 22 AWG shielded twisted pair; ground the shield at one end; max 4000 ft per segment."
+    ],
+    "gotchas": [
+      "Half-wave power supply: keep the same circuit ground on all devices and the controller.",
+      "Allow 30 min warm-up before calibrating."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

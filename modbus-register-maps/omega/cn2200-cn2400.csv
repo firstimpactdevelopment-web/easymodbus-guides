@@ -1,0 +1,31 @@
+﻿# Omega CN2200 / CN2400 series temperature and process controllers (Modbus RTU) Modbus register map - easymodbus.com - source: https://assets.dwyeromega.com/manuals/M3372.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",15,15,40016,Setpoint select,SP1/SP2 standard; SP3-SP16 only on CN2400 16-setpoint option.,UINT16,1,,1,0,,Read/write,0 = SP1; 1 = SP2; 2 = SP3; 3 = SP4; 4 = SP5; 5 = SP6; 6 = SP7; 7 = SP8; 8 = SP9; 9 = SP10; 10 = SP11; 11 = SP12; 12 = SP13; 13 = SP14; 14 = SP15; 15 = SP16
+Holding register,"FC03 read / FC06, FC16 write",22,22,40023,Current program number,CN2400 programmer only.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,23,40024,Program status,CN2400 programmer only.,UINT16,1,,1,0,,Read,1 = Reset; 2 = Run; 4 = Hold; 8 = Holdback; 16 = Complete
+Holding register,"FC03 read / FC06, FC16 write",74,74,40075,Fast status byte,"Alarm, manual, sensor and loop break flags; also via function 7.",BITMAP16,1,,1,0,,Read,bit 0 = Alarm 1 active; bit 1 = Alarm 2 active; bit 2 = Alarm 3 active; bit 3 = Alarm 4 active; bit 4 = Manual mode; bit 5 = Sensor break; bit 6 = Loop break (open loop); bit 7 = Heater fail (load fault)
+Holding register,"FC03 read / FC06, FC16 write",75,75,40076,Summary output status word,"Bits 8, 11, 12 and 14 differ by model; see notes.",BITMAP16,1,,1,0,,Read,bit 0 = Alarm 1 active; bit 1 = Alarm 2 active; bit 2 = Alarm 3 active; bit 3 = Alarm 4 active; bit 4 = Manual mode; bit 5 = Sensor break; bit 6 = Loop break (open loop); bit 7 = Heater fail (load fault); bit 9 = Ramp/program complete; bit 10 = PV out of table range; bit 13 = Remote input sensor break
+Holding register,"FC03 read / FC06, FC16 write",76,76,40077,Control status word,Internal PID loop flags.,BITMAP16,1,,1,0,,Read,bit 0 = Control algorithm freeze; bit 1 = PV input sensor broken; bit 2 = PV out of sensor range; bit 3 = Self tune failed; bit 4 = PID servo signal; bit 5 = PID debump signal; bit 6 = Loop break fault; bit 7 = Integral accumulator frozen; bit 8 = Tune completed; bit 9 = Direct/reverse acting; bit 10 = Algorithm initialization; bit 11 = PID demand limited; bit 13 = Adaptive tune enabled; bit 14 = Automatic droop compensation enabled; bit 15 = Manual/auto mode switch
+Holding register,"FC03 read / FC06, FC16 write",77,77,40078,Instrument status word,CN2400 only.,BITMAP16,1,,1,0,,Read,bit 0 = Config/operator mode switch; bit 1 = Limit checking disabled; bit 2 = SRL ramp running; bit 3 = Remote setpoint active; bit 4 = Alarm acknowledge
+Holding register,"FC03 read / FC06, FC16 write",131,131,40132,Communications address,Slave address 1-254 (Addr in the Cms list).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",270,270,40271,Autotune enable,,UINT16,1,,1,0,,Read/write,0 = No tune; 1 = Tune
+Holding register,"FC03 read / FC06, FC16 write",272,272,40273,Automatic droop compensation,,UINT16,1,,1,0,,Read/write,0 = Manual reset; 1 = Calculated
+Holding register,"FC03 read / FC06, FC16 write",273,273,40274,Auto/manual select,,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Manual
+Holding register,"FC03 read / FC06, FC16 write",276,276,40277,Local/remote setpoint select,,UINT16,1,,1,0,,Read/write,0 = Local; 1 = Remote
+Holding register,"FC03 read / FC06, FC16 write",32770,1 (IEEE region: 2 x 1 + 8000h),432771,Process variable,"Measured value, full-resolution float.",FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",32772,2 (IEEE region: 2 x 2 + 8000h),432773,Target setpoint,Setpoint in use; write to change it.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32774,3 (IEEE region: 2 x 3 + 8000h),432775,Output power,% output level; the handbook's example selects manual (273) before changing it.,FLOAT32,2,ABCD,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32778,5 (IEEE region: 2 x 5 + 8000h),432779,Working setpoint,Setpoint the loop is actually using (read only).,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",32780,6 (IEEE region: 2 x 6 + 8000h),432781,Proportional band PID1,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32794,13 (IEEE region: 2 x 13 + 8000h),432795,Alarm 1 setpoint,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32796,14 (IEEE region: 2 x 14 + 8000h),432797,Alarm 2 setpoint,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32816,24 (IEEE region: 2 x 24 + 8000h),432817,Setpoint 1,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32818,25 (IEEE region: 2 x 25 + 8000h),432819,Setpoint 2,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32828,30 (IEEE region: 2 x 30 + 8000h),432829,High power limit,,FLOAT32,2,ABCD,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32830,31 (IEEE region: 2 x 31 + 8000h),432831,Low power limit,,FLOAT32,2,ABCD,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32874,53 (IEEE region: 2 x 53 + 8000h),432875,Valve position,"Valve position (CN2200 vPoS, CN2400 VP computed position).",FLOAT32,2,ABCD,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",32928,80 (IEEE region: 2 x 80 + 8000h),432929,Heater current,Load current with PDLINK mode 2.,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",32930,81 (IEEE region: 2 x 81 + 8000h),432931,Alarm 3 setpoint,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32932,82 (IEEE region: 2 x 82 + 8000h),432933,Alarm 4 setpoint,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32990,111 (IEEE region: 2 x 111 + 8000h),432991,Setpoint 1 high limit,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32992,112 (IEEE region: 2 x 112 + 8000h),432993,Setpoint 1 low limit,,FLOAT32,2,ABCD,1,0,,Read/write,

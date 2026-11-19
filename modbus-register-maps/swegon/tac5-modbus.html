@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swegon TAC5 Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="Swegon TAC5 Modbus register map: 91 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Swegon TAC5 Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="Swegon TAC5 Modbus register map: 91 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Swegon TAC5 Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="Swegon TAC5 Modbus register map: 91 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus",
+   "url": "https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus",
+   "name": "Swegon TAC5 Modbus Register List & Map | Easy Modbus",
+   "description": "Swegon TAC5 Modbus register map: 91 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-17",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus#dataset",
+   "name": "Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus register map",
+   "description": "TAC5 is the controller in Swegon/Global heat recovery units. With a SAT MODBUS or SAT WIFI/ETHERNET satellite it exposes everything as holding registers: identification, working mode and speed, fan flows, pressures and RPM, temperatures T1-T8, input/output states, run and maintenance hours, alarm bitmaps and the Modbus control block for speed, airflows, bypass, boost and fire alarm. This map covers the counter-flow (DG/DM/DT) registers an integrator needs, not every setup parameter. Swegon TAC5 Modbus register map: 91 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus",
+   "keywords": [
+    "Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus register map",
+    "Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus registers",
+    "Swegon Modbus map",
+    "TAC5 DG Modbus register map",
+    "TAC5 DM Modbus register map",
+    "TAC5 DT Modbus register map",
+    "Global HRglobal Modbus register map",
+    "Global HRup Modbus register map",
+    "Global HRflat Modbus register map",
+    "Global HRtotal Modbus register map",
+    "Global HRmural Modbus register map",
+    "SAT MODBUS Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "dateModified": "2026-11-17",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "TAC5 + MODBUS TABLE - Installation and user's manual",
+    "url": "https://pre.swegon.com/globalassets/digizuite/11944-en-global_tac5_modbustable_regulation_installation_en.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Swegon"
+    }
+   },
+   "about": {
+    "@type": "Product",
+    "name": "Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)",
+    "brand": {
+     "@type": "Brand",
+     "name": "Swegon"
+    },
+    "category": "Air handler (heat recovery unit controller)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@id": "https://easymodbus.com/modbus-register-maps/#catalog"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 91 registers: 91 holding registers. 19 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The table prints 4xxxx registers. Swegon's TAC5 + Modbus RTU manual says the leading 4 is not part of the address and that addresses are one-based in the documents but zero-based on the wire (register 41001 is sent as 1000). So 40201 is holding register 200 on the wire."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What byte order does the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) use for 32-bit values?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 199 Control master (Control master); HR 200 Speed selection via Modbus (Speed via Modbus); HR 51 Current working mode (Current working mode); HR 52 Current speed (Current speed); HR 154 Temperature T1 (fresh air in) (Fresh air temperature T1); HR 158 Temperature T5 (supply after exchanger) (Supply temperature T5); HR 299 Alarms 1 (Alarm bitmap 1); HR 249 Reset (Alarm reset)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Fit the SAT MODBUS satellite on the TAC5 board (power off) for RTU, or SAT WIFI / SAT ETHERNET for TCP. Then set 40200 to give Modbus control of the speed or airflows."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is TAC5 + MODBUS TABLE - Installation and user's manual (Cid 050338), revision 2021-09-20, published free by Swegon at https://pre.swegon.com/globalassets/digizuite/11944-en-global_tac5_modbustable_regulation_installation_en.pdf."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Swegon",
+     "item": "https://easymodbus.com/modbus-register-maps/swegon/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)",
+     "item": "https://easymodbus.com/modbus-register-maps/swegon/tac5-modbus"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/swegon/">Swegon</a></li><li aria-current="page">TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)</li></ol>
+<p class="eyebrow">Air handler (heat recovery unit controller) &middot; Modbus register map</p><h1><span class="mfr">Swegon</span> TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus register map</h1><p class="updated">Updated 17 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>TAC5 is the controller in Swegon/Global heat recovery units. With a SAT MODBUS or SAT WIFI/ETHERNET satellite it exposes everything as holding registers: identification, working mode and speed, fan flows, pressures and RPM, temperatures T1-T8, input/output states, run and maintenance hours, alarm bitmaps and the Modbus control block for speed, airflows, bypass, boost and fire alarm. This map covers the counter-flow (DG/DM/DT) registers an integrator needs, not every setup parameter.</p>
+<p>This page lists <strong>91 Modbus registers</strong> for the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) &mdash; 19 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Swegon&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/swegon/">Swegon</a></dd></div><div><dt>Model</dt><dd>TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/hvac/">Air handler (heat recovery unit controller)</a></dd></div><div><dt>Registers</dt><dd>91 (19 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>TAC5 DG, TAC5 DM, TAC5 DT, Global HRglobal, Global HRup, Global HRflat, Global HRtotal, Global HRmural, SAT MODBUS</dd></div><div><dt>Source document</dt><dd><a href="https://pre.swegon.com/globalassets/digizuite/11944-en-global_tac5_modbustable_regulation_installation_en.pdf" rel="nofollow noopener" target="_blank">TAC5 + MODBUS TABLE - Installation and user&#x27;s manual &middot; Cid 050338 &middot; rev. 2021-09-20</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/swegon/tac5-modbus.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/swegon/tac5-modbus.json">JSON</a>
+  <a class="btn" href="https://pre.swegon.com/globalassets/digizuite/11944-en-global_tac5_modbustable_regulation_installation_en.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)</h2>
+<div class="answer"><b>Integration in brief</b><p>Set 40200 = 1 and write 0-3 to 40201 for stop/I/II/III, or 40200 = 3 and write supply/exhaust flows to 40204/40205. Read 40052/40053 for mode and speed, 40155-40162 for temperatures and 40300-40304 for alarms; write 1 to 40250 to reset alarms.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-199">HR 199</a></td><td class="n">Control master</td><td class="f">INT16</td><td>Control master</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-200">HR 200</a></td><td class="n">Speed selection via Modbus</td><td class="f">INT16</td><td>Speed via Modbus</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-51">HR 51</a></td><td class="n">Current working mode</td><td class="f">INT16</td><td>Current working mode</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-52">HR 52</a></td><td class="n">Current speed</td><td class="f">INT16</td><td>Current speed</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-154">HR 154</a></td><td class="n">Temperature T1 (fresh air in)</td><td class="f">INT16</td><td>Fresh air temperature T1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-158">HR 158</a></td><td class="n">Temperature T5 (supply after exchanger)</td><td class="f">INT16</td><td>Supply temperature T5</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-299">HR 299</a></td><td class="n">Alarms 1</td><td class="f">BITMAP16</td><td>Alarm bitmap 1</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-249">HR 249</a></td><td class="n">Reset</td><td class="f">INT16</td><td>Alarm reset</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Fit the SAT MODBUS satellite on the TAC5 board (power off) for RTU, or SAT WIFI / SAT ETHERNET for TCP. Then set 40200 to give Modbus control of the speed or airflows.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Only holding registers are used (FC 03, 06, 16); up to 60 registers per request.</li><li>All registers are signed 16-bit.</li><li>32-bit values are low word first (CDAB).</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Default address 1, changeable in 40543; give every TAC5 on the bus its own address.</li><li>RS485 B-/A+ on one twisted pair plus GND, up to 1000 m.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>A bad seating of the SAT MODBUS can destroy both boards; fit it with power off.</li><li>Writing EEPROM-backed setup values often wears out the memory.</li></ul>
+</section>
+<h2 id="registers">Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>91</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">91 of 91 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-0"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">0<small>doc 40001</small></td><td class="n">Magic number</td><td class="d">Two words: 19533, 20051 (ASCII &#x27;LMNS&#x27;); identifies a Swegon product.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2<small>doc 40003</small></td><td class="n">Product identification code (CID)</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3<small>doc 40004</small></td><td class="n">Modbus mapping version</td><td class="d">Major x 100 + minor.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4<small>doc 40005</small></td><td class="n">Software version, major</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-5"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">5<small>doc 40006</small></td><td class="n">Software version, minor</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6<small>doc 40007</small></td><td class="n">Software version, revision</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7<small>doc 40008</small></td><td class="n">Controller reset flag</td><td class="d">1 after a controller reset; the master may write 0.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No reset seen; 1 = Controller has reset</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8<small>doc 40009</small></td><td class="n">Software build number</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-21"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">21<small>doc 40022</small></td><td class="n">Factory option: preheat</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = KWin</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-22"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">22<small>doc 40023</small></td><td class="n">Factory option: postheat</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = KWout; 2 = NV</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-23"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">23<small>doc 40024</small></td><td class="n">Factory option: CT IN damper</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-24"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">24<small>doc 40025</small></td><td class="n">Proportional bypass fitted</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-25"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">25<small>doc 40026</small></td><td class="n">Backward fans</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-26"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">26<small>doc 40027</small></td><td class="n">Heat wheel</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-27"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">27<small>doc 40028</small></td><td class="n">TQ mode</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-51"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">51<small>doc 40052</small></td><td class="n">Current working mode</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = CA; 2 = LS; 4 = CPs; 5 = CAs; 6 = TQ; 9 = INIT</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-52"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">52<small>doc 40053</small></td><td class="n">Current speed</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Stop; 1 = Low / I; 2 = Medium / II; 3 = High / III</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-53"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">53<small>doc 40054</small></td><td class="n">Current set point (SET VAL)</td><td class="d">Unit given by 40055.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-54"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">54<small>doc 40055</small></td><td class="n">Current set point unit</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = m³/h; 1 = Pa; 2 = 0.1 V; 3 = % of max torque</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-55"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">55<small>doc 40056</small></td><td class="n">Current set point supply fans F1/F2</td><td class="d">m³/h, Pa, 0.1 V or %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-56"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">56<small>doc 40057</small></td><td class="n">Current set point exhaust fans F3/F4</td><td class="d">m³/h, Pa, 0.1 V or %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-57"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">57<small>doc 40058</small></td><td class="n">Preheat set point</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-58"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">58<small>doc 40059</small></td><td class="n">Current comfort temperature set point</td><td class="d">0 = supply heating and cooling off.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-59"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">59<small>doc 40060</small></td><td class="n">Exhaust/supply ratio</td><td class="d">Unbalance between flows, 5-999 %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-64"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">64<small>doc 40065</small></td><td class="n">Fan 1 (supply 1) flow or torque</td><td class="d">m³/h or % torque.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-65"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">65<small>doc 40066</small></td><td class="n">Fan 1 pressure</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>Pa</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-66"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">66<small>doc 40067</small></td><td class="n">Fan 1 sent torque</td><td class="d">0-255 (127 = 50 %).</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-67"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">67<small>doc 40068</small></td><td class="n">Fan 1 RPM</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>rpm</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-68"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">68<small>doc 40069</small></td><td class="n">Fan 2 (supply 2) flow or torque</td><td class="d">m³/h or % torque.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-69"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">69<small>doc 40070</small></td><td class="n">Fan 2 pressure</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>Pa</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-70"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">70<small>doc 40071</small></td><td class="n">Fan 2 sent torque</td><td class="d">0-255 (127 = 50 %).</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-71"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">71<small>doc 40072</small></td><td class="n">Fan 2 RPM</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>rpm</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-72"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">72<small>doc 40073</small></td><td class="n">Fan 3 (exhaust 1) flow or torque</td><td class="d">m³/h or % torque.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-73"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">73<small>doc 40074</small></td><td class="n">Fan 3 pressure</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>Pa</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-74"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">74<small>doc 40075</small></td><td class="n">Fan 3 sent torque</td><td class="d">0-255 (127 = 50 %).</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-75"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">75<small>doc 40076</small></td><td class="n">Fan 3 RPM</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>rpm</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-76"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">76<small>doc 40077</small></td><td class="n">Fan 4 (exhaust 2) flow or torque</td><td class="d">m³/h or % torque.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-77"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">77<small>doc 40078</small></td><td class="n">Fan 4 pressure</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>Pa</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-78"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">78<small>doc 40079</small></td><td class="n">Fan 4 sent torque</td><td class="d">0-255 (127 = 50 %).</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-79"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">79<small>doc 40080</small></td><td class="n">Fan 4 RPM</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>rpm</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-80"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">80<small>doc 40081</small></td><td class="n">Run time</td><td class="d">Unit working hours, 0-999999.</td><td class="f">INT32</td><td class="f">CDAB</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-82"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">82<small>doc 40083</small></td><td class="n">Antifreeze status, integrated exchangers</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = Air-air exchanger antifreeze; 2 = Warm water exchanger antifreeze</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-83"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">83<small>doc 40084</small></td><td class="n">Bypass status</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Closed; 1 = Open; 2 = Partially open</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-84"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">84<small>doc 40085</small></td><td class="n">CTin damper status</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Closed or closing; 1 = Opening; 2 = Open</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-85"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">85<small>doc 40086</small></td><td class="n">Post ventilation status</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Active</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-86"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">86<small>doc 40087</small></td><td class="n">Current control mode</td><td class="d">What is driving the airflows.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">1 = Fatal error (fans stopped); 2 = Fire alarm; 3 = RC TAC5 remote; 4 = External contacts K1-K3; 5 = Time scheduler (RC TAC5); 6 = Time scheduler (Modbus/GRC); 7 = Modbus 40201; 8 = Bypass; 9 = Boost; 10 = Modbus 40204/40205; 11 = KNX</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-88"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">88<small>doc 40089</small></td><td class="n">Comfort heating set point</td><td class="d">0 = heating off.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-89"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">89<small>doc 40090</small></td><td class="n">Comfort cooling set point</td><td class="d">0 = cooling off.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-90"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">90<small>doc 40091</small></td><td class="n">Bypass valve position</td><td class="d">0 = closed, 100 = fully open.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-95"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">95<small>doc 40096</small></td><td class="n">Minor maintenance hours</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-97"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">97<small>doc 40098</small></td><td class="n">Changeover status</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Inactive; 1 = Heating; 2 = Cooling</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-98"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">98<small>doc 40099</small></td><td class="n">Defrost state</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Idle; 1 = Active; 2 = Stop to drain water</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-108"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">108<small>doc 40109</small></td><td class="n">Major maintenance hours</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-149"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">149<small>doc 40150</small></td><td class="n">Digital inputs block 0</td><td class="d">1 = input on.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = K1; bit 1 = K2 (on/off); bit 2 = K3 (on/off); bit 3 = IN1 master selection; bit 4 = IN2; bit 5 = IN3; bit 6 = IN4; bit 7 = IN5; bit 8 = IN6; bit 9 = IN7; bit 10 = IN8; bit 11 = IN9; bit 12 = IN10 (SATBA post cooling off); bit 13 = IN11 (SATBA heat/cool select); bit 14 = IN12</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-151"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">151<small>doc 40152</small></td><td class="n">K1 analogue voltage</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-152"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">152<small>doc 40153</small></td><td class="n">K2 analogue voltage</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-153"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">153<small>doc 40154</small></td><td class="n">K3 analogue voltage</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-154"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">154<small>doc 40155</small></td><td class="n">Temperature T1 (fresh air in)</td><td class="d">-999 open circuit, +999 short circuit.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-155"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">155<small>doc 40156</small></td><td class="n">Temperature T2 (extract air in)</td><td class="d">-999 open circuit, +999 short circuit.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-156"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">156<small>doc 40157</small></td><td class="n">Temperature T3 (exhaust after exchanger)</td><td class="d">-999 open circuit, +999 short circuit.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-157"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">157<small>doc 40158</small></td><td class="n">Temperature T4 (water coil, NV option)</td><td class="d">-999 open circuit, +999 short circuit.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-158"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">158<small>doc 40159</small></td><td class="n">Temperature T5 (supply after exchanger)</td><td class="d">-999 open circuit, +999 short circuit.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-160"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">160<small>doc 40161</small></td><td class="n">Temperature T7 (hot water coil)</td><td class="d">-999 open circuit, +999 short circuit.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-161"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">161<small>doc 40162</small></td><td class="n">Temperature T8 (cold water coil)</td><td class="d">-999 open circuit, +999 short circuit.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-167"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">167<small>doc 40168</small></td><td class="n">Digital outputs block 0</td><td class="d">1 = output on.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = AL1 alarm; bit 1 = BYPASS 1; bit 2 = BYPASS 2; bit 3 = CT; bit 4 = KWin; bit 5 = KWout; bit 6 = OR1 SAT pressure alarm; bit 7 = OR2 SAT fan on; bit 8 = OR3 SAT water pump NV; bit 9 = OR4 SAT bypass on; bit 10 = SATBA WP; bit 11 = SATBA OUT9 KWext</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-185"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">185<small>doc 40186</small></td><td class="n">Preheat KWin power</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-186"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">186<small>doc 40187</small></td><td class="n">Postheat KWout power</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-188"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">188<small>doc 40189</small></td><td class="n">Heat wheel measured RPM</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>rpm</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-199"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">199<small>doc 40200</small></td><td class="n">Control master</td><td class="d">Who sets the speed.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = RC TAC5 remote; 1 = Modbus via 40201; 2 = Time table; 3 = Modbus airflows via 40204/40205</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-200"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">200<small>doc 40201</small></td><td class="n">Speed selection via Modbus</td><td class="d">Only when 40200 = 1.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Stop; 1 = Low / I; 2 = Medium / II; 3 = High / III</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-203"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">203<small>doc 40204</small></td><td class="n">Supply airflow/torque via Modbus</td><td class="d">Only when 40200 = 3; 0-9999.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-204"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">204<small>doc 40205</small></td><td class="n">Exhaust airflow/torque via Modbus</td><td class="d">Only when 40200 = 3; 0-9999.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-220"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">220<small>doc 40221</small></td><td class="n">External pressure alarm</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No alarm; 1 = Pressure alarm active</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-221"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">221<small>doc 40222</small></td><td class="n">Fire alarm</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No alarm; 1 = Fire alarm active</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-222"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">222<small>doc 40223</small></td><td class="n">Bypass override</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Auto (T1/T2); 1 = Force open; 2 = Force closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-223"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">223<small>doc 40224</small></td><td class="n">Force automatic mode</td><td class="d">1 = force automatic mode.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-224"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">224<small>doc 40225</small></td><td class="n">Post heating disable</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Allowed; 1 = Not allowed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-227"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">227<small>doc 40228</small></td><td class="n">Boost control</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = Boost active</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-228"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">228<small>doc 40229</small></td><td class="n">Post cooling disable</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Allowed; 1 = Not allowed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-229"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">229<small>doc 40230</small></td><td class="n">Cooling or heating selection</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Heating; 1 = Cooling</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-249"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">249<small>doc 40250</small></td><td class="n">Reset</td><td class="d">Write 1 to clear alarms and resume; reads 0.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-251"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">251<small>doc 40252</small></td><td class="n">Reset run time</td><td class="d">Write 1 to zero the run time.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-257"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">257<small>doc 40258</small></td><td class="n">Bypass position override</td><td class="d">-1 = no override, 0-100 % position.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-299"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">299<small>doc 40300</small></td><td class="n">Alarms 1</td><td class="d">1 = alarm active.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Program error; bit 1 = Data error; bit 2 = Fan 1; bit 3 = Fan 2; bit 4 = Fan 3; bit 5 = Fan 4; bit 6 = Pressure F1; bit 7 = Pressure F3; bit 8 = T1 open; bit 9 = T1 short; bit 10 = T2 open; bit 11 = T2 short; bit 12 = T3 open; bit 13 = T3 short; bit 14 = T4 open; bit 15 = T4 short</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-300"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">300<small>doc 40301</small></td><td class="n">Alarms 2</td><td class="d">1 = alarm active.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = T5 open; bit 1 = T5 short; bit 4 = T7 open; bit 5 = T7 short; bit 6 = T8 open; bit 7 = T8 short; bit 8 = CP fan 1 high; bit 9 = CP fan 1 low; bit 10 = CP fan 3 high; bit 11 = CP fan 3 low; bit 12 = LS fan 1 low; bit 13 = LS fan 1 high; bit 14 = LS fan 2 low; bit 15 = LS fan 2 high</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-301"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">301<small>doc 40302</small></td><td class="n">Alarms 3</td><td class="d">1 = alarm active.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = LS fan 3 low; bit 1 = LS fan 3 high; bit 2 = LS fan 4 low; bit 3 = LS fan 4 high; bit 4 = CA fan 1 low; bit 5 = CA fan 1 high; bit 6 = CA fan 2 low; bit 7 = CA fan 2 high; bit 8 = CA fan 3 low; bit 9 = CA fan 3 high; bit 10 = CA fan 4 low; bit 11 = CA fan 4 high; bit 12 = Pa init F1 not stable; bit 13 = Pa init F3 not stable; bit 14 = Pa init F1 too low; bit 15 = Pa init F3 too low</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-302"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">302<small>doc 40303</small></td><td class="n">Alarms 4</td><td class="d">1 = alarm active.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Pa init F1 not achieved; bit 1 = Pa init F3 not achieved; bit 2 = Pa init F1 too high; bit 3 = Pa init F3 too high; bit 4 = Maintenance warning; bit 5 = Maintenance fatal; bit 6 = dPa; bit 7 = Fire; bit 8 = End of fire alarm; bit 9 = V lower than Vlow; bit 10 = V higher than Vhigh; bit 11 = Preheat reduced; bit 12 = Preheat stop; bit 13 = Antifreeze reduced; bit 14 = Antifreeze stop; bit 15 = Postheat set point (comfort too low)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-303"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">303<small>doc 40304</small></td><td class="n">Alarms 5</td><td class="d">1 = alarm active.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Postcooling set point (comfort too high); bit 1 = SAT-BA module not responding; bit 2 = Condensate drain pan full; bit 3 = T5 antifreeze stop; bit 4 = Heat wheel RPM out of range; bit 5 = Proportional bypass position; bit 6 = Antifreeze NV stop; bit 7 = Antifreeze BA+ stop; bit 8 = Antifreeze BA- stop; bit 9 = Antifreeze BA+/- stop; bit 10 = Minor maintenance; bit 11 = Defrost alarm; bit 12 = Modbus communication error; bit 13 = Major maintenance</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-425"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">425<small>doc 40426</small></td><td class="n">Fans working mode</td><td class="d">Setup value.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = CA constant airflow; 2 = LS 0-10 V linked; 4 = CPs constant pressure; 6 = TQ constant torque; 9 = INIT</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-426"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">426<small>doc 40427</small></td><td class="n">Exhaust/supply flows ratio</td><td class="d">5-999 %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-542"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">542<small>doc 40543</small></td><td class="n">Modbus address</td><td class="d">1-247.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>The RTU manual states that all values are signed and that 32-bit values are sent low word first, then high word (Val32 = HIGH x 65536 + LOW), so 32-bit registers here are INT32 CDAB. When writing a 32-bit value, write the low word first; the value updates when the high word arrives.</li><li>Only a selection is listed: the general info, visualization, control and alarm blocks plus the working mode, flow ratio and Modbus address setup registers. Setup, advanced setup and time-table registers (40400-41xxx) are left out; see the source table.</li><li>Registers marked E1 in the source are stored in EEPROM (about 100 000 write cycles); do not write them cyclically.</li><li>Flow values are m³/h or % of maximum torque depending on the working mode (CA vs TQ); 40055 gives the unit of 40054.</li><li>Serial defaults (9600 baud, no parity, 8 data bits, 1 stop bit, address 1) are from the RTU manual; TCP via SAT WIFI/ETHERNET is described in a separate Swegon manual.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)</h2><div class="faq"><details open><summary>What Modbus registers does the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) have?</summary><p>This map lists 91 registers: 91 holding registers. 19 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The table prints 4xxxx registers. Swegon&#x27;s TAC5 + Modbus RTU manual says the leading 4 is not part of the address and that addresses are one-based in the documents but zero-based on the wire (register 41001 is sent as 1000). So 40201 is holding register 200 on the wire.</p></details><details><summary>What byte order does the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)?</summary><p>Start with HR 199 Control master (Control master); HR 200 Speed selection via Modbus (Speed via Modbus); HR 51 Current working mode (Current working mode); HR 52 Current speed (Current speed); HR 154 Temperature T1 (fresh air in) (Fresh air temperature T1); HR 158 Temperature T5 (supply after exchanger) (Supply temperature T5); HR 299 Alarms 1 (Alarm bitmap 1); HR 249 Reset (Alarm reset).</p></details><details><summary>How do I enable Modbus control of the Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural)?</summary><p>Fit the SAT MODBUS satellite on the TAC5 board (power off) for RTU, or SAT WIFI / SAT ETHERNET for TCP. Then set 40200 to give Modbus control of the speed or airflows.</p></details><details><summary>Where is the official Swegon TAC5 DG/DM/DT controller (Global HRglobal, HRup, HRflat, HRtotal, HRmural) Modbus documentation?</summary><p>The source is TAC5 + MODBUS TABLE - Installation and user&#x27;s manual (Cid 050338), revision 2021-09-20, published free by Swegon at https://pre.swegon.com/globalassets/digizuite/11944-en-global_tac5_modbustable_regulation_installation_en.pdf.</p></details></div>
+<h2>More Swegon Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/swegon/react-parasol-zenith" data-row><span class="k">Actuator / valve (comfort module air damper)</span><h3>Swegon REACT Parasol Zenith with Belimo actuator (Modbus RTU)</h3><p>Swegon REACT Parasol Zenith comfort modules fitted with the Belimo Modbus actuator; Swegon Modbus settings sheet dated 2022-08-10.</p><div class="meta">27 registers &middot; 11 writable &middot; RTU</div><span class="sr-only"> Also known as: Parasol Zenith REACT, REACT damper actuator</span></a></li><li><a class="card" href="/modbus-register-maps/swegon/silver-c-fan-motor-control" data-row><span class="k">Air handler fan motor control</span><h3>Swegon SILVER C fan motor control (RX/PX/CX/SD, generation E/F)</h3><p>The EC/FC fan motor controllers inside Swegon SILVER C air handling units, generation E/F, document SILVERCModbus.210809.</p><div class="meta">106 registers &middot; 46 writable &middot; RTU</div><span class="sr-only"> Also known as: SILVER C RX, SILVER C PX, SILVER C CX, SILVER C SD, SILVER C generation E, SILVER C generation F</span></a></li><li><a class="card" href="/modbus-register-maps/swegon/tac6-modbus" data-row><span class="k">Air handler (heat recovery unit controller)</span><h3>Swegon TAC6 controller (Global units)</h3><p>Swegon (Global) units with the TAC6 regulation board and a Modbus satellite; TAC6 + MODBUS TABLE Cid 050360 (2021-05-20).</p><div class="meta">93 registers &middot; 19 writable &middot; TCP</div><span class="sr-only"> Also known as: Global TAC6, SAT WIFI-ETHERNET (TAC6)</span></a></li></ul>
+<p class="updated">Source: <a href="https://pre.swegon.com/globalassets/digizuite/11944-en-global_tac5_modbustable_regulation_installation_en.pdf" rel="nofollow noopener" target="_blank">TAC5 + MODBUS TABLE - Installation and user&#x27;s manual &middot; Cid 050338 &middot; rev. 2021-09-20</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+﻿# VTS RH+T-SENS-D-MODRTU humidity and temperature transducer Modbus register map - easymodbus.com - source: https://vtsgroup.com/files/document-files/3433/HUMID_EN_2.0.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0x0000,40001,RH_REG (relative humidity),0-100.0 %RH.,UINT16,1,,0.1,0,%RH,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,0x0001,40002,TEMP_REG (temperature),"Signed, -40.00 to 123.80 °C.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,0x0002,40003,TEST_VAL_REG,Always reads 1000 (0x03E8); use it to check the link.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3,0x0003,40004,PASS_REG (password),Writing 1234 (0x04D2) runs the command in COMMAND_REG/PARAM_REG.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,0x0004,40005,COMMAND_REG,Command number; set to 0xEEEE after a bad parameter.,UINT16,1,,1,0,,Read/write,1 = Set device address; 2 = Set baud rate; 3 = Set parity; 4 = Set stop bits; 6 = Device reset
+Holding register,"FC03 read / FC06, FC16 write",5,0x0005,40006,PARAM_REG,Parameter for the command (see notes).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",10,0x000A,40011,STATUS_REG,,UINT16,1,,1,0,,Read,0 = No sensor; 1 = Sensor OK; 2 = Error
+Holding register,"FC03 read / FC06, FC16 write",11,0x000B,40012,DEV_ID_REG (device identification),"Bits 11-15 device family, 9-10 hardware version, 4-8 type, 0-1 duct/room.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,0x000C,40013,SOFT_VER_REG (software version),Four nibbles N.AB + revision letter (0x3210 = 3.21a).,UINT16,1,,1,0,,Read,

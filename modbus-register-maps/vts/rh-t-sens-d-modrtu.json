@@ -1,0 +1,242 @@
+{
+ "manufacturer": "VTS",
+ "manufacturer_slug": "vts",
+ "model": "RH+T-SENS-D-MODRTU humidity and temperature transducer",
+ "model_slug": "rh-t-sens-d-modrtu",
+ "short_model": "RH+T-SENS-D-MODRTU",
+ "aliases": [
+  "RH&T-SENS-D-MODRTU",
+  "VTS duct humidity sensor"
+ ],
+ "equipment_type": "Sensor",
+ "applies_to": "VTS RH+T-SENS-D-MODRTU duct humidity and temperature transducer (Sensirion SHT31-DIS-B), manual ver. 2.0 (11.2021).",
+ "summary": "A duct humidity and temperature transducer from VTS with a 0-5/0-10 V humidity output and an RS-485 Modbus RTU port. Humidity, temperature, a fixed test value and sensor status are plain 16-bit holding registers; address, baud rate, parity and stop bits are changed by writing a password, command and parameter.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 19200,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "The register map prints hex addresses starting at 0x0000, and the DEV_ID and SOFT_VER sections give 'addr=11=0x000B' and 'addr=12=0x000C', so the printed value is the wire address."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Humidity Transducer RH+T-SENS-D-MODRTU",
+  "doc_number": "ver. 2.0",
+  "revision_date": "2021-11",
+  "url": "https://vtsgroup.com/files/document-files/3433/HUMID_EN_2.0.pdf",
+  "pages": "p. 7-8 DIP switches, p. 10 register map, p. 11 command table and DEV_ID, p. 12 SOFT_VER and functions, p. 14 byte order"
+ },
+ "notes": [
+  "All registers are 16-bit; there are no 32-bit values.",
+  "Command parameters: 1 = address 1-247 (default 1); 2 = baud code 24/48/96/192/384/576/1152 for 2400-115200 bit/s (default 192 = 19200); 3 = parity 0 none (default), 1 even, 2 odd; 4 = stop bits 1 (default) or 2; 6 = 1 software reset of the device, 2 reset of the sensor module.",
+  "Commands can be sent as one FC16 write of password + command + parameter, or as single writes with the password written last.",
+  "Reserved registers 0x0006-0x0009 read 0 and are not listed. Reading an address outside the map returns exception 02.",
+  "The DIP switches can override baud rate, parity and address; they are read only at power-up or after RESET."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0x0000",
+   "name": "RH_REG (relative humidity)",
+   "description": "0-100.0 %RH.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%RH",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "0x0001",
+   "name": "TEMP_REG (temperature)",
+   "description": "Signed, -40.00 to 123.80 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "0x0002",
+   "name": "TEST_VAL_REG",
+   "description": "Always reads 1000 (0x03E8); use it to check the link.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "0x0003",
+   "name": "PASS_REG (password)",
+   "description": "Writing 1234 (0x04D2) runs the command in COMMAND_REG/PARAM_REG.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "0x0004",
+   "name": "COMMAND_REG",
+   "description": "Command number; set to 0xEEEE after a bad parameter.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Set device address",
+    "2": "Set baud rate",
+    "3": "Set parity",
+    "4": "Set stop bits",
+    "6": "Device reset"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "0x0005",
+   "name": "PARAM_REG",
+   "description": "Parameter for the command (see notes).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "0x000A",
+   "name": "STATUS_REG",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No sensor",
+    "1": "Sensor OK",
+    "2": "Error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "0x000B",
+   "name": "DEV_ID_REG (device identification)",
+   "description": "Bits 11-15 device family, 9-10 hardware version, 4-8 type, 0-1 duct/room.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "0x000C",
+   "name": "SOFT_VER_REG (software version)",
+   "description": "Four nibbles N.AB + revision letter (0x3210 = 3.21a).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read holding registers 0-2 with FC03: humidity in 0.1 %RH, temperature in 0.01 °C (signed) and the 1000 test value; check STATUS_REG (0x000A) for a sensor fault.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Relative humidity"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Link test value"
+   },
+   {
+    "table": "holding_register",
+    "address": 10,
+    "why": "Sensor status"
+   }
+  ],
+  "enable": "Modbus RTU is always on. Set the address on the right DIP switch (binary, 1-247) or by command; left DIP switches 3-6 pick fixed parity/baud or 'use software settings'.",
+  "watchdog": null,
+  "quirks": [
+   "Configuration only runs when the password register is written with 1234.",
+   "Fixed parity choice 'no parity, 2 stop bits' exists on the DIP switch."
+  ],
+  "setup": [
+   "Switch on the built-in 120 ohm terminator (left DIP 1) at the line ends.",
+   "Restart the transducer after changing DIP switches."
+  ],
+  "gotchas": [
+   "The analogue output only carries humidity; temperature is Modbus only."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/vts/rh-t-sens-d-modrtu",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

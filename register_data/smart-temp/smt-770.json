@@ -1,0 +1,720 @@
+{
+  "manufacturer": "Smart Temp",
+  "manufacturer_slug": "smart-temp",
+  "model": "SMT-770 thermostat with EC-02 module (Modbus RTU)",
+  "model_slug": "smt-770",
+  "short_model": "SMT-770",
+  "aliases": [
+    "SMT-770 Chameleon",
+    "EC-02",
+    "SMT770"
+  ],
+  "equipment_type": "Thermostat",
+  "applies_to": "SMT-770 thermostat (with or without a paired EC-02 module), communications addendum v4.6 for firmware 2.31.",
+  "summary": "The Smart Temp SMT-770 is an Australian 24 V multifunction thermostat with an RS-485 Modbus RTU port; a paired EC-02 output module appears as the same device. This map covers relay coils, thermostat and fan modes, set temperatures, room temperature, network settings and the coil override.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 7,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Coils are printed 00001-00005 and holding registers 40002 upward (Modicon references); subtract 1 (coils) or 40001 (holding registers) for the wire address."
+  },
+  "default_word_order": null,
+  "firmware": "2.31 (addendum v4.6)",
+  "source": {
+    "title": "SMT-770 / EC-02 Communications Addendum",
+    "doc_number": "Version 4.6 (firmware 2.31, 1/03/12)",
+    "revision_date": null,
+    "url": "https://digitalassets.reecegroup.com.au/m/b5ba7cc34ddc69cd/original/Modbus-Smart-Temp-SMT-770-Chameleon-Multifunction-Thermostat.pdf",
+    "unofficial": true,
+    "pages": "protocol p. 1; address setting p. 3; coils p. 4; holding registers pp. 4-13"
+  },
+  "notes": [
+    "This copy is hosted by the distributor Reece; it is the Smart Temp SMT-770 / EC-02 Communications Addendum, version 4.6.",
+    "Set temperatures in Celsius mode are stored as (°C x 2) + 20, so value = raw x 0.5 - 10; in Fahrenheit mode the raw value is °F directly. The map shows the Celsius scaling; check 40029.",
+    "Left out: 40310/40313/40316 room and outside-air temperatures, whose Celsius formula is printed two ways (subtract 20 or subtract 80); register 4021 (security PIN, address misprinted); the second 40318 row (heating set temperature, duplicate address); the TT temperature 40356, whose label says °F while its range is in °C; schedule registers 40513 upward.",
+    "Many registers only act in particular DIP-switch modes (DIP 6/8 select manual, two-setpoint, commercial or residential programmable). Writing values that conflict with the DIP settings is ignored.",
+    "Factory Modbus address is 7. The addendum warns that writing unlisted registers can corrupt the thermostat setup.",
+    "The addendum prints 40318 twice (active set temperature, then heating set temperature after 40319). This map keeps the first, in-sequence 40318 as the active setpoint; confirm on site."
+  ],
+  "registers": [
+    {
+      "table": "coil",
+      "address": 0,
+      "documented": "00001",
+      "name": "G1 relay",
+      "description": "Writable from firmware 2.19; see coil override 40062.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 1,
+      "documented": "00002",
+      "name": "G2/Y2 relay",
+      "description": "Writable from firmware 2.19; see coil override 40062.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 2,
+      "documented": "00003",
+      "name": "G3/W2/OB relay",
+      "description": "Writable from firmware 2.19; see coil override 40062.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 3,
+      "documented": "00004",
+      "name": "Y1 relay",
+      "description": "Writable from firmware 2.19; see coil override 40062.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 4,
+      "documented": "00005",
+      "name": "W1 relay",
+      "description": "Writable from firmware 2.19; see coil override 40062.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40002",
+      "name": "Thermostat mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "2": "Heat only",
+        "3": "Cool only",
+        "4": "Auto changeover",
+        "5": "Emergency heat",
+        "6": "Cool and dry (v2.3+)",
+        "7": "Auto and dry (v2.3+)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "40003",
+      "name": "Fan mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto (cycles with heat/cool)",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "40004",
+      "name": "Program hold",
+      "description": "Only in residential programmable mode (DIP 6 and 8 on).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "Temporary hold",
+        "2": "Permanent hold"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "40005",
+      "name": "Heat set temperature (hold)",
+      "description": "Two-setpoint modes. °C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "40006",
+      "name": "Cool set temperature (hold)",
+      "description": "Two-setpoint modes. °C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "40010",
+      "name": "Fan speed",
+      "description": "Needs 3-speed fan DIP setting.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "Low",
+        "2": "Medium",
+        "3": "High",
+        "4": "Auto"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "40011",
+      "name": "Day cool set temperature",
+      "description": "255 = off. °C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "40012",
+      "name": "Day heat set temperature",
+      "description": "0 = off. °C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 12,
+      "documented": "40013",
+      "name": "Night cool set temperature",
+      "description": "255 = off. °C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 13,
+      "documented": "40014",
+      "name": "Night heat set temperature",
+      "description": "0 = off. °C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 14,
+      "documented": "40015",
+      "name": "Single set point (manual mode)",
+      "description": "DIP 6 and 8 off. °C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 18,
+      "documented": "40019",
+      "name": "Current running program",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Manual mode",
+        "1": "Program event 1",
+        "2": "Program event 2",
+        "3": "Program event 3",
+        "4": "Program event 4",
+        "5": "Start event",
+        "6": "Stop event"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 19,
+      "documented": "40020",
+      "name": "Sentinel point",
+      "description": "Identifies an SMT-770: 77 before firmware 2.17, 78 from 2.17.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 21,
+      "documented": "40022",
+      "name": "Modbus address",
+      "description": "1-32; the network must follow a change.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "40024",
+      "name": "Temperature display mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Room and set temperature",
+        "1": "Set temperature only"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 28,
+      "documented": "40029",
+      "name": "Display units",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "°F",
+        "1": "°C"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 40,
+      "documented": "40041",
+      "name": "Permitted modes",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto (heat and cool)",
+        "1": "Cool only",
+        "2": "Heat only",
+        "3": "Manual heat/cool (v2.19+)",
+        "4": "Cool-dry / auto-dry (v2.3+)",
+        "5": "Cool and dry (v2.3+)",
+        "6": "Manual plus cool-dry (v2.3+)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53,
+      "documented": "40054",
+      "name": "Day/night mode",
+      "description": "Two-setpoint manual mode only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Night",
+        "1": "Day"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 54,
+      "documented": "40055",
+      "name": "Firmware revision",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 56,
+      "documented": "40057",
+      "name": "Remote off status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Mode selected by user",
+        "1": "Held off remotely"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 57,
+      "documented": "40058",
+      "name": "Start/stop mode override",
+      "description": "Commercial programmable mode only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Normal schedule",
+        "1": "Locked to start program",
+        "2": "Locked to stop program"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 59,
+      "documented": "40060",
+      "name": "Baud rate",
+      "description": "Changing it disconnects the unit from the current network.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "4800",
+        "2": "9600",
+        "3": "19200"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 61,
+      "documented": "40062",
+      "name": "Coil override mode",
+      "description": "Write 1 at least every 4 minutes to keep Modbus control of the relays (v2.2+).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Thermostat controls relays",
+        "1": "Modbus controls relays"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 67,
+      "documented": "40068",
+      "name": "Parity",
+      "description": "Firmware 2.31+.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Even",
+        "2": "Odd"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 69,
+      "documented": "40070",
+      "name": "TT input status",
+      "description": "Firmware 2.2+.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Shorted"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 317,
+      "documented": "40318",
+      "name": "Active set temperature",
+      "description": "Current active setpoint. °C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 318,
+      "documented": "40319",
+      "name": "Active cooling set temperature",
+      "description": "°C = (raw - 20) / 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null,
+      "offset": -10
+    },
+    {
+      "table": "holding_register",
+      "address": 346,
+      "documented": "40347",
+      "name": "Room minus set temperature",
+      "description": "100 = equal; each count is 0.1 °C above (+) or below (-) the setpoint (v2.19+).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 349,
+      "documented": "40350",
+      "name": "Raw room temperature",
+      "description": "Fast-updating sensor value, (raw - 400) / 10 (v2.17+).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null,
+      "offset": -40
+    },
+    {
+      "table": "holding_register",
+      "address": 353,
+      "documented": "40354",
+      "name": "Displayed room temperature",
+      "description": "Value shown on the LCD, (raw - 400) / 10 (v2.17+).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null,
+      "offset": -40
+    }
+  ],
+  "integration": {
+    "summary": "Read 40354 for the room temperature shown on the display and 40318 for the active setpoint; write mode (40002), fan (40003) and setpoints (40005/40006 or 40015 depending on DIP mode).",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 353,
+        "why": "Room temperature (0.1 °C)"
+      },
+      {
+        "table": "holding_register",
+        "address": 317,
+        "why": "Active setpoint"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Thermostat mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Fan mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 14,
+        "why": "Single setpoint (manual mode)"
+      },
+      {
+        "table": "coil",
+        "address": 0,
+        "why": "G1 fan relay"
+      }
+    ],
+    "enable": "Set the thermostat address in the installer menu (item AD, default 7); 9600 8N1 by default. A paired EC-02 copies address and baud from the thermostat.",
+    "watchdog": "Coil override (40062) falls back to thermostat control after about 5 minutes without Modbus or after a power loss; refresh it at least every 4 minutes.",
+    "quirks": [
+      "Celsius setpoints are (raw - 20) / 2.",
+      "Registers 40350/40354 are (raw - 400) / 10."
+    ],
+    "setup": [
+      "Only the last device on the bus gets the EOL resistor; with a paired EC-02, terminate at the EC-02, not the thermostat.",
+      "Up to 32 thermostats per segment."
+    ],
+    "gotchas": [
+      "Writes that conflict with the DIP-switch mode are silently ignored.",
+      "Changing baud (40060) or parity (40068) over Modbus drops the device off the current network."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}
