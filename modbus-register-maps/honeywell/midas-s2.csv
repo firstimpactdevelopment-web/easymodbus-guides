@@ -1,0 +1,16 @@
+﻿# Honeywell Midas S2 extractive gas transmitter (Modbus/TCP) Modbus register map - easymodbus.com - source: https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/hgas/en-us/products/high-tech-and-semiconductor/midass2/documents/hon-ia-dmc-3023m5001-midas-a-001-rev-a-midas-s2-um-en.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Status (STTS),"Bits 0-3 monitoring state, bits 4-5 fault state; flags below.",BITMAP16,1,,1,0,,Read,bit 6 = Alarm 1 active; bit 7 = Alarm 2 active; bit 8 = Relay 1 energized; bit 9 = Relay 2 energized; bit 10 = Relay 3 energized; bit 11 = Heartbeat (toggles every second); bit 12 = Relays under remote Modbus/TCP control; bit 13 = Last zero calibration succeeded; bit 14 = Last span calibration succeeded
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Gas selection (GASS),"Low byte gas ID, high byte cartridge type.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Gas concentration integer (CONC),Divide by 10^decimal (40007 bits 0-2); ppm for ppm/ppb gases.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Most important active fault number (NOFT),Fault code; see the troubleshooting table in the manual.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,Decimal point and units (DPUN),"Bits 0-2 decimals; high byte units: 1 ppm, 2 ppb, 4 %vol, 8 %LEL, 16 mA.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,40008,40008,Temperature (TEMP),,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,40009,40009,Cell life remaining (CLRH),,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,40010,40010,Heartbeat counter (HRTB),Low 16 bits of time in seconds.,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,40011,40011,Sample flow (FLOW),,UINT16,1,,1,0,cc/min,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,40017,40017,Alarm status (ASI),,BITMAP16,1,,1,0,,Read,bit 0 = Alarm 1 active; bit 1 = Alarm 2 active
+Holding register,"FC03 read / FC06, FC16 write",17,40018,40018,Fault status (FSI),,BITMAP16,1,,1,0,,Read,bit 0 = Maintenance fault; bit 1 = Instrument fault; bit 2 = Flow fault; bit 3 = Internal communication fault; bit 4 = Pyrolyzer fault; bit 5 = Sensor fault; bit 6 = Range over fault
+Holding register,"FC03 read / FC06, FC16 write",62,40063,40063,Transmitter serial number prefix,First four digits of the S-number as a decimal value.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",63,40064,40064,Transmitter serial number suffix,Last digits of the S-number as a decimal value.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",80,40081,40081,Mode status (MSI),,BITMAP16,1,,1,0,,Read,bit 0 = Warm-up; bit 1 = Monitor mode; bit 2 = Test mode; bit 3 = Maintenance mode

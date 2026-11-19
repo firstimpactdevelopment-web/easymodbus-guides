@@ -1,0 +1,352 @@
+{
+ "manufacturer": "Honeywell",
+ "manufacturer_slug": "honeywell",
+ "model": "Midas S2 extractive gas transmitter (Modbus/TCP)",
+ "model_slug": "midas-s2",
+ "short_model": "Midas S2",
+ "aliases": [
+  "Midas S2",
+  "MIDAS-S2",
+  "Midas S2 gas detector"
+ ],
+ "equipment_type": "Sensor (extractive gas detector)",
+ "applies_to": "Honeywell Midas S2 single-point extractive gas transmitters with Ethernet/PoE, user manual 3023M5001 Rev A, Modbus/TCP register map (Table 6-1).",
+ "summary": "The Midas S2 is a Honeywell pumped single-point gas transmitter for toxic, flammable and oxygen gases. Its Ethernet port is a Modbus/TCP server: holding registers 40001-40122 give a packed status word, the gas reading, decimal point and units, temperature, cell life, flow, alarm and fault flags. This map covers the 16-bit registers; float, time and text registers are left out.",
+ "transport": [
+  "TCP"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The table lists reference addresses 40001-40122 (Modicon style), so 40001 (status) is wire address 0 and 40005 (gas reading) is wire address 4."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Midas S2 Fixed single-point extractive gas transmitter User Manual",
+  "doc_number": "3023M5001 Rev A",
+  "revision_date": "2023-08-31",
+  "url": "https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/hgas/en-us/products/high-tech-and-semiconductor/midass2/documents/hon-ia-dmc-3023m5001-midas-a-001-rev-a-midas-s2-um-en.pdf",
+  "pages": "pp. 55-57 (section 6.8, Table 6-1)"
+ },
+ "notes": [
+  "Left out: float registers (concentration 40003-40004, alarm thresholds 40013-40016, high scale 40019-40020). The manual only says floats are \"little-endian or Intel format\", which does not pin down the word order on the wire.",
+  "Left out: 32-bit UNIX time registers 40061-40062, 40065-40068 (word order not stated) and the ASCII serial-number and gas-name registers (character order within a register not stated).",
+  "Left out: user command registers 40021-40022 (CMD1 0x015E-0x0B5E with CMD2 0x3626 for reset, inhibit and relay control): the manual says only function 03 is supported, so how they are written is unclear.",
+  "Status register 40001 packs numbers: bits 0-3 monitoring state (0 warm-up, 1 monitor, 2 alarms inhibited, 3 alarms and faults inhibited, 4 fully inhibited, 5 alarm/fault simulation, 6 bump test, 7 4-20 mA calibration, 8 other calibration); bits 4-5 fault state (0 none, 1 maintenance fault, 2 instrument fault).",
+  "The manual mentions an older 40082 duplicate in the sensor serial list (typo for 40092); text registers are excluded anyway.",
+  "Only function 03 (read holding registers) is supported.",
+  "The manual does not state the TCP port; Modbus/TCP normally uses 502."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "Status (STTS)",
+   "description": "Bits 0-3 monitoring state, bits 4-5 fault state; flags below.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "6": "Alarm 1 active",
+    "7": "Alarm 2 active",
+    "8": "Relay 1 energized",
+    "9": "Relay 2 energized",
+    "10": "Relay 3 energized",
+    "11": "Heartbeat (toggles every second)",
+    "12": "Relays under remote Modbus/TCP control",
+    "13": "Last zero calibration succeeded",
+    "14": "Last span calibration succeeded"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "Gas selection (GASS)",
+   "description": "Low byte gas ID, high byte cartridge type.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40005",
+   "name": "Gas concentration integer (CONC)",
+   "description": "Divide by 10^decimal (40007 bits 0-2); ppm for ppm/ppb gases.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40006",
+   "name": "Most important active fault number (NOFT)",
+   "description": "Fault code; see the troubleshooting table in the manual.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40007",
+   "name": "Decimal point and units (DPUN)",
+   "description": "Bits 0-2 decimals; high byte units: 1 ppm, 2 ppb, 4 %vol, 8 %LEL, 16 mA.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "40008",
+   "name": "Temperature (TEMP)",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40009",
+   "name": "Cell life remaining (CLRH)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "h",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "40010",
+   "name": "Heartbeat counter (HRTB)",
+   "description": "Low 16 bits of time in seconds.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "s",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "40011",
+   "name": "Sample flow (FLOW)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "cc/min",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "40017",
+   "name": "Alarm status (ASI)",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Alarm 1 active",
+    "1": "Alarm 2 active"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 17,
+   "documented": "40018",
+   "name": "Fault status (FSI)",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Maintenance fault",
+    "1": "Instrument fault",
+    "2": "Flow fault",
+    "3": "Internal communication fault",
+    "4": "Pyrolyzer fault",
+    "5": "Sensor fault",
+    "6": "Range over fault"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 62,
+   "documented": "40063",
+   "name": "Transmitter serial number prefix",
+   "description": "First four digits of the S-number as a decimal value.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 63,
+   "documented": "40064",
+   "name": "Transmitter serial number suffix",
+   "description": "Last digits of the S-number as a decimal value.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 80,
+   "documented": "40081",
+   "name": "Mode status (MSI)",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Warm-up",
+    "1": "Monitor mode",
+    "2": "Test mode",
+    "3": "Maintenance mode"
+   },
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Connect to the Midas S2 IP and read holding registers 0-17 with function 03; gas = 40005 / 10^(40007 bits 0-2).",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Gas concentration"
+   },
+   {
+    "table": "holding_register",
+    "address": 6,
+    "why": "Decimal point and units"
+   },
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Status and alarms"
+   },
+   {
+    "table": "holding_register",
+    "address": 17,
+    "why": "Fault flags"
+   },
+   {
+    "table": "holding_register",
+    "address": 10,
+    "why": "Sample flow"
+   },
+   {
+    "table": "holding_register",
+    "address": 8,
+    "why": "Cell life"
+   }
+  ],
+  "enable": "Modbus/TCP is part of the Ethernet interface; set the network address in the transmitter setup.",
+  "watchdog": null,
+  "quirks": [
+   "Gas reading is in ppm for ppm and ppb gases, otherwise in display units.",
+   "In bump test mode the Modbus outputs are not inhibited."
+  ],
+  "setup": [
+   "Ethernet or PoE.",
+   "Modbus TCP has no authentication; isolate it on a secure network.",
+   "Factory default IP address is 192.168.0.14; without DHCP, put the PC on the same subnet."
+  ],
+  "gotchas": [
+   "Read 40007 together with 40005 to apply the right decimal point."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/honeywell/midas-s2",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

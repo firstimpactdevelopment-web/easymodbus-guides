@@ -1,0 +1,1119 @@
+{
+  "manufacturer": "Danfoss",
+  "manufacturer_slug": "danfoss",
+  "model": "VLT Micro Drive FC 51 (Modbus RTU)",
+  "model_slug": "fc-51",
+  "short_model": "FC 51",
+  "aliases": [
+    "FC 51",
+    "FC51",
+    "VLT Micro Drive",
+    "VLT Micro Drive FC 51"
+  ],
+  "equipment_type": "Variable frequency drive",
+  "applies_to": "VLT Micro Drive FC 51 on the built-in RS-485 port with 8-30 = Modbus, software 3.1x; registers per design guide MG02K402 and parameter data per programming guide MG02C702.",
+  "summary": "Danfoss's smallest VLT drive with Modbus RTU on the RS-485 terminals. Control and status run through coils (control word bits at coils 1-16, status bits at coils 33-48), and every parameter is a holding register at 10 x its parameter number. This map covers the control and status coils, the Modbus and timeout settings, counters and the 16-xx readouts.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 19200,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "parameter-derived",
+    "note": "The design guide says Modbus addresses are referenced to 0: coil 1 is coil 0 on the wire and holding register 40001 is register 0. A parameter's register number is 10 x its parameter number (16-13 -> 16130; 3-12 is read in holding register 3120) and the request carries that number minus 1 (16-13 at address 16129). Coil n is address n - 1."
+  },
+  "default_word_order": null,
+  "firmware": "3.1x",
+  "source": {
+    "title": "Design Guide VLT Micro Drive FC 51",
+    "doc_number": "MG02K402",
+    "revision_date": "2016-01",
+    "url": "https://assets.danfoss.com/documents/273509/AJ361178983102en-000401.pdf",
+    "pages": "8.8 Modbus RTU pp. 72-77: 8.8.8 coil register addressing and tables 8.15-8.17 (coils, control word, status word), table 8.18 address/registers, 8.8.10 function codes, 8.9 parameter handling, storage (coil 65) and IND"
+  },
+  "notes": [
+    "Parameter data (type, conversion index, defaults, option lists) come from the VLT Micro Drive FC 51 Programming Guide MG02C702 (12/2014, software 3.1x), https://assets.danfoss.com/documents/273489/AU361182403098en-000901.pdf, section 5.2 parameter lists. Conversion index -1 = x0.1, -2 = x0.01, -3 = x0.001, 0 = x1.",
+    "Left out: all 32-bit parameters (3-02, 3-03, 3-41, 3-42, 15-00 to 15-03, 16-01, 16-52, 16-90, 16-92, 16-94). The FC 51 guides only say they take 2 registers; the design guide's generic examples are inconsistent (3-14 at 3410, and a 3-03 read whose bytes 00 16 E3 60 are described as 000088B8 = 35 Hz), and Danfoss's general Modbus RTU instructions MG92B102 are written for software 6.4x and do not name the FC 51, so the word order is not settled for this drive.",
+    "The design guide's 32-bit example names 3-14 at registers 3410/3411; by the x10 rule 3-14 is register 3140, and the programming guide types 3-14 as Int16. Treat that example as a typo.",
+    "Uint8 parameters are read and written as one 16-bit register.",
+    "Section 8.11 lists CTW/REF at holding registers 50000/50010 and STW/MAV at 50200/50210 (and, from software 2.32, 2810/2811 and 2910/2911), but the same section says to set 8-30 = [0] FC, so their use with Modbus is unclear and they are not listed. Coils 1-16 carry the control word, 17-32 the bus reference (16-bit, 0x0-0xFFFF = -200 %..~200 %), 33-48 the status word and 49-64 output frequency (open loop) or feedback (closed loop); the reference and actual-value coil groups are not listed bit by bit.",
+    "Coil 15 (control word bit 14) is unused in the FC profile table and is not listed; status coils 37-39 and 45 are 'not used'.",
+    "Alarm and warning words (16-90/16-92) are 32-bit and left out for the word-order reason above; use status coil 36 (alarm) and 40 (warning) instead.",
+    "Left out: 16-05 and 16-15 (normalised percentages), 16-50/16-51 external and pulse references, text parameters (15-4x), the fault log arrays (15-30, need IND) and Smart Logic groups."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "7",
+      "name": "Last fault code",
+      "description": "Fault code from the parameter database.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "9",
+      "name": "Index pointer (IND)",
+      "description": "Array index used for array parameters such as 3-10.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 0,
+      "documented": "1",
+      "name": "CTW bit 0: preset reference LSB",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 1,
+      "documented": "2",
+      "name": "CTW bit 1: preset reference MSB",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 2,
+      "documented": "3",
+      "name": "CTW bit 2: DC brake",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "DC brake",
+        "1": "No DC brake"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 3,
+      "documented": "4",
+      "name": "CTW bit 3: coast stop",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Coast stop",
+        "1": "No coast stop"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 4,
+      "documented": "5",
+      "name": "CTW bit 4: quick stop",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Quick stop",
+        "1": "No quick stop"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 5,
+      "documented": "6",
+      "name": "CTW bit 5: freeze frequency",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Freeze frequency",
+        "1": "No freeze frequency"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 6,
+      "documented": "7",
+      "name": "CTW bit 6: ramp stop / start",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Ramp stop",
+        "1": "Start"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 7,
+      "documented": "8",
+      "name": "CTW bit 7: reset",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No reset",
+        "1": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 8,
+      "documented": "9",
+      "name": "CTW bit 8: jog",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No jog",
+        "1": "Jog"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 9,
+      "documented": "10",
+      "name": "CTW bit 9: ramp select",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Ramp 1",
+        "1": "Ramp 2"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 10,
+      "documented": "11",
+      "name": "CTW bit 10: data valid",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Data not valid",
+        "1": "Data valid"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 11,
+      "documented": "12",
+      "name": "CTW bit 11: relay 1",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Relay 1 off",
+        "1": "Relay 1 on"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 12,
+      "documented": "13",
+      "name": "CTW bit 12: relay 2",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Relay 2 off",
+        "1": "Relay 2 on"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 13,
+      "documented": "14",
+      "name": "CTW bit 13: set-up select LSB",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 15,
+      "documented": "16",
+      "name": "CTW bit 15: reversing",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No reversing",
+        "1": "Reversing"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 32,
+      "documented": "33",
+      "name": "STW bit 0: control ready",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Control not ready",
+        "1": "Control ready"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 33,
+      "documented": "34",
+      "name": "STW bit 1: drive ready",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not ready",
+        "1": "Ready"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 34,
+      "documented": "35",
+      "name": "STW bit 2: coast stop / safety closed",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Coast stop",
+        "1": "Safety closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 35,
+      "documented": "36",
+      "name": "STW bit 3: alarm",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No alarm",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 39,
+      "documented": "40",
+      "name": "STW bit 7: warning",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No warning",
+        "1": "Warning"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 40,
+      "documented": "41",
+      "name": "STW bit 8: at reference",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not at reference",
+        "1": "At reference"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 41,
+      "documented": "42",
+      "name": "STW bit 9: hand/auto",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Hand mode",
+        "1": "Auto mode"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 42,
+      "documented": "43",
+      "name": "STW bit 10: frequency range",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Out of frequency range",
+        "1": "In frequency range"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 43,
+      "documented": "44",
+      "name": "STW bit 11: running",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Stopped",
+        "1": "Running"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 45,
+      "documented": "46",
+      "name": "STW bit 13: voltage warning",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No voltage warning",
+        "1": "Voltage warning"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 46,
+      "documented": "47",
+      "name": "STW bit 14: current limit",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not in current limit",
+        "1": "Current limit"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 47,
+      "documented": "48",
+      "name": "STW bit 15: thermal warning",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No thermal warning",
+        "1": "Thermal warning"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 64,
+      "documented": "65",
+      "name": "Parameter write control",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Writes go to RAM only",
+        "1": "Writes go to RAM and EEPROM"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4119,
+      "documented": "4120 (par. 4-12)",
+      "name": "4-12 Motor Speed Low Limit [Hz]",
+      "description": "Write only when stopped.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "Hz",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4139,
+      "documented": "4140 (par. 4-14)",
+      "name": "4-14 Motor Speed High Limit [Hz]",
+      "description": "Write only when stopped.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "Hz",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8009,
+      "documented": "8010 (par. 8-01)",
+      "name": "8-01 Control Site",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Digital and control word",
+        "1": "Digital only",
+        "2": "Control word only"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8019,
+      "documented": "8020 (par. 8-02)",
+      "name": "8-02 Control Word Source",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "FC RS485"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8029,
+      "documented": "8030 (par. 8-03)",
+      "name": "8-03 Control Word Timeout Time",
+      "description": "0.1-6500 s, factory 1.0 s.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8039,
+      "documented": "8040 (par. 8-04)",
+      "name": "8-04 Control Word Timeout Function",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "Freeze output",
+        "2": "Stop",
+        "3": "Jogging",
+        "4": "Max. speed",
+        "5": "Stop and trip"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8299,
+      "documented": "8300 (par. 8-30)",
+      "name": "8-30 Protocol",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "FC",
+        "2": "Modbus"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8309,
+      "documented": "8310 (par. 8-31)",
+      "name": "8-31 Address",
+      "description": "1-247, factory 1.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8319,
+      "documented": "8320 (par. 8-32)",
+      "name": "8-32 FC Port Baud Rate",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "2400",
+        "1": "4800",
+        "2": "9600 (default with FC protocol)",
+        "3": "19200 (default with Modbus)",
+        "4": "38400"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8329,
+      "documented": "8330 (par. 8-33)",
+      "name": "8-33 FC Port Parity",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Even parity, 1 stop bit",
+        "1": "Odd parity, 1 stop bit",
+        "2": "No parity, 1 stop bit",
+        "3": "No parity, 2 stop bits"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8349,
+      "documented": "8350 (par. 8-35)",
+      "name": "8-35 Minimum Response Delay",
+      "description": "0.001-0.5 s, factory 0.010 s.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.001,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15039,
+      "documented": "15040 (par. 15-04)",
+      "name": "15-04 Over Temp's",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15049,
+      "documented": "15050 (par. 15-05)",
+      "name": "15-05 Over Volt's",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15999,
+      "documented": "16000 (par. 16-00)",
+      "name": "16-00 Control Word",
+      "description": "Last control word received, hex.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16019,
+      "documented": "16020 (par. 16-02)",
+      "name": "16-02 Reference %",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16029,
+      "documented": "16030 (par. 16-03)",
+      "name": "16-03 Status Word",
+      "description": "Status word, hex; bits as coils 33-48.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16099,
+      "documented": "16100 (par. 16-10)",
+      "name": "16-10 Power [kW]",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.001,
+      "units": "kW",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16119,
+      "documented": "16120 (par. 16-12)",
+      "name": "16-12 Motor Voltage",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16129,
+      "documented": "16130 (par. 16-13)",
+      "name": "16-13 Frequency",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "Hz",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16139,
+      "documented": "16140 (par. 16-14)",
+      "name": "16-14 Motor Current",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16179,
+      "documented": "16180 (par. 16-18)",
+      "name": "16-18 Motor Thermal",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16299,
+      "documented": "16300 (par. 16-30)",
+      "name": "16-30 DC Link Voltage",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16339,
+      "documented": "16340 (par. 16-34)",
+      "name": "16-34 Heatsink Temp.",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16349,
+      "documented": "16350 (par. 16-35)",
+      "name": "16-35 Inverter Thermal",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16359,
+      "documented": "16360 (par. 16-36)",
+      "name": "16-36 Inv. Nom. Current",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16599,
+      "documented": "16600 (par. 16-60)",
+      "name": "16-60 Digital input 18,19,27,33",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16619,
+      "documented": "16620 (par. 16-62)",
+      "name": "16-62 Analog Input 53 (V)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16629,
+      "documented": "16630 (par. 16-63)",
+      "name": "16-63 Analog Input 53 (mA)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "mA",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16639,
+      "documented": "16640 (par. 16-64)",
+      "name": "16-64 Analog Input 60",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "mA",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16649,
+      "documented": "16650 (par. 16-65)",
+      "name": "16-65 Analog Output 42 [mA]",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "mA",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set 8-30 = Modbus, 8-31 address, 8-32/8-33 baud and parity, keep 8-02 = FC RS485, then drive the unit with coils 1-16 (write coils 3, 4, 5, 7 and 11 = 1 to run) and the reference on coils 17-32. Read coils 33-48 for status and holding registers 16130/16140 for frequency and current.",
+    "minimum_registers": [
+      {
+        "table": "coil",
+        "address": 6,
+        "why": "Start (1) / ramp stop (0)"
+      },
+      {
+        "table": "coil",
+        "address": 10,
+        "why": "Data valid - must be 1"
+      },
+      {
+        "table": "coil",
+        "address": 43,
+        "why": "Running status"
+      },
+      {
+        "table": "coil",
+        "address": 35,
+        "why": "Alarm status"
+      },
+      {
+        "table": "coil",
+        "address": 39,
+        "why": "Warning status"
+      },
+      {
+        "table": "holding_register",
+        "address": 16129,
+        "why": "16-13 Frequency, 0.1 Hz"
+      },
+      {
+        "table": "holding_register",
+        "address": 16139,
+        "why": "16-14 Motor current, 0.01 A"
+      },
+      {
+        "table": "holding_register",
+        "address": 8299,
+        "why": "8-30 Protocol"
+      }
+    ],
+    "enable": "Set 8-30 Protocol = [2] Modbus RTU (takes effect only after the drive is powered off and on), 8-31 Address (1-247, factory 1), 8-32 baud (19200 is the default once Modbus is chosen) and 8-33 parity (factory even, 1 stop bit). 8-02 must stay [1] FC RS485 and 8-01 Control Site decides whether terminals, the control word or both act; 8-50 to 8-56 (factory Logic OR) set how bus and terminal commands combine.",
+    "watchdog": "8-03 Control Word Timeout Time (0.1-6500 s, factory 1.0 s) with 8-04 Control Word Timeout Function: Off (factory), Freeze output, Stop, Jogging, Max. speed, or Stop and trip.",
+    "quirks": [
+      "Parameter register = 10 x parameter number, wire address = that minus 1 (16-13 -> 16129).",
+      "Control word bits are active-low for stops: coils 3-5 must be 1 (no DC brake, no coast, no quick stop) and coil 7 = 1 starts.",
+      "Coil 11 (data valid) must be 1 or the control word is ignored."
+    ],
+    "setup": [
+      "Coil 65 = 1 makes parameter writes go to EEPROM as well as RAM; leave it 0 for cyclic writes.",
+      "Array parameters need holding register 9 (IND) set to the index first."
+    ],
+    "gotchas": [
+      "With factory 8-04 = Off the drive keeps running if the master stops polling.",
+      "Holding registers 50000-50210 (and 2810-2911) are described in the design guide alongside an instruction to set 8-30 = FC; use the coils for Modbus control."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

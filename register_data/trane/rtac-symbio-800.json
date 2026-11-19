@@ -1,0 +1,7066 @@
+{
+  "manufacturer": "Trane",
+  "manufacturer_slug": "trane",
+  "model": "RTAC air-cooled helical-rotary chiller (Symbio 800)",
+  "model_slug": "rtac-symbio-800",
+  "short_model": "RTAC Symbio 800",
+  "aliases": [
+    "RTAC",
+    "Series R RTAC",
+    "RTAC UC800"
+  ],
+  "equipment_type": "Chiller",
+  "applies_to": "Trane RTAC air-cooled helical-rotary chillers with the Symbio 800 controller, as listed in BAS-PTS023A-EN (11/8/2024).",
+  "summary": "The Trane RTAC is an air-cooled helical-rotary (screw) chiller. With a Symbio 800 controller it serves BACnet and Modbus RTU/TCP from one points list. This map covers the analog inputs (setpoints, pressures, temperatures, run hours, starter and drive values), BAS setpoints, binary status and diagnostic flags, and the multi-state mode points.",
+  "transport": [
+    "RTU",
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The list prints Modicon register numbers: 3xxxx are input registers and 4xxxx holding registers, so 30011 is input register address 10 and 42011 is holding register address 2010."
+  },
+  "default_word_order": "ABCD",
+  "firmware": null,
+  "source": {
+    "title": "Symbio 800 Integration Points List, BACnet/Modbus, RTAC",
+    "doc_number": "BAS-PTS023A-EN",
+    "revision_date": "2024-11-08",
+    "url": "https://elibrary.tranetechnologies.com/public/commercial-hvac/Literature/Points%20List/BAS-PTS023A-EN_11082024.pdf",
+    "pages": "pp. 2-30 (point tables), p. 31 (Modbus object format)"
+  },
+  "notes": [
+    "Register format table: analog points are 32-bit floats sent high word / high byte first (NaN = invalid); binary and multi-state points are unsigned 16-bit integers (0xFFFF = invalid).",
+    "Values are sent in the unit system ordered from the factory (I-P is the usual default, SI optional); the list names only the quantity, so temperature/pressure/flow units are left blank here.",
+    "Not every point exists on every unit: the controller builds its point set from the unit's configuration. Descriptions name the configuration a point depends on.",
+    "Register numbers are printed in 5-digit Modicon form (3xxxx input registers, 4xxxx holding registers) and converted here to wire addresses (30011 = input register 10).",
+    "Controller setup, serial defaults and the I-P/SI units statement come from Trane's Symbio 800 integration guide for Agility chillers, BAS-SVP047B-EN (Sept 2023, https://elibrary.tranetechnologies.com/public/commercial-hvac/Literature/Integration/BAS-SVP047B-EN_09092023.pdf), which describes the same Symbio 800 controller."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "40011",
+      "name": "Chilled Water Setpoint",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 12,
+      "documented": "40013",
+      "name": "Demand Limit Setpoint",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2010,
+      "documented": "42011",
+      "name": "Chiller Mode Command BAS",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "Cool",
+        "2": "Heat",
+        "3": "Ice Making",
+        "4": "Free Cooling"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3010,
+      "documented": "43011",
+      "name": "Reset Diagnostic",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Normal",
+        "1": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3011,
+      "documented": "43012",
+      "name": "Chiller Auto Stop Command BAS",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Stop",
+        "1": "Auto"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3012,
+      "documented": "43013",
+      "name": "Circuit 1 Lockout BAS",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Normal",
+        "1": "Locked Out"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3013,
+      "documented": "43014",
+      "name": "Circuit 2 Lockout BAS",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Normal",
+        "1": "Locked Out"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3014,
+      "documented": "43015",
+      "name": "Energy Consumption Reset",
+      "description": "Needs: Power Monitor",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Accumulating",
+        "1": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 10,
+      "documented": "30011",
+      "name": "Active Chilled Water Setpoint",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 12,
+      "documented": "30013",
+      "name": "Active Demand Limit Setpoint",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 14,
+      "documented": "30015",
+      "name": "Actual Running Capacity",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 16,
+      "documented": "30017",
+      "name": "Evaporator Refrigerant Pressure Circuit 1",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 18,
+      "documented": "30019",
+      "name": "Evaporator Refrigerant Pressure Circuit 2",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 20,
+      "documented": "30021",
+      "name": "Evaporator Saturated Refrigerant Temperature Circuit 1",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 22,
+      "documented": "30023",
+      "name": "Evaporator Saturated Refrigerant Temperature Circuit 2",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 24,
+      "documented": "30025",
+      "name": "Condenser Refrigerant Pressure Circuit 1",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 26,
+      "documented": "30027",
+      "name": "Condenser Refrigerant Pressure Circuit 2",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 28,
+      "documented": "30029",
+      "name": "Condenser Saturated Refrigerant Temperature Circuit 1",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 30,
+      "documented": "30031",
+      "name": "Condenser Saturated Refrigerant Temperature Circuit 2",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 32,
+      "documented": "30033",
+      "name": "Local Atmospheric Pressure",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 34,
+      "documented": "30035",
+      "name": "Starts - Compressor 1A",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 36,
+      "documented": "30037",
+      "name": "Run Time- Compressor 1A (in seconds)",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 38,
+      "documented": "30039",
+      "name": "Starts- Compressor 1B",
+      "description": "Needs: Compressor 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 40,
+      "documented": "30041",
+      "name": "Run Time- Compressor 1B (in seconds)",
+      "description": "Needs: Compressor 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 42,
+      "documented": "30043",
+      "name": "Starts- Compressor 2A",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 44,
+      "documented": "30045",
+      "name": "Run Time- Compressor 2A (in seconds)",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 46,
+      "documented": "30047",
+      "name": "Starts - Compressor 2B",
+      "description": "Needs: Compressor 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 48,
+      "documented": "30049",
+      "name": "Run Time- Compressor 2B (in seconds)",
+      "description": "Needs: Compressor 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 50,
+      "documented": "30051",
+      "name": "Air Flow Percentage Circuit 1",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 52,
+      "documented": "30053",
+      "name": "Air Flow Percentage Circuit 2",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 54,
+      "documented": "30055",
+      "name": "Evaporator Entering Water Temperature",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 56,
+      "documented": "30057",
+      "name": "Evaporator Leaving Water Temperature",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 58,
+      "documented": "30059",
+      "name": "Oil Pressure - Compressor 1A",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 60,
+      "documented": "30061",
+      "name": "Oil Pressure - Compressor 1B",
+      "description": "Pressure in the factory unit system (I-P or SI). Needs: Compressor 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 62,
+      "documented": "30063",
+      "name": "Oil Pressure - Compressor 2A",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 64,
+      "documented": "30065",
+      "name": "Oil Pressure - Compressor 2B",
+      "description": "Pressure in the factory unit system (I-P or SI). Needs: Compressor 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 66,
+      "documented": "30067",
+      "name": "Oil Temperature - Compressor 1A",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 68,
+      "documented": "30069",
+      "name": "Oil Temperature - Compressor 1B",
+      "description": "Temperature in the unit system set at the factory (I-P or SI). Needs: Compressor 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 70,
+      "documented": "30071",
+      "name": "Oil Temperature - Compressor 2A",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 72,
+      "documented": "30073",
+      "name": "Oil Temperature - Compressor 2B",
+      "description": "Temperature in the unit system set at the factory (I-P or SI). Needs: Compressor 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 74,
+      "documented": "30075",
+      "name": "Outdoor Air Temperature",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 76,
+      "documented": "30077",
+      "name": "Phase AB Voltage - Compressor 1A",
+      "description": "Voltage. Needs: EM Starter 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 78,
+      "documented": "30079",
+      "name": "Phase AB Voltage - Compressor 1B",
+      "description": "Voltage. Needs: TR200 Modbus AFD 1A and Number of Compressors = 3 or 4",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 80,
+      "documented": "30081",
+      "name": "Phase AB Voltage - Compressor 2A",
+      "description": "Voltage. Needs: TR200 Modbus AFD 1A, EM Starter 2A and Number of Compressors = 2",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 82,
+      "documented": "30083",
+      "name": "Line 1 Current - Compressor 1A",
+      "description": "Current. Needs: EM Starter 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 84,
+      "documented": "30085",
+      "name": "Line 2 Current - Compressor 1A",
+      "description": "Current. Needs: EM Starter 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 86,
+      "documented": "30087",
+      "name": "Line 3 Current - Compressor 1A",
+      "description": "Current. Needs: EM Starter 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 88,
+      "documented": "30089",
+      "name": "Line 1 Current - Compressor 1B",
+      "description": "Current. Needs: EM Starter 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 90,
+      "documented": "30091",
+      "name": "Line 2 Current - Compressor 1B",
+      "description": "Current. Needs: EM Starter 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 92,
+      "documented": "30093",
+      "name": "Line 3 Current - Compressor 1B",
+      "description": "Current. Needs: EM Starter 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 94,
+      "documented": "30095",
+      "name": "Line 1 Current - Compressor 2A",
+      "description": "Current. Needs: EM Starter 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 96,
+      "documented": "30097",
+      "name": "Line 2 Current - Compressor 2A",
+      "description": "Current. Needs: EM Starter 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 98,
+      "documented": "30099",
+      "name": "Line 3 Current - Compressor 2A",
+      "description": "Current. Needs: EM Starter 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 100,
+      "documented": "30101",
+      "name": "Line 1 Current - Compressor 2B",
+      "description": "Current. Needs: EM Starter 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 102,
+      "documented": "30103",
+      "name": "Line 2 Current - Compressor 2B",
+      "description": "Current. Needs: EM Starter 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 104,
+      "documented": "30105",
+      "name": "Line 3 Current - Compressor 2B",
+      "description": "Current. Needs: EM Starter 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 106,
+      "documented": "30107",
+      "name": "Line 1 Current RLA - Compressor 1A",
+      "description": "Needs: EM Starter 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 108,
+      "documented": "30109",
+      "name": "Line 2 Current RLA - Compressor 1A",
+      "description": "Needs: EM Starter 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 110,
+      "documented": "30111",
+      "name": "Line 3 Current RLA - Compressor 1A",
+      "description": "Needs: EM Starter 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 112,
+      "documented": "30113",
+      "name": "Line 1 Current RLA - Compressor 1B",
+      "description": "Needs: EM Starter 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 114,
+      "documented": "30115",
+      "name": "Line 2 Current RLA - Compressor 1B",
+      "description": "Needs: EM Starter 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 116,
+      "documented": "30117",
+      "name": "Line 3 Current RLA - Compressor 1B",
+      "description": "Needs: EM Starter 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 118,
+      "documented": "30119",
+      "name": "Line 1 Current RLA - Compressor 2A",
+      "description": "Needs: EM Starter 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 120,
+      "documented": "30121",
+      "name": "Line 2 Current RLA - Compressor 2A",
+      "description": "Needs: EM Starter 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 122,
+      "documented": "30123",
+      "name": "Line 3 Current RLA - Compressor 2A",
+      "description": "Needs: EM Starter 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 124,
+      "documented": "30125",
+      "name": "Line 1 Current RLA - Compressor 2B",
+      "description": "Needs: EM Starter 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 126,
+      "documented": "30127",
+      "name": "Line 2 Current RLA - Compressor 2B",
+      "description": "Needs: EM Starter 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 128,
+      "documented": "30129",
+      "name": "Line 3 Current RLA - Compressor 2B",
+      "description": "Needs: EM Starter 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 130,
+      "documented": "30131",
+      "name": "Number of Circuits",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 132,
+      "documented": "30133",
+      "name": "Number of Compressors Circuit 1",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 134,
+      "documented": "30135",
+      "name": "Number of Compressors Circuit 2",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 136,
+      "documented": "30137",
+      "name": "Chiller Design Capacity",
+      "description": "Cooling capacity in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 138,
+      "documented": "30139",
+      "name": "Drive Output Power Circuit 1",
+      "description": "Electrical power. Needs: TR200 Modbus AFD 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 140,
+      "documented": "30141",
+      "name": "Drive Output Power Circuit 2",
+      "description": "Electrical power. Needs: TR200 Modbus AFD 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 142,
+      "documented": "30143",
+      "name": "Refrigerant Discharge Temperature - Compressor 1A",
+      "description": "Needs: TR200 Modbus AFD 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 144,
+      "documented": "30145",
+      "name": "Refrigerant Discharge Temperature - Compressor 2A",
+      "description": "Needs: TR200 Modbus AFD 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 146,
+      "documented": "30147",
+      "name": "AFD Frequency Circuit 1",
+      "description": "Needs: TR200 Modbus AFD 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 148,
+      "documented": "30149",
+      "name": "AFD Frequency Circuit 2",
+      "description": "Needs: TR200 Modbus AFD 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 150,
+      "documented": "30151",
+      "name": "Drive Motor Average Current RLA Circuit 1",
+      "description": "Needs: TR200 Modbus AFD 1A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 152,
+      "documented": "30153",
+      "name": "Drive Motor Average Current RLA Circuit 2",
+      "description": "Needs: TR200 Modbus AFD 2A",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 154,
+      "documented": "30155",
+      "name": "Evaporator Refrigerant Absolute Pressure Circuit 1",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 156,
+      "documented": "30157",
+      "name": "Evaporator Refrigerant Absolute Pressure Circuit 2",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 158,
+      "documented": "30159",
+      "name": "Condenser Refrigerant Absolute Pressure Circuit 1",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 160,
+      "documented": "30161",
+      "name": "Condenser Refrigerant Absolute Pressure Circuit 2",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 162,
+      "documented": "30163",
+      "name": "Oil Absolute Pressure - Compressor 1A",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 164,
+      "documented": "30165",
+      "name": "Oil Absolute Pressure - Compressor 1B",
+      "description": "Pressure in the factory unit system (I-P or SI). Needs: Compressor 1B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 166,
+      "documented": "30167",
+      "name": "Oil Absolute Pressure - Compressor 2A",
+      "description": "Pressure in the factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 168,
+      "documented": "30169",
+      "name": "Oil Absolute Pressure - Compressor 2B",
+      "description": "Pressure in the factory unit system (I-P or SI). Needs: Compressor 2B",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 170,
+      "documented": "30171",
+      "name": "Average Line Current Circuit 1",
+      "description": "Current. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 172,
+      "documented": "30173",
+      "name": "Average Line Current Circuit 2",
+      "description": "Current. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 174,
+      "documented": "30175",
+      "name": "Average Line Voltage Circuit 1",
+      "description": "Voltage. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 176,
+      "documented": "30177",
+      "name": "Average Line Voltage Circuit 2",
+      "description": "Voltage. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 178,
+      "documented": "30179",
+      "name": "Line Current L1 Circuit 1",
+      "description": "Current. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 180,
+      "documented": "30181",
+      "name": "Line Current L2 Circuit 1",
+      "description": "Current. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 182,
+      "documented": "30183",
+      "name": "Line Current L3 Circuit 1",
+      "description": "Current. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 184,
+      "documented": "30185",
+      "name": "Line Current L1 Circuit 2",
+      "description": "Current. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 186,
+      "documented": "30187",
+      "name": "Line Current L2 Circuit 2",
+      "description": "Current. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 188,
+      "documented": "30189",
+      "name": "Line Current L3 Circuit 2",
+      "description": "Current. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 190,
+      "documented": "30191",
+      "name": "Voltage L1-L2 Circuit 1",
+      "description": "Voltage. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 192,
+      "documented": "30193",
+      "name": "Voltage L2-L3 Circuit 1",
+      "description": "Voltage. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 194,
+      "documented": "30195",
+      "name": "Voltage L1-L3 Circuit 1",
+      "description": "Voltage. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 196,
+      "documented": "30197",
+      "name": "Voltage L1-L2 Circuit 2",
+      "description": "Voltage. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 198,
+      "documented": "30199",
+      "name": "Voltage L2-L1 Circuit 2",
+      "description": "Voltage. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 200,
+      "documented": "30201",
+      "name": "Voltage L1-L3 Circuit 2",
+      "description": "Voltage. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 202,
+      "documented": "30203",
+      "name": "Line Frequency Circuit 1",
+      "description": "Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 204,
+      "documented": "30205",
+      "name": "Line Frequency Circuit 2",
+      "description": "Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 206,
+      "documented": "30207",
+      "name": "Power Factor Circuit 1",
+      "description": "Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 208,
+      "documented": "30209",
+      "name": "Power Factor Circuit 2",
+      "description": "Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 210,
+      "documented": "30211",
+      "name": "Power Demand Circuit 1",
+      "description": "Electrical power. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 212,
+      "documented": "30213",
+      "name": "Power Demand Circuit 2",
+      "description": "Electrical power. Needs: Two Energy Meters",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 214,
+      "documented": "30215",
+      "name": "Power Factor",
+      "description": "Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 216,
+      "documented": "30217",
+      "name": "Current L1",
+      "description": "Current. Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 218,
+      "documented": "30219",
+      "name": "Current L2",
+      "description": "Current. Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 220,
+      "documented": "30221",
+      "name": "Current L3",
+      "description": "Current. Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 222,
+      "documented": "30223",
+      "name": "Average Current",
+      "description": "Current. Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 224,
+      "documented": "30225",
+      "name": "Voltage L1-L2",
+      "description": "Voltage. Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 226,
+      "documented": "30227",
+      "name": "Voltage L2-L3",
+      "description": "Voltage. Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 228,
+      "documented": "30229",
+      "name": "Voltage L1-L3",
+      "description": "Voltage. Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 230,
+      "documented": "30231",
+      "name": "Average Voltage L-L",
+      "description": "Voltage. Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 232,
+      "documented": "30233",
+      "name": "Line Frequency",
+      "description": "Needs: One Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 234,
+      "documented": "30235",
+      "name": "Unit Power Demand",
+      "description": "Electrical power. Needs: Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 236,
+      "documented": "30237",
+      "name": "Unit Source ID",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 238,
+      "documented": "30239",
+      "name": "Unit Power Consumption",
+      "description": "Electrical power. Needs: Energy Meter",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 240,
+      "documented": "30241",
+      "name": "Evaporator Approach Temperature Circuit 1",
+      "description": "Temperature difference, factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 242,
+      "documented": "30243",
+      "name": "Evaporator Approach Temperature Circuit 2",
+      "description": "Temperature difference, factory unit system (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 244,
+      "documented": "30245",
+      "name": "Active Cool/Heat Setpoint Temperature",
+      "description": "Temperature in the unit system set at the factory (I-P or SI).",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2010,
+      "documented": "32011",
+      "name": "Running Mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "Chiller Off",
+        "2": "Chiller In Start Mode",
+        "3": "Chiller In Run Mode",
+        "4": "Chiller In Pre-Shutdown Mode",
+        "5": "Chiller In Service Mode"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2011,
+      "documented": "32012",
+      "name": "Operating Mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "Cool",
+        "2": "Heat",
+        "3": "Ice Making",
+        "4": "Free Cooling"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3010,
+      "documented": "33011",
+      "name": "Run Enabled",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Run Not Enabled",
+        "1": "Run Enabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3011,
+      "documented": "33012",
+      "name": "Local Setpoint Control",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Remote Control",
+        "1": "Local Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3012,
+      "documented": "33013",
+      "name": "Capacity Limited",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not Limited",
+        "1": "Limited"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3013,
+      "documented": "33014",
+      "name": "Chiller Running State",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3014,
+      "documented": "33015",
+      "name": "Maximum Capacity",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3015,
+      "documented": "33016",
+      "name": "Manual Override Exists",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3016,
+      "documented": "33017",
+      "name": "Emergency Stop",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Auto",
+        "1": "Emergency Stop - Manual Reset Required"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3017,
+      "documented": "33018",
+      "name": "Compressor 1A Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Running"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3018,
+      "documented": "33019",
+      "name": "Compressor 1B Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Running"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3019,
+      "documented": "33020",
+      "name": "Compressor 2A Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Running"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3020,
+      "documented": "33021",
+      "name": "Compressor 2B Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Running"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3021,
+      "documented": "33022",
+      "name": "Evaporator Water Pump Request",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3022,
+      "documented": "33023",
+      "name": "Evaporator Water Flow Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No Flow",
+        "1": "Flow"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3023,
+      "documented": "33024",
+      "name": "Diagnostic Present",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3024,
+      "documented": "33025",
+      "name": "Diagnostic Shutdown Present",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3025,
+      "documented": "33026",
+      "name": "Diagnostic: Manual Reset Required",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3026,
+      "documented": "33027",
+      "name": "Diagnostic: Local Manual Reset Required",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3027,
+      "documented": "33028",
+      "name": "Diagnostic Present: Information",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3028,
+      "documented": "33029",
+      "name": "Diagnostic Present: Advisory",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3029,
+      "documented": "33030",
+      "name": "Diagnostic Present: Critical",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3030,
+      "documented": "33031",
+      "name": "Diagnostic Present: Service Required",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3031,
+      "documented": "33032",
+      "name": "External Auto Stop Input Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Stop",
+        "1": "Auto"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3032,
+      "documented": "33033",
+      "name": "Front Panel Auto Stop Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Stop",
+        "1": "Auto"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3033,
+      "documented": "33034",
+      "name": "Limit Mode Relay Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4000,
+      "documented": "34001",
+      "name": "Diagnostic:MP: Invalid Configuration",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4001,
+      "documented": "34002",
+      "name": "Diagnostic:MP: Non-Volatile Memory Reformatted",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4002,
+      "documented": "34003",
+      "name": "Diagnostic:Check Clock",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4003,
+      "documented": "34004",
+      "name": "Diagnostic:MP: Could not Store Starts and Hours",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4004,
+      "documented": "34005",
+      "name": "Diagnostic:MP: Non-Volatile Block Test Error",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4005,
+      "documented": "34006",
+      "name": "Diagnostic:MP: Reset Has Occurred",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4006,
+      "documented": "34007",
+      "name": "Comm Loss: Electronic Expansion Valve 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4007,
+      "documented": "34008",
+      "name": "Comm Loss: Electronic Expansion Valve 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4008,
+      "documented": "34009",
+      "name": "Diagnostic:Low Evaporator Rfgt Temperature - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4009,
+      "documented": "34010",
+      "name": "Diagnostic:Low Evaporator Liquid Level - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4010,
+      "documented": "34011",
+      "name": "Diagnostic:Low Suction Rfgt Pressure - Ckt 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4011,
+      "documented": "34012",
+      "name": "Diagnostic:High Evaporator Liquid Level - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4012,
+      "documented": "34013",
+      "name": "Diagnostic:Evaporator Liquid Level Sensor - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4013,
+      "documented": "34014",
+      "name": "Comm Loss: Evap Rfgt Liquid Level - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4014,
+      "documented": "34015",
+      "name": "Diagnostic:Low Evaporator Temp (Unit Off) - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4015,
+      "documented": "34016",
+      "name": "Diagnostic:Very Low Evaporator Rfgt Pressure - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4016,
+      "documented": "34017",
+      "name": "Evaporator Water Flow (High Approach Temperature) - Circuit 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4017,
+      "documented": "34018",
+      "name": "Diagnostic:Low Evaporator Rfgt Temperature - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4018,
+      "documented": "34019",
+      "name": "Diagnostic:Low Evaporator Liquid Level - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4019,
+      "documented": "34020",
+      "name": "Diagnostic:Low Suction Rfgt Pressure - Ckt 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4020,
+      "documented": "34021",
+      "name": "Diagnostic:High Evaporator Liquid Level - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4021,
+      "documented": "34022",
+      "name": "Diagnostic:Evaporator Liquid Level Sensor - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4022,
+      "documented": "34023",
+      "name": "Comm Loss: Evap Rfgt Liquid Level - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4023,
+      "documented": "34024",
+      "name": "Diagnostic:Low Evaporator Temp (Unit Off) - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4024,
+      "documented": "34025",
+      "name": "Diagnostic:Very Low Evaporator Rfgt Pressure - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4025,
+      "documented": "34026",
+      "name": "Evaporator Water Flow (High Approach Temperature) - Circuit 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4026,
+      "documented": "34027",
+      "name": "Comm Loss: Slide Valve Unload - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4027,
+      "documented": "34028",
+      "name": "Comm Loss: Step Load - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4028,
+      "documented": "34029",
+      "name": "Comm Loss: Slide Valve Load - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4029,
+      "documented": "34030",
+      "name": "Comm Loss: Suction Rfgt Pressure - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4030,
+      "documented": "34031",
+      "name": "Diagnostic:Suction Refrigerant Pressure Sensor - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4031,
+      "documented": "34032",
+      "name": "Diagnostic:AFD Fault - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4032,
+      "documented": "34033",
+      "name": "Diagnostic:AFD Motor Current Overload - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4033,
+      "documented": "34034",
+      "name": "Comm Loss: Slide Valve Unload - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4034,
+      "documented": "34035",
+      "name": "Comm Loss: Step Load - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4035,
+      "documented": "34036",
+      "name": "Comm Loss: Slide Valve Load - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4036,
+      "documented": "34037",
+      "name": "Comm Loss: Suction Rfgt Pressure - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4037,
+      "documented": "34038",
+      "name": "Diagnostic:Suction Refrigerant Pressure Sensor - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4038,
+      "documented": "34039",
+      "name": "Diagnostic:AFD Fault - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4039,
+      "documented": "34040",
+      "name": "Diagnostic:AFD Motor Current Overload - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4040,
+      "documented": "34041",
+      "name": "Comm Loss: Slide Valve Unload - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4041,
+      "documented": "34042",
+      "name": "Comm Loss: Step Load - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4042,
+      "documented": "34043",
+      "name": "Comm Loss: Slide Valve Load - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4043,
+      "documented": "34044",
+      "name": "Comm Loss: Suction Rfgt Pressure - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4044,
+      "documented": "34045",
+      "name": "Diagnostic:Suction Refrigerant Pressure Sensor - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4045,
+      "documented": "34046",
+      "name": "Comm Loss: Slide Valve Unload - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4046,
+      "documented": "34047",
+      "name": "Comm Loss: Step Load - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4047,
+      "documented": "34048",
+      "name": "Comm Loss: Slide Valve Load - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4048,
+      "documented": "34049",
+      "name": "Comm Loss: Suction Rfgt Pressure - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4049,
+      "documented": "34050",
+      "name": "Diagnostic:Suction Refrigerant Pressure Sensor - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4050,
+      "documented": "34051",
+      "name": "Diagnostic:Emergency Stop",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4051,
+      "documented": "34052",
+      "name": "Comm Loss: External Auto/Stop",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4052,
+      "documented": "34053",
+      "name": "Comm Loss: Emergency Stop",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4053,
+      "documented": "34054",
+      "name": "Comm Loss: Ext Chilled Water Setpoint",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4054,
+      "documented": "34055",
+      "name": "Comm Loss: Ext Demand Limit Setpoint",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4055,
+      "documented": "34056",
+      "name": "Diagnostic:External Chilled Water Setpoint",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4056,
+      "documented": "34057",
+      "name": "Diagnostic:External Demand Limit Setpoint",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4057,
+      "documented": "34058",
+      "name": "Comm Loss: Programmable Relay Board 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4058,
+      "documented": "34059",
+      "name": "Diagnostic:Condenser Fan VFD Fault - Ckt1 Drive 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4059,
+      "documented": "34060",
+      "name": "Diagnostic:Condenser Fan VFD Fault - Ckt1 Drive 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4060,
+      "documented": "34061",
+      "name": "Comm Loss: Fan Control Ckt1, Stage 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4061,
+      "documented": "34062",
+      "name": "Comm Loss: Fan Control Ckt1, Stage 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4062,
+      "documented": "34063",
+      "name": "Comm Loss: Fan Control Ckt1, Stage 3",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4063,
+      "documented": "34064",
+      "name": "Comm Loss: Fan Control Ckt1, Stage 4",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4064,
+      "documented": "34065",
+      "name": "Comm Loss: Fan Inverter Power - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4065,
+      "documented": "34066",
+      "name": "Comm Loss: Fan Inverter Speed Cmd - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4066,
+      "documented": "34067",
+      "name": "Comm Loss: Fan Inv Fault, Ckt1, Dr 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4067,
+      "documented": "34068",
+      "name": "Comm Loss: Fan Inv Fault, Ckt1, Dr 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4068,
+      "documented": "34069",
+      "name": "Diagnostic:Condenser Fan VFD Fault - Ckt2 Drive 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4069,
+      "documented": "34070",
+      "name": "Diagnostic:Condenser Fan VFD Fault - Ckt2 Drive 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4070,
+      "documented": "34071",
+      "name": "Comm Loss: Fan Control Ckt2, Stage 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4071,
+      "documented": "34072",
+      "name": "Comm Loss: Fan Control Ckt2, Stage 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4072,
+      "documented": "34073",
+      "name": "Comm Loss: Fan Control Ckt2, Stage 3",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4073,
+      "documented": "34074",
+      "name": "Comm Loss: Fan Control Ckt2, Stage 4",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4074,
+      "documented": "34075",
+      "name": "Comm Loss: Fan Inverter Power - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4075,
+      "documented": "34076",
+      "name": "Comm Loss: Fan Inverter Speed Cmd - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4076,
+      "documented": "34077",
+      "name": "Comm Loss: Fan Inv Fault, Ckt2, Dr 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4077,
+      "documented": "34078",
+      "name": "Comm Loss: Fan Inv Fault, Ckt2, Dr 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4078,
+      "documented": "34079",
+      "name": "Comm Loss: Evap Leaving Water Temp",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4079,
+      "documented": "34080",
+      "name": "Comm Loss: Evap Entering Water Temp",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4080,
+      "documented": "34081",
+      "name": "Comm Loss: Outdoor Air Temperature",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4081,
+      "documented": "34082",
+      "name": "Diagnostic:Excessive IPC Comm Loss",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4082,
+      "documented": "34083",
+      "name": "Comm Loss: External Ckt Lockout - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4083,
+      "documented": "34084",
+      "name": "Comm Loss: External Ckt Lockout - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4084,
+      "documented": "34085",
+      "name": "Diagnostic:Low Evap Leaving Water Temp: Unit On",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4085,
+      "documented": "34086",
+      "name": "Diagnostic:Evaporator Entering Water Temp Sensor",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4086,
+      "documented": "34087",
+      "name": "Diagnostic:Evaporator Leaving Water Temp Sensor",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4087,
+      "documented": "34088",
+      "name": "Diagnostic:Outdoor Air Temperature Sensor",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4088,
+      "documented": "34089",
+      "name": "Diagnostic:Low Evaporator Water Temp (Unit Off)",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4089,
+      "documented": "34090",
+      "name": "Diagnostic:Evap Water Flow (Entering Water Temp)",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4090,
+      "documented": "34091",
+      "name": "Diagnostic:High Pressure Cutout - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4091,
+      "documented": "34092",
+      "name": "Diagnostic:Low Oil Flow - Cprsr 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4092,
+      "documented": "34093",
+      "name": "Diagnostic:Intermediate Oil Press Xdcr - Cprsr 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4093,
+      "documented": "34094",
+      "name": "Diagnostic:High Oil Temperature - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4094,
+      "documented": "34095",
+      "name": "Diagnostic:Oil Temperature Sensor - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4095,
+      "documented": "34096",
+      "name": "Comm Loss: High Pressure Cutout Sw - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4096,
+      "documented": "34097",
+      "name": "Comm Loss: Intermediate Oil Pressure - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4097,
+      "documented": "34098",
+      "name": "Comm Loss: Oil Temperature - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4098,
+      "documented": "34099",
+      "name": "Comm Loss: Oil Return Solenoid Valve - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4099,
+      "documented": "34100",
+      "name": "Diagnostic:Oil Flow Protection Fault - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4100,
+      "documented": "34101",
+      "name": "Comm Loss: Cprsr Disch Rfgt Temp - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4101,
+      "documented": "34102",
+      "name": "Diagnostic:Cprsr Disch Rfgt Temp Sensor -1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4102,
+      "documented": "34103",
+      "name": "Diagnostic: Low Discharge Superheat - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4103,
+      "documented": "34104",
+      "name": "Diagnostic:High Pressure Cutout - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4104,
+      "documented": "34105",
+      "name": "Diagnostic:Low Oil Flow - Cprsr 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4105,
+      "documented": "34106",
+      "name": "Diagnostic:Intermediate Oil Press Xdcr - Cprsr 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4106,
+      "documented": "34107",
+      "name": "Diagnostic:High Oil Temperature - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4107,
+      "documented": "34108",
+      "name": "Diagnostic:Oil Temperature Sensor - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4108,
+      "documented": "34109",
+      "name": "Comm Loss: High Pressure Cutout Sw - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4109,
+      "documented": "34110",
+      "name": "Comm Loss: Intermediate Oil Pressure - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4110,
+      "documented": "34111",
+      "name": "Comm Loss: Oil Temperature - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4111,
+      "documented": "34112",
+      "name": "Comm Loss: Oil Return Solenoid Valve - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4112,
+      "documented": "34113",
+      "name": "Diagnostic:Oil Flow Protection Fault - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4113,
+      "documented": "34114",
+      "name": "Comm Loss: Cprsr Disch Rfgt Temp - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4114,
+      "documented": "34115",
+      "name": "Diagnostic:Cprsr Disch Rfgt Temp Sensor -2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4115,
+      "documented": "34116",
+      "name": "Diagnostic: Low Discharge Superheat - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4116,
+      "documented": "34117",
+      "name": "Diagnostic:High Pressure Cutout - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4117,
+      "documented": "34118",
+      "name": "Diagnostic:Low Oil Flow - Cprsr 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4118,
+      "documented": "34119",
+      "name": "Diagnostic:Intermediate Oil Press Xdcr - Cprsr 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4119,
+      "documented": "34120",
+      "name": "Diagnostic:High Oil Temperature - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4120,
+      "documented": "34121",
+      "name": "Diagnostic:Oil Temperature Sensor - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4121,
+      "documented": "34122",
+      "name": "Comm Loss: High Pressure Cutout Sw - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4122,
+      "documented": "34123",
+      "name": "Comm Loss: Intermediate Oil Pressure - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4123,
+      "documented": "34124",
+      "name": "Comm Loss: Oil Temperature - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4124,
+      "documented": "34125",
+      "name": "Comm Loss: Oil Return Solenoid Valve - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4125,
+      "documented": "34126",
+      "name": "Diagnostic:Oil Flow Protection Fault - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4126,
+      "documented": "34127",
+      "name": "Diagnostic:High Pressure Cutout - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4127,
+      "documented": "34128",
+      "name": "Diagnostic:Low Oil Flow - Cprsr 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4128,
+      "documented": "34129",
+      "name": "Diagnostic:Intermediate Oil Press Xdcr - Cprsr 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4129,
+      "documented": "34130",
+      "name": "Diagnostic:High Oil Temperature - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4130,
+      "documented": "34131",
+      "name": "Diagnostic:Oil Temperature Sensor - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4131,
+      "documented": "34132",
+      "name": "Comm Loss: High Pressure Cutout Sw - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4132,
+      "documented": "34133",
+      "name": "Comm Loss: Intermediate Oil Pressure - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4133,
+      "documented": "34134",
+      "name": "Comm Loss: Oil Temperature - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4134,
+      "documented": "34135",
+      "name": "Comm Loss: Oil Return Solenoid Valve - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4135,
+      "documented": "34136",
+      "name": "Diagnostic:Oil Flow Protection Fault - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4136,
+      "documented": "34137",
+      "name": "Comm Loss: Condenser Rfgt Pressure - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4137,
+      "documented": "34138",
+      "name": "Diagnostic:Condenser Rfgt Pressure Transducer - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4138,
+      "documented": "34139",
+      "name": "Comm Loss: Condenser Rfgt Pressure - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4139,
+      "documented": "34140",
+      "name": "Diagnostic:Condenser Rfgt Pressure Transducer - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4140,
+      "documented": "34141",
+      "name": "Comm Loss: Starter 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4141,
+      "documented": "34142",
+      "name": "Diagnostic:Starter Failed to Arm/Start - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4142,
+      "documented": "34143",
+      "name": "Diagnostic:AFD Interrupt Failure - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4143,
+      "documented": "34144",
+      "name": "Comm Loss: AFD 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4144,
+      "documented": "34145",
+      "name": "Comm Loss: Starter 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4145,
+      "documented": "34146",
+      "name": "Diagnostic:Starter Failed to Arm/Start - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4146,
+      "documented": "34147",
+      "name": "Diagnostic:AFD Interrupt Failure - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4147,
+      "documented": "34148",
+      "name": "Comm Loss: AFD 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4148,
+      "documented": "34149",
+      "name": "Comm Loss: Starter 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4149,
+      "documented": "34150",
+      "name": "Diagnostic:Starter Failed to Arm/Start - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4150,
+      "documented": "34151",
+      "name": "Comm Loss: Starter 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4151,
+      "documented": "34152",
+      "name": "Diagnostic:Starter Failed to Arm/Start - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4152,
+      "documented": "34153",
+      "name": "Diagnostic:Starter 1A Loss of Comm with MP",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4153,
+      "documented": "34154",
+      "name": "Diagnostic:Starter Fault Type I - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4154,
+      "documented": "34155",
+      "name": "Diagnostic:Starter Fault Type II - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4155,
+      "documented": "34156",
+      "name": "Diagnostic:Starter Fault Type III - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4156,
+      "documented": "34157",
+      "name": "Diagnostic:Starter Contactor Interrupt Failure - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4157,
+      "documented": "34158",
+      "name": "Diagnostic:Starter Did Not Transition - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4158,
+      "documented": "34159",
+      "name": "Diagnostic:Transition Complete Input Shorted - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4159,
+      "documented": "34160",
+      "name": "Diagnostic:Phase Loss - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4160,
+      "documented": "34161",
+      "name": "Diagnostic:Phase Reversal - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4161,
+      "documented": "34162",
+      "name": "Diagnostic:Severe Current Imbalance - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4162,
+      "documented": "34163",
+      "name": "Diagnostic:Power Loss - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4163,
+      "documented": "34164",
+      "name": "Diagnostic:Motor Current Overload - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4164,
+      "documented": "34165",
+      "name": "Cprsr Did Not Accel: Shutdown - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4165,
+      "documented": "34166",
+      "name": "Cprsr Did Not Accel: Transition - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4166,
+      "documented": "34167",
+      "name": "Diagnostic:Transition Complete Input Opened - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4167,
+      "documented": "34168",
+      "name": "Diagnostic:Starter Module Memory Error Type 1 - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4168,
+      "documented": "34169",
+      "name": "Diagnostic:Starter Module Memory Error Type 2 - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4169,
+      "documented": "34170",
+      "name": "Diagnostic:Starter Dry Run Test - 1A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4170,
+      "documented": "34171",
+      "name": "Diagnostic:Over Voltage",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4171,
+      "documented": "34172",
+      "name": "Diagnostic:Under Voltage",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4172,
+      "documented": "34173",
+      "name": "Diagnostic:Starter 2A Loss of Comm with MP",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4173,
+      "documented": "34174",
+      "name": "Diagnostic:Starter Fault Type I - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4174,
+      "documented": "34175",
+      "name": "Diagnostic:Starter Fault Type II - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4175,
+      "documented": "34176",
+      "name": "Diagnostic:Starter Fault Type III - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4176,
+      "documented": "34177",
+      "name": "Diagnostic:Starter Contactor Interrupt Failure - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4177,
+      "documented": "34178",
+      "name": "Diagnostic:Starter Did Not Transition - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4178,
+      "documented": "34179",
+      "name": "Diagnostic:Transition Complete Input Shorted - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4179,
+      "documented": "34180",
+      "name": "Diagnostic:Phase Loss - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4180,
+      "documented": "34181",
+      "name": "Diagnostic:Phase Reversal - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4181,
+      "documented": "34182",
+      "name": "Diagnostic:Severe Current Imbalance - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4182,
+      "documented": "34183",
+      "name": "Diagnostic:Power Loss - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4183,
+      "documented": "34184",
+      "name": "Diagnostic:Motor Current Overload - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4184,
+      "documented": "34185",
+      "name": "Cprsr Did Not Accel: Shutdown - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4185,
+      "documented": "34186",
+      "name": "Cprsr Did Not Accel: Transition - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4186,
+      "documented": "34187",
+      "name": "Diagnostic:Transition Complete Input Opened - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4187,
+      "documented": "34188",
+      "name": "Diagnostic:Starter Module Memory Error Type 1 - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4188,
+      "documented": "34189",
+      "name": "Diagnostic:Starter Module Memory Error Type 2 - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4189,
+      "documented": "34190",
+      "name": "Diagnostic:Starter Dry Run Test - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4190,
+      "documented": "34191",
+      "name": "Diagnostic:Starter Panel Thermostat Cutout - 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4191,
+      "documented": "34192",
+      "name": "Diagnostic:Starter Panel Thermostat Comm Loss 2A",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4192,
+      "documented": "34193",
+      "name": "Diagnostic:Starter 1B Loss of Comm with MP",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4193,
+      "documented": "34194",
+      "name": "Diagnostic:Starter Fault Type I - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4194,
+      "documented": "34195",
+      "name": "Diagnostic:Starter Fault Type II - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4195,
+      "documented": "34196",
+      "name": "Diagnostic:Starter Fault Type III - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4196,
+      "documented": "34197",
+      "name": "Diagnostic:Starter Contactor Interrupt Failure - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4197,
+      "documented": "34198",
+      "name": "Diagnostic:Starter Did Not Transition - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4198,
+      "documented": "34199",
+      "name": "Diagnostic:Transition Complete Input Shorted - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4199,
+      "documented": "34200",
+      "name": "Diagnostic:Transition Complete Input Shorted - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4200,
+      "documented": "34201",
+      "name": "Diagnostic:Phase Loss - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4201,
+      "documented": "34202",
+      "name": "Diagnostic:Phase Reversal - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4202,
+      "documented": "34203",
+      "name": "Diagnostic:Severe Current Imbalance - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4203,
+      "documented": "34204",
+      "name": "Diagnostic:Power Loss - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4204,
+      "documented": "34205",
+      "name": "Diagnostic:Motor Current Overload - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4205,
+      "documented": "34206",
+      "name": "Cprsr Did Not Accel: Shutdown - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4206,
+      "documented": "34207",
+      "name": "Cprsr Did Not Accel: Transition - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4207,
+      "documented": "34208",
+      "name": "Diagnostic:Transition Complete Input Opened - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4208,
+      "documented": "34209",
+      "name": "Diagnostic:Starter Module Memory Error Type 1 - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4209,
+      "documented": "34210",
+      "name": "Diagnostic:Starter Module Memory Error Type 2 - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4210,
+      "documented": "34211",
+      "name": "Diagnostic:Starter Dry Run Test - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4211,
+      "documented": "34212",
+      "name": "Diagnostic:Starter Panel Thermostat Cutout - 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4212,
+      "documented": "34213",
+      "name": "Diagnostic:Starter Panel Thermostat Comm Loss 1B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4213,
+      "documented": "34214",
+      "name": "Diagnostic:Starter 2B Loss of Comm with MP",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4214,
+      "documented": "34215",
+      "name": "Diagnostic:Starter Fault Type I - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4215,
+      "documented": "34216",
+      "name": "Diagnostic:Starter Fault Type II - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4216,
+      "documented": "34217",
+      "name": "Diagnostic:Starter Fault Type III - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4217,
+      "documented": "34218",
+      "name": "Diagnostic:Starter Contactor Interrupt Failure - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4218,
+      "documented": "34219",
+      "name": "Diagnostic:Starter Did Not Transition - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4219,
+      "documented": "34220",
+      "name": "Diagnostic:Phase Loss - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4220,
+      "documented": "34221",
+      "name": "Diagnostic:Phase Reversal - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4221,
+      "documented": "34222",
+      "name": "Diagnostic:Severe Current Imbalance - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4222,
+      "documented": "34223",
+      "name": "Diagnostic:Power Loss - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4223,
+      "documented": "34224",
+      "name": "Diagnostic:Motor Current Overload - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4224,
+      "documented": "34225",
+      "name": "Cprsr Did Not Accel: Shutdown - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4225,
+      "documented": "34226",
+      "name": "Cprsr Did Not Accel: Transition - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4226,
+      "documented": "34227",
+      "name": "Diagnostic:Transition Complete Input Opened - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4227,
+      "documented": "34228",
+      "name": "Diagnostic:Starter Module Memory Error Type 1 - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4228,
+      "documented": "34229",
+      "name": "Diagnostic:Starter Module Memory Error Type 2 - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4229,
+      "documented": "34230",
+      "name": "Diagnostic:Starter Dry Run Test - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4230,
+      "documented": "34231",
+      "name": "Diagnostic:Starter Panel Thermostat Cutout - 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4231,
+      "documented": "34232",
+      "name": "Diagnostic:Starter Panel Thermostat Comm Loss 2B",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4232,
+      "documented": "34233",
+      "name": "Diagnostic:Low Differential Rfgt Pressure - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4233,
+      "documented": "34234",
+      "name": "Diagnostic:High Differential Rfgt Pressure - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4234,
+      "documented": "34235",
+      "name": "Diagnostic:Pumpdown Terminated - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4235,
+      "documented": "34236",
+      "name": "Comm Loss: Evap Rfgt Drain Valve - Ckt1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4236,
+      "documented": "34237",
+      "name": "Diagnostic:Evaporator Rfgt Drain - Circuit 1",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4237,
+      "documented": "34238",
+      "name": "Diagnostic:Low Differential Rfgt Pressure - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4238,
+      "documented": "34239",
+      "name": "Diagnostic:High Differential Rfgt Pressure - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4239,
+      "documented": "34240",
+      "name": "Diagnostic:Pumpdown Terminated - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4240,
+      "documented": "34241",
+      "name": "Comm Loss: Evap Rfgt Drain Valve - Ckt2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4241,
+      "documented": "34242",
+      "name": "Diagnostic:Evaporator Rfgt Drain - Circuit 2",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4242,
+      "documented": "34243",
+      "name": "Comm Loss: Evaporator Water Pump Relay",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4243,
+      "documented": "34244",
+      "name": "Comm Loss: Evaporator Water Flow Switch",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4244,
+      "documented": "34245",
+      "name": "Diagnostic:Evaporator Water Flow Overdue",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4245,
+      "documented": "34246",
+      "name": "Diagnostic:Evaporator Water Flow Lost",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4246,
+      "documented": "34247",
+      "name": "Diagnostic:High Evaporator Pressure",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4247,
+      "documented": "34248",
+      "name": "Diagnostic:High Evaporator Water Temperature",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4248,
+      "documented": "34249",
+      "name": "Diagnostic:Software Error 1001: Call Trane Service",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4249,
+      "documented": "34250",
+      "name": "Diagnostic:Software Error 1002: Call Trane Service",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4250,
+      "documented": "34251",
+      "name": "Diagnostic:Software Error 1003: Call Trane Service",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4251,
+      "documented": "34252",
+      "name": "Comm Loss: External Ice Building Command",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4252,
+      "documented": "34253",
+      "name": "Comm Loss: Ice Building Status Relay",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4253,
+      "documented": "34254",
+      "name": "Comm Loss: Local BAS Interface",
+      "description": "Diagnostic flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "In Alarm"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read the analog inputs as pairs of input registers (float, high word first) and the binary/multi-state points as single registers. Write the BAS setpoints and command points in the 4xxxx holding range.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 10,
+        "why": "Active chilled water setpoint"
+      },
+      {
+        "table": "input_register",
+        "address": 56,
+        "why": "Evaporator leaving water temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 54,
+        "why": "Evaporator entering water temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 14,
+        "why": "Actual running capacity"
+      },
+      {
+        "table": "input_register",
+        "address": 74,
+        "why": "Outdoor air temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 3010,
+        "why": "Run enabled"
+      },
+      {
+        "table": "holding_register",
+        "address": 3010,
+        "why": "Reset diagnostic"
+      },
+      {
+        "table": "holding_register",
+        "address": 2010,
+        "why": "Chiller mode command"
+      }
+    ],
+    "enable": "On the Symbio 800 web interface (USB connection) go to Installation > Identification and Communications > Protocol Configuration and select Modbus RTU or Modbus TCP; for TCP set the IP address on the IP Configuration tab.",
+    "watchdog": null,
+    "quirks": [
+      "Analog values are 32-bit floats in two consecutive registers, high word first.",
+      "0xFFFF in a binary or multi-state register and NaN in an analog register mean the value is invalid."
+    ],
+    "setup": [
+      "The Modbus RTU address comes from the controller's rotary dials (001-247); 000 disables Modbus RTU. A change takes effect without a power cycle.",
+      "Modbus TCP uses Ethernet port 1 (port 2 is reserved for the optional touch screen); the rotary address is not used for TCP and the Wi-Fi module does not support Modbus TCP."
+    ],
+    "gotchas": [
+      "Points not supported by the unit's configuration are absent; confirm the configuration dependencies before mapping."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HindlePower ATevo Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="HindlePower ATevo Modbus register map: 114 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/hindlepower/atevo">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="HindlePower ATevo Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="HindlePower ATevo Modbus register map: 114 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/hindlepower/atevo">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HindlePower ATevo Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="HindlePower ATevo Modbus register map: 114 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/hindlepower/atevo",
+   "url": "https://easymodbus.com/modbus-register-maps/hindlepower/atevo",
+   "name": "HindlePower ATevo Modbus Register List & Map | Easy Modbus",
+   "description": "HindlePower ATevo Modbus register map: 114 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-17",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/hindlepower/atevo#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/hindlepower/atevo#dataset",
+   "name": "HindlePower ATevo battery charger (Modbus communications adapter) Modbus register map",
+   "description": "HindlePower's ATevo industrial battery charger supports Modbus RTU on its serial communications adapter and Modbus TCP on the Ethernet adapter. Charger options are coils, about 60 alarm and status flags are discrete inputs, measurements (DC and AC voltages and currents, ground-fault data) are input registers and all setpoints are holding registers, with fixed multipliers. This map covers the published Modbus register set apart from a few values whose sign or units are not stated. HindlePower ATevo Modbus register map: 114 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/hindlepower/atevo",
+   "keywords": [
+    "HindlePower ATevo battery charger (Modbus communications adapter) Modbus register map",
+    "HindlePower ATevo battery charger (Modbus communications adapter) Modbus registers",
+    "HindlePower Modbus map",
+    "ATevo Modbus register map",
+    "ATevo Communications Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "dateModified": "2026-11-17",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "ATevo Communications (online manual) - Modbus sections 6.1-6.6",
+    "url": "https://www.manula.com/manuals/hindlepower-inc/atevo-communications/1.3/en/topic/modbus-holding-registers",
+    "author": {
+     "@type": "Organization",
+     "name": "HindlePower"
+    }
+   },
+   "about": {
+    "@type": "Product",
+    "name": "HindlePower ATevo battery charger (Modbus communications adapter)",
+    "brand": {
+     "@type": "Brand",
+     "name": "HindlePower"
+    },
+    "category": "Battery charger (industrial float charger, UPS-type DC system)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/hindlepower/atevo.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/hindlepower/atevo.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@id": "https://easymodbus.com/modbus-register-maps/#catalog"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the HindlePower ATevo battery charger (Modbus communications adapter) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 114 registers: 10 coils, 59 discrete inputs, 23 input registers, 22 holding registers. 32 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the HindlePower ATevo battery charger (Modbus communications adapter) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Tables use Modicon references (00001 coils, 10001 discrete inputs, 30001 input registers, 40001 holding registers) and the implementation follows the Modicon PI-MBUS-300 guide, so 30001 is input register 0 on the wire and 40001 holding register 0."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What byte order does the HindlePower ATevo battery charger (Modbus communications adapter) use for 32-bit values?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the HindlePower ATevo battery charger (Modbus communications adapter)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with IR 5 Charger DC output voltage (DC output voltage, 0.1 V); IR 6 Charger DC output current (DC output current, 0.1 A); DI 6 Common alarm relay (CAR) alarm (Common alarm); DI 3 No AC input alarm (No AC input alarm); DI 2 DC output failure alarm (DC output failure); HR 0 Float voltage setpoint (Float voltage setpoint); HR 13 Charger mode setting (Charger mode)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the HindlePower ATevo battery charger (Modbus communications adapter)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Serial: MENU > COMMUNICATION > select the port > Protocol = Modbus, then set Address (1-247), Baud rate, Parity, Stop bits and Handshake (set none). Ethernet: MENU > COMMUNICATION > Ethernet setup > Modbus enabled, Port (default 502) and Address."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official HindlePower ATevo battery charger (Modbus communications adapter) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is ATevo Communications (online manual) - Modbus sections 6.1-6.6 (Version 1.3), revision 2026-08-28, published free by HindlePower at https://www.manula.com/manuals/hindlepower-inc/atevo-communications/1.3/en/topic/modbus-holding-registers."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "HindlePower",
+     "item": "https://easymodbus.com/modbus-register-maps/hindlepower/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "ATevo battery charger (Modbus communications adapter)",
+     "item": "https://easymodbus.com/modbus-register-maps/hindlepower/atevo"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/hindlepower/">HindlePower</a></li><li aria-current="page">ATevo battery charger (Modbus communications adapter)</li></ol>
+<p class="eyebrow">Battery charger (industrial float charger, UPS-type DC system) &middot; Modbus register map</p><h1><span class="mfr">HindlePower</span> ATevo battery charger (Modbus communications adapter) Modbus register map</h1><p class="updated">Updated 17 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>HindlePower&#x27;s ATevo industrial battery charger supports Modbus RTU on its serial communications adapter and Modbus TCP on the Ethernet adapter. Charger options are coils, about 60 alarm and status flags are discrete inputs, measurements (DC and AC voltages and currents, ground-fault data) are input registers and all setpoints are holding registers, with fixed multipliers. This map covers the published Modbus register set apart from a few values whose sign or units are not stated.</p>
+<p>This page lists <strong>114 Modbus registers</strong> for the HindlePower ATevo battery charger (Modbus communications adapter) &mdash; 32 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+HindlePower&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/hindlepower/">HindlePower</a></dd></div><div><dt>Model</dt><dd>ATevo battery charger (Modbus communications adapter)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/solar-inverters/">Battery charger (industrial float charger, UPS-type DC system)</a></dd></div><div><dt>Registers</dt><dd>114 (32 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>ATevo, ATevo Communications</dd></div><div><dt>Source document</dt><dd><a href="https://www.manula.com/manuals/hindlepower-inc/atevo-communications/1.3/en/topic/modbus-holding-registers" rel="nofollow noopener" target="_blank">ATevo Communications (online manual) - Modbus sections 6.1-6.6 &middot; Version 1.3 &middot; rev. 2026-08-28</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/hindlepower/atevo.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/hindlepower/atevo.json">JSON</a>
+  <a class="btn" href="https://www.manula.com/manuals/hindlepower-inc/atevo-communications/1.3/en/topic/modbus-holding-registers" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: HindlePower ATevo battery charger (Modbus communications adapter)</h2>
+<div class="answer"><b>Integration in brief</b><p>Assign Modbus to the serial port (or enable Modbus on the Ethernet adapter) and set the Modbus address in MENU &gt; COMMUNICATION, then poll 30006/30007 for DC output voltage and current, the discrete inputs for alarms, and write setpoints to 40001-40021.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-ir-5">IR 5</a></td><td class="n">Charger DC output voltage</td><td class="f">UINT16</td><td>DC output voltage, 0.1 V</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-ir-6">IR 6</a></td><td class="n">Charger DC output current</td><td class="f">UINT16</td><td>DC output current, 0.1 A</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-di-6">DI 6</a></td><td class="n">Common alarm relay (CAR) alarm</td><td class="f">BIT</td><td>Common alarm</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-di-3">DI 3</a></td><td class="n">No AC input alarm</td><td class="f">BIT</td><td>No AC input alarm</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-di-2">DI 2</a></td><td class="n">DC output failure alarm</td><td class="f">BIT</td><td>DC output failure</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Float voltage setpoint</td><td class="f">UINT16</td><td>Float voltage setpoint</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-13">HR 13</a></td><td class="n">Charger mode setting</td><td class="f">UINT16</td><td>Charger mode</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Serial: MENU &gt; COMMUNICATION &gt; select the port &gt; Protocol = Modbus, then set Address (1-247), Baud rate, Parity, Stop bits and Handshake (set none). Ethernet: MENU &gt; COMMUNICATION &gt; Ethernet setup &gt; Modbus enabled, Port (default 502) and Address.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Values are scaled integers; divide by the multiplier.</li><li>32-bit timestamps are low word first.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Handshaking should be set to none; it is never used on RS-485.</li><li>HindlePower recommends leaving the Modbus TCP port at 502.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Some values are reported only with the matching optional hardware; discrete input 10051 shows whether the AC meter option is installed.</li></ul>
+</section>
+<h2 id="registers">HindlePower ATevo battery charger (Modbus communications adapter) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="coil" aria-pressed="false" title="Coil">Coils<b>10</b></button></li><li><button type="button" class="chip" data-chip-for="regs" data-type="discrete_input" aria-pressed="false" title="Discrete input">Discrete inputs<b>59</b></button></li><li><button type="button" class="chip" data-chip-for="regs" data-type="input_register" aria-pressed="false" title="Input register">Input registers<b>23</b></button></li><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>22</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">114 of 114 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">HindlePower ATevo battery charger (Modbus communications adapter) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="coil" id="r-co-0"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">0<small>doc 00001</small></td><td class="n">Float / equalize mode</td><td class="d">0 = float, 1 = equalize.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-3"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">3<small>doc 00004</small></td><td class="n">Manual / auto equalize timer</td><td class="d">0 = manual, 1 = auto.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-4"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">4<small>doc 00005</small></td><td class="n">HVDC shutdown</td><td class="d">1 = enabled.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-6"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">6<small>doc 00007</small></td><td class="n">Battery temperature compensation</td><td class="d">1 = enabled.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-7"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">7<small>doc 00008</small></td><td class="n">Battery discharge</td><td class="d">1 = enabled.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-8"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">8<small>doc 00009</small></td><td class="n">Remote sense</td><td class="d">1 = enabled.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-9"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">9<small>doc 00010</small></td><td class="n">Auto run battery open test</td><td class="d">1 = enabled.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-10"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">10<small>doc 00011</small></td><td class="n">Battery open test ran</td><td class="d"></td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-11"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">11<small>doc 00012</small></td><td class="n">Dynamic current limit</td><td class="d">1 = enabled.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="coil" id="r-co-12"><td class="t"><abbr title="Coil, FC01 read / FC05, FC15 write">CO</abbr></td><td class="i">12<small>doc 00013</small></td><td class="n">Battery temperature probe</td><td class="d">1 = enabled.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-0"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">0<small>doc 10001</small></td><td class="n">High voltage DC (HVDC) alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-1"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">1<small>doc 10002</small></td><td class="n">Low voltage DC (LVDC) alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-2"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">2<small>doc 10003</small></td><td class="n">DC output failure alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-3"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">3<small>doc 10004</small></td><td class="n">No AC input alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-4"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">4<small>doc 10005</small></td><td class="n">Positive ground fault alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-5"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">5<small>doc 10006</small></td><td class="n">Negative ground fault alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-6"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">6<small>doc 10007</small></td><td class="n">Common alarm relay (CAR) alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-7"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">7<small>doc 10008</small></td><td class="n">HVDC shutdown active</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-8"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">8<small>doc 10009</small></td><td class="n">Low voltage AC shutdown (&lt;65 % nominal)</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-9"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">9<small>doc 10010</small></td><td class="n">Forced load sharing enabled</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-10"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">10<small>doc 10011</small></td><td class="n">Temperature compensation enabled</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-11"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">11<small>doc 10012</small></td><td class="n">Defective temperature probe</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-12"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">12<small>doc 10013</small></td><td class="n">Equalize mode (0 = float)</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-15"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">15<small>doc 10016</small></td><td class="n">Auto-equalize timer enabled</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-16"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">16<small>doc 10017</small></td><td class="n">HVDC shutdown enabled</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-18"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">18<small>doc 10019</small></td><td class="n">High ripple alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-19"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">19<small>doc 10020</small></td><td class="n">End of discharge alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-20"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">20<small>doc 10021</small></td><td class="n">Rectifier over temperature alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-21"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">21<small>doc 10022</small></td><td class="n">DC breaker open</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-22"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">22<small>doc 10023</small></td><td class="n">Open external feedback alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-23"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">23<small>doc 10024</small></td><td class="n">Open internal feedback alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-24"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">24<small>doc 10025</small></td><td class="n">DC power supply alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-25"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">25<small>doc 10026</small></td><td class="n">Open DC output alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-26"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">26<small>doc 10027</small></td><td class="n">High level detect alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-27"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">27<small>doc 10028</small></td><td class="n">Low level detect alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-28"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">28<small>doc 10029</small></td><td class="n">Low AC supply alarm (&lt;75 % nominal)</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-29"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">29<small>doc 10030</small></td><td class="n">Current limit active</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-30"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">30<small>doc 10031</small></td><td class="n">High level detect shutdown</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-31"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">31<small>doc 10032</small></td><td class="n">Alarm relay failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-32"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">32<small>doc 10033</small></td><td class="n">Rectifier temperature sense failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-33"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">33<small>doc 10034</small></td><td class="n">Display / UI processor failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-34"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">34<small>doc 10035</small></td><td class="n">Battery open alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-35"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">35<small>doc 10036</small></td><td class="n">Loadshare communication failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-36"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">36<small>doc 10037</small></td><td class="n">Loadshare independent mode</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-37"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">37<small>doc 10038</small></td><td class="n">Loadshare not ready</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-38"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">38<small>doc 10039</small></td><td class="n">Battery discharging</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-39"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">39<small>doc 10040</small></td><td class="n">Battery overtemp (&gt;= setpoint)</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-40"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">40<small>doc 10041</small></td><td class="n">Vgnd imbalance warning</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-41"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">41<small>doc 10042</small></td><td class="n">Vgnd imbalance critical</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-42"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">42<small>doc 10043</small></td><td class="n">Positive ground fault warning</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-43"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">43<small>doc 10044</small></td><td class="n">Negative ground fault warning</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-44"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">44<small>doc 10045</small></td><td class="n">Dynamic current limit active</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-45"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">45<small>doc 10046</small></td><td class="n">Power board EEROM failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-46"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">46<small>doc 10047</small></td><td class="n">Main EEROM failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-47"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">47<small>doc 10048</small></td><td class="n">Level detect digital potentiometer failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-48"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">48<small>doc 10049</small></td><td class="n">Ambient temperature probe failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-49"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">49<small>doc 10050</small></td><td class="n">AC breaker open (tripped)</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-50"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">50<small>doc 10051</small></td><td class="n">AC meter option installed</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-51"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">51<small>doc 10052</small></td><td class="n">AC supply three-phase (0 = single)</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-52"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">52<small>doc 10053</small></td><td class="n">Low priority alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-53"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">53<small>doc 10054</small></td><td class="n">High priority alarm</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-54"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">54<small>doc 10055</small></td><td class="n">Equalize active</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-55"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">55<small>doc 10056</small></td><td class="n">AC meter failure</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-56"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">56<small>doc 10057</small></td><td class="n">DC short circuit detected</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-57"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">57<small>doc 10058</small></td><td class="n">Equalize disabled (cannot be activated)</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-58"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">58<small>doc 10059</small></td><td class="n">HH+ sensor registered</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-59"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">59<small>doc 10060</small></td><td class="n">HH+ sensor fail</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-60"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">60<small>doc 10061</small></td><td class="n">HH+ Vbat probe error</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="discrete_input" id="r-di-61"><td class="t"><abbr title="Discrete input, FC02 read">DI</abbr></td><td class="i">61<small>doc 10062</small></td><td class="n">Open battery test in progress</td><td class="d">1 = active / true.</td><td class="f">BIT</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-0"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">0<small>doc 30001</small></td><td class="n">ATevo firmware version major/minor</td><td class="d">Major x 100 + minor.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-2"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">2<small>doc 30003</small></td><td class="n">ATevo firmware version build</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-3"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">3<small>doc 30004</small></td><td class="n">Nominal output voltage rating</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-4"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">4<small>doc 30005</small></td><td class="n">Nominal output current rating</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-5"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">5<small>doc 30006</small></td><td class="n">Charger DC output voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-6"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">6<small>doc 30007</small></td><td class="n">Charger DC output current</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-7"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">7<small>doc 30008</small></td><td class="n">Equalize time remaining</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>min</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-11"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">11<small>doc 30012</small></td><td class="n">Vgnd imbalance lean</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Less than 5 %; 1 = Positive &gt; 5 %; 2 = Negative &gt; 5 %</td></tr>
+<tr data-row data-type="input_register" id="r-ir-12"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">12<small>doc 30013</small></td><td class="n">Positive terminal to ground</td><td class="d">Value as reported; units not stated.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-13"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">13<small>doc 30014</small></td><td class="n">Negative terminal to ground</td><td class="d">Value as reported; units not stated.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-14"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">14<small>doc 30015</small></td><td class="n">Vgnd imbalance</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-15"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">15<small>doc 30016</small></td><td class="n">Resistance to ground indicator</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Invalid; 1 = Positive to ground; 2 = Negative to ground</td></tr>
+<tr data-row data-type="input_register" id="r-ir-16"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">16<small>doc 30017</small></td><td class="n">Loadshare enabled</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Not enabled; 1 = Primary; 2 = Secondary</td></tr>
+<tr data-row data-type="input_register" id="r-ir-17"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">17<small>doc 30018-30019</small></td><td class="n">Battery open test timestamp</td><td class="d">Seconds since 2000-01-01; low word first.</td><td class="f">UINT32</td><td class="f">CDAB</td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-20"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">20<small>doc 30021</small></td><td class="n">Heartbeat</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-21"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">21<small>doc 30022</small></td><td class="n">AC input voltage phase A</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-22"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">22<small>doc 30023</small></td><td class="n">AC input voltage phase B</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-23"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">23<small>doc 30024</small></td><td class="n">AC input voltage phase C</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-24"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">24<small>doc 30025</small></td><td class="n">AC input current phase A</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-25"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">25<small>doc 30026</small></td><td class="n">AC input current phase B</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-26"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">26<small>doc 30027</small></td><td class="n">AC input current phase C</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-27"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">27<small>doc 30028</small></td><td class="n">AC line frequency</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="input_register" id="r-ir-30"><td class="t"><abbr title="Input register, FC04 read">IR</abbr></td><td class="i">30<small>doc 30031</small></td><td class="n">Battery voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-0"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">0<small>doc 40001</small></td><td class="n">Float voltage setpoint</td><td class="d">Range per JA5124-02.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1<small>doc 40002</small></td><td class="n">Equalize voltage setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2<small>doc 40003</small></td><td class="n">Equalize timer setpoint</td><td class="d">1-99 hours.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3<small>doc 40004</small></td><td class="n">Current limit setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4<small>doc 40005</small></td><td class="n">HVDC alarm setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-5"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">5<small>doc 40006</small></td><td class="n">LVDC alarm setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6<small>doc 40007</small></td><td class="n">High level detect setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7<small>doc 40008</small></td><td class="n">Low level detect setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8<small>doc 40009</small></td><td class="n">End of discharge setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9<small>doc 40010</small></td><td class="n">AC ripple alarm setpoint</td><td class="d">50-500 mV in 5 mV steps.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>mV</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10<small>doc 40011</small></td><td class="n">Positive ground fault setpoint</td><td class="d">10-40 kOhm.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>kOhm</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11<small>doc 40012</small></td><td class="n">Negative ground fault setpoint</td><td class="d">10-40 kOhm.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>kOhm</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12<small>doc 40013</small></td><td class="n">Battery type</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Lead acid; 1 = NiCd</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-13"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">13<small>doc 40014</small></td><td class="n">Charger mode setting</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Shutdown; 1 = Battery open test; 2 = Float; 3 = Timed equalize</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-14"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">14<small>doc 40015</small></td><td class="n">Ground fault critical setpoint</td><td class="d">1-50 kOhm.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>kOhm</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15<small>doc 40016</small></td><td class="n">Vgnd imbalance warning setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16<small>doc 40017</small></td><td class="n">Vgnd imbalance critical setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-17"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">17<small>doc 40018</small></td><td class="n">Battery overtemp setpoint</td><td class="d">30-60 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-18"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">18<small>doc 40019</small></td><td class="n">Battery open test frequency</td><td class="d">1-180 days.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>days</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-19"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">19<small>doc 40020</small></td><td class="n">Battery open test duration</td><td class="d">1-8 minutes.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>min</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-20"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">20<small>doc 40021</small></td><td class="n">Battery open test setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-21"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">21<small>doc 40022-40023</small></td><td class="n">Date/time</td><td class="d">Seconds since 2000-01-01; 40022 low word, 40023 high word.</td><td class="f">UINT32</td><td class="f">CDAB</td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>This is HindlePower&#x27;s own manual, published on the manula.com documentation platform (each section is a separate page).</li><li>Scaling: divide the raw value by the Multiplier column (10 for XXX.X values, 100 for XXX.XX). Scale = 1 / multiplier.</li><li>32-bit timestamps are split into a &#x27;Low&#x27; and a &#x27;High&#x27; register with the low word in the lower address (CDAB): 30018/30019 battery open test time and 40022/40023 date/time, both seconds since 1 January 2000.</li><li>Left out: 30002 Modbus firmware revision (format &#x27;XXX.xxx.0&#x27; cannot be decoded from one register), 30009 (not used), 30010 battery temperature, 30011 rectifier temperature, 30020 ambient temperature, 30029/30030 battery current (the manual does not say whether negative values are sent as signed integers).</li><li>30013/30014 (positive/negative terminal to ground) are listed without units because the manual gives none.</li><li>Some entries are only reported when the matching optional hardware is installed (e.g. AC meter option for 30022-30028).</li><li>Valid ranges of many setpoints depend on the charger rating; see HindlePower supplement JA5124-02. Writing outside the range returns an exception.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the HindlePower ATevo battery charger (Modbus communications adapter)</h2><div class="faq"><details open><summary>What Modbus registers does the HindlePower ATevo battery charger (Modbus communications adapter) have?</summary><p>This map lists 114 registers: 10 coils, 59 discrete inputs, 23 input registers, 22 holding registers. 32 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the HindlePower ATevo battery charger (Modbus communications adapter) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Tables use Modicon references (00001 coils, 10001 discrete inputs, 30001 input registers, 40001 holding registers) and the implementation follows the Modicon PI-MBUS-300 guide, so 30001 is input register 0 on the wire and 40001 holding register 0.</p></details><details><summary>What byte order does the HindlePower ATevo battery charger (Modbus communications adapter) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the HindlePower ATevo battery charger (Modbus communications adapter)?</summary><p>Start with IR 5 Charger DC output voltage (DC output voltage, 0.1 V); IR 6 Charger DC output current (DC output current, 0.1 A); DI 6 Common alarm relay (CAR) alarm (Common alarm); DI 3 No AC input alarm (No AC input alarm); DI 2 DC output failure alarm (DC output failure); HR 0 Float voltage setpoint (Float voltage setpoint); HR 13 Charger mode setting (Charger mode).</p></details><details><summary>How do I enable Modbus control of the HindlePower ATevo battery charger (Modbus communications adapter)?</summary><p>Serial: MENU &gt; COMMUNICATION &gt; select the port &gt; Protocol = Modbus, then set Address (1-247), Baud rate, Parity, Stop bits and Handshake (set none). Ethernet: MENU &gt; COMMUNICATION &gt; Ethernet setup &gt; Modbus enabled, Port (default 502) and Address.</p></details><details><summary>Where is the official HindlePower ATevo battery charger (Modbus communications adapter) Modbus documentation?</summary><p>The source is ATevo Communications (online manual) - Modbus sections 6.1-6.6 (Version 1.3), revision 2026-08-28, published free by HindlePower at https://www.manula.com/manuals/hindlepower-inc/atevo-communications/1.3/en/topic/modbus-holding-registers.</p></details></div>
+<h2>More HindlePower Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/hindlepower/at10-at30-comms-module" data-row><span class="k">Battery charger (industrial float charger, UPS-type DC system)</span><h3>HindlePower AT10.1 / AT30 series battery charger with communications module (Modbus)</h3><p>HindlePower AT10.1 and AT30 microprocessor-controlled float battery chargers fitted with the AT Series Communications Module (EJ5037-##) set to Modbus, per operating instructions JA0102-04 Rev. 02-2025.</p><div class="meta">33 registers &middot; 12 writable &middot; RTU/ASCII/TCP</div><span class="sr-only"> Also known as: AT10.1, AT30, EJ5037, AT Series Communications Module</span></a></li></ul>
+<p class="updated">Source: <a href="https://www.manula.com/manuals/hindlepower-inc/atevo-communications/1.3/en/topic/modbus-holding-registers" rel="nofollow noopener" target="_blank">ATevo Communications (online manual) - Modbus sections 6.1-6.6 &middot; Version 1.3 &middot; rev. 2026-08-28</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

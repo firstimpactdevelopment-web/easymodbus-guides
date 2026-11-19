@@ -1,0 +1,85 @@
+﻿# Senva EM-RS485 networked energy meter (Modbus RTU/ASCII) Modbus register map - easymodbus.com - source: https://senvainc.com/catalog/documents/downloadcenter/EM-RS485%20Modbus%20Protocol%20Guide.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",102,R102,40103,Reset reason,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",103,R103,40104,Reset count,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",104,R104/05,40105,Up time,Time since last reset.,UINT32,2,ABCD,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",111,R111,40112,Identify meter,Flash LEDs to find the meter (BOOL).,UINT16,1,,1,0,,Read/write,0 = Inactive; 1 = Active (all LEDs blink green)
+Holding register,"FC03 read / FC06, FC16 write",122,R122,40123,RS485 protocol,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = BACnet; 3 = Modbus RTU; 4 = Modbus ASCII; 5 = BACnet + Modbus RTU; 6 = BACnet + Modbus ASCII; 7 = Modbus RTU + ASCII; 8 = Any protocol
+Holding register,"FC03 read / FC06, FC16 write",123,R123,40124,Slave address,1-254; also answers global address 255.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",124,R124/25,40125,RS485 baud rate,1200-460800; writing it turns auto-baud off.,UINT32,2,ABCD,1,0,baud,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",126,R126,40127,RS485 parity,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = None; 3 = Odd; 4 = Even
+Holding register,"FC03 read / FC06, FC16 write",127,R127,40128,RS485 data bits,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = 7 bits; 3 = 8 bits
+Holding register,"FC03 read / FC06, FC16 write",128,R128,40129,RS485 stop bits,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = 1 bit; 3 = 1.5 bits; 4 = 2 bits
+Holding register,"FC03 read / FC06, FC16 write",133,R133,40134,Temperature units,,UINT16,1,,1,0,,Read/write,1 = °F; 2 = °C
+Holding register,"FC03 read / FC06, FC16 write",153,R153,40154,Angle units,,UINT16,1,,1,0,,Read/write,1 = Degrees; 2 = Radians
+Holding register,"FC03 read / FC06, FC16 write",161,R161,40162,System phase selection,Which phases make up system totals.,UINT16,1,,1,0,,Read/write,1 = 3 phase; 2 = R and S; 3 = S and T; 4 = R and T
+Holding register,"FC03 read / FC06, FC16 write",163,R163,40164,Power units,Reactive and apparent power follow the same scale.,UINT16,1,,1,0,,Read/write,1 = kW; 2 = W; 3 = MW
+Holding register,"FC03 read / FC06, FC16 write",170,R170,40171,Energy data type,,UINT16,1,,1,0,,Read/write,0 = Floating point; 1 = Unsigned integer 0-999999 (wraps)
+Holding register,"FC03 read / FC06, FC16 write",173,R173,40174,Energy units,Reactive and apparent energy follow the same scale.,UINT16,1,,1,0,,Read/write,1 = kWh; 2 = Wh; 3 = MWh
+Holding register,"FC03 read / FC06, FC16 write",194,R194,40195,Energy reset count,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",200,R200,40201,Setup button,Reads 1 while the button is pressed.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",201,R201,40202,Binary input 1,Stable state of pulse input 1 (input is active low).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",202,R202,40203,Binary input 2,Stable state of pulse input 2 (input is active low).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",210,R210/11,40211,Pulse input 1 count,,UINT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",220,R220/21,40221,Pulse input 2 count,,UINT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",310,R310/11,40311,Temperature,Meter ambient temperature; unit set by R133 (default °F).,FLOAT32,2,ABCD,1,0,°F / °C,Read,
+Holding register,"FC03 read / FC06, FC16 write",380,R380/81,40381,Power supply voltage,Internal supply voltage after rectification.,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",400,R400,40401,Active system conditions,,BITMAP16,1,,1,0,,Read,bit 5 = Mismatched voltage; bit 6 = Reverse RST order; bit 7 = Not 3-phase; bit 12 = Frequency drift; bit 15 = Phase drift
+Holding register,"FC03 read / FC06, FC16 write",401,R401,40402,Previous system conditions,Latched copy of R400; write 0 to clear.,BITMAP16,1,,1,0,,Read/write,bit 5 = Mismatched voltage; bit 6 = Reverse RST order; bit 7 = Not 3-phase; bit 12 = Frequency drift; bit 15 = Phase drift
+Holding register,"FC03 read / FC06, FC16 write",410,R410/11,40411,Line frequency,,FLOAT32,2,ABCD,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",420,R420/21,40421,Phase average RMS voltage,Average of valid phases.,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",450,R450/51,40451,Phase-to-phase average RMS voltage,,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",520,R520/21,40521,Phase average RMS current,,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",540,R540/41,40541,Phase average current angle,Unit set by R153.,FLOAT32,2,ABCD,1,0,deg / rad,Read,
+Holding register,"FC03 read / FC06, FC16 write",550,R550/51,40551,System power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",600,R600/01,40601,Total real power,Unit set by R163 (default kW).,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",610,R610/11,40611,Phase average real power,Unit set by R163.,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",620,R620/21,40621,Net real power,Negative = net export. Unit set by R163.,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",640,R640/41,40641,Total reactive power,Unit follows R163 (default kVAR).,FLOAT32,2,ABCD,1,0,kVAR,Read,
+Holding register,"FC03 read / FC06, FC16 write",660,R660/61,40661,Total apparent power,Unit follows R163 (default kVA).,FLOAT32,2,ABCD,1,0,kVA,Read,
+Holding register,"FC03 read / FC06, FC16 write",700,R700/01,40701,Total real energy,Unit set by R173 (default kWh); type per R170.,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",702,R702/03,40703,Total real energy import,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",704,R704/05,40705,Total real energy export,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",706,R706/07,40707,Total real energy net,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",720,R720/21,40721,System real energy,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",722,R722/23,40723,System real energy import,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",724,R724/25,40725,System real energy export,,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",740,R740/41,40741,Total reactive energy,Unit follows R173 (default kVARh).,FLOAT32,2,ABCD,1,0,kVARh,Read,
+Holding register,"FC03 read / FC06, FC16 write",760,R760/61,40761,Total apparent energy,Unit follows R173 (default kVAh).,FLOAT32,2,ABCD,1,0,kVAh,Read,
+Holding register,"FC03 read / FC06, FC16 write",800,R800/01,40801,Demand real power,Current demand window. Unit per R163.,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",806,R806/07,40807,Maximum demand real power,,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",840,R840/41,40841,Demand reactive power,,FLOAT32,2,ABCD,1,0,kVAR,Read,
+Holding register,"FC03 read / FC06, FC16 write",860,R860/61,40861,Demand apparent power,,FLOAT32,2,ABCD,1,0,kVA,Read,
+Holding register,"FC03 read / FC06, FC16 write",1102,R1102,41103,R phase CVT present,,UINT16,1,,1,0,,Read,0 = No; 1 = Yes
+Holding register,"FC03 read / FC06, FC16 write",1103,R1103,41104,R phase CVT status,,UINT16,1,,1,0,,Read,1 = No CVT; 2 = No error; 3 = Detection error; 4 = Communication error; 5 = Configuration error; 6 = Version error; 7 = Technology error
+Holding register,"FC03 read / FC06, FC16 write",1140,R1140/41,41141,R phase CVT voltage rating,,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1150,R1150/51,41151,R phase CVT current rating,,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1152,R1152/53,41153,R phase current multiplier,Default 1.0.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1400,R1400,41401,R phase active conditions,,BITMAP16,1,,1,0,,Read,bit 0 = Sensor fault; bit 1 = No load; bit 2 = Negative power; bit 3 = Phase loss; bit 4 = Bad frequency; bit 5 = Low power factor; bit 6 = Over current; bit 7 = Over voltage; bit 8 = High harmonics; bit 9 = Unexpected sensor; bit 10 = Missing sensor; bit 11 = Surge voltage; bit 13 = Brown-out voltage
+Holding register,"FC03 read / FC06, FC16 write",1401,R1401,41402,R phase previous conditions,Write 0 to clear.,BITMAP16,1,,1,0,,Read/write,bit 0 = Sensor fault; bit 1 = No load; bit 2 = Negative power; bit 3 = Phase loss; bit 4 = Bad frequency; bit 5 = Low power factor; bit 6 = Over current; bit 7 = Over voltage; bit 8 = High harmonics; bit 9 = Unexpected sensor; bit 10 = Missing sensor; bit 11 = Surge voltage; bit 13 = Brown-out voltage
+Holding register,"FC03 read / FC06, FC16 write",1420,R1420/21,41421,R phase RMS voltage,,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1450,R1450/51,41451,R phase-to-phase RMS voltage,,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1520,R1520/21,41521,R phase RMS current,Includes current multiplier; always positive.,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",1540,R1540/41,41541,R phase current angle,Unit set by R153.,FLOAT32,2,ABCD,1,0,deg / rad,Read,
+Holding register,"FC03 read / FC06, FC16 write",1550,R1550/51,41551,R phase power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1600,R1600/01,41601,R phase real power,Unit per R163.,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",1640,R1640/41,41641,R phase reactive power,,FLOAT32,2,ABCD,1,0,kVAR,Read,
+Holding register,"FC03 read / FC06, FC16 write",1660,R1660/61,41661,R phase apparent power,,FLOAT32,2,ABCD,1,0,kVA,Read,
+Holding register,"FC03 read / FC06, FC16 write",1700,R1700/01,41701,R phase total real energy,Unit per R173; type per R170.,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",1740,R1740/41,41741,R phase total reactive energy,,FLOAT32,2,ABCD,1,0,kVARh,Read,
+Holding register,"FC03 read / FC06, FC16 write",1760,R1760/61,41761,R phase total apparent energy,,FLOAT32,2,ABCD,1,0,kVAh,Read,
+Holding register,"FC03 read / FC06, FC16 write",1800,R1800/01,41801,R phase demand real power,,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",2103,R2103,42104,S phase CVT status,,UINT16,1,,1,0,,Read,1 = No CVT; 2 = No error; 3 = Detection error; 4 = Communication error; 5 = Configuration error; 6 = Version error; 7 = Technology error
+Holding register,"FC03 read / FC06, FC16 write",2400,R2400,42401,S phase active conditions,,BITMAP16,1,,1,0,,Read,bit 0 = Sensor fault; bit 1 = No load; bit 2 = Negative power; bit 3 = Phase loss; bit 4 = Bad frequency; bit 5 = Low power factor; bit 6 = Over current; bit 7 = Over voltage; bit 8 = High harmonics; bit 9 = Unexpected sensor; bit 10 = Missing sensor; bit 11 = Surge voltage; bit 13 = Brown-out voltage
+Holding register,"FC03 read / FC06, FC16 write",2420,R2420/21,42421,S phase RMS voltage,,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2520,R2520/21,42521,S phase RMS current,,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",2550,R2550/51,42551,S phase power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2600,R2600/01,42601,S phase real power,Unit per R163.,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",2700,R2700/01,42701,S phase total real energy,Unit per R173.,FLOAT32,2,ABCD,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",3103,R3103,43104,T phase CVT status,,UINT16,1,,1,0,,Read,1 = No CVT; 2 = No error; 3 = Detection error; 4 = Communication error; 5 = Configuration error; 6 = Version error; 7 = Technology error
+Holding register,"FC03 read / FC06, FC16 write",3400,R3400,43401,T phase active conditions,,BITMAP16,1,,1,0,,Read,bit 0 = Sensor fault; bit 1 = No load; bit 2 = Negative power; bit 3 = Phase loss; bit 4 = Bad frequency; bit 5 = Low power factor; bit 6 = Over current; bit 7 = Over voltage; bit 8 = High harmonics; bit 9 = Unexpected sensor; bit 10 = Missing sensor; bit 11 = Surge voltage; bit 13 = Brown-out voltage
+Holding register,"FC03 read / FC06, FC16 write",3420,R3420/21,43421,T phase RMS voltage,,FLOAT32,2,ABCD,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",3520,R3520/21,43521,T phase RMS current,,FLOAT32,2,ABCD,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",3550,R3550/51,43551,T phase power factor,,FLOAT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3600,R3600/01,43601,T phase real power,Unit per R163.,FLOAT32,2,ABCD,1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",3700,R3700/01,43701,T phase total real energy,Unit per R173.,FLOAT32,2,ABCD,1,0,kWh,Read,

@@ -1,0 +1,349 @@
+{
+  "manufacturer": "Teledyne Detcon",
+  "manufacturer_slug": "detcon",
+  "model": "Model CX-IR infrared combustible gas sensor (Modbus RTU)",
+  "model_slug": "cx-ir",
+  "short_model": "CX-IR",
+  "aliases": [
+    "CX-IR",
+    "Detcon CX-IR"
+  ],
+  "equipment_type": "Sensor (fixed gas detector)",
+  "applies_to": "Teledyne Detcon CX-IR wired infrared gas sensors (RS-485 Modbus RTU and 4-20 mA), instruction manual Document #4428 Rev. 1.9.",
+  "summary": "The CX-IR is an infrared combustible gas sensor from Teledyne Detcon with a 4-20 mA output and a Modbus RTU RS-485 port. The holding registers give the range, gas reading in %LEL, span level, sensor life, fault bits and calibration control, plus optional smart-battery registers in the 48199-48206 block. This map covers the documented registers except temperature and voltage.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "Registers are printed with a leading 4 starting at 40000 (device type), so 40002 is wire address 2 and 48204 is wire address 8204."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "CX-IR Instruction Manual",
+    "doc_number": "Document #4428, Rev. 1.9",
+    "revision_date": "2022-03-14",
+    "url": "https://www.teledynegasandflamedetection.com/en-us/products/docs/areagas-cx-smart-ir-usermanual-english.pdf",
+    "pages": "pp. 23-25 (sections 4.1-4.2.2, Table 2 register map)"
+  },
+  "notes": [
+    "Left out: 40010 sensor temperature (°C, no data type or sign given) and 48205 battery/input voltage (unit volts but no scale given). Reserved registers 40008-40009 and 40012-40013 are skipped.",
+    "The gas reading is listed in %LEL. A range divisor register exists (40014) but the manual does not say how it applies, so no scale is set.",
+    "Calibration enable/status codes are not listed in the CX-IR manual.",
+    "Supported functions: 03, 06 and 16. Writes to read-only registers are acknowledged but ignored.",
+    "Battery registers only work with a Detcon smart battery pack; check bit 4 of 48204 first. Battery status refreshes about every 60 s."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "40000",
+      "name": "Device type",
+      "description": "Reads 42 for a CX-IR.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "42": "CX-IR"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40001",
+      "name": "Range",
+      "description": "Detectable range.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%LEL",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "40002",
+      "name": "Gas reading",
+      "description": "Current gas reading.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%LEL",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "40003",
+      "name": "Calibration level",
+      "description": "AutoSpan gas level.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%LEL",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "40004",
+      "name": "Sensor life",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "40005",
+      "name": "Sensor faults",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Global fault",
+        "1": "AutoSpan fault",
+        "2": "Temperature fault",
+        "5": "Memory fault",
+        "6": "Processor fault",
+        "7": "Sensor fault",
+        "9": "Clearing fault",
+        "11": "Range fault",
+        "12": "Zero fault",
+        "14": "Calibration mode"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "40006",
+      "name": "Sensor model",
+      "description": "Reads 3 (IR).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "40007",
+      "name": "Days since calibration",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "days",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "40011",
+      "name": "Gas factor",
+      "description": "See the gas factor menu in the manual.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 14,
+      "documented": "40014",
+      "name": "Range divisor",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15,
+      "documented": "40015",
+      "name": "Calibration enable/status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16,
+      "documented": "40016-40021",
+      "name": "Gas type/units string",
+      "description": "ASCII text set at the factory.",
+      "data_type": "STRING",
+      "length": 6,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8199,
+      "documented": "48199",
+      "name": "Battery life",
+      "description": "Smart battery life remaining, 0-100.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8200,
+      "documented": "48200",
+      "name": "Battery life in minutes",
+      "description": "Caps at 65535 (about 45.5 days).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8204,
+      "documented": "48204",
+      "name": "Status",
+      "description": "Battery detect and battery fault flags.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "4": "Battery detected",
+        "5": "Battery fault"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 8206,
+      "documented": "48206",
+      "name": "Battery read error count",
+      "description": "Write 0 to clear.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set a unique Modbus ID (hex) in the magnet menu, wire RS-485 at 9600 8N1 and poll holding registers 0-7 with function 03.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Gas reading %LEL"
+      },
+      {
+        "table": "holding_register",
+        "address": 5,
+        "why": "Fault bits"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Range"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Sensor life"
+      },
+      {
+        "table": "holding_register",
+        "address": 8204,
+        "why": "Battery status"
+      }
+    ],
+    "enable": "The manual describes no separate enable step; set the ID with Set Modbus ID (01-FF hex, default 01).",
+    "watchdog": null,
+    "quirks": [
+      "40000 = wire address 0; the battery block sits at 8199-8206.",
+      "Bump tests do not change the Modbus gas reading."
+    ],
+    "setup": [
+      "9600 baud, 8 data bits, no parity, 1 stop bit."
+    ],
+    "gotchas": [
+      "Bit 14 of 40005 is set while in calibration mode."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

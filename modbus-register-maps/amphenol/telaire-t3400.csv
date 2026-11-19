@@ -1,0 +1,15 @@
+﻿# Amphenol Telaire T3400 series refrigerant (A2L) leak sensor Modbus register map - easymodbus.com - source: https://amphenol-sensors.com/hubfs/AS-T63381B-T3400-RefrigSensor-0425-web.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",256,0x0100,40257,Register specification version,"High byte major, low byte minor.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",257,0x0101,40258,Device reset,Write 1 to reset the sensor.,UINT16,1,,1,0,,Write,1 = Reset
+Holding register,"FC03 read / FC06, FC16 write",272,0x0110,40273,Operating mode,No measurements during startup.,UINT16,1,,1,0,,Read,0 = Startup; 1 = Measuring
+Holding register,"FC03 read / FC06, FC16 write",273,0x0111,40274,Leak signal,Held 5 min (default) after concentration falls below threshold.,UINT16,1,,1,0,,Read,0 = No leak detected; 1 = Leak detected or hold period
+Holding register,"FC03 read / FC06, FC16 write",274,0x0112,40275,Errors,Error flags.,BITMAP16,1,,1,0,,Read,"bit 0 = Internal error (measurement untrustworthy); bit 1 = Value out of limit (T, RH or concentration); bit 3 = Self-check failed; bit 4 = Dead (unrecoverable, replace sensor); bit 5 = Over lifetime limit"
+Holding register,"FC03 read / FC06, FC16 write",275,0x0113,40276,Gas concentration,0-100 %LFL (clamped).,INT16,1,,0.1,0,%LFL,Read,
+Holding register,"FC03 read / FC06, FC16 write",276,0x0114,40277,Sensor temperature,-40 to +125 °C.,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",277,0x0115,40278,Sensor humidity,0-100 %RH.,INT16,1,,0.1,0,%RH,Read,
+Holding register,"FC03 read / FC06, FC16 write",288,0x0120,40289,Device address,Modbus address 1-247 (default 1); applies after reset or power cycle.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",292,0x0124,40293,Leak signal threshold,Concentration that triggers the leak signal.,UINT16,1,,0.1,0,%LFL,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",330,0x014A,40331,Firmware version,"High byte major, low byte minor.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",332,0x014C,40333,Gas type,Refrigerant the sensor is configured for.,UINT16,1,,1,0,,Read,0 = R32; 1 = R454B
+Holding register,"FC03 read / FC06, FC16 write",334,0x14E,40335,Lifetime counter,Elapsed lifetime.,UINT16,1,,1,0,days,Read,

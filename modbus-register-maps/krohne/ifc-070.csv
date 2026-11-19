@@ -1,0 +1,80 @@
+﻿# KROHNE IFC 070 signal converter (Modbus) Modbus register map - easymodbus.com - source: https://core.instrumart.com/assets/krohne-ifc-070-v3-signal-converter-supplementary-instructions.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",1000,1000,01001,Restart device,Write 1 to restart.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",1001,1001,01002,Reset errors,Write 1 to clear errors.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",1002,1002,01003,Apply changes,Write 1 to commit pending setting changes.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",1003,1003,01004,Discard changes,Write 1 to drop pending setting changes.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",1004,1004,01005,Load factory defaults,Write 1; needs Supervisor login.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",2000,2000,02001,Flow measurement warning/error,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2001,2001,02002,Battery low (<10 % left),,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2002,2002,02003,Pressure measurement warning/error,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2003,2003,02004,Temperature measurement warning/error,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2004,2004,02005,EEPROM error,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2005,2005,02006,Empty pipe,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2006,2006,02007,Add-on to main board communication error,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2007,2007,02008,Pressure above maximum alarm,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2008,2008,02009,Pressure below minimum alarm,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2009,2009,02010,Temperature above maximum alarm,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2010,2010,02011,Temperature below minimum alarm,,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Coil,"FC01 read / FC05, FC15 write",2011,2011,02012,Flow direction,,BIT,1,,1,0,,Read,0 = Forward flow; 1 = Reverse flow
+Coil,"FC01 read / FC05, FC15 write",2500,2500,02501,Counter 1 run,,BIT,1,,1,0,,Read/write,0 = Stopped; 1 = Running
+Coil,"FC01 read / FC05, FC15 write",2501,2501,02502,Counter 2 run,,BIT,1,,1,0,,Read/write,0 = Stopped; 1 = Running
+Coil,"FC01 read / FC05, FC15 write",2502,2502,02503,Reset counter 1,Write 1 to reset.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",2503,2503,02504,Reset counter 2,Write 1 to reset.,BIT,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",3000,3000,43001,Flow speed,,FLOAT64,4,ABCD,1,0,m/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",3004,3004,43005,Volume flow,,FLOAT64,4,ABCD,1,0,m³/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",3008,3008,43009,Counter 1,Can be read or preset.,FLOAT64,4,ABCD,1,0,m³,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3012,3012,43013,Counter 2,Can be read or preset.,FLOAT64,4,ABCD,1,0,m³,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3016,3016,43017,Total volume counter,,FLOAT64,4,ABCD,1,0,m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",3020,3020,43021,Forward volume counter,,FLOAT64,4,ABCD,1,0,m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",3024,3024,43025,Reverse volume counter,,FLOAT64,4,ABCD,1,0,m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",3028,3028,43029,Pressure,,FLOAT64,4,ABCD,1,0,mbar,Read,
+Holding register,"FC03 read / FC06, FC16 write",3032,3032,43033,Temperature,,FLOAT64,4,ABCD,1,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",3036,3036,43037,Pressure alarm state,Reading acknowledges the alarm.,UINT64,4,ABCD,1,0,,Read,bit 0 = Minimum alarm active; bit 1 = Maximum alarm active; bit 2 = Unread old minimum alarm; bit 3 = Unread old maximum alarm; bit 4 = Sensor measurement error
+Holding register,"FC03 read / FC06, FC16 write",3040,3040,43041,Temperature alarm state,Reading acknowledges the alarm.,UINT64,4,ABCD,1,0,,Read,bit 0 = Minimum alarm active; bit 1 = Maximum alarm active; bit 2 = Unread old minimum alarm; bit 3 = Unread old maximum alarm; bit 4 = Sensor measurement error
+Holding register,"FC03 read / FC06, FC16 write",3044,3044,43045,Error/warning states,,UINT64,4,ABCD,1,0,,Read,bit 0 = Flow measurement warning; bit 1 = Battery below 10 %; bit 2 = EEPROM error; bit 3 = Communication error; bit 4 = Empty pipe; bit 5 = Mains power failure
+Holding register,"FC03 read / FC06, FC16 write",3048,3048,43049,Battery type,,UINT64,4,ABCD,1,0,,Read,0 = None (mains supply); 1 = Internal 1 battery; 2 = Internal 2 battery; 3 = External battery pack
+Holding register,"FC03 read / FC06, FC16 write",3052,3052,43053,Battery capacity,,FLOAT64,4,ABCD,1,0,Ah,Read,
+Holding register,"FC03 read / FC06, FC16 write",3056,3056,43057,Battery remaining,,FLOAT64,4,ABCD,1,0,Ah,Read,
+Holding register,"FC03 read / FC06, FC16 write",3060,3060,43061,Flow direction,,UINT64,4,ABCD,1,0,,Read,0 = Forward flow; 1 = Reverse flow
+Holding register,"FC03 read / FC06, FC16 write",3064,3064,43065,Pressure,,FLOAT64,4,ABCD,1,0,bar,Read,
+Holding register,"FC03 read / FC06, FC16 write",3068,3068,43069,Temperature,,FLOAT64,4,ABCD,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",4000,4000,44001,Flow speed (float),,FLOAT32,2,ABCD,1,0,m/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",4002,4002,44003,Volume flow (float),,FLOAT32,2,ABCD,1,0,m³/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",4004,4004,44005,Counter 1 (float),,FLOAT32,2,ABCD,1,0,m³,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4006,4006,44007,Counter 2 (float),,FLOAT32,2,ABCD,1,0,m³,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4008,4008,44009,Total volume counter (float),,FLOAT32,2,ABCD,1,0,m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",4010,4010,44011,Forward volume counter (float),,FLOAT32,2,ABCD,1,0,m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",4012,4012,44013,Reverse volume counter (float),,FLOAT32,2,ABCD,1,0,m³,Read,
+Holding register,"FC03 read / FC06, FC16 write",4014,4014,44015,Pressure (float),,FLOAT32,2,ABCD,1,0,mbar,Read,
+Holding register,"FC03 read / FC06, FC16 write",4016,4016,44017,Temperature (float),,FLOAT32,2,ABCD,1,0,K,Read,
+Holding register,"FC03 read / FC06, FC16 write",4018,4018,44019,Pressure alarm state (32-bit),Reading acknowledges the alarm.,UINT32,2,ABCD,1,0,,Read,bit 0 = Minimum alarm active; bit 1 = Maximum alarm active; bit 2 = Unread old minimum alarm; bit 3 = Unread old maximum alarm; bit 4 = Sensor measurement error
+Holding register,"FC03 read / FC06, FC16 write",4020,4020,44021,Temperature alarm state (32-bit),Reading acknowledges the alarm.,UINT32,2,ABCD,1,0,,Read,bit 0 = Minimum alarm active; bit 1 = Maximum alarm active; bit 2 = Unread old minimum alarm; bit 3 = Unread old maximum alarm; bit 4 = Sensor measurement error
+Holding register,"FC03 read / FC06, FC16 write",4022,4022,44023,Error/warning states (32-bit),,UINT32,2,ABCD,1,0,,Read,bit 0 = Flow measurement warning; bit 1 = Battery below 10 %; bit 2 = EEPROM error; bit 3 = Communication error; bit 4 = Empty pipe; bit 5 = Mains power failure
+Holding register,"FC03 read / FC06, FC16 write",4024,4024,44025,Battery type (32-bit),,UINT32,2,ABCD,1,0,,Read,0 = None (mains supply); 1 = Internal 1 battery; 2 = Internal 2 battery; 3 = External battery pack
+Holding register,"FC03 read / FC06, FC16 write",4026,4026,44027,Battery capacity (float),,FLOAT32,2,ABCD,1,0,Ah,Read,
+Holding register,"FC03 read / FC06, FC16 write",4028,4028,44029,Battery remaining (float),,FLOAT32,2,ABCD,1,0,Ah,Read,
+Holding register,"FC03 read / FC06, FC16 write",4030,4030,44031,Flow direction (32-bit),,UINT32,2,ABCD,1,0,,Read,0 = Forward flow; 1 = Reverse flow
+Holding register,"FC03 read / FC06, FC16 write",4032,4032,44033,Pressure (float),,FLOAT32,2,ABCD,1,0,bar,Read,
+Holding register,"FC03 read / FC06, FC16 write",4034,4034,44035,Temperature (float),,FLOAT32,2,ABCD,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",5002,5002,45003,Volume flow (integer),,UINT32,2,ABCD,1,0,l/h,Read,
+Holding register,"FC03 read / FC06, FC16 write",5004,5004,45005,Counter 1 (integer),,UINT32,2,ABCD,1,0,l,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5006,5006,45007,Counter 2 (integer),,UINT32,2,ABCD,1,0,l,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5008,5008,45009,Total volume counter (integer),,UINT32,2,ABCD,1,0,l,Read,
+Holding register,"FC03 read / FC06, FC16 write",5010,5010,45011,Forward volume counter (integer),,UINT32,2,ABCD,1,0,l,Read,
+Holding register,"FC03 read / FC06, FC16 write",5012,5012,45013,Reverse volume counter (integer),,UINT32,2,ABCD,1,0,l,Read,
+Holding register,"FC03 read / FC06, FC16 write",8000,8000,48001,Baud rate,1200 to 115200; default 9600. Write needs unlocked access.,UINT32,2,ABCD,1,0,baud,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8002,8002,48003,Slave address,Write needs unlocked access.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8003,8003,48004,Parity,,UINT16,1,,1,0,,Read/write,0 = Even (default); 1 = Odd; 2 = None
+Holding register,"FC03 read / FC06, FC16 write",8004,8004,48005,Data format,Byte/word order of multi-register values.,UINT16,1,,1,0,,Read/write,"0 = Little endian; 1 = Big endian (default); 2 = Mixed, little-endian words; 3 = Mixed, big-endian words"
+Holding register,"FC03 read / FC06, FC16 write",8005,8005,48006,Transmission delay,"Allowed: 0, 5, 10, 20, 30, 40, 50.",UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8006,8006,48007,Stop bits,,UINT16,1,,1,0,,Read/write,1 = 1 stop bit; 2 = 2 stop bits
+Holding register,"FC03 read / FC06, FC16 write",8007,8007,48008,Modbus when mains power lost,,UINT16,1,,1,0,,Read/write,0 = Modbus off (default); 1 = Modbus on
+Holding register,"FC03 read / FC06, FC16 write",8008,8008,48009,Reception interval,0-3600; listen window period for battery saving.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8499,8499,48500,Uncommitted setting changes,Count of changes waiting for Apply.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8512,8512,48513,Converter serial number,,UINT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8524,8524,48525,System serial number,,STRING[16],8,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8532,8532,48533,Sensor serial number,,STRING[16],8,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8548,8548,48549,Converter software version,,STRING[4],2,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",9902,9902,49903,Bus message count,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",9903,9903,49904,Bus communication error count,,UINT16,1,,1,0,,Read,

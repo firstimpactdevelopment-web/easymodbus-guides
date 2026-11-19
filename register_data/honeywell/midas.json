@@ -1,0 +1,375 @@
+{
+  "manufacturer": "Honeywell",
+  "manufacturer_slug": "honeywell",
+  "model": "Midas gas detector (Modbus/TCP)",
+  "model_slug": "midas",
+  "short_model": "Midas",
+  "aliases": [
+    "Midas",
+    "MIDAS gas detector"
+  ],
+  "equipment_type": "Sensor (extractive gas detector)",
+  "applies_to": "Honeywell Midas extractive gas detectors (original Midas platform, software V1.08), user manual 3010M5000 revision 32, Appendix A Modbus/TCP interface.",
+  "summary": "The Midas is a Honeywell pumped single-point gas detector for asphyxiant, toxic and flammable gases with relays, 4-20 mA and Ethernet. Its Modbus/TCP server gives a packed status word, gas reading with decimal point and units, temperature, cell life, flow, alarm and fault flags, serial numbers, plus two command registers for alarm reset, inhibit and relay control. Float registers are left out.",
+  "transport": [
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Registers are listed by reference address 40001-40081 (Modicon style): 40001 status = wire address 0, 40005 gas reading = 4, 40021 CMD1 = 20."
+  },
+  "default_word_order": null,
+  "firmware": "Midas software V1.08 (earlier releases support a subset)",
+  "source": {
+    "title": "Midas Gas Detector User Manual",
+    "doc_number": "3010M5000 Revision 32",
+    "revision_date": "2024-12-04",
+    "url": "https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/hgas/en-us/products/high-tech-and-semiconductor/midas/documents/hon-ia-pmc-3010m5000-midas-a-001-rev-32-um-en.pdf",
+    "pages": "Appendix A, pp. A-2 to A-6 (Tables A1-A3)"
+  },
+  "notes": [
+    "Left out: float registers FCN 40003-40004, alarm thresholds A1T/A2T 40013-40016 (also writable) and high scale 40019-40020. The manual only says floats are \"little-endian or Intel format\", which does not settle the register word order.",
+    "Status register 40001 packs numbers: bits 0-3 monitoring state (0 warm-up, 1 monitor, 2 alarms inhibited, 3 alarms and faults inhibited, 4 fully inhibited, 5 alarm/fault simulation, 6 bump test, 7 4-20 mA calibration, 8 other calibration); bits 4-5 fault state (0 none, 1 maintenance, 2 instrument).",
+    "Commands: write CMD1 and CMD2 together with function 06 or 16; the manual example resets alarms by writing 350 to 40021 and 13862 to 40022. Relay commands only work if remote relay control is enabled (SEt/FLt menu or Fault Configuration web page); it is off by default.",
+    "Serial-number string example from the manual: ABCD12345 reads 0x4142 0x4344 0x3132 0x3334 0x3500 (high byte first).",
+    "Reads use function 03. The TCP port is not stated in this appendix."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "40001",
+      "name": "Status (STTS)",
+      "description": "Bits 0-3 monitoring state, bits 4-5 fault state; flags below.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "6": "Alarm 1 active",
+        "7": "Alarm 2 active",
+        "8": "Relay 1 energized",
+        "9": "Relay 2 energized",
+        "10": "Relay 3 energized",
+        "11": "Heartbeat (toggles every two seconds)",
+        "12": "Relays under remote Modbus/TCP control"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40002",
+      "name": "Gas selection (GASS)",
+      "description": "Low byte gas ID, high byte sensor cartridge ID.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "40005",
+      "name": "Gas concentration integer (CONC)",
+      "description": "Divide by 10^decimal (40007 bits 0-2); ppm for ppm/ppb gases.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "40006",
+      "name": "Most important active fault number (NOFT)",
+      "description": "Fault code; see the troubleshooting table in the manual.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "40007",
+      "name": "Decimal point and units (DPUN)",
+      "description": "Bits 0-2 decimals; high byte units: 1 ppm, 2 ppb, 4 %vol, 8 %LEL, 16 mA.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "40008",
+      "name": "Temperature (TEMP)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "40009",
+      "name": "Cell life remaining (CLRH)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "40010",
+      "name": "Heartbeat counter (HRTB)",
+      "description": "Low 16 bits of time in seconds.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "40011",
+      "name": "Sample flow (FLOW)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "cc/min",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 16,
+      "documented": "40017",
+      "name": "Alarm status (ASI)",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Alarm 1 active",
+        "1": "Alarm 2 active"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 17,
+      "documented": "40018",
+      "name": "Fault status (FSI)",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Maintenance fault",
+        "1": "Instrument fault",
+        "2": "Flow fault",
+        "3": "Internal communication fault",
+        "4": "Pyrolyzer fault",
+        "5": "Sensor fault",
+        "6": "Range over fault"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 20,
+      "documented": "40021",
+      "name": "Command register 1 (CMD1)",
+      "description": "Write the action code (hex 0x015E-0x0B5E) together with CMD2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "350": "With CMD2 = 13862: reset alarms and faults",
+        "606": "Inhibit alarms",
+        "862": "Inhibit alarms and faults",
+        "1118": "Inhibit all",
+        "1374": "No inhibit",
+        "1630": "Energize relay 1",
+        "1886": "De-energize relay 1",
+        "2142": "Energize relay 2",
+        "2398": "De-energize relay 2",
+        "2654": "Energize relay 3",
+        "2910": "De-energize relay 3"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 21,
+      "documented": "40022",
+      "name": "Command register 2 (CMD2)",
+      "description": "Must be 0x3626 (13862) for a command to act.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 70,
+      "documented": "40071-40075",
+      "name": "Detector serial number",
+      "description": "ASCII, 2 characters per register, first character in the high byte.",
+      "data_type": "STRING",
+      "length": 5,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 75,
+      "documented": "40076-40080",
+      "name": "Sensor serial number",
+      "description": "ASCII, 2 characters per register, first character in the high byte.",
+      "data_type": "STRING",
+      "length": 5,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 80,
+      "documented": "40081",
+      "name": "Mode status (MSI)",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Warm-up",
+        "1": "Monitor mode",
+        "2": "Test mode",
+        "3": "Maintenance mode"
+      }
+    }
+  ],
+  "integration": {
+    "summary": "Connect to the Midas IP with Modbus/TCP and read holding registers 0-17; gas = 40005 / 10^(40007 bits 0-2), alarms and faults from 40001/40017/40018.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Gas concentration"
+      },
+      {
+        "table": "holding_register",
+        "address": 6,
+        "why": "Decimal point and units"
+      },
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Status and alarms"
+      },
+      {
+        "table": "holding_register",
+        "address": 17,
+        "why": "Fault flags"
+      },
+      {
+        "table": "holding_register",
+        "address": 20,
+        "why": "Command (reset/inhibit)"
+      },
+      {
+        "table": "holding_register",
+        "address": 10,
+        "why": "Sample flow"
+      }
+    ],
+    "enable": "Modbus/TCP is part of the Ethernet interface. For relay commands enable remote relay control in the SEt/FLt menu or web page.",
+    "watchdog": null,
+    "quirks": [
+      "Commands need both CMD1 and CMD2 written; the device avoids write-coil commands on purpose.",
+      "Gas reading is in ppm for ppm and ppb gases, otherwise in display units."
+    ],
+    "setup": [
+      "Ethernet with Power over Ethernet (802.3af).",
+      "Protect it behind a firewall; Modbus/TCP has no authentication."
+    ],
+    "gotchas": [
+      "Read 40007 together with 40005 to apply the decimal point."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

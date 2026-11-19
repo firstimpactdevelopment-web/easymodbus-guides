@@ -1,0 +1,713 @@
+{
+  "manufacturer": "Fuji Electric",
+  "manufacturer_slug": "fuji-electric",
+  "model": "PXH digital controller (Modbus RTU, monitoring map)",
+  "model_slug": "pxh",
+  "short_model": "PXH",
+  "aliases": [
+    "PXH"
+  ],
+  "equipment_type": "Sensor (digital process controller)",
+  "applies_to": "Fuji Electric PXH digital controllers on the RS-485 Modbus port; read-only monitoring registers from manual INP-TN514207c-E.",
+  "summary": "The PXH is a Fuji Electric digital process controller. Every Modbus value is a 32-bit integer spread over two registers, low word first. This map covers the read-only monitoring block: control mode, PV, SV, deviation, MV, input error, alarm and relay states, ramp/soak position, extra inputs/outputs and DI/DO status.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 38400,
+    "parity": "Odd",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Register numbers are printed Modicon-style (30259) with the relative wire address beside them (0102H = 30259 - 30001)."
+  },
+  "default_word_order": "CDAB",
+  "firmware": null,
+  "source": {
+    "title": "Digital Controller Communication Functions (MODBUS) Type PXH",
+    "doc_number": "INP-TN514207c-E",
+    "revision_date": null,
+    "url": "https://americas.fujielectric.com/wp-content/uploads/2018/12/PXH-Digital-Controller-Communication-FunctionsMODBUS-TN514207c-E-.pdf",
+    "pages": "Settings p. 7; 2-word order pp. 17-18 and 22; data format pp. 24-28; read-only map pp. 49-50"
+  },
+  "notes": [
+    "All PXH data are two registers per value; the manual's read and write examples put the lower word first (CDAB). Read both registers in one request.",
+    "Function 04 reads at most 15 registers per request; 03 reads up to 32.",
+    "Holding-register parameters (40001-45001) are not included: their decimal-point table could not be tied to each register with certainty.",
+    "Values carry no decimal point; PV-type values follow the input range decimal point setting.",
+    "Heating/cooling MV (30625-30643), totalizer and timer monitors are omitted."
+  ],
+  "integration": {
+    "summary": "Read input registers 30257-30269 with function 04 (control mode, PV, SV, DV, MV, input error) as 32-bit values with the low word first, two registers per value.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 258,
+        "why": "PV1 (30259)"
+      },
+      {
+        "table": "input_register",
+        "address": 260,
+        "why": "SV1 (30261)"
+      },
+      {
+        "table": "input_register",
+        "address": 264,
+        "why": "MV1 (30265)"
+      },
+      {
+        "table": "input_register",
+        "address": 268,
+        "why": "Input error (30269)"
+      },
+      {
+        "table": "input_register",
+        "address": 256,
+        "why": "Control mode bits (30257)"
+      },
+      {
+        "table": "input_register",
+        "address": 832,
+        "why": "Alarm 1 status (30833)"
+      }
+    ],
+    "enable": "Set SPD4 (speed), BIT4 (parity) and STN4 (station 0-255; 0 stops communication) for the RS-485 channel on the front keys, then cycle power.",
+    "watchdog": null,
+    "quirks": [
+      "32-bit values are low word first; a single-register write (06) only changes the lower word.",
+      "The PC-loader port always uses station 1."
+    ],
+    "setup": [
+      "Factory defaults (RS-485): 38400 bps, 8 data bits, 1 stop bit, odd parity, station 1.",
+      "Turn power off and on after changing the communication settings."
+    ],
+    "gotchas": [
+      "After changing the input range over the bus, a FIX command and a power cycle or reset are needed before the new range applies."
+    ]
+  },
+  "registers": [
+    {
+      "table": "input_register",
+      "address": 256,
+      "documented": "30257",
+      "name": "PID MODE1 current control mode",
+      "description": "Status flags: each bit is 1 while that mode or state is active.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Fault",
+        "1": "Standby",
+        "2": "Remote ack",
+        "3": "Other than auto mode",
+        "4": "Auto mode request",
+        "5": "Remote mode request",
+        "6": "Auto tuning",
+        "7": "Normal operation",
+        "8": "PV tracking",
+        "9": "Local SV",
+        "10": "Remote SV",
+        "11": "Local + PV tracking",
+        "12": "Forced manual mode",
+        "13": "EX-MV mode",
+        "14": "Manual mode"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 258,
+      "documented": "30259",
+      "name": "PV1 control PV",
+      "description": "-5 to 105 % FS; pinned there on over/under range. Input-range decimal point.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 260,
+      "documented": "30261",
+      "name": "SV1 current setpoint",
+      "description": "Decimal point set by the input range (PV1D/UCD1 per template).",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 262,
+      "documented": "30263",
+      "name": "DV1 current deviation",
+      "description": "Decimal point set by the input range (PV1D/UCD1 per template).",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 264,
+      "documented": "30265",
+      "name": "MV1 manipulated value",
+      "description": "-25.0 to 125.0 %.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 268,
+      "documented": "30269",
+      "name": "FAULT1 input error status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Over",
+        "2": "Under"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 784,
+      "documented": "30785",
+      "name": "ALM1 relay status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Non-excitation",
+        "1": "Excitation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 786,
+      "documented": "30787",
+      "name": "ALM2 relay status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Non-excitation",
+        "1": "Excitation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 788,
+      "documented": "30789",
+      "name": "ALM3 relay status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Non-excitation",
+        "1": "Excitation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 790,
+      "documented": "30791",
+      "name": "ALM4 relay status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Non-excitation",
+        "1": "Excitation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 792,
+      "documented": "30793",
+      "name": "ALM5 relay status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Non-excitation",
+        "1": "Excitation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 794,
+      "documented": "30795",
+      "name": "ALM6 relay status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Non-excitation",
+        "1": "Excitation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 796,
+      "documented": "30797",
+      "name": "ALM7 relay status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Non-excitation",
+        "1": "Excitation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 798,
+      "documented": "30799",
+      "name": "ALM8 relay status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Non-excitation",
+        "1": "Excitation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 832,
+      "documented": "30833",
+      "name": "ALM1 status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "OFF",
+        "1": "ON"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 834,
+      "documented": "30835",
+      "name": "ALM2 status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "OFF",
+        "1": "ON"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 836,
+      "documented": "30837",
+      "name": "ALM3 status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "OFF",
+        "1": "ON"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 838,
+      "documented": "30839",
+      "name": "ALM4 status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "OFF",
+        "1": "ON"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 840,
+      "documented": "30841",
+      "name": "ALM5 status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "OFF",
+        "1": "ON"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 842,
+      "documented": "30843",
+      "name": "ALM6 status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "OFF",
+        "1": "ON"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 844,
+      "documented": "30845",
+      "name": "ALM7 status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "OFF",
+        "1": "ON"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 846,
+      "documented": "30847",
+      "name": "ALM8 status",
+      "description": "",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "OFF",
+        "1": "ON"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 962,
+      "documented": "30963",
+      "name": "Ramp/soak elapsed time",
+      "description": "0-5999 (minutes or seconds).",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 964,
+      "documented": "30965",
+      "name": "Current pattern No.",
+      "description": "0-30.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 966,
+      "documented": "30967",
+      "name": "Pattern No. selected by DI",
+      "description": "0-30.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1024,
+      "documented": "31025",
+      "name": "PV1 measurement value",
+      "description": "Decimal point set by the input range (PV1D/UCD1 per template).",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1026,
+      "documented": "31027",
+      "name": "PV2 measurement value",
+      "description": "Decimal point per PV2D.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1030,
+      "documented": "31031",
+      "name": "AI1 measurement value",
+      "description": "Decimal point per AI1D.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1104,
+      "documented": "31105",
+      "name": "AO1 output value",
+      "description": "-25.0 to 125.0 %.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1106,
+      "documented": "31107",
+      "name": "AO2 output value",
+      "description": "-25.0 to 125.0 %.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1136,
+      "documented": "31137",
+      "name": "DI1-4 input status",
+      "description": "",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "15": "DI1",
+        "14": "DI2",
+        "13": "DI3",
+        "12": "DI4"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 1138,
+      "documented": "31139",
+      "name": "DI11-15 input status",
+      "description": "",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "15": "DI11",
+        "14": "DI12",
+        "13": "DI13",
+        "12": "DI14",
+        "11": "DI15"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 1232,
+      "documented": "31233",
+      "name": "DO1-4 output status",
+      "description": "",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "DO1",
+        "1": "DO2",
+        "2": "DO3",
+        "3": "DO4"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 1234,
+      "documented": "31235",
+      "name": "DO11-15 output status",
+      "description": "",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "DO11",
+        "1": "DO12",
+        "2": "DO13",
+        "3": "DO14",
+        "4": "DO15"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 1396,
+      "documented": "31397",
+      "name": "MVrb valve aperture monitor",
+      "description": "-5.0 to 105.0 %.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

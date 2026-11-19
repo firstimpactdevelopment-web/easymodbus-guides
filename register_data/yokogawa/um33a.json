@@ -1,0 +1,344 @@
+{
+  "manufacturer": "Yokogawa",
+  "manufacturer_slug": "yokogawa",
+  "model": "UTAdvanced UM33A digital indicator with alarms",
+  "model_slug": "um33a",
+  "short_model": "UM33A",
+  "aliases": [
+    "UM33A"
+  ],
+  "equipment_type": "Sensor (digital indicator with alarms)",
+  "applies_to": "Yokogawa UM33A indicators with RS-485 (Modbus RTU/ASCII); process monitoring D registers from IM 05P07A01-01EN chapter 10.",
+  "summary": "The UM33A is a single-input digital indicator with up to eight alarms in Yokogawa's UTAdvanced family. Its D registers map one-to-one onto Modbus holding registers. This map covers the process monitoring block: PV, input and A/D error flags, alarm and alarm-output states, latch states and parameter/option error words.",
+  "transport": [
+    "RTU",
+    "ASCII"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 19200,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "The manual lists D register numbers; the Modbus reference is the D number with D replaced by 4 (D2003 = 42003) and the wire address is that minus 40001, as printed in the H No. column (07D2H)."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "UTAdvanced Series Communication Interface (RS-485, Ethernet) User's Manual",
+    "doc_number": "IM 05P07A01-01EN 13th Edition",
+    "revision_date": "2026-03",
+    "url": "https://web-material3.yokogawa.com/IM05P07A01-01EN.pdf",
+    "pages": "D register addressing p. 3-4; serial settings p. 2-1; UM33A process data pp. 10-5 to 10-8"
+  },
+  "notes": [
+    "All registers are 16-bit and read-only in this block (D2001-D2100).",
+    "PV is sent without its decimal point; the position follows the input's decimal point setting.",
+    "Alarm setpoints and setup parameters (D2501 onward) are not included in this map.",
+    "Bits 3 and 7 are unused in the 8-alarm words; alarms 4 and 7 sit on bits 4 and 8."
+  ],
+  "integration": {
+    "summary": "Use the factory Modbus RTU setting, then read D2001-D2003 for errors and PV and D2011/D2037 for alarm and relay states.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 2002,
+        "why": "PV (D2003)"
+      },
+      {
+        "table": "holding_register",
+        "address": 2001,
+        "why": "PV input error flags (D2002)"
+      },
+      {
+        "table": "holding_register",
+        "address": 2010,
+        "why": "Alarm status (D2011)"
+      },
+      {
+        "table": "holding_register",
+        "address": 2036,
+        "why": "Alarm output status (D2037)"
+      }
+    ],
+    "enable": "Set the communication setup parameters PSL, BPS, PRI, STP, DLN and ADR on the keypad (factory protocol is Modbus RTU).",
+    "watchdog": null,
+    "quirks": [
+      "Wire address = D number - 1 (D2003 = 07D2H)."
+    ],
+    "setup": [
+      "Factory defaults: Modbus RTU, 19200 bps, even parity, 1 stop bit, 8 data bits, address 1."
+    ],
+    "gotchas": [
+      "Reading undefined (blank) D registers is not allowed and can upset the unit."
+    ]
+  },
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 2000,
+      "documented": "D2001",
+      "name": "AD1.E A/D converter error status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "PV input A/D converter error",
+        "5": "PV input RJC error",
+        "8": "PV input burnout error"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2001,
+      "documented": "D2002",
+      "name": "PV1.E_L1 PV input error status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "PV input burnout",
+        "4": "PV over-scale",
+        "5": "PV under-scale"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2002,
+      "documented": "D2003",
+      "name": "PV_L1 measured value",
+      "description": "-5 to 105 % of input range, engineering value without decimal point.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2010,
+      "documented": "D2011",
+      "name": "ALM_L1 alarm 1-8 status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Alarm 1 ON",
+        "1": "Alarm 2 ON",
+        "2": "Alarm 3 ON",
+        "4": "Alarm 4 ON",
+        "5": "Alarm 5 ON",
+        "6": "Alarm 6 ON",
+        "8": "Alarm 7 ON",
+        "9": "Alarm 8 ON"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2036,
+      "documented": "D2037",
+      "name": "ALO_L1 alarm output 1-8 status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Alarm output 1 contact closed",
+        "1": "Alarm output 2 contact closed",
+        "2": "Alarm output 3 contact closed",
+        "4": "Alarm output 4 contact closed",
+        "5": "Alarm output 5 contact closed",
+        "6": "Alarm output 6 contact closed",
+        "8": "Alarm output 7 contact closed",
+        "9": "Alarm output 8 contact closed"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2065,
+      "documented": "D2066",
+      "name": "DIMG message display status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Message 1 displayed",
+        "1": "Message 2 displayed",
+        "2": "Message 3 displayed",
+        "4": "Message 4 displayed"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2067,
+      "documented": "D2068",
+      "name": "PA.ER parameter error status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "System data error",
+        "1": "Calibration value error",
+        "2": "User default value error",
+        "4": "Setup parameter error",
+        "5": "Operation parameter error",
+        "8": "Faulty FRAM",
+        "10": "Control parameter error"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2069,
+      "documented": "D2070",
+      "name": "OP.ER option error status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "E1 terminal hardware not responding",
+        "8": "E1 communication error"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2070,
+      "documented": "D2071",
+      "name": "ALOLA1_L1 alarm latch-1 output status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Alarm 1 latch-1",
+        "1": "Alarm 2 latch-1",
+        "2": "Alarm 3 latch-1",
+        "4": "Alarm 4 latch-1",
+        "5": "Alarm 5 latch-1",
+        "6": "Alarm 6 latch-1",
+        "8": "Alarm 7 latch-1",
+        "9": "Alarm 8 latch-1"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2072,
+      "documented": "D2073",
+      "name": "ALOLA2_L1 alarm latch-2 output status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Alarm 1 latch-2",
+        "1": "Alarm 2 latch-2",
+        "2": "Alarm 3 latch-2",
+        "4": "Alarm 4 latch-2",
+        "5": "Alarm 5 latch-2",
+        "6": "Alarm 6 latch-2",
+        "8": "Alarm 7 latch-2",
+        "9": "Alarm 8 latch-2"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2074,
+      "documented": "D2075",
+      "name": "ALOLA3_L1 alarm latch-3 output status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Alarm 1 latch-3",
+        "1": "Alarm 2 latch-3",
+        "2": "Alarm 3 latch-3",
+        "4": "Alarm 4 latch-3",
+        "5": "Alarm 5 latch-3",
+        "6": "Alarm 6 latch-3",
+        "8": "Alarm 7 latch-3",
+        "9": "Alarm 8 latch-3"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2076,
+      "documented": "D2077",
+      "name": "ALOLA4_L1 alarm latch-4 output status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Alarm 1 latch-4",
+        "1": "Alarm 2 latch-4",
+        "2": "Alarm 3 latch-4",
+        "4": "Alarm 4 latch-4",
+        "5": "Alarm 5 latch-4",
+        "6": "Alarm 6 latch-4",
+        "8": "Alarm 7 latch-4",
+        "9": "Alarm 8 latch-4"
+      }
+    }
+  ],
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

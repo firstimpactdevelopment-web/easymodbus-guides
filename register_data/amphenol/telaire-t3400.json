@@ -1,0 +1,306 @@
+{
+  "manufacturer": "Amphenol",
+  "manufacturer_slug": "amphenol",
+  "model": "Telaire T3400 series refrigerant (A2L) leak sensor",
+  "model_slug": "telaire-t3400",
+  "short_model": "T3400",
+  "aliases": [
+    "Telaire T3400",
+    "T3400 R454B",
+    "T3400 R32"
+  ],
+  "equipment_type": "Sensor (refrigerant leak detector)",
+  "applies_to": "Amphenol Telaire T3400 series refrigerant sensors (R454B / R32) with RS-485 Modbus RTU, user instructions AS-T63381B (04/2025, marked provisional).",
+  "summary": "The Telaire T3400 is an OEM thermal-conductivity refrigerant sensor for A2L leak detection systems in HVAC equipment, with an RS-485 Modbus RTU interface. All data are 16-bit holding registers: operating mode, leak flag, error bits, gas concentration in %LFL, temperature and humidity, plus address, leak threshold and identity registers. This map covers the published register set except the device marking string.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 2400,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 2,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "Register addresses are printed in hex and the frame description defines the register address as the starting position in the table, sent as one word, so 0x0113 (gas concentration) is requested as 275 decimal."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Telaire T3400 Series Refrigerant Sensor - User Instructions",
+    "doc_number": "AS-T63381B",
+    "revision_date": "2025-04",
+    "url": "https://amphenol-sensors.com/hubfs/AS-T63381B-T3400-RefrigSensor-0425-web.pdf",
+    "pages": "p. 1 (interface settings), p. 2 (function codes, frame layout), p. 3 (register table), p. 4 (device info registers, error bits)"
+  },
+  "notes": [
+    "The document is marked PROVISIONAL; check for a newer revision before deployment.",
+    "Supported function codes: 03 (read), 06 (write single), 16 (write multiple). Registers are 16-bit, high byte first.",
+    "Left out: 0x0140 device marking (String[20], 10 registers): the character order within registers is not stated.",
+    "Error register bit 2 is not defined in the table.",
+    "The printed address of the lifetime counter is '0x14E' (same as 0x014E)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 256,
+      "documented": "0x0100",
+      "name": "Register specification version",
+      "description": "High byte major, low byte minor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 257,
+      "documented": "0x0101",
+      "name": "Device reset",
+      "description": "Write 1 to reset the sensor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "1": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 272,
+      "documented": "0x0110",
+      "name": "Operating mode",
+      "description": "No measurements during startup.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Startup",
+        "1": "Measuring"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 273,
+      "documented": "0x0111",
+      "name": "Leak signal",
+      "description": "Held 5 min (default) after concentration falls below threshold.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No leak detected",
+        "1": "Leak detected or hold period"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 274,
+      "documented": "0x0112",
+      "name": "Errors",
+      "description": "Error flags.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Internal error (measurement untrustworthy)",
+        "1": "Value out of limit (T, RH or concentration)",
+        "3": "Self-check failed",
+        "4": "Dead (unrecoverable, replace sensor)",
+        "5": "Over lifetime limit"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 275,
+      "documented": "0x0113",
+      "name": "Gas concentration",
+      "description": "0-100 %LFL (clamped).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%LFL",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 276,
+      "documented": "0x0114",
+      "name": "Sensor temperature",
+      "description": "-40 to +125 °C.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 277,
+      "documented": "0x0115",
+      "name": "Sensor humidity",
+      "description": "0-100 %RH.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 288,
+      "documented": "0x0120",
+      "name": "Device address",
+      "description": "Modbus address 1-247 (default 1); applies after reset or power cycle.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 292,
+      "documented": "0x0124",
+      "name": "Leak signal threshold",
+      "description": "Concentration that triggers the leak signal.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%LFL",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 330,
+      "documented": "0x014A",
+      "name": "Firmware version",
+      "description": "High byte major, low byte minor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 332,
+      "documented": "0x014C",
+      "name": "Gas type",
+      "description": "Refrigerant the sensor is configured for.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "R32",
+        "1": "R454B"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 334,
+      "documented": "0x14E",
+      "name": "Lifetime counter",
+      "description": "Elapsed lifetime.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "days",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Talk to the sensor at 2400 baud, 8N2, address 1 by default; wait for operating mode 1 (measuring), then poll 0x0111 leak signal, 0x0112 errors and 0x0113 concentration.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 272,
+        "why": "Operating mode (startup/measuring)"
+      },
+      {
+        "table": "holding_register",
+        "address": 273,
+        "why": "Leak signal"
+      },
+      {
+        "table": "holding_register",
+        "address": 274,
+        "why": "Error flags"
+      },
+      {
+        "table": "holding_register",
+        "address": 275,
+        "why": "Gas concentration %LFL"
+      },
+      {
+        "table": "holding_register",
+        "address": 332,
+        "why": "Configured gas type"
+      }
+    ],
+    "enable": "Modbus RTU is the only interface; change the address by writing 0x0120 and then reset (write 1 to 0x0101) or power-cycle.",
+    "watchdog": null,
+    "quirks": [
+      "Default line settings are 2400 baud, 8 data bits, no parity, 2 stop bits.",
+      "Concentration is in %LFL x 10, not ppm."
+    ],
+    "setup": [
+      "Wiring: pin 1 +5 Vdc (red), pin 2 ground (black), pin 3 B- (blue), pin 4 A+ (yellow)."
+    ],
+    "gotchas": [
+      "No measurements are available while the operating mode reads 0 (startup)."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

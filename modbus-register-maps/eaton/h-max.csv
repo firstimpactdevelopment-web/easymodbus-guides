@@ -1,0 +1,38 @@
+﻿# Eaton H-Max HVAC drive (embedded Modbus RTU / TCP) Modbus register map - easymodbus.com - source: https://www.precision-elec.com/wp-content/uploads/2020/12/H-Max-Application-Manual.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,0001,00001,Run/stop (control word bit 0),,BIT,1,,1,0,,Read/write,0 = Stop; 1 = Run
+Coil,"FC01 read / FC05, FC15 write",1,0002,00002,Direction (control word bit 1),,BIT,1,,1,0,,Read/write,0 = Forward; 1 = Reverse
+Coil,"FC01 read / FC05, FC15 write",2,0003,00003,Fault reset (control word bit 2),,BIT,1,,1,0,,Read/write,0 = No action; 1 = Reset faults
+Discrete input,FC02 read,0,10001,10001,Ready (status word bit 0),,BIT,1,,1,0,,Read,0 = Not ready; 1 = Ready
+Discrete input,FC02 read,1,10002,10002,Run (status word bit 1),,BIT,1,,1,0,,Read,0 = Stopped; 1 = Running
+Discrete input,FC02 read,2,10003,10003,Direction (status word bit 2),,BIT,1,,1,0,,Read,0 = Clockwise; 1 = Counterclockwise
+Discrete input,FC02 read,3,10004,10004,Fault (status word bit 3),,BIT,1,,1,0,,Read,0 = No fault; 1 = Faulted
+Discrete input,FC02 read,4,10005,10005,Alarm (status word bit 4),,BIT,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Discrete input,FC02 read,5,10006,10006,At reference (status word bit 5),,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,6,10007,10007,Zero speed (status word bit 6),,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,7,10008,10008,Flux ready (status word bit 7),,BIT,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",36,ID 37 (register 37),40037,Last active fault,Code of the newest fault that has not been reset.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2000,2001,42001,FB control word,Lower 16 bits of the 32-bit control word.,BITMAP16,1,,1,0,,Read/write,bit 0 = Start (1) / stop (0); bit 1 = Reverse (1) / forward (0); bit 2 = Fault reset
+Holding register,"FC03 read / FC06, FC16 write",2002,2003,42003,FB speed reference,0-10000 = 0.00-100.00 % of the speed range.,UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2003,2004,42004,FB process data in 1,Application-defined input value.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2004,2005,42005,FB process data in 2,Application-defined input value.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2005,2006,42006,FB process data in 3,Application-defined input value.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2006,2007,42007,FB process data in 4,Application-defined input value.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2007,2008,42008,FB process data in 5,Application-defined input value.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2008,2009,42009,FB process data in 6,Application-defined input value.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2009,2010,42010,FB process data in 7,Application-defined input value.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2010,2011,42011,FB process data in 8,Application-defined input value.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2100,2101,42101,FB status word,Lower 16 bits of the 32-bit status word.,BITMAP16,1,,1,0,,Read,bit 0 = Ready; bit 1 = Running; bit 2 = Counterclockwise; bit 3 = Faulted; bit 4 = Alarm; bit 5 = At reference; bit 6 = Zero speed; bit 7 = Flux ready
+Holding register,"FC03 read / FC06, FC16 write",2102,2103,42103,FB actual speed,0-10000 = 0.00-100.00 %.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2103,2104,42104,Process data out 1 (output frequency),Output frequency in the default process-data mapping.,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",2104,2105,42105,Process data out 2 (motor speed),Motor speed in the default process-data mapping.,UINT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",2105,2106,42106,Process data out 3 (motor current),Motor current in the default process-data mapping.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",2106,2107,42107,Process data out 4 (motor torque),Motor torque in the default process-data mapping.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2107,2108,42108,Process data out 5 (motor power),Motor power in the default process-data mapping.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2108,2109,42109,Process data out 6 (motor voltage),Motor voltage in the default process-data mapping.,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2109,2110,42110,Process data out 7 (dc link voltage),DC link voltage in the default process-data mapping.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2110,2111,42111,Process data out 8 (active fault code),Active fault code in the default process-data mapping.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2150,2151-2152,42151,FB status word (32-bit),Full status word; bits 29-31 give the control place.,UINT32,2,ABCD,1,0,,Read,bit 0 = Ready; bit 1 = Running; bit 2 = Counterclockwise; bit 3 = Faulted; bit 4 = Alarm; bit 5 = At reference; bit 6 = Zero speed; bit 7 = Flux ready
+Holding register,"FC03 read / FC06, FC16 write",2207,ID 2208 (register 2208),42208,RS-485 protocol,,UINT16,1,,1,0,,Read/write,0 = No protocol; 1 = Modbus RTU; 2 = N2; 3 = BACnet MS/TP
+Holding register,"FC03 read / FC06, FC16 write",2235,ID 2236 (register 2236),42236,RTU baud rate,,UINT16,1,,1,0,,Read/write,1 = 300; 2 = 600; 3 = 1200; 4 = 2400; 5 = 4800; 6 = 9600 (default); 7 = 19200; 8 = 38400; 9 = 57600
+Holding register,"FC03 read / FC06, FC16 write",2238,ID 2239 (register 2239),42239,RTU parity type,,UINT16,1,,1,0,,Read/write,"0 = None (2 stop bits, default); 1 = Odd (1 stop bit); 2 = Even (1 stop bit)"

@@ -1,0 +1,18 @@
+﻿# Teledyne Detcon Model IR-700 infrared combustible / CO2 gas sensor (RS-485 Modbus) Modbus register map - easymodbus.com - source: https://www.teledynegasandflamedetection.com/en-us/Products/docs/fixedgas-700series-ir-usermanual-english.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40000,40001,Device type,Reads 8 for a 700-series sensor.,UINT16,1,,1,0,,Read,8 = 700 series sensor
+Holding register,"FC03 read / FC06, FC16 write",1,40001,40002,Detectable range,Full scale in the units of the notation string.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,40002,40003,Gas concentration,Raw reading; see Range Divisor (40014).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3,40003,40004,AutoSpan level,Span gas concentration used for calibration.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,40004,40005,Sensor life,Remaining sensor life.,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,40005,40006,Fault status bits,Faults clear themselves when the condition clears.,BITMAP16,1,,1,0,,Read,bit 0 = Global fault; bit 1 = AutoSpan fault; bit 2 = Temperature fault; bit 3 = 4-20 mA fault; bit 4 = Input voltage fault; bit 5 = Memory fault; bit 6 = Processor fault; bit 7 = Clearing fault; bit 8 = Stability fault; bit 9 = Range fault; bit 10 = Sensor fault; bit 11 = Zero fault; bit 12 = Sensor fault 2; bit 14 = In calibration; bit 15 = Communication error
+Holding register,"FC03 read / FC06, FC16 write",6,40006,40007,Model number,,UINT16,1,,1,0,,Read,1 = DM; 2 = FP; 3 = IR; 4 = TP; 5 = PID
+Holding register,"FC03 read / FC06, FC16 write",7,40007,40008,Days since calibration,,UINT16,1,,1,0,days,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,40008,40009,4-20 mA output,Current loop output value.,UINT16,1,,0.01,0,mA,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,40009,40010,Input voltage,,UINT16,1,,0.01,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",11,40011,40012,Gas factor,Range 20-565.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12,40012,40013,Active counts,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,40013,40014,Reference counts,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,40014,40015,Range divisor,"1, 10, 100 or 1000.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",15,40015,40016,Calibration status / enable,Read gives status; write starts an action.,UINT16,1,,1,0,,Read/write,0 = Read: idle; 1 = Read: zero calibration started / Write: set zero; 2 = Read: span calibration started / Write: set span; 3 = Read: span set; 4 = Read: span calibration unsuccessful; 8 = Write: signal simulation mode; 9 = Write: set FP bridge voltage; 10 = Write: set TP heater power; 11 = Write: set IR gain
+Holding register,"FC03 read / FC06, FC16 write",16,40016-40021,40017,Gas/units notation string,"Units, a space, then gas name, null-terminated; first character in the low byte of each register.",STRING[12],6,,1,0,,Read,

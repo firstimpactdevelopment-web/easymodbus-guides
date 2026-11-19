@@ -1,0 +1,439 @@
+{
+  "manufacturer": "Teledyne Gas and Flame Detection",
+  "manufacturer_slug": "teledyne",
+  "model": "Spyglass SG50-F flame detector (Modbus RTU)",
+  "model_slug": "spyglass-sg50-f",
+  "short_model": "SG50-F",
+  "aliases": [
+    "SG50-F",
+    "Spyglass SG50-F",
+    "IR3-HD",
+    "UV-IR",
+    "IR3",
+    "UV-IR-HD",
+    "IR3-H2-HD",
+    "IR3-H2",
+    "UV-IR-F",
+    "UV-IR-F-HD"
+  ],
+  "equipment_type": "Sensor (flame detector)",
+  "applies_to": "Teledyne Spyglass SG50-F optical flame detectors (IR3, UV-IR, IR3-H2 and HD video variants) with RS-485 Modbus RTU, communication manual SG50FMODBUS-EN rev 1.0.",
+  "summary": "The Spyglass SG50-F is a family of optical flame detectors (multi-IR, UV/IR and hydrogen-flame types, some with HD video). Its RS-485 port speaks Modbus RTU: input registers carry alarm, fault, built-in-test flags and the detector type, and holding registers set sensitivity, delays, latching, heater, video and the clock. This map covers every register the manual defines except the 32-bit and IP fields.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "The manual prints register addresses in hex starting at 0x0000 (alarm relay), so the hex value is the wire address: 0x0010 = address 16."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Spyglass SG50-F Modbus Communication Manual",
+    "doc_number": "SG50FMODBUS-EN Revision 1.0",
+    "revision_date": "2023-02",
+    "url": "https://www.teledynegasandflamedetection.com/en-us/Products/docs/fixedflame-spyglass-sg50-f-modbus-communication-manual-english.pdf",
+    "pages": "p. 1 (line settings), p. 2 (input registers), p. 3 (holding registers)"
+  },
+  "notes": [
+    "Left out: 0-20 mA output value (input 0x0004-0x0005), Ethernet IP address (0x0006-0x0007, HD only) and detector serial ID (u32 at 0x0019-0x001A): the manual does not give their word order or encoding.",
+    "Input registers and holding registers are separate tables, so input 0x0001 (fault relay) and holding 0x0001 (sensitivity) are different values.",
+    "The factory default Modbus address is not stated in this manual.",
+    "Up to 32 detectors per segment; up to 247 with repeaters. 120 ohm end-of-line resistor required."
+  ],
+  "registers": [
+    {
+      "table": "input_register",
+      "address": 0,
+      "documented": "0x0000",
+      "name": "Alarm relay",
+      "description": "Fire alarm state.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No alarm",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1,
+      "documented": "0x0001",
+      "name": "Fault relay",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No fault",
+        "1": "Fault"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2,
+      "documented": "0x0002",
+      "name": "BIT status",
+      "description": "Built-in-test flags needing maintenance.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Dirty window fault",
+        "1": "24 V power supply fault"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 16,
+      "documented": "0x0010",
+      "name": "FGD detector identifier",
+      "description": "Always ASCII \"FG\" for this product family.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 27,
+      "documented": "0x001B",
+      "name": "Detector type",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "101": "IR3-HD",
+        "110": "UV-IR (small)",
+        "120": "IR3 (small)",
+        "130": "UV-IR-HD",
+        "140": "IR3-H2-HD",
+        "150": "IR3-H2",
+        "160": "UV-IR-F",
+        "170": "UV-IR-F-HD"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "0x0001",
+      "name": "Sensitivity",
+      "description": "Detection sensitivity level.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Low",
+        "1": "Medium",
+        "2": "High",
+        "3": "Extreme"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "0x0002",
+      "name": "Ultra-fast detection",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled",
+        "1": "Enabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "0x0003",
+      "name": "Alarm delay",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "0 s",
+        "1": "5 s",
+        "2": "10 s",
+        "3": "20 s",
+        "4": "30 s"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "0x0004",
+      "name": "Alarm latch",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No latch",
+        "1": "Latch"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "0x0005",
+      "name": "Window heater",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled",
+        "1": "Enabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "0x0006",
+      "name": "Video enable",
+      "description": "HD models only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled",
+        "1": "Enabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "0x0007",
+      "name": "Post-alarm video recording duration",
+      "description": "HD models only, 1-3.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "0x0008",
+      "name": "Analog video output",
+      "description": "HD models only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled",
+        "2": "NTSC",
+        "3": "PAL"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "0x0009",
+      "name": "Manual BIT alarm output test",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled",
+        "1": "Enabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 32,
+      "documented": "0x0020",
+      "name": "Detector Modbus address",
+      "description": "1-247.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 33,
+      "documented": "0x0021",
+      "name": "Manual BIT",
+      "description": "Write 1 to start a manual built-in test.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 64,
+      "documented": "0x0040",
+      "name": "Time: hour and minute",
+      "description": "Hour in high byte, minutes in low byte.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 65,
+      "documented": "0x0041",
+      "name": "Time: second and year",
+      "description": "Seconds in high byte, year in low byte.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 66,
+      "documented": "0x0042",
+      "name": "Date: month and day",
+      "description": "Month in high byte, day in low byte.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set a unique address per detector, wire RS-485 at 9600 8N1 and poll input registers 0-2 (alarm, fault, BIT flags) with function 04.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 0,
+        "why": "Fire alarm"
+      },
+      {
+        "table": "input_register",
+        "address": 1,
+        "why": "Fault"
+      },
+      {
+        "table": "input_register",
+        "address": 2,
+        "why": "Maintenance flags"
+      },
+      {
+        "table": "input_register",
+        "address": 27,
+        "why": "Detector type"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Sensitivity"
+      },
+      {
+        "table": "holding_register",
+        "address": 32,
+        "why": "Modbus address"
+      }
+    ],
+    "enable": "Modbus RTU is available on the RS-485 terminals of all SG50-F detectors; the address is register 0x0020 (1-247).",
+    "watchdog": null,
+    "quirks": [
+      "Addresses are printed in hex and are the wire addresses.",
+      "Clock registers pack two fields per register (high byte, low byte)."
+    ],
+    "setup": [
+      "9600 baud, 8N1, half duplex 2-wire, no echo.",
+      "Terminate the line with 120 ohm."
+    ],
+    "gotchas": [
+      "Video and analog-video registers only work on HD models."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

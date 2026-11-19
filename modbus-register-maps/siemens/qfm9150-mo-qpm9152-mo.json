@@ -1,0 +1,510 @@
+{
+ "manufacturer": "Siemens",
+ "manufacturer_slug": "siemens",
+ "model": "QFM9150/MO and QPM9152/MO duct sensors (Modbus RTU)",
+ "model_slug": "qfm9150-mo-qpm9152-mo",
+ "short_model": "QFM9150/MO",
+ "aliases": [
+  "QFM9150/MO",
+  "QPM9152/MO",
+  "S55720-S584",
+  "S55720-S585"
+ ],
+ "equipment_type": "Sensor (duct humidity / temperature / CO2 / VOC)",
+ "applies_to": "Siemens QFM9150/MO duct humidity/temperature sensor and QPM9152/MO duct air quality (CO2, VOC, humidity, temperature) sensor, basic documentation edition a (2022-12).",
+ "summary": "These Siemens duct sensors talk Modbus RTU over RS-485 and share one holding-register map. The QFM9150/MO measures temperature and relative humidity; the QPM9152/MO adds CO2, an IAQ index and a VOC value. Each reading has a reliability register next to it. The map covers all published measurement, offset, unit, communication and version registers.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": null,
+  "parity": "Even",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "1-based",
+  "note": "The register table prints register numbers and states that numbering starts at 1, so register 1 (temperature) is wire address 0 and register 764 (Modbus address) is wire address 763."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Duct sensors QFM9150/MO, QPM9152/MO Basic Documentation",
+  "doc_number": "A6V13841469_en--_a",
+  "revision_date": "2022-12",
+  "url": "https://sid.siemens.com/r/A6V13841469",
+  "pages": "section Modbus registers; Modbus configuration parameters; DIP switch configuration"
+ },
+ "notes": [
+  "All registers are single 16-bit holding registers; no 32-bit values are published.",
+  "CO2, IAQ and VOC registers (5-8, 15-16, 212, 225-227) only carry data on the QPM9152/MO.",
+  "Baud rate default is 0 = Auto (the sensor takes the master baud rate). Default format 1-8-E-1.",
+  "Registers 764-768 cannot be written by the master while DIP2 switch 7 is ON (DIP-switch configuration mode). Address 246 cannot be set from the master.",
+  "Temperature and offset registers are treated as signed because the published ranges go below zero.",
+  "Software version example from the source: [2.01.33] = 0x02010021 (major byte, minor byte, then a 16-bit build).",
+  "Register 767 is marked reserve and is left out."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "1",
+   "name": "Temperature value",
+   "description": "Signed, hundredths of a degree in the selected unit.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C / °F",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "2",
+   "name": "Temperature reliability",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Bad reliability / unavailable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "3",
+   "name": "Relative humidity value",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "4",
+   "name": "Humidity reliability",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Bad reliability / unavailable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "5",
+   "name": "CO2 value",
+   "description": "QPM9152/MO only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "ppm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "6",
+   "name": "CO2 reliability",
+   "description": "QPM9152/MO only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Bad reliability / unavailable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "7",
+   "name": "IAQ value",
+   "description": "Indoor air quality index, QPM9152/MO only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "8",
+   "name": "IAQ reliability",
+   "description": "QPM9152/MO only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Bad reliability / unavailable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "15",
+   "name": "VOC value",
+   "description": "QPM9152/MO only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "16",
+   "name": "VOC reliability",
+   "description": "QPM9152/MO only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Bad reliability / unavailable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 211,
+   "documented": "212",
+   "name": "VOC sensitivity",
+   "description": "QPM9152/MO only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Slow",
+    "1": "Medium",
+    "2": "Fast"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 222,
+   "documented": "223",
+   "name": "Temperature offset",
+   "description": "Range -100 to 100.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C / °F",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 223,
+   "documented": "224",
+   "name": "Relative humidity offset",
+   "description": "Range -100 to 100.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 224,
+   "documented": "225",
+   "name": "CO2 offset",
+   "description": "Range -2000 to 2000, QPM9152/MO only.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "ppm",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 225,
+   "documented": "226",
+   "name": "IAQ offset",
+   "description": "Range -100 to 100, QPM9152/MO only.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 226,
+   "documented": "227",
+   "name": "VOC pure offset",
+   "description": "Range -100 to 100, QPM9152/MO only.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 400,
+   "documented": "401",
+   "name": "System unit",
+   "description": "Temperature unit for values and offsets.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Celsius",
+    "1": "Fahrenheit"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 763,
+   "documented": "764",
+   "name": "Modbus address",
+   "description": "1-247; 246 is reserved for on-event addressing.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 764,
+   "documented": "765",
+   "name": "Baud rate",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "9600",
+    "2": "19200",
+    "3": "38400",
+    "4": "57600",
+    "5": "76800",
+    "6": "115200"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 765,
+   "documented": "766",
+   "name": "Transmission format",
+   "description": "Start-data-parity-stop bits.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "1-8-E-1",
+    "1": "1-8-O-1",
+    "2": "1-8-N-1",
+    "3": "1-8-N-2"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 767,
+   "documented": "768",
+   "name": "Bus configuration command",
+   "description": "Used for on-event addressing (Climatix).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Ready",
+    "1": "Load",
+    "2": "Discard"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1285,
+   "documented": "1286",
+   "name": "SW version major/minor",
+   "description": "Major in high byte, minor in low byte.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1286,
+   "documented": "1287",
+   "name": "SW version build",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Leave DIP2 switch 7 OFF, wire A/B to the RS-485 bus, set the address over Modbus (default 1, 8E1, auto baud) and poll holding registers 0-15 with function 03.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Relative humidity"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "CO2 (QPM9152/MO)"
+   },
+   {
+    "table": "holding_register",
+    "address": 14,
+    "why": "VOC (QPM9152/MO)"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Temperature reliability"
+   },
+   {
+    "table": "holding_register",
+    "address": 400,
+    "why": "Temperature unit"
+   }
+  ],
+  "enable": "DIP2 switch 7 OFF (default) lets the master configure address, baud and format via registers 764-768; ON uses the DIP switches (DIP1 = address, DIP2 = baud/parity/stop).",
+  "watchdog": null,
+  "quirks": [
+   "Register number minus 1 = wire address.",
+   "The temperature register follows the unit chosen in register 401 (°C or °F).",
+   "Address 246 is reserved for Climatix on-event addressing."
+  ],
+  "setup": [
+   "Bus termination is a jumper (OFF by default).",
+   "A push-button hold of 10-13 s resets address, baud and format to factory defaults."
+  ],
+  "gotchas": [
+   "If an invalid address is set by DIP switch, new values for registers 764-768 are not applied."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/siemens/qfm9150-mo-qpm9152-mo",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

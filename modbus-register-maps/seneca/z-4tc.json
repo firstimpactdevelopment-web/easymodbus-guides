@@ -1,0 +1,450 @@
+{
+ "manufacturer": "Seneca",
+ "manufacturer_slug": "seneca",
+ "model": "Z-4TC 4-channel thermocouple input module",
+ "model_slug": "z-4tc",
+ "short_model": "Z-4TC",
+ "aliases": [
+  "Z-4TC"
+ ],
+ "equipment_type": "Sensor (I/O module, 4 thermocouple inputs)",
+ "applies_to": "Seneca Z-4TC DIN-rail module with four thermocouple/mV inputs and RS-485 Modbus RTU, per user manual MI00258-3-EN.",
+ "summary": "The Z-4TC reads four thermocouples (J, K, R, S, T, B, E, N) or ±160 mV signals and serves them over RS-485 Modbus RTU. This map lists the 16-bit integer registers: comms settings, input type and filter per channel, status/error words and the four measurements in tenths of a degree.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 38400,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The table prints the Modbus address (40001) and the offset (0); the offset is the wire address."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Z-4TC User Manual",
+  "doc_number": "MI00258-3-EN",
+  "revision_date": null,
+  "url": "https://www.seneca.it/media/2285/mi00258-3-en.pdf",
+  "pages": "Modbus functions and register table pp. 5-12"
+ },
+ "notes": [
+  "Left out: the 32-bit floating-point measures (40027-40034, firmware 667 on) and offsets (40037-40044, firmware 668 on), because the manual says only that a float spans two holding registers and never states which word comes first.",
+  "Integer measures are °C x 10 for thermocouple inputs and units of 0.005 mV for voltage inputs (1848 = 9.24 mV); the map shows the thermocouple scaling.",
+  "Address 1 and 38400 baud with no parity are the default register values (EEPROM mode)."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "Machine ID",
+   "description": "Module ID code.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "Baud rate and address",
+   "description": "High byte = baud code (0=4800,1=9600,2=19200,3=38400,4=57600,5=115200,6=1200,7=2400), low byte = station address.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40003",
+   "name": "EEPROM flags",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "TC break detection off (0 = on)",
+    "1": "Sampling 60 ms per channel (0 = 120 ms)",
+    "2": "Reply delay on",
+    "3": "Parity on",
+    "4": "Parity odd (0 = even)"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "40004",
+   "name": "Input 1 type",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Voltage ±160 mV",
+    "1": "TC J",
+    "2": "TC K",
+    "3": "TC R",
+    "4": "TC S",
+    "5": "TC T",
+    "6": "TC B",
+    "7": "TC E",
+    "8": "TC N"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40005",
+   "name": "Input 2 type",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Voltage ±160 mV",
+    "1": "TC J",
+    "2": "TC K",
+    "3": "TC R",
+    "4": "TC S",
+    "5": "TC T",
+    "6": "TC B",
+    "7": "TC E",
+    "8": "TC N"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40006",
+   "name": "Input 3 type",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Voltage ±160 mV",
+    "1": "TC J",
+    "2": "TC K",
+    "3": "TC R",
+    "4": "TC S",
+    "5": "TC T",
+    "6": "TC B",
+    "7": "TC E",
+    "8": "TC N"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40007",
+   "name": "Input 4 type",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Voltage ±160 mV",
+    "1": "TC J",
+    "2": "TC K",
+    "3": "TC R",
+    "4": "TC S",
+    "5": "TC T",
+    "6": "TC B",
+    "7": "TC E",
+    "8": "TC N"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "40008",
+   "name": "IN1 filter",
+   "description": "0 = off, 1 = minimum ... 6 = maximum filtering.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40009",
+   "name": "IN2 filter",
+   "description": "0 = off, 1 = minimum ... 6 = maximum filtering.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "40010",
+   "name": "IN3 filter",
+   "description": "0 = off, 1 = minimum ... 6 = maximum filtering.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "40011",
+   "name": "IN4 filter",
+   "description": "0 = off, 1 = minimum ... 6 = maximum filtering.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "40012",
+   "name": "Status",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "Reset (write 1 to reboot)",
+    "1": "Generic error",
+    "2": "Data-configuration acquisition error",
+    "3": "Configuration error",
+    "7": "Save configuration to flash (write 1)",
+    "8": "Input 1 acquisition error",
+    "9": "Input 2 acquisition error",
+    "10": "Input 3 acquisition error",
+    "11": "Input 4 acquisition error",
+    "12": "Input 1 burn-out",
+    "13": "Input 2 burn-out",
+    "14": "Input 3 burn-out",
+    "15": "Input 4 burn-out"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "40013",
+   "name": "Channel 1 measure",
+   "description": "Thermocouple: °C x 10 (220 = 22.0 °C). Voltage mode: steps of 0.005 mV.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "40014",
+   "name": "Channel 2 measure",
+   "description": "Thermocouple: °C x 10 (220 = 22.0 °C). Voltage mode: steps of 0.005 mV.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "40015",
+   "name": "Channel 3 measure",
+   "description": "Thermocouple: °C x 10 (220 = 22.0 °C). Voltage mode: steps of 0.005 mV.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "40016",
+   "name": "Channel 4 measure",
+   "description": "Thermocouple: °C x 10 (220 = 22.0 °C). Voltage mode: steps of 0.005 mV.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "40017",
+   "name": "Firmware revision",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 18,
+   "documented": "40019",
+   "name": "Errors",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "ADC error",
+    "1": "Cold junction TC 1-2 error",
+    "2": "Cold junction TC 3-4 error",
+    "8": "Calibration error",
+    "9": "Setting error",
+    "11": "ADC zero error"
+   },
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read holding registers 40013-40016 (wire 12-15) and divide by 10 for °C; check 40012 for burn-out bits.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 12,
+    "why": "Channel 1"
+   },
+   {
+    "table": "holding_register",
+    "address": 13,
+    "why": "Channel 2"
+   },
+   {
+    "table": "holding_register",
+    "address": 14,
+    "why": "Channel 3"
+   },
+   {
+    "table": "holding_register",
+    "address": 15,
+    "why": "Channel 4"
+   },
+   {
+    "table": "holding_register",
+    "address": 11,
+    "why": "Status / burn-out"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Input 1 type"
+   }
+  ],
+  "enable": "Supported functions are 3, 6 and 16; set the thermocouple type of each channel in 40004-40007.",
+  "watchdog": null,
+  "quirks": [
+   "40002 packs baud code and address into one register.",
+   "Voltage-mode readings use a different scale (0.005 mV)."
+  ],
+  "setup": [
+   "Write bit 7 of 40012 to store settings in flash."
+  ],
+  "gotchas": [
+   "Floating-point registers exist on newer firmware but their word order is not documented.",
+   "Every input defaults to type 0 (voltage), where readings are in 0.005 mV steps; set the thermocouple type in 40004-40007 before using the 0.1 °C scaling."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/seneca/z-4tc",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

@@ -1,0 +1,255 @@
+{
+ "manufacturer": "IME",
+ "manufacturer_slug": "ime",
+ "model": "Conto D1 single-phase energy meter (CE111)",
+ "model_slug": "conto-d1",
+ "short_model": "Conto D1",
+ "aliases": [
+  "CE111",
+  "Conto D1"
+ ],
+ "equipment_type": "Energy meter (DIN-rail, single-phase)",
+ "applies_to": "IME Conto D1 single-phase meter, code CE111, per protocol PR133 (2025-02-24).",
+ "summary": "The Conto D1 is a one-module single-phase energy meter with an RS-485 Modbus/JBUS port. Its map is short: voltage, current, frequency and powers as scaled 16-bit words, two 32-bit energy totals, and the baud rate and node address.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "Addresses are the hex word addresses sent as 'first WORD address' in the request, so 0x07 is wire address 7."
+ },
+ "default_word_order": "ABCD",
+ "firmware": null,
+ "source": {
+  "title": "Communication Modbus protocol PR133 - CE111 Conto D1",
+  "doc_number": "PR133",
+  "revision_date": "2025-02-24",
+  "url": "https://assets.legrand.com/pim/NP-FT-GT/PR133FR.pdf",
+  "pages": "Data format p. 4; commands p. 7; variables p. 8"
+ },
+ "notes": [
+  "Double words are sent most significant word first, as stated in the data format section with a worked example.",
+  "Scaling is taken from the printed formats: xxx,x V and A (tenths), xx,xx Hz (hundredths), energy 'Wh * 10' and 'varh * 10'.",
+  "Left out: 0x06 power factor, whose unit and access columns are blank ('-')."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0x00",
+   "name": "Voltage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "0x01",
+   "name": "Current",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "A",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "0x02",
+   "name": "Frequency",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "0x03",
+   "name": "Active power",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "W",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "0x04",
+   "name": "Reactive power",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "var",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "0x05",
+   "name": "Apparent power",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "VA",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "0x07",
+   "name": "Total active energy",
+   "description": "Counts in steps of 10 Wh.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 10,
+   "units": "Wh",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 17,
+   "documented": "0x11",
+   "name": "Total reactive energy",
+   "description": "Counts in steps of 10 varh.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 10,
+   "units": "varh",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 42,
+   "documented": "0x2A",
+   "name": "Baud rate",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "1200",
+    "2": "2400",
+    "3": "4800",
+    "4": "9600"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 43,
+   "documented": "0x2B",
+   "name": "Node address",
+   "description": "1-247.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read 6 holding registers from 0x00 (function 03) for V, A, Hz and powers, then 2 from 0x07 for active energy and 2 from 0x11 for reactive energy.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Voltage"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Current"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Active power"
+   },
+   {
+    "table": "holding_register",
+    "address": 7,
+    "why": "Active energy"
+   },
+   {
+    "table": "holding_register",
+    "address": 17,
+    "why": "Reactive energy"
+   }
+  ],
+  "enable": "Set node address and baud rate on the meter or through 0x2A/0x2B.",
+  "watchdog": null,
+  "quirks": [
+   "A request may ask for at most 14 bytes of data (7 registers).",
+   "Only functions 03 and 0x10 are supported."
+  ],
+  "setup": [
+   "Baud rate choices are 1200, 2400, 4800 and 9600; slave response time is at least 20 ms."
+  ],
+  "gotchas": [
+   "Energy registers count in tens of Wh/varh."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/ime/conto-d1",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

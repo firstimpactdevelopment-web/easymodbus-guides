@@ -1,0 +1,396 @@
+{
+ "manufacturer": "Teledyne Detcon",
+ "manufacturer_slug": "detcon",
+ "model": "Model DM-700 electrochemical toxic gas / oxygen sensor (RS-485 Modbus)",
+ "model_slug": "dm-700",
+ "short_model": "DM-700",
+ "aliases": [
+  "DM-700",
+  "Detcon DM-700",
+  "Teledyne Detcon DM-700"
+ ],
+ "equipment_type": "Sensor (fixed gas detector)",
+ "applies_to": "Teledyne Detcon DM-700 smart sensors with the 4-20 mA and RS-485 Modbus outputs, instruction manual Document #3207, Rev. 5.9.",
+ "summary": "The DM-700 is a Teledyne Detcon fixed electrochemical toxic gas / oxygen sensor that reports over a 4-20 mA loop and a Modbus RTU RS-485 port at the same time. It exposes 22 holding registers: range, gas reading, span level, sensor life, fault bits, loop current, supply voltage, model-specific diagnostics, a calibration command register and the gas/units text. This map covers all of them except temperature.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The manual prints registers as 40000-40021, starting at 40000, so the digits after the leading 4 are the 0-based wire address: 40000 (device type) is address 0 and 40002 (gas reading) is address 2. Only function 03 reads them; writable ones use function 06."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "DM-700 Instruction Manual",
+  "doc_number": "Document #3207, Rev. 5.9",
+  "revision_date": "2022-12-22",
+  "url": "https://www.teledynegasandflamedetection.com/en-us/Products/docs/fixedgas-700series-dm-usermanual-english.pdf",
+  "pages": "pp. 28-29 (Tables 2 and 3)"
+ },
+ "notes": [
+  "All registers are single 16-bit holding registers; the manual shares one table across DM, FP, IR, TP and PI sensors and model register 40006 tells them apart. Registers 40011-40014 change meaning with the model; only the DM-700 meanings are given here.",
+  "Gas reading scaling (manual footnote 3): the register holds the reading x1, x10 or x100 when Low Range (40011) is 0, 1 or 2. Because the multiplier changes with the range, scale is left at 1.",
+  "Range, reading and span level are in the units of the notation string (PPM, PPB or %).",
+  "Register 40010 (temperature, °C) is left out: the manual gives no data type, so it is unclear how readings below 0 °C are coded.",
+  "The notation string stores the first character in the low byte of each register (low byte, high byte, ...), the reverse of the usual Modbus string order.",
+  "Bit 13 of the fault register is reserved.",
+  "Factory serial ID is 01; it is set in the sensor menu (Set Serial ID) in hexadecimal."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40000",
+   "name": "Device type",
+   "description": "Reads 8 for a 700-series sensor.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "8": "700 series sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40001",
+   "name": "Detectable range",
+   "description": "Full scale in the units of the notation string.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40002",
+   "name": "Gas concentration",
+   "description": "Raw reading; divide by 1, 10 or 100 per Low Range (register 40011).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "40003",
+   "name": "AutoSpan level",
+   "description": "Span gas concentration used for calibration.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40004",
+   "name": "Sensor life",
+   "description": "Remaining sensor life.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40005",
+   "name": "Fault status bits",
+   "description": "Faults clear themselves when the condition clears.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Global fault",
+    "1": "AutoSpan fault",
+    "2": "Temperature fault",
+    "3": "4-20 mA fault",
+    "4": "Input voltage fault",
+    "5": "Memory fault",
+    "6": "Processor fault",
+    "7": "Clearing fault",
+    "8": "Stability fault",
+    "9": "Range fault",
+    "10": "Sensor fault",
+    "11": "Zero fault",
+    "12": "Sensor fault 2",
+    "14": "In calibration",
+    "15": "Communication error"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40006",
+   "name": "Model number",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "DM",
+    "2": "FP",
+    "3": "IR",
+    "4": "TP",
+    "5": "PID"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "40007",
+   "name": "Days since calibration",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "days",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40008",
+   "name": "4-20 mA output",
+   "description": "Current loop output value.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "mA",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "40009",
+   "name": "Input voltage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "40011",
+   "name": "Low Range",
+   "description": "Decimal places of the gas reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Range above 25 (no decimals)",
+    "1": "Range 10-25 (1 decimal)",
+    "2": "Range below 10 (2 decimals)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "40012",
+   "name": "Cell polarity / bias",
+   "description": "High nibble 8 = positive polarity cell, 0 = negative; low bits: 0x000 = 0 mV, 0x096 = 150 mV, 0x0C8 = 200 mV, 0x12C = 300 mV bias.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "40013",
+   "name": "Gain code",
+   "description": "Integer 0-15.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "40014",
+   "name": "Raw counts",
+   "description": "0x8000 = nominal zero.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "40015",
+   "name": "Calibration status / enable",
+   "description": "Read gives status; write starts an action.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Read: idle",
+    "1": "Read: zero calibration started / Write: set zero",
+    "2": "Read: span calibration started / Write: set span",
+    "3": "Read: span set",
+    "4": "Read: span calibration unsuccessful",
+    "8": "Write: signal simulation mode",
+    "9": "Write: set FP bridge voltage",
+    "10": "Write: set TP heater power",
+    "11": "Write: set IR gain"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "40016-40021",
+   "name": "Gas/units notation string",
+   "description": "Units, a space, then gas name, null-terminated; first character in the low byte of each register.",
+   "data_type": "STRING",
+   "length": 6,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Give each sensor its own serial ID from the magnetic-switch menu, wire RS-485 at 9600 8N1 and poll holding registers 0-9 with function 03; read 40005 for faults.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Gas concentration"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Detectable range (full scale)"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Fault status bits"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Sensor life"
+   },
+   {
+    "table": "holding_register",
+    "address": 8,
+    "why": "Loop current"
+   },
+   {
+    "table": "holding_register",
+    "address": 16,
+    "why": "Gas and units text"
+   }
+  ],
+  "enable": "The manual describes no separate enable step; set a unique serial ID in Program Mode (Set Serial ID).",
+  "watchdog": null,
+  "quirks": [
+   "Register numbers start at 40000 = wire address 0.",
+   "The text names function 03 as the only supported code, but the register table lists function 06 for writing the R/W registers.",
+   "Text characters are low byte first."
+  ],
+  "setup": [
+   "9600 baud, 8 data bits, no parity, 1 stop bit.",
+   "Serial ID is entered in hexadecimal (01, 02 ... 0A ...)."
+  ],
+  "gotchas": [
+   "Bit 14 of the fault register is set while the sensor is in calibration."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/detcon/dm-700",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

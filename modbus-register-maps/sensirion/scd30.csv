@@ -1,0 +1,15 @@
+﻿"# Sensirion SCD30 CO2, humidity and temperature sensor module Modbus register map - easymodbus.com - source: https://sensirion.com/media/documents/D7CEEF4A/6165372F/Sensirion_CO2_Sensors_SCD30_Interface_Description.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",32,0x0020,40033,Firmware version,"High byte = major, low byte = minor.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",37,0x0025,40038,Measurement interval,"Continuous measurement interval, 2 to 1800 s (default 2 s).",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",39,0x0027,40040,Data ready status,1 when a new measurement can be read.,UINT16,1,,1,0,,Read,0 = No new data; 1 = Data ready
+Holding register,"FC03 read / FC06, FC16 write",40,0x0028-0x0029,40041,CO2 concentration,,FLOAT32,2,ABCD,1,0,ppm,Read,
+Holding register,"FC03 read / FC06, FC16 write",42,0x002A-0x002B,40043,Temperature,,FLOAT32,2,ABCD,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",44,0x002C-0x002D,40045,Relative humidity,,FLOAT32,2,ABCD,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",52,0x0034,40053,Soft reset,Write 1 to restart the sensor.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",54,0x0036,40055,Start continuous measurement,"Write ambient pressure 700-1400 mbar, or 0 to start without pressure compensation.",UINT16,1,,1,0,mbar,Write,
+Holding register,"FC03 read / FC06, FC16 write",55,0x0037,40056,Stop continuous measurement,Write 1 to stop measuring.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",56,0x0038,40057,Altitude compensation,Height above sea level in metres.,UINT16,1,,1,0,m,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57,0x0039,40058,Forced recalibration reference,Reference CO2 concentration 400-2000 ppm for forced recalibration.,UINT16,1,,1,0,ppm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",58,0x003A,40059,Automatic self-calibration,Off by default.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",59,0x003B,40060,Temperature offset,Offset for the on-board RH/T sensor in 0.01 °C steps.,UINT16,1,,0.01,0,°C,Read/write,

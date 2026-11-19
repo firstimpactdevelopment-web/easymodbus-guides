@@ -1,0 +1,292 @@
+{
+  "manufacturer": "Sensirion",
+  "manufacturer_slug": "sensirion",
+  "model": "SCD30 CO2, humidity and temperature sensor module",
+  "model_slug": "scd30",
+  "short_model": "SCD30",
+  "aliases": [
+    "SCD30"
+  ],
+  "equipment_type": "Sensor (CO2, humidity, temperature module)",
+  "applies_to": "Sensirion SCD30 sensor module with the SEL pin pulled high at power-up (Modbus mode), per interface description version 1.0.",
+  "summary": "The SCD30 is an NDIR CO2 module with on-board humidity and temperature sensing. With the SEL pin tied to VDD it speaks Modbus RTU (UART level) at a fixed address and baud rate. Measurements are big-endian IEEE-754 floats; configuration commands are single 16-bit register writes.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 97,
+    "baud": 19200,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "Addresses are given in hex exactly as they appear in the request frames (for example 0x61 0x03 0x00 0x28 reads from 0x0028), so they are wire addresses."
+  },
+  "default_word_order": "ABCD",
+  "firmware": null,
+  "source": {
+    "title": "Interface Description Sensirion SCD30 Sensor Module",
+    "doc_number": "Version 1.0 - D1",
+    "revision_date": "2020-05",
+    "url": "https://sensirion.com/media/documents/D7CEEF4A/6165372F/Sensirion_CO2_Sensors_SCD30_Interface_Description.pdf",
+    "pages": "Modbus settings p. 6; command set pp. 7-15; read measurement example p. 11; firmware p. 14; soft reset p. 15"
+  },
+  "notes": [
+    "The read-measurement example returns 43 DB 8C 2E (439 ppm), 41 D9 E7 FF (27.2 °C) and 42 43 3A 1B (48.8 %RH), and the document states the values are big-endian floats, so all three are high word first.",
+    "The sensor accepts function codes 3, 4 and 6 only; there is no multi-register write.",
+    "The Modbus address 0x61 (97) and 19200 8N1 are fixed in this document; no command to change them is listed.",
+    "The UART pins are at logic level; an RS-485 transceiver is needed to put the module on a bus."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 32,
+      "documented": "0x0020",
+      "name": "Firmware version",
+      "description": "High byte = major, low byte = minor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 37,
+      "documented": "0x0025",
+      "name": "Measurement interval",
+      "description": "Continuous measurement interval, 2 to 1800 s (default 2 s).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 39,
+      "documented": "0x0027",
+      "name": "Data ready status",
+      "description": "1 when a new measurement can be read.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No new data",
+        "1": "Data ready"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 40,
+      "documented": "0x0028-0x0029",
+      "name": "CO2 concentration",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 42,
+      "documented": "0x002A-0x002B",
+      "name": "Temperature",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 44,
+      "documented": "0x002C-0x002D",
+      "name": "Relative humidity",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 52,
+      "documented": "0x0034",
+      "name": "Soft reset",
+      "description": "Write 1 to restart the sensor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 54,
+      "documented": "0x0036",
+      "name": "Start continuous measurement",
+      "description": "Write ambient pressure 700-1400 mbar, or 0 to start without pressure compensation.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "mbar",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 55,
+      "documented": "0x0037",
+      "name": "Stop continuous measurement",
+      "description": "Write 1 to stop measuring.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 56,
+      "documented": "0x0038",
+      "name": "Altitude compensation",
+      "description": "Height above sea level in metres.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "m",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 57,
+      "documented": "0x0039",
+      "name": "Forced recalibration reference",
+      "description": "Reference CO2 concentration 400-2000 ppm for forced recalibration.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ppm",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 58,
+      "documented": "0x003A",
+      "name": "Automatic self-calibration",
+      "description": "Off by default.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 59,
+      "documented": "0x003B",
+      "name": "Temperature offset",
+      "description": "Offset for the on-board RH/T sensor in 0.01 °C steps.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Write 0 (or the ambient pressure in mbar) to 0x0036 once to start measuring; the setting survives power cycles. Then poll 0x0027 for data ready and read six registers from 0x0028 for CO2, temperature and humidity.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 54,
+        "why": "Start continuous measurement"
+      },
+      {
+        "table": "holding_register",
+        "address": 39,
+        "why": "Data ready"
+      },
+      {
+        "table": "holding_register",
+        "address": 40,
+        "why": "CO2"
+      },
+      {
+        "table": "holding_register",
+        "address": 42,
+        "why": "Temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 44,
+        "why": "Humidity"
+      }
+    ],
+    "enable": "Pull the SEL pin to VDD during power-up to select Modbus instead of I2C.",
+    "watchdog": null,
+    "quirks": [
+      "Address 0x61 and 19200 8N1 are fixed.",
+      "The manual's read example fetches all six measurement registers from 0x0028 in one request (CO2, temperature, humidity, each high word first)."
+    ],
+    "setup": [
+      "Power up with SEL high, connect TX/RX through a suitable transceiver, then send the start command."
+    ],
+    "gotchas": [
+      "Continuous measurement and ASC states are stored in non-volatile memory and resume after power-up."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

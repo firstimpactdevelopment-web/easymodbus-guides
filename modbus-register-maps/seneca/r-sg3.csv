@@ -1,0 +1,36 @@
+﻿# Seneca R-SG3 Ethernet load cell converter Modbus register map - easymodbus.com - source: https://www.seneca.it/media/6848135/mi00604-29-en.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Machine ID,Device identification code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Firmware revision,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Measurement unit,Engineering unit used for weight values.,UINT16,1,,1,0,,Read/write,0 = kg; 1 = g; 2 = t; 3 = lb; 4 = l; 5 = N; 6 = bar; 7 = atm; 8 = Other
+Holding register,"FC03 read / FC06, FC16 write",3,40004,40004,Unipolar mode,,UINT16,1,,1,0,,Read/write,0 = Bipolar (compression and traction); 1 = Unipolar (balance)
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,Calibration mode,,UINT16,1,,1,0,,Read/write,0 = Factory calibration; 1 = Calibration with standard weight
+Holding register,"FC03 read / FC06, FC16 write",13,40014,40014,Cell sensitivity,Load cell rated output.,FLOAT32,2,ABCD,1,0,mV/V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",15,40016,40016,Cell full scale,Load cell capacity in the selected unit.,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17,40018,40018,Standard weight,Reference weight used for standard-weight calibration.,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",19,40020,40020,DO1 threshold,Alarm threshold for digital output 1.,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",29,40030,40030,Delta weight,Band the weight must stay within to count as stable.,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",31,40032,40032,Delta time,Time the weight must stay in band to count as stable.,UINT16,1,,100,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32,40033,40033,Digital output mode,"Bits 0-1 contact type; bits 8-11 DO1 mode, bits 12-15 DO2 mode.",BITMAP16,1,,1,0,,Read/write,bit 0 = DO1 normally closed (0 = normally open); bit 1 = DO2 normally closed (0 = normally open)
+Holding register,"FC03 read / FC06, FC16 write",33,40034,40034,Advanced ADC speed,Used only at filter level 7 (advanced).,UINT16,1,,1,0,,Read/write,0 = 960 Hz; 1 = 300 Hz; 2 = 150 Hz; 3 = 100 Hz; 4 = 60 Hz; 5 = 12 Hz; 6 = 4.7 Hz
+Holding register,"FC03 read / FC06, FC16 write",34,40035,40035,Automatic tare reset band,0 disables the tare tracker; otherwise the ADC band for automatic re-tare.,UINT32,2,ABCD,1,0,ADC points,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",36,40037,40037,DO1 threshold hysteresis,,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",38,40039,40039,Advanced denoise filter variation,Noise-only change in ADC points; filter level 7 only.,FLOAT32,2,ABCD,1,0,ADC points,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40,40041,40041,Advanced denoise filter response,0.001 (slowest) to 1 (fastest); filter level 7 only.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",42,40043,40043,Denoise filter level,Preset filter level; 7 selects the advanced parameters.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43,40044,40044,Resolution mode,,UINT16,1,,1,0,,Read/write,0 = Automatic (about 20000 points of full scale); 1 = Manual (from manual resolution register); 2 = Maximum (full 24-bit resolution)
+Holding register,"FC03 read / FC06, FC16 write",44,40045,40045,Denoise filter enable,,UINT16,1,,1,0,,Read/write,0 = Disabled (advanced mode enabled); 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",45,40046,40046,Manual resolution,Display resolution of the weight when manual mode is chosen.,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",47,40048,40048,Single piece weight,Used by the piece counter.,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",49,40050,40050,DO2 threshold,Alarm threshold for digital output 2.,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",51,40052,40052,DO2 threshold hysteresis,,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",62,40063,40063,ADC filtered (16-bit),Filtered converter value scaled to 16 bits.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",63,40064,40064,Net weight,Net weight in the selected unit.,FLOAT32,2,ABCD,1,0,eng. units,Read,
+Holding register,"FC03 read / FC06, FC16 write",65,40066,40066,Gross weight,,FLOAT32,2,ABCD,1,0,eng. units,Read,
+Holding register,"FC03 read / FC06, FC16 write",67,40068,40068,Tare weight,,FLOAT32,2,ABCD,1,0,eng. units,Read,
+Holding register,"FC03 read / FC06, FC16 write",75,40076,40076,Factory manual tare,Tare entered by hand for factory-calibration mode.,FLOAT32,2,ABCD,1,0,eng. units,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",77,40078,40078,Status,Weighing status; bits 5-6 drive the outputs when they are set to Modbus mode.,BITMAP16,1,,1,0,,Read/write,"bit 0 = Threshold and stable weight, DO1; bit 1 = Cell at full scale; bit 2 = Net weight below zero; bit 3 = Threshold and stable weight, DO2; bit 4 = Stable weight; bit 5 = Digital output 2 on (Modbus mode, writable); bit 6 = Digital output 1 on (Modbus mode, writable); bit 7 = Threshold with hysteresis, DO1; bit 8 = Tare tracker acted; bit 9 = Threshold with hysteresis, DO2"
+Holding register,"FC03 read / FC06, FC16 write",79,40080,40080,Command,Write a command code; the register returns to 0 when done.,UINT16,1,,1,0,,Read/write,43948 = Reboot; 45056 = Reset minimum net weight; 49151 = Reset maximum net weight; 49594 = Acquire tare in RAM (lost at reboot); 49914 = Acquire tare in flash for calibration; 50700 = Acquire standard weight in flash; 50773 = Take tare from the factory manual tare register
+Holding register,"FC03 read / FC06, FC16 write",80,40081,40081,Piece count,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",81,40082,40082,Maximum net weight,Highest net weight since the last reboot.,FLOAT32,2,ABCD,1,0,eng. units,Read,
+Holding register,"FC03 read / FC06, FC16 write",83,40084,40084,Minimum net weight,Lowest net weight since the last reboot.,FLOAT32,2,ABCD,1,0,eng. units,Read,

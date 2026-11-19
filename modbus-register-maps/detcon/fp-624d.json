@@ -1,0 +1,334 @@
+{
+ "manufacturer": "Teledyne Detcon",
+ "manufacturer_slug": "detcon",
+ "model": "Model FP-624D MicroSafe combustible gas sensor (RS-485 Modbus)",
+ "model_slug": "fp-624d",
+ "short_model": "FP-624D",
+ "aliases": [
+  "FP-624D",
+  "MicroSafe FP-624D",
+  "Detcon FP-624D"
+ ],
+ "equipment_type": "Sensor (fixed gas detector)",
+ "applies_to": "Teledyne Detcon FP-624D MicroSafe catalytic LEL sensor with 4-20 mA, relays and RS-485 Modbus RTU, instruction manual Document #3598 Rev. 1.7.",
+ "summary": "The FP-624D is a Detcon catalytic-bead combustible gas sensor with a display, three relays, a 4-20 mA loop and a Modbus RTU RS-485 port. Its holding registers follow the Detcon 700-series layout: range, gas reading in %LEL, span level, sensor life, fault bits, loop current, supply voltage, calibration command, gas/units text and firmware version.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Registers are printed 40000-40023 starting at 40000, so the digits after the leading 4 are the wire address: 40002 (gas reading) is address 2."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "FP-624D Instruction Manual",
+  "doc_number": "Document #3598, Rev. 1.7",
+  "revision_date": "2020-11-16",
+  "url": "https://www.teledynegasandflamedetection.com/en-us/Products/docs/fixedgas-microsafe500600-fp-624d-usermanual-english.pdf",
+  "pages": "pp. 31-32 (Table 3 Modbus Registers)"
+ },
+ "notes": [
+  "Left out: special registers 40011-40014 and 40022, which the table says depend on a special-register table that this manual does not include, and 40010 temperature, whose data type (sign) is not given.",
+  "All values are single 16-bit holding registers. Function 03 reads, 06 writes.",
+  "The notation string stores the first character in the low byte of each register.",
+  "Factory serial ID is 01; set it in the menu in hex."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40000",
+   "name": "Device type",
+   "description": "Reads 8.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "8": "700 series sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40001",
+   "name": "Detectable range",
+   "description": "Full scale; read only on FP sensors.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40002",
+   "name": "Gas concentration",
+   "description": "Gas reading in the units of the notation string (normally %LEL).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "40003",
+   "name": "AutoSpan level",
+   "description": "Span gas concentration used for calibration.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40004",
+   "name": "Sensor life",
+   "description": "Remaining sensor life.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40005",
+   "name": "Fault status bits",
+   "description": "Faults clear themselves when the condition clears.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Global fault",
+    "1": "AutoSpan fault",
+    "2": "Temperature fault",
+    "3": "4-20 mA fault",
+    "4": "Input voltage fault",
+    "5": "Memory fault",
+    "6": "Processor fault",
+    "7": "Clearing fault",
+    "8": "Stability fault",
+    "9": "Range fault",
+    "10": "Sensor fault",
+    "11": "Zero fault",
+    "12": "Sensor fault 2",
+    "14": "In calibration",
+    "15": "Communication error"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40006",
+   "name": "Model number",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "DM",
+    "2": "FP",
+    "3": "IR",
+    "4": "TP",
+    "5": "PID"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "40007",
+   "name": "Days since calibration",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "days",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40008",
+   "name": "4-20 mA output",
+   "description": "Current loop output value.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "mA",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "40009",
+   "name": "Input voltage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "40015",
+   "name": "Calibration status / enable",
+   "description": "Read gives status; write starts an action.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Read: idle",
+    "1": "Read: zero calibration started / Write: set zero",
+    "2": "Read: span calibration started / Write: set span",
+    "3": "Read: span set",
+    "4": "Read: span calibration unsuccessful",
+    "8": "Write: signal simulation mode",
+    "9": "Write: set FP bridge voltage",
+    "10": "Write: set TP heater power",
+    "11": "Write: set IR gain"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "40016-40021",
+   "name": "Gas/units notation string",
+   "description": "Units, a space, gas name, null-terminated; first character in the low byte.",
+   "data_type": "STRING",
+   "length": 6,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "40023",
+   "name": "Processor firmware version",
+   "description": "0x0102 = version 01.02.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set the serial ID with the magnet menu, wire RS-485 at 9600 8N1 and poll holding registers 0-9 with function 03.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Gas concentration"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Fault bits"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Full scale"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Sensor life"
+   },
+   {
+    "table": "holding_register",
+    "address": 8,
+    "why": "Loop current"
+   }
+  ],
+  "enable": "The manual describes no separate enable step; set a unique serial ID in the sensor menu (Set Serial ID).",
+  "watchdog": null,
+  "quirks": [
+   "40000 = wire address 0.",
+   "The CAL LED flashes each time the sensor answers a poll."
+  ],
+  "setup": [
+   "9600 baud, 8 data bits, no parity, 1 stop bit."
+  ],
+  "gotchas": [
+   "Bit 14 of the fault register is set during calibration."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/detcon/fp-624d",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

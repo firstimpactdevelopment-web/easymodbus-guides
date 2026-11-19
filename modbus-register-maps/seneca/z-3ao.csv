@@ -1,0 +1,28 @@
+﻿# Seneca Z-3AO 3-channel analog output module Modbus register map - easymodbus.com - source: https://www.seneca.it/media/1340/mi00260-2-en.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Machine ID,"High byte = module ID code (0x0F), low byte = module version.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Baud rate and address,"High byte = baud code (0=4800,1=9600,2=19200,3=38400,4=57600,5=115200,6=1200,7=2400), low byte = address; EEPROM mode.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Communication timeout,"0-250 (0-25 s), default 200; applies when 40004 bit 7 is set.",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,40004,40004,EEPROM flags,,BITMAP16,1,,1,0,,Read/write,"bit 2 = RS-485 reply delay on; bit 3 = RS-485 parity on; bit 4 = Parity odd (0 = even); bit 7 = On bus timeout, copy fault values 40069-40071 to the outputs; bit 12 = New Z-3AO mode (0 = old mode)"
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,OUT1 normalized value,-10000..10000 (voltage) or 0..10000 (current).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,OUT2 normalized value,-10000..10000 (voltage) or 0..10000 (current).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,OUT3 normalized value,-10000..10000 (voltage) or 0..10000 (current).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7,40008,40008,Errors,,BITMAP16,1,,1,0,,Read,bit 2 = Bus communication fault (timeout); bit 4 = EEPROM data lost
+Holding register,"FC03 read / FC06, FC16 write",8,40009,40009,Command,,UINT16,1,,1,0,,Read/write,47792 = 0xBAB0 save configuration to EEPROM; 49568 = 0xC1A0 reset module; 51904 = 0xCAC0 copy DIP switch state to 40010
+Holding register,"FC03 read / FC06, FC16 write",9,40010,40010,DIP switch state,Filled after writing 0xCAC0 to 40009.,BITMAP16,1,,1,0,,Read,bit 8 = OUT1 DIP set to voltage (0 = current); bit 9 = OUT2 DIP set to voltage; bit 10 = OUT3 DIP set to voltage
+Holding register,"FC03 read / FC06, FC16 write",10,40011,40011,Firmware code,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",11,40012,40012,OUT1 mV at normalized 0,"-11000..11000 mV, default 0 mV (voltage outputs).",INT16,1,,1,0,mV,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12,40013,40013,OUT1 mV at normalized 10000,"Electrical end scale, default 10000 mV.",INT16,1,,1,0,mV,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",13,40014,40014,OUT2 mV at normalized 0,"-11000..11000 mV, default 0 mV (voltage outputs).",INT16,1,,1,0,mV,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",14,40015,40015,OUT2 mV at normalized 10000,"Electrical end scale, default 10000 mV.",INT16,1,,1,0,mV,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",15,40016,40016,OUT3 mV at normalized 0,"-11000..11000 mV, default 0 mV (voltage outputs).",INT16,1,,1,0,mV,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16,40017,40017,OUT3 mV at normalized 10000,"Electrical end scale, default 10000 mV.",INT16,1,,1,0,mV,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17,40018,40018,OUT1 µA at normalized 0,"0..22000 µA, default 4000 µA (current outputs).",UINT16,1,,1,0,µA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",18,40019,40019,OUT1 µA at normalized 10000,"Electrical end scale, default 20000 µA.",UINT16,1,,1,0,µA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",19,40020,40020,OUT2 µA at normalized 0,"0..22000 µA, default 4000 µA (current outputs).",UINT16,1,,1,0,µA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20,40021,40021,OUT2 µA at normalized 10000,"Electrical end scale, default 20000 µA.",UINT16,1,,1,0,µA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",21,40022,40022,OUT3 µA at normalized 0,"0..22000 µA, default 4000 µA (current outputs).",UINT16,1,,1,0,µA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",22,40023,40023,OUT3 µA at normalized 10000,"Electrical end scale, default 20000 µA.",UINT16,1,,1,0,µA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",68,40069,40069,OUT1 fault value,Normalized value applied on bus timeout when fault mode is on.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",69,40070,40070,OUT2 fault value,Normalized value applied on bus timeout when fault mode is on.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",70,40071,40071,OUT3 fault value,Normalized value applied on bus timeout when fault mode is on.,INT16,1,,1,0,,Read/write,

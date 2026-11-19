@@ -1,0 +1,928 @@
+{
+ "manufacturer": "Teledyne Analytical Instruments",
+ "manufacturer_slug": "teledyne",
+ "model": "7500 / 7600 infrared gas analyzer (Modbus RTU)",
+ "model_slug": "7500-7600-ir-gas-analyzer",
+ "short_model": "7500/7600",
+ "aliases": [
+  "Teledyne 7500",
+  "Teledyne 7600",
+  "Model 7500",
+  "Model 7600"
+ ],
+ "equipment_type": "Sensor (infrared gas analyzer)",
+ "applies_to": "Teledyne 7500 and 7600 infrared gas analyzers with the Modbus communication function; channel registers CH1-CH8 apply to both models, CH9-CH12 to the 7600 only.",
+ "summary": "The Teledyne 7500 and 7600 are multi-component infrared gas analyzers with a Modbus RTU port on RS-232 (RS-485 through an external converter). Each channel reports an integer concentration plus separate decimal-point and unit registers. This map covers all channel readings, range selection and the key/display command registers.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The manual prints a register number (30001, 40001, 42001) and a relative address (0000H, 07D0H) and says the relative address sent in the message is the lower four digits of the register number minus 1."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Instruction Manual - Infrared Gas Analyzer Communication Functions (Modbus), Type 7500 / 7600",
+  "doc_number": null,
+  "revision_date": null,
+  "url": "https://teledyne-ai.com/en-us/Products_/Documents/Manuals/man_75007600comm.pdf",
+  "pages": "specifications p. 4; relative address rule p. 7; function codes p. 11; data format pp. 23-24; address map pp. 25-30"
+ },
+ "notes": [
+  "Concentrations are sent without a decimal point. Divide by 10^n where n is the channel's decimal-point register (0-3); the unit register gives vol%, ppm, mg/m3 or g/m3. Example in the manual: 1270 with decimal 2 and unit 0 = 12.70 vol%. Because the decimal place is per channel and range, the concentration registers are listed unscaled.",
+  "Relevant model per the address map: R = 7500, K = 7600. Channel registers CH1-CH8 are marked for both models; CH9-CH12 and the CH5 range-change setting are 7600 only.",
+  "Communication is fixed at 9600 bps, 8 data bits, no parity, 1 stop bit, RTU, over RS-232; up to 31 analyzers can share an RS-485 line through a converter.",
+  "Readings are transmitted even when the display shows over-range dashes.",
+  "Left out: the alarm/calibration status block from 30037 upward, whose rows are out of line in the source table, and the user-setting block 40001-40105 (calibration, alarm and timer settings)."
+ ],
+ "registers": [
+  {
+   "table": "input_register",
+   "address": 0,
+   "documented": "30001",
+   "name": "CH1 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH1 decimal register.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 1,
+   "documented": "30002",
+   "name": "CH1 decimal point position",
+   "description": "Decimal places of the CH1 reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 2,
+   "documented": "30003",
+   "name": "CH1 measurement unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 3,
+   "documented": "30004",
+   "name": "CH2 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH2 decimal register.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 4,
+   "documented": "30005",
+   "name": "CH2 decimal point position",
+   "description": "Decimal places of the CH2 reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 5,
+   "documented": "30006",
+   "name": "CH2 measurement unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 6,
+   "documented": "30007",
+   "name": "CH3 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH3 decimal register.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 7,
+   "documented": "30008",
+   "name": "CH3 decimal point position",
+   "description": "Decimal places of the CH3 reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8,
+   "documented": "30009",
+   "name": "CH3 measurement unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 9,
+   "documented": "30010",
+   "name": "CH4 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH4 decimal register.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 10,
+   "documented": "30011",
+   "name": "CH4 decimal point position",
+   "description": "Decimal places of the CH4 reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 11,
+   "documented": "30012",
+   "name": "CH4 measurement unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 12,
+   "documented": "30013",
+   "name": "CH5 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH5 decimal register.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 13,
+   "documented": "30014",
+   "name": "CH5 decimal point position",
+   "description": "Decimal places of the CH5 reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 14,
+   "documented": "30015",
+   "name": "CH5 measurement unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 15,
+   "documented": "30016",
+   "name": "CH6 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH6 decimal register.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 16,
+   "documented": "30017",
+   "name": "CH6 decimal point position",
+   "description": "Decimal places of the CH6 reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 17,
+   "documented": "30018",
+   "name": "CH6 measurement unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 18,
+   "documented": "30019",
+   "name": "CH7 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH7 decimal register.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 19,
+   "documented": "30020",
+   "name": "CH7 decimal point position",
+   "description": "Decimal places of the CH7 reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 20,
+   "documented": "30021",
+   "name": "CH7 measurement unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 21,
+   "documented": "30022",
+   "name": "CH8 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH8 decimal register.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 22,
+   "documented": "30023",
+   "name": "CH8 decimal point position",
+   "description": "Decimal places of the CH8 reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 23,
+   "documented": "30024",
+   "name": "CH8 measurement unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 24,
+   "documented": "30025",
+   "name": "CH9 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH9 decimal register (7600 only).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 25,
+   "documented": "30026",
+   "name": "CH9 decimal point position",
+   "description": "Decimal places of the CH9 reading (7600 only).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 26,
+   "documented": "30027",
+   "name": "CH9 measurement unit",
+   "description": "7600 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 27,
+   "documented": "30028",
+   "name": "CH10 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH10 decimal register (7600 only).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 28,
+   "documented": "30029",
+   "name": "CH10 decimal point position",
+   "description": "Decimal places of the CH10 reading (7600 only).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 29,
+   "documented": "30030",
+   "name": "CH10 measurement unit",
+   "description": "7600 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 30,
+   "documented": "30031",
+   "name": "CH11 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH11 decimal register (7600 only).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 31,
+   "documented": "30032",
+   "name": "CH11 decimal point position",
+   "description": "Decimal places of the CH11 reading (7600 only).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 32,
+   "documented": "30033",
+   "name": "CH11 measurement unit",
+   "description": "7600 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 33,
+   "documented": "30034",
+   "name": "CH12 concentration",
+   "description": "Reading without decimal point (-9999 to 9999); apply the CH12 decimal register (7600 only).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 34,
+   "documented": "30035",
+   "name": "CH12 decimal point position",
+   "description": "Decimal places of the CH12 reading (7600 only).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No decimals",
+    "1": "Divide by 10",
+    "2": "Divide by 100",
+    "3": "Divide by 1000"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 35,
+   "documented": "30036",
+   "name": "CH12 measurement unit",
+   "description": "7600 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "vol%",
+    "1": "ppm",
+    "2": "mg/m3",
+    "3": "g/m3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 105,
+   "documented": "40106",
+   "name": "CH1 range change setting",
+   "description": "Ignored while remote range is on.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Range 1",
+    "1": "Range 2"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 106,
+   "documented": "40107",
+   "name": "CH2 range change setting",
+   "description": "Ignored while remote range is on.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Range 1",
+    "1": "Range 2"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 107,
+   "documented": "40108",
+   "name": "CH3 range change setting",
+   "description": "Ignored while remote range is on.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Range 1",
+    "1": "Range 2"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 108,
+   "documented": "40109",
+   "name": "CH4 range change setting",
+   "description": "Ignored while remote range is on.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Range 1",
+    "1": "Range 2"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 109,
+   "documented": "40110",
+   "name": "CH5 range change setting",
+   "description": "Ignored while remote range is on. 7600 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Range 1",
+    "1": "Range 2"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2000,
+   "documented": "42001",
+   "name": "Keying command",
+   "description": "Simulates a front-panel key press.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "MODE",
+    "2": "Side",
+    "4": "Up",
+    "8": "Down",
+    "16": "ESC",
+    "32": "ENT",
+    "64": "ZERO",
+    "128": "SPAN"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2001,
+   "documented": "42002",
+   "name": "Display change",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Return to measurement display"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read input registers 0-23 (7500) or 0-35 (7600) in one function-04 request; for each channel combine concentration, decimal position and unit.",
+  "minimum_registers": [
+   {
+    "table": "input_register",
+    "address": 0,
+    "why": "CH1 concentration"
+   },
+   {
+    "table": "input_register",
+    "address": 1,
+    "why": "CH1 decimal position"
+   },
+   {
+    "table": "input_register",
+    "address": 2,
+    "why": "CH1 unit"
+   },
+   {
+    "table": "input_register",
+    "address": 3,
+    "why": "CH2 concentration"
+   },
+   {
+    "table": "input_register",
+    "address": 4,
+    "why": "CH2 decimal position"
+   }
+  ],
+  "enable": "Set the analyzer's station number in its communication settings menu; all other serial settings are fixed.",
+  "watchdog": null,
+  "quirks": [
+   "Concentration needs the separate decimal register to scale.",
+   "Port is RS-232; use a converter for multi-drop RS-485."
+  ],
+  "setup": [
+   "9600 8N1 RTU; give each analyzer a unique station number."
+  ],
+  "gotchas": [
+   "Writing 64 (ZERO) or 128 (SPAN) to the keying register starts a calibration action."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/teledyne/7500-7600-ir-gas-analyzer",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}
