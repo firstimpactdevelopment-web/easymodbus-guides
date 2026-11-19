@@ -1,0 +1,233 @@
+{
+  "manufacturer": "VTS",
+  "model": "CO2-SENS-D-MODRTU",
+  "short_model": "CO2-SENS-D-MODRTU",
+  "aliases": [
+    "CO2 transducer CO2-SENS-D-MODRTU",
+    "VTS duct CO2 sensor"
+  ],
+  "equipment_type": "Sensor",
+  "applies_to": "VTS CO2-SENS-D-MODRTU duct CO2 transducer (MH-Z19B sensing module), manual ver. 2.0 (11.2021).",
+  "summary": "A duct-mounted CO2 transducer from VTS with a 0-5/0-10 V output and an RS-485 Modbus RTU interface. The measurement, sensor status and a fixed test value sit in the first three holding registers; configuration is done by writing a password, command and parameter into three registers. All registers are plain 16-bit values read with function 03.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 19200,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "The register map lists addresses in hex from 0x0000, and the DEV_ID description gives 'addr=11=0x000B', so the printed value is the wire address."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "CO2 Transducer CO2-SENS-D-MODRTU",
+    "doc_number": "ver. 2.0",
+    "revision_date": "2021-11",
+    "url": "https://www.vtsgroup.com/files/document-files/3430/CO2_EN_2.0.pdf",
+    "pages": "Section 4.1 register map and command table, pp. 10-12"
+  },
+  "notes": [
+    "All registers are 16-bit; there are no 32-bit values in this map.",
+    "Command parameters: 1 = address 1-247 (default 1); 2 = baud code 24/48/96/192/384/576/1152 for 2400-115200 bit/s (default 192 = 19200); 3 = parity 0 none (default), 1 even, 2 odd; 4 = stop bits 1 (default) or 2; 5 = ABClogic 0 off (default) / 1 on; 6 = 1 software reset of device, 2 reset of sensor module.",
+    "The defaults above are the software-configuration defaults from the command table. The DIP switches can override baud rate, parity and address; their factory positions are marked in bold in the manual and could not be confirmed from the text.",
+    "Reserved registers 0x0006-0x000A read 0 and are not listed. Reading any address not in the map returns exception 02.",
+    "The manual lists functions 03, 06 and 16 only; use function 03 (read holding registers) for all reads."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "0x0000",
+      "name": "VALUE_REG (CO2 concentration)",
+      "description": "CO2 concentration, 0-2000 ppm.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "0x0001",
+      "name": "STATUS_REG",
+      "description": "Sensor state.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Sensor missing",
+        "1": "Correct operation",
+        "2": "Sensor error",
+        "3": "Warm up (first 3 minutes after start)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "0x0002",
+      "name": "TEST_VAL_REG",
+      "description": "Always 1000 (0x03E8); use it to check reads are correct.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "0x0003",
+      "name": "PASS_REG (password)",
+      "description": "Write 1234 (0x04D2) to execute the command in COMMAND_REG/PARAM_REG.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "0x0004",
+      "name": "COMMAND_REG",
+      "description": "Command number; reads 0xEEEE after an invalid parameter.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "Set device address",
+        "2": "Set baud rate",
+        "3": "Set parity",
+        "4": "Set stop bits",
+        "5": "ABClogic on/off",
+        "6": "Device reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "0x0005",
+      "name": "PARAM_REG",
+      "description": "Parameter for the command; see notes for the value list per command.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "0x000B",
+      "name": "DEV_ID_REG (device identification)",
+      "description": "Basic duct CO2 version reads 0xC100.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0-1": "T: type (0 duct, 1 room)",
+        "2-3": "Always 0",
+        "4-8": "OPTIONS: device type (b10000 = CO2 transducer with MH-Z19B)",
+        "9-10": "HV: hardware version",
+        "11-15": "DEV: b11000 = air parameter sensor"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 12,
+      "documented": "0x000C",
+      "name": "SOFT_VER_REG (software version)",
+      "description": "Four nibbles N.AB + revision letter, e.g. 0x3210 = 3.21a.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0-3": "REV: revision letter (0 = a ... 9 = j)",
+        "4-7": "B digit",
+        "8-11": "A digit",
+        "12-15": "N digit"
+      }
+    }
+  ],
+  "integration": {
+    "summary": "Read three holding registers from 0x0000 with function 03: CO2 in ppm, status, and the 1000 test value. Check status is 1 before trusting the reading.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "CO2 concentration in ppm"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Sensor status / warm-up"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Fixed 1000 test value for comms check"
+      },
+      {
+        "table": "holding_register",
+        "address": 11,
+        "why": "Device identification"
+      }
+    ],
+    "enable": "Modbus RTU is always active. To change settings write password 1234, command and parameter to 0x0003-0x0005 in one function 16 write, or write command and parameter first and the password last.",
+    "watchdog": null,
+    "quirks": [
+      "An invalid or out-of-range parameter makes COMMAND_REG read 0xEEEE instead of executing.",
+      "Status reads 3 (warm up) for the first 3 minutes after power-on."
+    ],
+    "setup": [
+      "Left DIP switch: switch 1 = 120 ohm termination, 2 = analogue range 0-5 V or 0-10 V, 3-4 = parity/stop bits or 'use software settings', 5-6 = baud 2400-19200.",
+      "Right DIP switch sets the address in binary (switch 1 = +1 ... switch 8 = +128).",
+      "DIP switch changes are read only at start-up: press RESET or cycle power after changing them."
+    ],
+    "gotchas": [
+      "The DIP switches only offer 2400-19200 baud; 38400-115200 can only be set through the command registers."
+    ]
+  },
+  "manufacturer_slug": "vts",
+  "model_slug": "co2-sens-d-modrtu",
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

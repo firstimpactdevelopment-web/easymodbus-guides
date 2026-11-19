@@ -1,0 +1,815 @@
+{
+ "manufacturer": "Realtime Control Systems",
+ "manufacturer_slug": "realtime-controls",
+ "model": "RTD-NET Modbus interface for Daikin VRV / Sky Air",
+ "model_slug": "rtd-net",
+ "short_model": "RTD-NET",
+ "aliases": [
+  "RTD-NET",
+  "RTD-10",
+  "Daikin RTD-NET"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "RTD-NET on the Daikin P1/P2 bus (VRV, Sky Air, VAM/VKM), up to 16 indoor units as one group; RTD-10 with the same firmware uses the same layout.",
+ "summary": "Small Modbus RTU slave that joins a Daikin P1/P2 remote-controller bus and controls up to 16 indoor units as one group. Holding registers carry setpoint, fan, mode, louvre and on/off plus keypad lock modes and limits; input registers return group and per-unit temperatures, faults, filter and defrost state.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The manual states register base 0 and writes registers as H0010 / I0010 meaning wire address 10. Per-unit input registers are numbered unit x 100 + offset (unit 1 = 0120..0132, unit 16 = 1620..1632)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "RTD-NET Installation Instructions",
+  "doc_number": "18870-1.06.03",
+  "revision_date": null,
+  "url": "https://www.daikin.eu/content/dam/document-library/installation-manuals/ctrl/RTD-NET%20installation%20instructions_18870-1.06%20EN_Installation%20manuals_English.pdf",
+  "pages": "pp. 6-11 (Modbus configuration, control, limits, VAM, readback, fault codes)"
+ },
+ "notes": [
+  "Every register is 16 bits. Temperatures in input registers are signed and multiplied by 100; setpoint and setpoint limits are whole °C (16..32).",
+  "Only unit 1 of the per-unit block is listed. For unit n add (n-1) x 100 to each address (e.g. unit 2 return air = 223).",
+  "Fanspeed inhibit (H0022) is listed without bit meanings: the manual's fan inhibit table (Low 2, High 13) does not follow the powers-of-two pattern of the mode and louvre tables, so it is not decoded here.",
+  "Fault codes are two ASCII characters packed high byte / low byte (e.g. 16697 = 'A9'). The full Daikin code table is published by Realtime Controls separately.",
+  "Function codes 03, 04, 06 and 16 are supported, 1..10 registers per request.",
+  "The Modbus slave address is set 0..63 on DIP switch SW1."
+ ],
+ "registers": [
+  {
+   "table": "input_register",
+   "address": 20,
+   "documented": "I0020",
+   "name": "Unit Count",
+   "description": "Indoor units found on the P1/P2 bus, 0..16.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 21,
+   "documented": "I0021",
+   "name": "Is Fault (group)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No fault",
+    "1": "At least one unit in fault"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 22,
+   "documented": "I0022",
+   "name": "Fault Code (group)",
+   "description": "Code of the first faulted unit; two ASCII characters, high byte first.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Waiting for data",
+    "255": "No fault",
+    "14384": "80 - group fault, no units found",
+    "14388": "84 - unit missing"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 23,
+   "documented": "I0023",
+   "name": "Return Air Average",
+   "description": "Mean of all unit return-air temperatures.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 24,
+   "documented": "I0024",
+   "name": "Filter Alarm (group)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No alarm",
+    "1": "At least one unit with filter alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 25,
+   "documented": "I0025",
+   "name": "Return Air Min",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 26,
+   "documented": "I0026",
+   "name": "Return Air Max",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 30,
+   "documented": "I0030",
+   "name": "Thermo On (group)",
+   "description": "Summary of what the group is doing.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Idle/Fan",
+    "1": "Heating",
+    "2": "Cooling",
+    "3": "Heat and Cool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 35,
+   "documented": "I0035",
+   "name": "Defrost",
+   "description": "Also set during pressure equalisation and hot start.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No defrost",
+    "1": "At least one unit in defrost"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 50,
+   "documented": "I0050",
+   "name": "RC Temperature",
+   "description": "Remote controller sensor; only with one indoor unit and RC as MAIN.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 51,
+   "documented": "I0051",
+   "name": "RC Operation Mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Idle/Fan",
+    "1": "Heating",
+    "2": "Cooling",
+    "3": "Heat and Cool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 120,
+   "documented": "0120",
+   "name": "Unit 1 Unit Exists",
+   "description": "Unit n: register n*100+20.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No unit found",
+    "1": "Unit found"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 121,
+   "documented": "0121",
+   "name": "Unit 1 Is Fault",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No unit fault",
+    "1": "Unit in fault"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 122,
+   "documented": "0122",
+   "name": "Unit 1 Fault Code",
+   "description": "Two ASCII characters, high byte first; 255 = no fault.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "255": "No fault"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 123,
+   "documented": "0123",
+   "name": "Unit 1 Return Air Temperature",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 124,
+   "documented": "0124",
+   "name": "Unit 1 Filter Alarm",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No alarm",
+    "1": "Filter alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 130,
+   "documented": "0130",
+   "name": "Unit 1 Thermo On",
+   "description": "Only when the RTD runs as P1/P2 MAIN.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Idle/Fan",
+    "1": "Heating",
+    "2": "Cooling"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 131,
+   "documented": "0131",
+   "name": "Unit 1 Coil In Temperature",
+   "description": "Only when the RTD runs as P1/P2 MAIN.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 132,
+   "documented": "0132",
+   "name": "Unit 1 Coil Out Temperature",
+   "description": "Only when the RTD runs as P1/P2 MAIN.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "H0001",
+   "name": "Setpoint",
+   "description": "Group setpoint, whole degrees 16..32.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "H0002",
+   "name": "Fanspeed",
+   "description": "High2 is HighHigh only where that speed is enabled.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Low",
+    "2": "High1",
+    "3": "High2"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "H0003",
+   "name": "Mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Fan",
+    "3": "Cool",
+    "4": "Dry"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "H0004",
+   "name": "Louvre",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Swing",
+    "2": "0 degrees",
+    "3": "20 degrees",
+    "4": "45 degrees",
+    "5": "70 degrees",
+    "6": "90 degrees"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "H0005",
+   "name": "OnOff",
+   "description": "Also switches VAM/VKM ventilation units.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "H0010",
+   "name": "Global Update",
+   "description": "Writes the same update mode to all update registers.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Last Touch (keypad unlocked)",
+    "1": "Central (keypad locked, value re-sent)",
+    "2": "Local (keypad unlocked, writes not sent)",
+    "3": "On Change (sent only when value changes)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "H0011",
+   "name": "Setpoint Update",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Last Touch (keypad unlocked)",
+    "1": "Central (keypad locked, value re-sent)",
+    "2": "Local (keypad unlocked, writes not sent)",
+    "3": "On Change (sent only when value changes)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "H0012",
+   "name": "Fanspeed Update",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Last Touch (keypad unlocked)",
+    "1": "Central (keypad locked, value re-sent)",
+    "2": "Local (keypad unlocked, writes not sent)",
+    "3": "On Change (sent only when value changes)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "H0013",
+   "name": "Mode Update",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Last Touch (keypad unlocked)",
+    "1": "Central (keypad locked, value re-sent)",
+    "2": "Local (keypad unlocked, writes not sent)",
+    "3": "On Change (sent only when value changes)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "H0014",
+   "name": "Louvre Update",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Last Touch (keypad unlocked)",
+    "1": "Central (keypad locked, value re-sent)",
+    "2": "Local (keypad unlocked, writes not sent)",
+    "3": "On Change (sent only when value changes)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "H0015",
+   "name": "OnOff Update",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Last Touch (keypad unlocked)",
+    "1": "Central (keypad locked, value re-sent)",
+    "2": "Local (keypad unlocked, writes not sent)",
+    "3": "On Change (sent only when value changes)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 20,
+   "documented": "H0020",
+   "name": "Setpoint Min",
+   "description": "Lowest setpoint allowed locally, 16..32; 0 = no limit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 21,
+   "documented": "H0021",
+   "name": "Setpoint Max",
+   "description": "Highest setpoint allowed locally, 16..32; 0 = no limit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "H0022",
+   "name": "Fanspeed Inhibit",
+   "description": "Sum of inhibit values of speeds to block; 0 = none. See notes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "H0023",
+   "name": "Mode Inhibit",
+   "description": "Set bits block those modes; 0 = no inhibit.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "Auto (1)",
+    "1": "Heat (2)",
+    "2": "Fan (4)",
+    "3": "Cool (8)",
+    "4": "Dry (16)"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 24,
+   "documented": "H0024",
+   "name": "Louvre Inhibit",
+   "description": "Set bits block those louvre settings; 0 = no inhibit.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "1": "Swing (2)",
+    "2": "0 degrees (4)",
+    "3": "20 degrees (8)",
+    "4": "45 degrees (16)",
+    "5": "70 degrees (32)",
+    "6": "90 degrees (64)"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 30,
+   "documented": "H0030",
+   "name": "VAM Damper Control",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Cross flow / heat recovery",
+    "2": "Bypass"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 31,
+   "documented": "H0031",
+   "name": "VAM Fanspeed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Low",
+    "2": "High"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set the slave address on SW1, wire DB/DA/GND, then write H0001-H0005 for setpoint, fan, mode, louvre and on/off and poll I0020-I0035 for group status. Use the update registers to decide whether the wall controller stays usable.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Group on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Fan speed"
+   },
+   {
+    "table": "input_register",
+    "address": 23,
+    "why": "Average return air"
+   },
+   {
+    "table": "input_register",
+    "address": 21,
+    "why": "Any unit faulted"
+   },
+   {
+    "table": "input_register",
+    "address": 22,
+    "why": "Fault code"
+   },
+   {
+    "table": "input_register",
+    "address": 20,
+    "why": "Units found"
+   }
+  ],
+  "enable": "No enable step: holding-register writes act on the group straight away. The update registers (H0010-H0015) choose Last Touch (default), Central (locks keypad buttons), Local or On Change behaviour.",
+  "watchdog": "Optional, set by a SW1 DIP switch: if no holding-register write arrives for 120 s all units are switched on with their current settings, and remote controllers are either unlocked or left as they are depending on the switch.",
+  "quirks": [
+   "Temperatures above 32767 are negative: subtract 65536, then divide by 100.",
+   "In Last Touch mode a master that rewrites the same value every scan overrides the wall controller; use On Change (3) if your master writes cyclically.",
+   "Coil and per-unit thermo readings exist only when the RTD is the P1/P2 MAIN controller."
+  ],
+  "setup": [
+   "9600 baud, no parity, 1 stop bit by default (other rates available on request from the maker).",
+   "Slave address 0..63 on SW1.",
+   "Daisy-chain DB(+), DA(-) and GND; no star or ring wiring; up to 500 m without repeaters.",
+   "Power 15-24 V DC from the indoor unit PCB (X18A/X35A) or a separate supply."
+  ],
+  "gotchas": [
+   "Infra-red BRC receivers must be set to SUB when the RTD is MAIN.",
+   "If the P1/P2 bus is not found within 1 minute the RTD raises an alarm on its fault output."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/realtime-controls/rtd-net",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

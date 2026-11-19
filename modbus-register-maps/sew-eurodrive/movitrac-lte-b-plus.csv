@@ -1,0 +1,16 @@
+﻿# SEW-EURODRIVE MOVITRAC LTE-B+ frequency inverter (built-in Modbus RTU) Modbus register map - easymodbus.com - source: https://download.sew-eurodrive.com/download/pdf/31965822.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,PO1 Control word,0x0006 = run; 0x0000 = rapid stop; 0x0001 = coast; bit 6 edge = reset.,BITMAP16,1,,1,0,,Read/write,"bit 0 = Output stage inhibit: 0 = start, 1 = stop (coast); bit 1 = 0 = rapid stop on P-24 ramp, 1 = start; bit 2 = 0 = stop on process ramp (P-03/P-04 or PO3), 1 = start; bit 6 = Fault reset on 0->1 edge"
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,PO2 Setpoint speed,Raw: 16384 (0x4000) = 100 % of P-01; negative (two's complement) = CCW.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,3,40003,PO3 Ramp time,1 digit = 1 ms (100-65535 ms); used when P-12 = 6.,UINT16,1,,0.001,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,6,40006,PI1 Status word,"High byte: 1 inhibited, 2 not enabled, 4 running, 5 factory set; else fault code.",BITMAP16,1,,1,0,,Read,"bit 0 = Output stage enabled; bit 1 = Inverter ready; bit 2 = PO data enabled; bit 5 = Fault/warning; bit 8 = High byte (bits 8-15): status code, or fault code when bit 5 = 1 (see description)"
+Holding register,"FC03 read / FC06, FC16 write",6,7,40007,PI2 Actual speed,Same raw scaling as PO2 (16384 = 100 % of P-01).,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,8,40008,PI3 Actual current,Raw: 16384 (0x4000) = 100 % of P-08 rated motor current.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,11,40011,P00-04 Digital input status,,BITMAP16,1,,1,0,,Read,bit 0 = DI1; bit 1 = DI2; bit 2 = DI3; bit 3 = DI4
+Holding register,"FC03 read / FC06, FC16 write",19,20,40020,P00-01 Analog input 1 value,1000 = 100 % of max input voltage or current.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",20,21,40021,P00-02 Analog input 2 value,1000 = 100 % of max input voltage or current.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,23,40023,P00-08 DC link voltage,600 = 600 V.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,24,40024,P00-09 Heat sink temperature,Power electronics; -20 to 100 °C.,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",38,39,40039,P00-05 Control electronics temperature,-25 to 125 °C.,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",134,135,40135,P-07 Rated motor voltage,Manual example reads 0x00E6 = 230 V.,UINT16,1,,1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",139,140,40140,P-12 Control signal source,5 or 6 for Modbus RTU.,UINT16,1,,1,0,,Read/write,"0 = Terminal mode; 1 = Keypad, unipolar; 2 = Keypad, bipolar; 3 = SBus MOVILINK, internal ramps; 4 = SBus MOVILINK, ramps via PO3; 5 = Modbus RTU, internal ramps P-03/P-04; 6 = Modbus RTU, ramps via PO3 (register 3); 7 = CANopen, internal ramps; 8 = CANopen, ramps via PO3; 9 = PI controller; 10 = PI controller + analog input 1; 11 = Slave mode"

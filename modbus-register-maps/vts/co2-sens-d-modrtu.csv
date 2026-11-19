@@ -1,0 +1,10 @@
+﻿# VTS CO2-SENS-D-MODRTU Modbus register map - easymodbus.com - source: https://www.vtsgroup.com/files/document-files/3430/CO2_EN_2.0.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0x0000,40001,VALUE_REG (CO2 concentration),"CO2 concentration, 0-2000 ppm.",UINT16,1,,1,0,ppm,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,0x0001,40002,STATUS_REG,Sensor state.,UINT16,1,,1,0,,Read,0 = Sensor missing; 1 = Correct operation; 2 = Sensor error; 3 = Warm up (first 3 minutes after start)
+Holding register,"FC03 read / FC06, FC16 write",2,0x0002,40003,TEST_VAL_REG,Always 1000 (0x03E8); use it to check reads are correct.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3,0x0003,40004,PASS_REG (password),Write 1234 (0x04D2) to execute the command in COMMAND_REG/PARAM_REG.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,0x0004,40005,COMMAND_REG,Command number; reads 0xEEEE after an invalid parameter.,UINT16,1,,1,0,,Read/write,1 = Set device address; 2 = Set baud rate; 3 = Set parity; 4 = Set stop bits; 5 = ABClogic on/off; 6 = Device reset
+Holding register,"FC03 read / FC06, FC16 write",5,0x0005,40006,PARAM_REG,Parameter for the command; see notes for the value list per command.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",11,0x000B,40012,DEV_ID_REG (device identification),Basic duct CO2 version reads 0xC100.,BITMAP16,1,,1,0,,Read,"bit 0-1 = T: type (0 duct, 1 room); bit 2-3 = Always 0; bit 4-8 = OPTIONS: device type (b10000 = CO2 transducer with MH-Z19B); bit 9-10 = HV: hardware version; bit 11-15 = DEV: b11000 = air parameter sensor"
+Holding register,"FC03 read / FC06, FC16 write",12,0x000C,40013,SOFT_VER_REG (software version),"Four nibbles N.AB + revision letter, e.g. 0x3210 = 3.21a.",BITMAP16,1,,1,0,,Read,bit 0-3 = REV: revision letter (0 = a ... 9 = j); bit 4-7 = B digit; bit 8-11 = A digit; bit 12-15 = N digit

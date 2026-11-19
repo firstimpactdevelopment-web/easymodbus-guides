@@ -1,0 +1,413 @@
+{
+  "manufacturer": "Realtime Control Systems",
+  "manufacturer_slug": "realtime-controls",
+  "model": "RTD-RA Modbus interface for Daikin room air conditioners",
+  "model_slug": "rtd-ra",
+  "short_model": "RTD-RA",
+  "aliases": [
+    "RTD-RA",
+    "Daikin RTD-RA"
+  ],
+  "equipment_type": "VRF / split AC gateway",
+  "applies_to": "RTD-RA plugged into the S21 port of a Daikin room air conditioner (split) indoor unit, installation instructions 21070-1.07.04.",
+  "summary": "Interface that plugs into the S21 connector of a Daikin split / room air conditioner and exposes it as a Modbus RTU slave when its address is 1 or higher. Holding registers set setpoint, fan, mode, louvre, on/off, forced thermo-off and local limits; input registers report fault state, fault code, return-air and coil temperatures.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "Register base 0: H0005 is holding register wire address 5 and I0123 is input register wire address 123."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "RTD-RA Installation Instructions",
+    "doc_number": "21070-1.07.04",
+    "revision_date": null,
+    "url": "https://www.daikin.es/content/dam/MDM/TechnicalDrawings/Split/EN/RTD-RA%20Installation%20Instructions%2021070-1.07_EN.pdf",
+    "pages": "pp. 8-13 (Modbus configuration, slave operation, control, limits, readback, fault codes)"
+  },
+  "notes": [
+    "All registers are 16 bits. Readback temperatures are signed and x100; setpoint and limits are whole °C.",
+    "Fault codes pack two ASCII characters (high byte, low byte). Daikin code table is published separately by Realtime Controls.",
+    "Function codes 03, 04, 06 and 16 supported, 1..10 registers per request.",
+    "With the SW1 address set to 0 the RTD-RA runs stand-alone (inputs S1/S2 control it) and is not a Modbus slave."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "H0001",
+      "name": "Setpoint",
+      "description": "Whole degrees; heat 10..30, cool 18..32 (model dependent).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "H0002",
+      "name": "Fanspeed",
+      "description": "Some models have fewer than 5 speeds.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Fan 1",
+        "2": "Fan 2",
+        "3": "Fan 3",
+        "4": "Fan 4",
+        "5": "Fan 5"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "H0003",
+      "name": "Mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Heat",
+        "2": "Fan",
+        "3": "Cool",
+        "4": "Dry"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "H0004",
+      "name": "Louvre",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Stop",
+        "1": "Swing"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "H0005",
+      "name": "OnOff",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "H0010",
+      "name": "Global Update",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Last Touch (unlocked)",
+        "1": "Central (local control locked)",
+        "2": "Local (writes not sent)",
+        "3": "On Change (sent only on change)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 20,
+      "documented": "H0020",
+      "name": "Setpoint Min",
+      "description": "16..32; 0 = no limit.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 21,
+      "documented": "H0021",
+      "name": "Setpoint Max",
+      "description": "16..32; 0 = no limit.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 22,
+      "documented": "H0022",
+      "name": "Fanspeed Inhibit",
+      "description": "Set bits block those speeds; 0 = no inhibit.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Auto (1)",
+        "1": "Fan 1 (2)",
+        "2": "Fan 2 (4)",
+        "3": "Fan 3 (8)",
+        "4": "Fan 4 (16)",
+        "5": "Fan 5 (32)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "H0023",
+      "name": "Mode Inhibit",
+      "description": "Set bits block those modes; 0 = no inhibit.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Auto (1)",
+        "1": "Heat (2)",
+        "2": "Fan (4)",
+        "3": "Cool (8)",
+        "4": "Dry (16)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 24,
+      "documented": "H0024",
+      "name": "Louvre Inhibit",
+      "description": "Set bits block those louvre settings; 0 = no inhibit.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Stop (1)",
+        "1": "Swing (2)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 37,
+      "documented": "H0037",
+      "name": "Force Thermo Off",
+      "description": "Holds the compressor off while the unit stays on.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Thermo enabled",
+        "1": "Thermo off"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 121,
+      "documented": "I0121",
+      "name": "Is Fault",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No unit fault",
+        "1": "Unit in fault"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 122,
+      "documented": "I0122",
+      "name": "Fault Code",
+      "description": "Two ASCII characters, high byte first.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Waiting for data",
+        "255": "No fault",
+        "14384": "80 - group fault, no units found"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 123,
+      "documented": "I0123",
+      "name": "Return Air Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 130,
+      "documented": "I0130",
+      "name": "Thermo On",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Idle/Fan",
+        "1": "Heating",
+        "2": "Cooling"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 131,
+      "documented": "I0131",
+      "name": "Coil Inlet Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set an address of 1..63 on SW1 so the unit becomes a Modbus slave, then write H0001-H0005 and poll I0121-I0131. H0010 decides whether the IR remote stays usable.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 5,
+        "why": "On/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 3,
+        "why": "Mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Setpoint"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Fan speed"
+      },
+      {
+        "table": "input_register",
+        "address": 123,
+        "why": "Return air temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 121,
+        "why": "Fault flag"
+      },
+      {
+        "table": "input_register",
+        "address": 122,
+        "why": "Fault code"
+      }
+    ],
+    "enable": "Modbus slave mode is active whenever the SW1 address is 1 or higher; address 0 selects stand-alone mode. Closing input S2 in slave mode selects clone mode, which disables Modbus control.",
+    "watchdog": "Optional via SW1: with no holding-register write for 120 s the unit is switched on with its current settings and local control is unlocked or left as is, depending on the switch.",
+    "quirks": [
+      "Readback temperatures above 32767 are negative: subtract 65536 then divide by 100.",
+      "Repeated identical writes in Last Touch mode override the user's remote; use On Change (3) for cyclic writers."
+    ],
+    "setup": [
+      "9600 baud, no parity, 1 stop bit by default.",
+      "Address on SW1 (0..63; 0 = stand-alone).",
+      "RS485 3-wire: DB(+), DA(-), GND, daisy-chained."
+    ],
+    "gotchas": [
+      "Supported setpoint range and number of fan speeds vary by indoor unit model."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

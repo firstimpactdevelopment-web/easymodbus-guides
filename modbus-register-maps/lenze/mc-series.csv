@@ -1,0 +1,22 @@
+﻿# Lenze MC Series drives MC1000 / MC3000 (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.precision-elec.com/wp-content/uploads/2014/08/lenze-ac-tech-mc-series-modbus-communications-reference.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",1,#1 (4X 40002),40002,Drive control,"One bit per write: 0004h stop, 0008h start, 0200h manual mode, 0002h lock.",BITMAP16,1,,1,0,,Write,bit 0 = Update buffers; bit 1 = Lock security; bit 2 = Stop drive; bit 3 = Start drive; bit 6 = Set reverse; bit 7 = Set forward; bit 8 = Auto mode; bit 9 = Manual mode
+Holding register,"FC03 read / FC06, FC16 write",19,#19 (4X 40020),40020,Drive family,Reads 65 (41h) for MC Series.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",21,#21 (4X 40022),40022,Drive size code,HP / voltage code (table 9 of the guide).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",26,#26 (4X 40027),40027,Load (high byte) / operational status (low byte),"High byte = % of full load. Low byte = status code, see notes.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,#27 (4X 40028),40028,Actual direction (high) / control mode (low),"High: 0 fwd, 1 rev. Low: 0 local, 1 remote, 2 serial.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",28,#28 (4X 40029),40029,Speed source (high) / speed reference (low),"High: speed source code (notes). Low: 0 auto, 1 manual.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,#29 (4X 40030),40030,Present fault (high) / commanded direction (low),"High byte = fault code. Low: 0 fwd, 1 rev.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,#30 (4X 40031),40031,Motor voltage,"Effective output voltage to the motor, 0-999 V.",UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",36,#36 (4X 40037),40037,"Total run time, hours",MC3000 only.,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",37,#37 (4X 40038),40038,"Total run time, minutes",MC3000 only.,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",38,#38 (4X 40039),40039,PID setpoint,MC1000 with PID and MC3000. Internal units 0-32736 over the feedback range.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",39,#39 (4X 40040),40040,PID feedback,MC1000 with PID and MC3000. Internal units 0-32736 over the feedback range.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",40,#40 (4X 40041),40041,Keypad speed command,0-65000; drive must be in manual mode (0200h to #1).,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41,#41 (4X 40042),40042,Local PID command,MC1000 with PID and MC3000. Internal units 0-32736 over the feedback range.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",48,#48 (4X 40049),40049,Unlock commands,0 unlocks control; the password (default 19) also unlocks parameters.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",49,#49 (4X 40050),40050,Unlock parameters,Password unlocks parameter writes only.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",50,#50 (4X 40051),40051,Register version,"Parameter configuration 188, 189 or 190 for software 213-083 rev 13.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",81,#81 (4X 40082),40082,P30 control,"MC1000: 0 local, 1 remote, 2 both. MC3000 adds 2 serial, 3-5 (see notes).",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",108,#108 (4X 40109),40109,P57 serial link,,UINT16,1,,1,0,,Read/write,0 = Disable; 1 = With timer; 2 = Without timer
+Holding register,"FC03 read / FC06, FC16 write",109,#109 (4X 40110),40110,P58 serial address,1-247 (default 30). Set before using the serial link; avoid address 1.,UINT16,1,,1,0,,Read/write,

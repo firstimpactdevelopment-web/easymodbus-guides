@@ -1,0 +1,882 @@
+{
+  "manufacturer": "Intesis (HMS Networks)",
+  "manufacturer_slug": "intesis",
+  "model": "INMBSPAN001I100 Panasonic Etherea (domestic) AC to Modbus RTU gateway",
+  "model_slug": "inmbspan001i100",
+  "short_model": "INMBSPAN001I100 Panasonic",
+  "aliases": [
+    "INMBSPAN001I100",
+    "Intesis Panasonic Etherea Modbus",
+    "Intesis Panasonic domestic Modbus"
+  ],
+  "equipment_type": "VRF / split AC gateway",
+  "applies_to": "Panasonic Etherea-line domestic split units, user's manual r1.5 (09/2025). Some registers only on 2013 (PKE series) and later models.",
+  "summary": "Modbus RTU server that connects to a Panasonic Etherea domestic split unit. Holding registers cover on/off, mode, fan, both vanes, setpoint, powerful/quiet/ECO modes, compressor state, demand response, outdoor and return temperatures, power, current and daily/total energy counters.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 2,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "Tables give a 'protocol address' (base 0) and a 'PLC address' (base 1); the protocol address is the wire address and is used for 'documented'."
+  },
+  "default_word_order": "ABCD",
+  "firmware": null,
+  "source": {
+    "title": "Intesis INMBSPAN001I100 User's Manual - Modbus RTU interface for Panasonic Etherea air conditioners",
+    "doc_number": "User's Manual r1.5 EN",
+    "revision_date": "2025-09",
+    "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-inmbspan001i100.pdf",
+    "pages": "pp. 8-12 (registers), pp. 13-14 (temperature notes), pp. 15-18 (DIP switches), p. 19 (functions)"
+  },
+  "notes": [
+    "All registers are 16-bit unsigned holding registers; the 'no value' marker printed -32768 is raw 0x8000 (32768).",
+    "Energy counters are given as MSW/LSW register pairs with the most significant word at the lower address (72/73, 74/75, 76/77), so they are mapped as UINT32 high word first (ABCD). The manual's text '0..65535 (hours)' on those rows is a copy slip; the unit is stated as watt-hours.",
+    "Temperatures follow SW4: x1 °C, x10 °C or °F. The register footnote calls x10 the default but the DIP-switch table marks x1 and Celsius as factory setting, so scale 1 / °C is used; with x10 set use 0.1.",
+    "FC16 is accepted only with a length of 1, so the two words of Total energy (76/77) must be written one at a time.",
+    "Left out: machine threshold and custom setpoint-limit registers 1151-1156, because the manual does not say whether they follow the SW4 x1/x10 setting.",
+    "Error code list not reproduced; see manual section 7."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "0",
+      "name": "AC unit On/Off",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "1",
+      "name": "AC unit mode",
+      "description": "Available modes depend on the indoor unit.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Heat",
+        "2": "Dry",
+        "3": "Fan",
+        "4": "Cool"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "2",
+      "name": "AC unit fan speed",
+      "description": "Available speeds depend on the indoor unit.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Low",
+        "2": "Mid-1",
+        "3": "Mid-2",
+        "4": "Mid-3",
+        "5": "High"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "3",
+      "name": "AC unit vertical vane position",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Horizontal",
+        "2": "Position-2",
+        "3": "Position-3",
+        "4": "Position-4",
+        "5": "Vertical",
+        "6": "Swing"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "4",
+      "name": "AC unit temperature setpoint",
+      "description": "16..30 °C (61..88 °F). SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": {
+        "32768": "Initialisation value / no value (0x8000; manual writes -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "5",
+      "name": "AC unit temperature reference",
+      "description": "10..42 °C. SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Initialisation value / no value (0x8000; manual writes -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "6",
+      "name": "Window contact",
+      "description": "Virtual window contact written from Modbus.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Closed",
+        "1": "Open"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "7",
+      "name": "Gateway disablement",
+      "description": "Non-volatile.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Gateway enabled",
+        "1": "Gateway disabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "8",
+      "name": "AC remote control disablement",
+      "description": "Non-volatile.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Remote control enabled",
+        "1": "Remote control disabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "9",
+      "name": "AC unit operation time",
+      "description": "Hours in On state, 0..65535. Non-volatile.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "h",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "10",
+      "name": "AC unit alarm status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No alarm",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "11",
+      "name": "Error code",
+      "description": "Panasonic error code; see manual section 7.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No error",
+        "65535": "Gateway cannot talk to the AC unit (-1)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 13,
+      "documented": "13",
+      "name": "Open Window switch-off timeout",
+      "description": "Minutes from window open to unit off, 0..30 (default 30).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 14,
+      "documented": "14",
+      "name": "Modbus RTU baud rate",
+      "description": "Rate set on SW3/SW4 (2400..115200, default 9600).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15,
+      "documented": "15",
+      "name": "Modbus slave address",
+      "description": "Address set on SW3, 1..63.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 21,
+      "documented": "21",
+      "name": "Max number of fan speeds",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 22,
+      "documented": "22",
+      "name": "External ambient temperature (from Modbus)",
+      "description": "Modbus-side room temperature; 0x8000 = none. SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": {
+        "32768": "Initialisation value / no value (0x8000; manual writes -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "23",
+      "name": "AC real temperature setpoint",
+      "description": "Setpoint actually applied to the unit. SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 24,
+      "documented": "24",
+      "name": "Current AC max setpoint",
+      "description": "30 °C / 86 °F. SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Initialisation value / no value (0x8000; manual writes -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 25,
+      "documented": "25",
+      "name": "Current AC min setpoint",
+      "description": "16 °C / 61 °F. SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Initialisation value / no value (0x8000; manual writes -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 26,
+      "documented": "26",
+      "name": "AC unit horizontal vane position",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Horizontal",
+        "2": "Position-2",
+        "3": "Position-3",
+        "4": "Position-4",
+        "5": "Vertical"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 37,
+      "documented": "37",
+      "name": "Auto mode",
+      "description": "Mode chosen while in Auto.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Auto",
+        "1": "Heat",
+        "2": "Dry",
+        "3": "Fan",
+        "4": "Cool"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 38,
+      "documented": "38",
+      "name": "Powerful",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 39,
+      "documented": "39",
+      "name": "Quiet",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53,
+      "documented": "53",
+      "name": "Compressor status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "To off",
+        "2": "To on",
+        "3": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 54,
+      "documented": "54",
+      "name": "Compressor on time",
+      "description": "Hours, non-volatile.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "h",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 55,
+      "documented": "55",
+      "name": "Under voltage count",
+      "description": "0..300.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 56,
+      "documented": "56",
+      "name": "Heat 8/10 °C mode",
+      "description": "Frost-protection heating mode.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 57,
+      "documented": "57",
+      "name": "ECO mode",
+      "description": "2013 (PKE) models onward. A third option, Auto Comfort, has no printed code.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "ECONAVI"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 58,
+      "documented": "58",
+      "name": "Demand response (DRM level)",
+      "description": "2013 models onward.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Comp OFF (DRM1)",
+        "2": "50% (DRM2)",
+        "3": "75% (DRM3)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 59,
+      "documented": "59",
+      "name": "Human activity",
+      "description": "2013 models onward.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Exist",
+        "1": "Not exist"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 60,
+      "documented": "60",
+      "name": "Outdoor intake temperature",
+      "description": "2013 models onward. SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Initialisation value / no value (0x8000; manual writes -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 61,
+      "documented": "61",
+      "name": "Power consumption",
+      "description": "Whole AC system, not one unit. 2013 models onward.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "W",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 62,
+      "documented": "62",
+      "name": "Operation current",
+      "description": "Whole AC system. 2013 models onward.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "mA",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 63,
+      "documented": "63",
+      "name": "Power consumption (slow)",
+      "description": "Same as 61 with slower updates.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "W",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 65,
+      "documented": "65",
+      "name": "Input reference temperature",
+      "description": "2013 models onward. SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "32768": "Initialisation value / no value (0x8000; manual writes -32768)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 66,
+      "documented": "66",
+      "name": "Return path temperature",
+      "description": "SW4 x1 °C assumed (x10: 0.1, or °F).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 72,
+      "documented": "72 (MSW) / 73 (LSW)",
+      "name": "Today energy",
+      "description": "Energy used so far today.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "Wh",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 74,
+      "documented": "74 (MSW) / 75 (LSW)",
+      "name": "Yesterday energy",
+      "description": "Energy used the previous day.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "Wh",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 76,
+      "documented": "76 (MSW) / 77 (LSW)",
+      "name": "Total energy",
+      "description": "Cumulative energy.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "Wh",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 78,
+      "documented": "78",
+      "name": "Today: year",
+      "description": "Date the gateway uses for daily energy; default 2000.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 79,
+      "documented": "79",
+      "name": "Today: month",
+      "description": "Default 1.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 80,
+      "documented": "80",
+      "name": "Today: day",
+      "description": "Default 0.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 97,
+      "documented": "97",
+      "name": "Block periodic sendings",
+      "description": "Blocked = only changed values are forwarded. Firmware 2.3+.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Non-blocked",
+        "1": "Blocked"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1150,
+      "documented": "1150",
+      "name": "Machine mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Normal",
+        "1": "Autochangeover",
+        "2": "Limited setpoint"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Write 0-4 for on/off, mode, fan, vane and setpoint; poll 5, 10, 11, 66 and the energy pairs 72-77. Set the date registers 78-80 if you want daily energy to roll over correctly.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "On/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Setpoint"
+      },
+      {
+        "table": "holding_register",
+        "address": 5,
+        "why": "Control temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 11,
+        "why": "Error code"
+      },
+      {
+        "table": "holding_register",
+        "address": 61,
+        "why": "Power"
+      },
+      {
+        "table": "holding_register",
+        "address": 76,
+        "why": "Total energy"
+      }
+    ],
+    "enable": "No enable step; register 7 = 1 disables the gateway.",
+    "watchdog": null,
+    "quirks": [
+      "Temperature scale depends on SW4.",
+      "Energy pairs are high word first.",
+      "Writing an external temperature to 22 hands the setpoint to the gateway's virtual-temperature logic and the Panasonic remote can no longer change it."
+    ],
+    "setup": [
+      "9600 baud 8N2 by default (8N1 auto-detected); baud on SW3/SW4.",
+      "Slave address 1..63 on SW3 (default 1).",
+      "120 ohm terminator on SW4."
+    ],
+    "gotchas": [
+      "Power, current and energy reflect the whole AC system.",
+      "Several registers exist only on 2013 (PKE) and later models."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

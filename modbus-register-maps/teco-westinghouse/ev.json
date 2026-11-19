@@ -1,0 +1,349 @@
+{
+ "manufacturer": "TECO-Westinghouse",
+ "manufacturer_slug": "teco-westinghouse",
+ "model": "EV micro inverter (Modbus RTU/ASCII)",
+ "model_slug": "ev",
+ "short_model": "EV",
+ "aliases": [
+  "TECO EV",
+  "EV Inverter Series"
+ ],
+ "equipment_type": "Variable frequency drive",
+ "applies_to": "TECO-Westinghouse EV series micro inverters with the RS-485 option card, per the EV Inverter Series Modbus Communication Manual.",
+ "summary": "The EV is a legacy TECO-Westinghouse micro inverter that speaks Modbus RTU or ASCII through an RS-485 option card. The run command and frequency go to 00E6H/00E7H, status, fault code and monitors are read from 00EFH-00F8H, and each F/C parameter has its own register listed in section 6. This map covers the command and monitor data.",
+ "transport": [
+  "RTU",
+  "ASCII"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "Register numbers are hex and sent unchanged: the 03H example reads start address 00 F2 (frequency command monitor) and gets 1770H. Parameters use the register table in section 6 (e.g. F01 = 0001H, C00 = 0064H), which is not sequential."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "EV Inverter Series: Modbus Communication Manual",
+  "doc_number": null,
+  "revision_date": null,
+  "url": "https://tecowestinghouse.com/PDF/ev_modbus_manual.pdf",
+  "pages": "p. 1 (hardware), p. 7 (command data), pp. 8-9 (monitor data), pp. 10-14 (function examples), pp. 15-16 (parameter register addresses)"
+ },
+ "notes": [
+  "00E7H frequency command has no printed scale; the 06H example labels the write '60.0 Hz' but sends 1770H (6000), so it is left unscaled. The 00F2H/00F3H monitors are 100 = 1 Hz.",
+  "Left out: 00F9H/00FAH AIN values (footnote *1 not explained) and the remote-keypad registers.",
+  "The section 6 table maps every F and C parameter to an individual hex register; those are not expanded here.",
+  "Communication setup parameters (address, baud, protocol) are not named in this manual; see the EV drive manual."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 230,
+   "documented": "00E6H",
+   "name": "Operation command",
+   "description": "Run, direction, EFO, reset, jog, comm inputs S1-S3.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "Run (0 stop)",
+    "1": "Reverse (0 forward)",
+    "2": "External fault (EFO)",
+    "3": "Fault reset",
+    "4": "Jog",
+    "5": "Comm input S1",
+    "6": "Comm input S2",
+    "7": "Comm input S3"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 231,
+   "documented": "00E7H",
+   "name": "Frequency command",
+   "description": "Scale not printed; see notes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 239,
+   "documented": "00EFH",
+   "name": "Operation state",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Running",
+    "1": "Reverse",
+    "2": "Ready",
+    "3": "Abnormal",
+    "4": "Data setting error"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 240,
+   "documented": "00F0H",
+   "name": "Fault description",
+   "description": "Active fault code.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Inverter over heat (OH)",
+    "2": "Over current at stop (OC)",
+    "3": "Under voltage (LV)",
+    "4": "Over voltage (OV)",
+    "5": "External BB (b.b.)",
+    "6": "CPU interrupted (CT)",
+    "7": "PID feedback signal loss (PID)",
+    "8": "EEPROM abnormal (EPR)",
+    "9": "Inverter overload (OL2)",
+    "10": "Motor overload (OL1)",
+    "11": "Emergency stop (E.S.)",
+    "13": "Over current at constant speed (OCC)",
+    "14": "Over current during accelerating (OCA)",
+    "15": "Over current during decelerating (OCD)",
+    "16": "Over current at startup (OCS)",
+    "17": "Under voltage during running (LVC)",
+    "18": "Over voltage at constant speed / decelerating (OVC)",
+    "19": "Inverter over heat at constant speed (OHC)",
+    "20": "Stop at 0 Hz (SP0)",
+    "21": "Direct start disable (SP1)",
+    "22": "Control panel emergency stop (SP2)",
+    "23": "Keypad operation error (ER1)",
+    "24": "Parameter setting error (ER2)",
+    "25": "Analog converting error (ER4)",
+    "26": "Modifying parameter in communication (ER5)",
+    "27": "Communication failure (ER6)",
+    "28": "Incorrect parameter setting (ER7)",
+    "29": "Factory setting error (ER8)",
+    "30": "Copy (CPY)",
+    "31": "Compare (CPR)",
+    "32": "Copy error (EP1)",
+    "33": "Compare error (EP2)",
+    "34": "Inverter over speed (OVS)",
+    "35": "Over current limit (OCL)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 241,
+   "documented": "00F1H",
+   "name": "Terminal status",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "S1 closed",
+    "1": "S2 closed",
+    "2": "S3 closed",
+    "3": "S4 closed",
+    "6": "AIN closed",
+    "7": "Relay 1 on"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 242,
+   "documented": "00F2H",
+   "name": "Frequency command",
+   "description": "100 = 1 Hz.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 243,
+   "documented": "00F3H",
+   "name": "Output frequency",
+   "description": "100 = 1 Hz.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 244,
+   "documented": "00F4H",
+   "name": "Output voltage command",
+   "description": "10 = 1 V.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 245,
+   "documented": "00F5H",
+   "name": "DC voltage",
+   "description": "1 = 1 V.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 246,
+   "documented": "00F6H",
+   "name": "Output current",
+   "description": "10 = 1 A.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "A",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 247,
+   "documented": "00F7H",
+   "name": "PID feedback",
+   "description": "10 = 1 % of max output frequency.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 248,
+   "documented": "00F8H",
+   "name": "PID input",
+   "description": "Signed; 10 = 1 % of max output frequency.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Fit the RS-485 option card, set the follower address and serial settings on the drive, then write 00E6H (run bits) and 00E7H (frequency) and poll 00EFH-00F6H.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 230,
+    "why": "Run/stop, direction, reset"
+   },
+   {
+    "table": "holding_register",
+    "address": 231,
+    "why": "Frequency command"
+   },
+   {
+    "table": "holding_register",
+    "address": 239,
+    "why": "Operation state"
+   },
+   {
+    "table": "holding_register",
+    "address": 240,
+    "why": "Fault code"
+   },
+   {
+    "table": "holding_register",
+    "address": 243,
+    "why": "Output frequency"
+   },
+   {
+    "table": "holding_register",
+    "address": 246,
+    "why": "Output current"
+   }
+  ],
+  "enable": "Install the RS-485 option card and set address and communication parameters per the EV drive manual.",
+  "watchdog": null,
+  "quirks": [
+   "Registers are hex.",
+   "Functions 03H, 06H, 08H and 10H; maximum frame 80 bytes.",
+   "Follower addresses 01H-FEH.",
+   "Parameter registers in section 6 are not in parameter order (e.g. F07 = 0008H, F08 = 0007H)."
+  ],
+  "setup": [
+   "RS-485 via the option card terminals RSA/RSB; 120 ohm, 1/4 W terminators at both ends."
+  ],
+  "gotchas": [
+   "Unused bits read as 0; registers marked not used are read-only."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/teco-westinghouse/ev",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

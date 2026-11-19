@@ -1,0 +1,245 @@
+{
+ "manufacturer": "Peacefair",
+ "model": "PZEM-014 / PZEM-016",
+ "short_model": "PZEM-016",
+ "aliases": [
+  "PZEM-014",
+  "PZEM-016",
+  "PZEM-004T V3.0",
+  "PZEM-004T-10A",
+  "PZEM-004T-100A"
+ ],
+ "equipment_type": "Energy meter module",
+ "applies_to": "Peacefair PZEM-014 (10 A shunt) and PZEM-016 (100 A CT) single-phase AC RS485 modules; the PZEM-004T V3.0 (TTL UART) datasheet prints the identical register map.",
+ "summary": "Peacefair's PZEM-014/016 are display-less single-phase AC measuring modules that report voltage, current, power, energy, frequency and power factor over RS485 Modbus RTU. Ten input registers hold the readings, with current, power and energy as 32-bit values whose low word comes first. Two holding registers set the over-power alarm threshold and the slave address, and a custom function 0x42 resets energy.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "Register addresses are given in hex and sent as-is; the datasheet's example reads 10 registers starting at 0x0000 and decodes voltage from the first register."
+ },
+ "default_word_order": "CDAB",
+ "firmware": null,
+ "source": {
+  "title": "PZEM-014/016 AC communication module",
+  "doc_number": null,
+  "revision_date": null,
+  "url": "https://rcscomponents.kiev.ua/datasheets/pzem-014_16.pdf",
+  "pages": "Section 2.3-2.5",
+  "unofficial": true
+ },
+ "notes": [
+  "Source host: Peacefair does not host this datasheet publicly; the copy used is the manufacturer datasheet published by distributor RCS Components. The PZEM-004T V3.0 datasheet (innovatorsguru.com copy) has the same register table and example.",
+  "Word order: the table lists 'low 16 bits' at the lower address and 'high 16 bits' at the next, and the example decodes current 03 E8 00 00 as 0x000003E8 = 1.000 A, so 32-bit values are CDAB.",
+  "Measurements are read with function 04, parameters with 03 and written with 06. Function 0x42 (no data) resets the energy counter; 0x41 is factory calibration on general address 0xF8.",
+  "Address 0xF8 is a general address for single-slave setups; 0x00 is broadcast (no reply).",
+  "The PZEM-004T is a TTL UART module, not RS485; it uses the same Modbus RTU frames at 9600 8N1."
+ ],
+ "registers": [
+  {
+   "table": "input_register",
+   "address": 0,
+   "documented": "0x0000",
+   "name": "Voltage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 1,
+   "documented": "0x0001-0x0002",
+   "name": "Current",
+   "description": "Low 16 bits at 0x0001, high 16 bits at 0x0002.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 0.001,
+   "units": "A",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 3,
+   "documented": "0x0003-0x0004",
+   "name": "Active power",
+   "description": "Low word first.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 0.1,
+   "units": "W",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 5,
+   "documented": "0x0005-0x0006",
+   "name": "Active energy",
+   "description": "Low word first. Reset with function 0x42.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "Wh",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 7,
+   "documented": "0x0007",
+   "name": "Frequency",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8,
+   "documented": "0x0008",
+   "name": "Power factor",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 9,
+   "documented": "0x0009",
+   "name": "Alarm status",
+   "description": "Over-power alarm.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "65535": "Alarm (0xFFFF)",
+    "0": "No alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "0x0001",
+   "name": "Power alarm threshold",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "W",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "0x0002",
+   "name": "Modbus-RTU address",
+   "description": "0x0001-0x00F7.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read 10 input registers from 0x0000 with function 04 in one request; combine current, power and energy pairs low word first.",
+  "minimum_registers": [
+   {
+    "table": "input_register",
+    "address": 0,
+    "why": "Voltage"
+   },
+   {
+    "table": "input_register",
+    "address": 1,
+    "why": "Current"
+   },
+   {
+    "table": "input_register",
+    "address": 3,
+    "why": "Active power"
+   },
+   {
+    "table": "input_register",
+    "address": 5,
+    "why": "Energy (Wh)"
+   },
+   {
+    "table": "input_register",
+    "address": 8,
+    "why": "Power factor"
+   }
+  ],
+  "enable": "No enable step; the module answers Modbus RTU as soon as it is powered from the measured AC line.",
+  "watchdog": null,
+  "quirks": [
+   "Energy reset uses non-standard function code 0x42 with no data.",
+   "32-bit values are low word first (CDAB)."
+  ],
+  "setup": [
+   "Fixed 9600 baud, 8 data bits, no parity, 1 stop bit.",
+   "Change the slave address by writing holding register 0x0002 (1-247) with function 06."
+  ],
+  "gotchas": [
+   "Address 0xF8 only works with a single slave on the bus; give each module a unique address before wiring several together.",
+   "The PZEM-014/016 take their supply from the measured AC voltage (datasheet section 5.1)."
+  ]
+ },
+ "manufacturer_slug": "peacefair",
+ "model_slug": "pzem-014-016",
+ "page": "https://easymodbus.com/modbus-register-maps/peacefair/pzem-014-016",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

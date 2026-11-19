@@ -1,0 +1,15 @@
+﻿# Trafag 8775 gas density sensor / 879x hybrid gas density monitor (legacy Modbus map) Modbus register map - easymodbus.com - source: https://media.trafag.com/instruction/H73622a_87xx_Software-Instruction-Density-Sensor_A4.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Discrete input,FC02 read,0,0,10001,Sensor status,"0 = working properly, 1 = sensor error.",BIT,1,,1,0,,Read,
+Input register,FC04 read,0,0,30001,Gas density,0xFFFF when out of range.,UINT16,1,,0.01,0,kg/m3,Read,
+Input register,FC04 read,1,1,30002,"Gas pressure (abs, @20°C)",0xFFFF when out of range.,UINT16,1,,0.1,0,kPa,Read,
+Input register,FC04 read,2,2,30003,Gas temperature,,UINT16,1,,0.1,0,K,Read,
+Input register,FC04 read,3,3,30004,"Gas pressure (abs, at gas temperature)",0xFFFF when out of range.,UINT16,1,,0.1,0,kPa,Read,
+Input register,FC04 read,4,4,30005,Server ID,1-247.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,5,5+6,30006,Serial number,Big-endian; e.g. 0x075BCD15 = 123456-789.,UINT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,7,7,30008,Firmware release version,,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,2,40003,Server ID,1-247.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,3+4,40004,Baud rate,"1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 56000 or 57600.",UINT32,2,ABCD,1,0,baud,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,5,40006,Parity,,UINT16,1,,1,0,,Read/write,0 = None (2 stop bits); 1 = Odd (1 stop bit); 2 = Even (1 stop bit)
+Holding register,"FC03 read / FC06, FC16 write",7,7,40008,Change to bootloader,,UINT16,1,,1,0,,Read/write,1 = Enter bootloader mode for 10 s
+Holding register,"FC03 read / FC06, FC16 write",8,8,40009,Write permissions,"Bit = 0 means writable, 1 means locked.",BITMAP16,1,,1,0,,Read,bit 0 = Server ID locked; bit 1 = Baud rate locked; bit 2 = Parity locked

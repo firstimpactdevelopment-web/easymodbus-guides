@@ -1,0 +1,209 @@
+{
+ "manufacturer": "Lenze",
+ "manufacturer_slug": "lenze",
+ "model": "SCF Series drive with Modbus module (basic network control)",
+ "model_slug": "scf-series",
+ "short_model": "SCF",
+ "aliases": [
+  "SCF",
+  "Lenze AC Tech SCF",
+  "AN0028"
+ ],
+ "equipment_type": "Variable frequency drive",
+ "applies_to": "Lenze AC Tech SCF Series drives with the optional Modbus RTU communication module; application note AN0028/A1 (January 2008).",
+ "summary": "The SCF is a Lenze AC Tech drive. With its Modbus option it can be started, stopped, reversed and speed-controlled over Modbus RTU at 9600 baud. This map holds the basic control registers from Lenze's quick-start note plus the rule that maps every SCF parameter to a Modbus register.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": null,
+  "data_bits": 8,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The note gives 4xxxx Modbus register numbers, which are AC Tech register + 1 (control register 1 = 40002). Wire address = Modbus register - 40001, so the control register is address 1. SCF parameter Pn is Modbus register n + 51 (P19 -> 40070)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Application Note: Basic Network Control of the SCF Drive using ModBus Communications",
+  "doc_number": "AN0028/A1",
+  "revision_date": "2008-01",
+  "url": "https://www.precision-elec.com/wp-content/uploads/2014/08/basic-network-control-of-scf-drive-using-modbus-communications.pdf",
+  "unofficial": true,
+  "pages": "pp. 1-2"
+ },
+ "notes": [
+  "Host: copy hosted by Precision Electric (a Lenze AC Tech distributor); no current copy was found on lenze.com.",
+  "This is a quick-start map only. The full register list is in the SCF ModBus Reference Guide RG-SFMOD, which was not available; other parameters follow 'Modbus register = parameter + 51' with scaling from the SCF manual.",
+  "Only 9600 baud is supported. Data format is chosen with P15: 02/03 = 8N2, 04/05 = 8E1, 06/07 = 8O1 (even numbers enable the 10 s watchdog).",
+  "Only one command bit per write to the control register."
+ ],
+ "integration": {
+  "summary": "Set P14 = 01 and P43 = address, write 0 (or the password) to 40049 once after power-up, then write 0008h to 40002 to start and the speed in 0.1 Hz to 40041 (with P05 = 01). Read 40027 for the run status.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 48,
+    "why": "Unlock"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Start / stop / direction"
+   },
+   {
+    "table": "holding_register",
+    "address": 40,
+    "why": "Speed command"
+   },
+   {
+    "table": "holding_register",
+    "address": 26,
+    "why": "Run status"
+   }
+  ],
+  "enable": "P14 = 01 enables serial communication; P43 sets the address (1-247); P15 sets data format and watchdog.",
+  "watchdog": "Fixed 10 s: if enabled via P15 and the master stops communicating while the drive is under network control, the drive stops.",
+  "quirks": [
+   "Use FC06, or FC16 with a length of 1, for every write.",
+   "The local STOP circuit stays active: input 1 (TB1 to TB2) must be asserted to start."
+  ],
+  "setup": [
+   "Master at 9600 baud with the data format matching P15."
+  ],
+  "gotchas": [
+   "Lenze advises not to leave the slave at address 1 to avoid duplicates."
+  ]
+ },
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "Drive control (AC Tech register 1)",
+   "description": "One command per write: 0004h stop, 0008h start, 0040h reverse, 0080h forward, 0200h manual.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "W",
+   "values": null,
+   "bits": {
+    "2": "Stop (per P04)",
+    "3": "Start",
+    "6": "Set reverse (needs P17 = 2)",
+    "7": "Set forward",
+    "9": "Manual mode (use keypad speed register)"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 24,
+   "documented": "40025",
+   "name": "Status block start (AC Tech register 24)",
+   "description": "First of a 6-register status block; read 6 registers from here.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 26,
+   "documented": "40027",
+   "name": "Run status (AC Tech register 26, low byte)",
+   "description": "Low byte = operational status code; see values.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Fault lockout",
+    "1": "Fault",
+    "2": "Start pending",
+    "3": "Stop",
+    "4": "DC brake",
+    "5": "Run at 0 Hz",
+    "6": "Run",
+    "7": "Accel",
+    "8": "Decel",
+    "9": "Current limit",
+    "10": "Decel override",
+    "11": "Lower transistors switching on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40,
+   "documented": "40041",
+   "name": "Keypad speed command (AC Tech register 40)",
+   "description": "Network speed when P05 = 01 (keypad); 412 = 41.2 Hz.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "scale_factor_ref": null,
+   "units": "Hz",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 48,
+   "documented": "40049",
+   "name": "Unlock (AC Tech register 48)",
+   "description": "0 unlocks control only; password (default 225) also unlocks parameters.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "W",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 69,
+   "documented": "40070",
+   "name": "P19 acceleration time",
+   "description": "Example of the parameter rule: register = parameter + 51.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "scale_factor_ref": null,
+   "units": "s",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "page": "https://easymodbus.com/modbus-register-maps/lenze/scf-series",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

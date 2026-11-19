@@ -1,0 +1,142 @@
+﻿# Honeywell SOLA hydronic boiler control (Modbus interface) Modbus register map - easymodbus.com - source: https://www.ccontrols.com/support/dp/OEMModbusSIS4_1_1_1_1.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0000,40001,Status Change,Cleared after read; flags which register groups changed.,BITMAP16,1,,1,0,,Read,bit 0 = Active Lockout; bit 1 = Burner control status; bit 2 = Sensor status; bit 3 = Demand&Modulation status; bit 4 = CH status; bit 5 = DHW status; bit 6 = Pump status; bit 7 = Statistics; bit 8 = Lead Lag status; bit 9 = Lockout history; bit 10 = Alert log
+Holding register,"FC03 read / FC06, FC16 write",1,0001,40002,Configuration Change,Cleared after read; flags which register groups changed.,BITMAP16,1,,1,0,,Read,bit 0 = System configuration; bit 1 = Modulation configuration; bit 2 = CH configuration; bit 3 = Burner control configuration; bit 4 = Fan configuration; bit 5 = Pump configuration; bit 6 = Annunciation configuration; bit 7 = DHW configuration; bit 8 = Limits configuration; bit 9 = Anti-condensation configuration; bit 10 = Outdoor reset configuration; bit 11 = Frost protection configuration; bit 12 = Lead Lag configuration; bit 14 = PM configuration; bit 15 = PCB configuration
+Holding register,"FC03 read / FC06, FC16 write",2,0002,40003,Digital I/O,,BITMAP16,1,,1,0,,Read,bit 0 = Pump A; bit 1 = Pump B; bit 2 = Pump C; bit 3 = Blower motor/HSI; bit 4 = External ignition; bit 5 = Pilot valve; bit 6 = Main valve; bit 7 = Alarm; bit 8 = Interlock (ILK); bit 9 = Pre-ignition interlock (PII); bit 10 = Load Control Input(LCI); bit 11 = Low Fire Switch (LFS); bit 12 = High Fire Switch (HFS); bit 13 = STAT (Demand); bit 14 = Time of Day; bit 15 = Safety relay
+Holding register,"FC03 read / FC06, FC16 write",3,0003,40004,Annunciation I/O,,BITMAP16,1,,1,0,,Read,bit 0 = Annunciator 1/IAS; bit 1 = Annunciator 2; bit 2 = Annunciator 3; bit 3 = Annunciator 4; bit 4 = Annunciator 5; bit 5 = Annunciator 6; bit 6 = Annunciator 7/HFS; bit 7 = Annunciator 8/LFS
+Holding register,"FC03 read / FC06, FC16 write",4,0004,40005,Limits,,BITMAP16,1,,1,0,,Read,bit 0 = Outlet high limit; bit 1 = DHW high limit; bit 2 = Stack limit; bit 3 = Delta T inlet/outlet limit; bit 4 = Delta T exchanger/outlet limit; bit 5 = Delta T inlet/exchanger limit; bit 6 = Inversion inlet/outlet limit; bit 7 = Inversion exchanger/outlet limit; bit 8 = Inversion inlet/exchanger limit; bit 9 = Outlet T-rise limit; bit 10 = Exchanger T-rise limit; bit 11 = Heat exchanger high limit
+Holding register,"FC03 read / FC06, FC16 write",5,0005,40006,Program Module (PM) status,,BITMAP16,1,,1,0,,Read,bit 0 = PM installed; bit 1 = Lead/Lag enabled; bit 2 = Valid copyright; bit 8 = OEM parameter PCB stored in PM; bit 9 = OEM range PCB stored in PM; bit 10 = OEM alert PCB stored in PM
+Holding register,"FC03 read / FC06, FC16 write",6,0006,40007,Demand source,,UINT16,1,,1,0,,Read,0 = Unknown; 1 = No source demand; 2 = CH; 3 = DHW; 4 = Lead Lag slave; 5 = Lead Lag master; 6 = CH frost protection; 7 = DHW frost protection; 8 = No demand due to burner switch (register 199) turned off; 9 = DHW storage; 11 = Warm weather shutdown; 12 = Hot standby
+Holding register,"FC03 read / FC06, FC16 write",7,0007,40008,Outlet (S3S4) or Outlet limit (S3) sensor,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,0008,40009,Firing rate,"Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,0009,40010,Fan speed,,UINT16,1,,1,0,RPM,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,0010,40011,Flame signal,"0.01 V or 0.01 uA, depending on flame sensor (0.00-50.00).",UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",11,0011,40012,Inlet (S1) sensor,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,0012,40013,DHW (S6S7) or DHW limit (S6) sensor,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,0013,40014,S5 sensor,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,0014,40015,Stack (S8S9) or Stack limit (S8) sensor,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",15,0015,40016,4-20 mA remote control input (S2) terminal,0.1 mA units when S2 is a 4-20 mA input; other uses per register 609.,UINT16,1,,0.1,0,mA,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,0016,40017,Active CH setpoint,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",17,0017,40018,Active DHW setpoint,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",18,0018,40019,Active LL setpoint,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",19,0019,40020,Register Access Status,,UINT16,1,,1,0,,Read,0 = No register writes allowed; 1 = Installer register writes allowed; 2 = OEM register writes allowed; 3 = All register writes allowed
+Holding register,"FC03 read / FC06, FC16 write",20,0020,40021,Steam pressure,,UINT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",21,0021,40022,Analog modulation input,"0 = no signal, else 4-20 mA (0.1 mA); mirrors register 15 for 4-20 mA S2.",UINT16,1,,0.1,0,mA,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,0022,40023,Active CH pressure setpoint,,UINT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,0023,40024,Extended Status Change,Cleared after read; flags which register groups changed.,BITMAP16,1,,1,0,,Read,bit 3 = DHW plate heat exchanger status; bit 4 = DHW plate heat exchanger configuration
+Holding register,"FC03 read / FC06, FC16 write",25,0025,40026,Active CH operating point,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",26,0026,40027,Active DHW operating point,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,0027,40028,Active Lead Lag operating point,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",28,0028,40029,Active system operating point,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,0029,40030,Active system setpoint,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,0030,40031,Active system on hysteresis,0.1 °C units.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",31,0031,40032,Active system off hysteresis,0.1 °C units.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",32,0032,40033,Burner control status,,UINT16,1,,1,0,,Read,0 = Disabled; 1 = Locked out; 4 = Anti-short cycle; 5 = Unconfigured safety data; 34 = Standby Hold; 35 = Standby Delay; 48 = Normal Standby; 49 = Preparing; 50 = Ignition; 51 = Firing; 52 = Postpurge
+Holding register,"FC03 read / FC06, FC16 write",33,0033,40034,Burner control state,"Sequence state code, see table 12 in the source.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",34,0034,40035,Lockout code,1-4096 = lockout number (table 9 in the source).,UINT16,1,,1,0,,Read,0 = No lockout
+Holding register,"FC03 read / FC06, FC16 write",35,0035,40036,Alarm reason,,UINT16,1,,1,0,,Read,"0 = None; 1 = Lockout (see Lockout code, register 34); 2 = Alert (see Table 11); 3 = Other"
+Holding register,"FC03 read / FC06, FC16 write",36,0036,40037,Annunciator first out,,UINT16,1,,1,0,,Read,0 = None or undetermined; 1 = ILK; 2 = PII; 11 = Annunciator 1; 12 = Annunciator 2; 13 = Annunciator 3; 14 = Annunciator 4; 15 = Annunciator 5; 16 = Annunciator 6; 17 = Annunciator 7; 18 = Annunciator 8
+Holding register,"FC03 read / FC06, FC16 write",37,0037,40038,Annunciator hold,,UINT16,1,,1,0,,Read,0 = None or undetermined; 1 = ILK; 2 = PII; 3 = LCI; 11 = Annunciator 1; 12 = Annunciator 2; 13 = Annunciator 3; 14 = Annunciator 4; 15 = Annunciator 5; 16 = Annunciator 6; 17 = Annunciator 7; 18 = Annunciator 8
+Holding register,"FC03 read / FC06, FC16 write",38,0038,40039,Sequence time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",39,0039,40040,Delay time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",40,0040,40041,Hold code,Hold reason; same codes as lockout (table 8 in the source).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",41,0041,40042,Burner control flags,,BITMAP16,1,,1,0,,Read,bit 0 = Flame detected; bit 1 = DHW remote STAT demand indicated; bit 2 = Blocked condensate detected
+Holding register,"FC03 read / FC06, FC16 write",42,0042,40043,CH remote Stat,,UINT16,1,,1,0,,Read/write,0 = No remote STAT demand; 1 = Remote STAT demand indicated
+Holding register,"FC03 read / FC06, FC16 write",43,0043,40044,Outlet operation (S4=J8-10) terminal,"0.1 °C units (listed as U16, range from -40 °C); other sensor types per register 610.",UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",44,0044,40045,DHW operation (S7=J9-3) terminal,"0.1 °C units (listed as U16, range from -40 °C); other sensor types per register 612.",UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",45,0045,40046,Stack or Heat exchanger operation (S9=J9-6) terminal,"0.1 °C units (listed as U16, range from -40 °C); other sensor types per register 613.",UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",46,0046,40047,Outlet operation sensor (S4=J8-10) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",47,0047,40048,DHW operation sensor (S7=J9-3) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",48,0048,40049,Outlet limit sensor (S3=J8-8) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",49,0049,40050,Inlet sensor (S1=J8-4) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",50,0050,40051,DHW limit sensor (S7=J9-1) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",51,0051,40052,Stack limit sensor (S8=J9-4) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",52,0052,40053,S5 (J8-11) sensor state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",53,0053,40054,4-20mA remote control input (S2=J8-6) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",54,0054,40055,Pressure sensor (S1=J8-4) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",55,0055,40056,Stack operation or Heat exchanger sensor (S9=J9-6) state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",56,0056,40057,Active rate limiter,,UINT16,1,,1,0,,Read,0 = None; 1 = Outlet high limit; 2 = Delta T limit; 3 = Stack limit; 4 = Slow start limit; 5 = Anti-condensation; 6 = Minimum modulation; 7 = Forced rate; 8 = IAS is open
+Holding register,"FC03 read / FC06, FC16 write",57,0057,40058,Limited rate,"Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",58,0058,40059,Active rate override,,UINT16,1,,1,0,,Read,0 = None; 1 = Burner control default; 2 = Burner control; 3 = Manual firing rate; 4 = Manual firing rate off; 5 = Fan on during off cycle; 6 = Assured low fire cutoff
+Holding register,"FC03 read / FC06, FC16 write",59,0059,40060,Override rate,"Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",60,0060,40061,Demand rate,"Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",61,0061,40062,Active system sensor,,UINT16,1,,1,0,,Read,0 = No active sensor; 1 = DHW (S6S7) sensor; 2 = Outlet (S3S4) sensor; 3 = Inlet (S1) sensor; 4 = 4-20mA input (S2); 5 = S5 sensor; 6 = S10 sensor; 7 = Steam (S1) sensor; 8 = DHW (S6S7) and Inlet (S1) sensor; 9 = DHW (S6S7) and S5 sensor; 10 = Outlet (S3S4) and Inlet (S1) sensor; 11 = Outlet (S3S4) and S5 sensor
+Holding register,"FC03 read / FC06, FC16 write",62,0062,40063,Active Lead Lag sensor,,UINT16,1,,1,0,,Read,0 = No active sensor; 2 = Outlet (S3S4) sensor; 5 = S5 sensor; 6 = S10 sensor
+Holding register,"FC03 read / FC06, FC16 write",64,0064,40065,CH status,,UINT16,1,,1,0,,Read,0 = Unknown; 1 = Disabled; 2 = Normal; 3 = Suspended
+Holding register,"FC03 read / FC06, FC16 write",65,0065,40066,CH setpoint source,,UINT16,1,,1,0,,Read,0 = Unknown; 1 = Normal setpoint; 2 = TOD setpoint; 3 = Outdoor reset; 4 = Remote control; 7 = Outdoor reset time of day; 9 = Outdoor boost
+Holding register,"FC03 read / FC06, FC16 write",66,0066,40067,CH heat demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",67,0067,40068,CH burner demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",68,0068,40069,CH requested rate,"Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",69,0069,40070,CH frost heat demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",70,0070,40071,CH frost burner demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",71,0071,40072,Active CH on hysteresis,0.1 °C units.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",72,0072,40073,Active CH off hysteresis,0.1 °C units.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",73,0073,40074,Active CH pressure on hysteresis,,UINT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",74,0074,40075,Active CH pressure off hysteresis,,UINT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",75,0075,40076,Active CH pressure operating point,,UINT16,1,,0.1,0,psi,Read,
+Holding register,"FC03 read / FC06, FC16 write",76,0076,40077,Active CH sensor,,UINT16,1,,1,0,,Read,0 = No active sensor; 2 = Outlet (S3S4) sensor; 3 = Inlet (S1) sensor; 4 = 4-20mA input (S2); 5 = S5 sensor; 6 = S10 sensor; 7 = Steam (S1) sensor
+Holding register,"FC03 read / FC06, FC16 write",77,0077,40078,Heat Demand,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",78,0078,40079,BURNER DEMAND,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",79,0079,40080,Active DHW sensor,,UINT16,1,,1,0,,Read,0 = No active sensor; 1 = DHW (S6S7) sensor; 2 = Outlet (S3S4) sensor; 3 = Inlet (S1) sensor
+Holding register,"FC03 read / FC06, FC16 write",80,0080,40081,DHW status,,UINT16,1,,1,0,,Read,0 = Unknown; 1 = Disabled; 2 = Normal; 3 = Suspended
+Holding register,"FC03 read / FC06, FC16 write",81,0081,40082,DHW setpoint source,,UINT16,1,,1,0,,Read,0 = Unknown; 1 = Normal setpoint; 2 = TOD setpoint; 5 = DHW tap setpoint; 6 = DHW preheat setpoint
+Holding register,"FC03 read / FC06, FC16 write",82,0082,40083,DHW priority count,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",83,0083,40084,DHW heat demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",84,0084,40085,DHW burner demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",85,0085,40086,DHW requested rate,"Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",86,0086,40087,DHW frost heat demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",87,0087,40088,DHW frost burner demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",88,0088,40089,Active DHW on hysteresis,0.1 °C units.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",89,0089,40090,Active DHW off hysteresis,0.1 °C units.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",90,0090,40091,DHW storage time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",91,0091,40092,DHW storage heat demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",92,0092,40093,DHW storage burner demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",93,0093,40094,Pump A status,,BITMAP16,1,,1,0,,Read,bit 0 = On due to normal demand; bit 1 = Forced on; bit 2 = Forced off; bit 3 = On due to overrun; bit 4 = On due to exercise; bit 5 = Pump exercise requested; bit 6 = Pump assigned to logical pump; bit 8 = CH pump demand; bit 9 = DHW pump demand; bit 10 = Boiler pump demand; bit 11 = System pump demand; bit 12 = Auxiliary 1 pump demand; bit 13 = Auxiliary 2 pump demand
+Holding register,"FC03 read / FC06, FC16 write",94,0094,40095,Pump B status,,BITMAP16,1,,1,0,,Read,bit 0 = On due to normal demand; bit 1 = Forced on; bit 2 = Forced off; bit 3 = On due to overrun; bit 4 = On due to exercise; bit 5 = Pump exercise requested; bit 6 = Pump assigned to logical pump; bit 8 = CH pump demand; bit 9 = DHW pump demand; bit 10 = Boiler pump demand; bit 11 = System pump demand; bit 12 = Auxiliary 1 pump demand; bit 13 = Auxiliary 2 pump demand
+Holding register,"FC03 read / FC06, FC16 write",95,0095,40096,CH pump start delay time,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",96,0096,40097,CH pump status,Coding depends on application build (tables 13/14 in the source).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",97,0097,40098,CH pump overrun time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",98,0098,40099,CH FP overrun time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",99,0099,40100,CH pump idle days count,,UINT16,1,,1,0,days,Read,
+Holding register,"FC03 read / FC06, FC16 write",100,0100,40101,DHW pump status,Coding depends on application build (tables 13/14 in the source).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",101,0101,40102,DHW pump start delay time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",102,0102,40103,DHW pump overrun time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",103,0103,40104,DHW FP overrun time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",104,0104,40105,DHW pump idle days count,,UINT16,1,,1,0,days,Read,
+Holding register,"FC03 read / FC06, FC16 write",105,0105,40106,System pump status,Coding depends on application build (tables 13/14 in the source).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",106,0106,40107,System pump overrun time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",107,0107,40108,System pump idle days count,,UINT16,1,,1,0,days,Read,
+Holding register,"FC03 read / FC06, FC16 write",108,0108,40109,Boiler pump status,Coding depends on application build (tables 13/14 in the source).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",109,0109,40110,Boiler pump overrun time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",110,0110,40111,Boiler pump idle days count,,UINT16,1,,1,0,days,Read,
+Holding register,"FC03 read / FC06, FC16 write",111,0111,40112,Auxiliary 1 pump status,Coding depends on application build (tables 13/14 in the source).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",112,0112,40113,Auxiliary 1 pump idle days count,,UINT16,1,,1,0,days,Read,
+Holding register,"FC03 read / FC06, FC16 write",113,0113,40114,Auxiliary 2 pump status,See table 14 in the source.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",114,0114,40115,Auxiliary 2 pump overrun time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",115,0115,40116,Auxiliary 2 pump idle days count,,UINT16,1,,1,0,days,Read,
+Holding register,"FC03 read / FC06, FC16 write",119,0119,40120,Auxiliary 1 pump overrun time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",148,0148,40149,Auxiliary 2 pump start delay time,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",149,0149,40150,Boiler pump start delay time,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",150,0150,40151,System pump start delay time,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",151,0151,40152,Auxiliary 1 pump start delay time,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",152,0152,40153,DHW tap heat demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",153,0153,40154,DHW preheat demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",154,0154,40155,DHW change rate,"Rate of change, 0.1 °C units.",UINT16,1,,0.1,0,°C/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",155,0155,40156,DHW tap on recognition time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",156,0156,40157,DHW tap on time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",157,0157,40158,DHW preheat delay after tap time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",158,0158,40159,DHW preheat on recognition time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",159,0159,40160,DHW preheat on time,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",160,0160,40161,Lead Lag master status,,UINT16,1,,1,0,,Read,0 = Unknown; 1 = Disabled; 2 = Normal; 3 = Suspended
+Holding register,"FC03 read / FC06, FC16 write",161,0161,40162,Lead Lag slave status,,BITMAP16,1,,1,0,,Read,bit 9 = Local frost protection request; bit 10 = Frost protection burner request; bit 11 = DHW frost protection request; bit 12 = CH frost protection request; bit 13 = Slave is modulating; bit 14 = Slave mode has priority over CH & DHW; bit 15 = Slave command received
+Holding register,"FC03 read / FC06, FC16 write",162,0162,40163,Lead Lag master setpoint source,,UINT16,1,,1,0,,Read,0 = Unknown; 1 = CH setpoint; 2 = CH TOD setpoint; 3 = Outdoor reset; 4 = Remote control (4-20mA or Modbus); 7 = Outdoor reset time of day; 9 = Outdoor boost
+Holding register,"FC03 read / FC06, FC16 write",163,0163,40164,Lead Lag master heat demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",164,0164,40165,Lead Lag slave burner demand,,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",165,0165,40166,Lead Lag slave requested rate,"Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",166,0166,40167,Active Lead Lag on hysteresis,0.1 °C units.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",167,0167,40168,Active Lead Lag off hysteresis,0.1 °C units.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",168,0168,40169,Pump C status,,BITMAP16,1,,1,0,,Read,bit 0 = On due to normal demand; bit 1 = Forced on; bit 2 = Forced off; bit 3 = On due to overrun; bit 4 = On due to exercise; bit 5 = Pump exercise requested; bit 6 = Pump assigned to logical pump; bit 8 = CH pump demand; bit 9 = DHW pump demand; bit 10 = Boiler pump demand; bit 11 = System pump demand; bit 12 = Auxiliary 1 pump demand; bit 13 = Auxiliary 2 pump demand
+Holding register,"FC03 read / FC06, FC16 write",170,0170,40171,Outdoor temperature,0.1 °C units; register listed as U16 although the range starts at -40 °C.,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",171,0171,40172,Outdoor sensor state,,UINT16,1,,1,0,,Read,0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable
+Holding register,"FC03 read / FC06, FC16 write",172,0172,40173,Outlet T-rise rate,"Rate of change, 0.1 °C units.",UINT16,1,,0.1,0,°C/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",173,0173,40174,Exchanger T-rise rate,"Rate of change, 0.1 °C units.",UINT16,1,,0.1,0,°C/s,Read,

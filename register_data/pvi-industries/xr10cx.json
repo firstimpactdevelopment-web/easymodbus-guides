@@ -1,0 +1,431 @@
+{
+  "manufacturer": "PVI Industries",
+  "manufacturer_slug": "pvi-industries",
+  "model": "XR10CX water heater digital operating controller (Modbus RTU)",
+  "model_slug": "xr10cx",
+  "short_model": "XR10CX",
+  "aliases": [
+    "XR10CX",
+    "PV500-67"
+  ],
+  "equipment_type": "Boiler (water heater controller)",
+  "applies_to": "PVI XR10CX digital operating controls on RS-485 Modbus RTU, per PVI manual PV500-67 (06/2014).",
+  "summary": "The XR10CX is a digital operating control used on PVI water heaters. It is a Modbus RTU slave on 2-wire RS-485 at a fixed 9600 8N1, with a handful of holding registers for temperature and set points and output coils for on/off, keypad lock, alarms and the call-for-heat relay.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The manual uses register numbers: holding register 40001 is address 0 on the wire, so subtract 40001 (40769 -> 768). Coils are numbered from 00001 the same way, so coil 513 is wire address 512."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "MODBUS-RTU Applied to the XR10CX Control",
+    "doc_number": "PV500-67 06/2014",
+    "revision_date": "2014-06",
+    "url": "https://www.ccontrols.com/support/dp/PV500-67.pdf",
+    "pages": "p. 4 (register numbering), p. 12 (Table 2), p. 13 (typical parameters, port setup)",
+    "unofficial": true
+  },
+  "notes": [
+    "PVI does not host this manual publicly that we could find; this copy is served by a controls distributor and is the unaltered PVI document (PVI Industries footer, document number on every page).",
+    "Temperatures are whole degrees F per section 4.2.",
+    "The manual is inconsistent about coil 513: Table 2 lists it as a Read/Write coil, while section 4.2 says ON/OFF is written as 257/1 and calls it write-only. Treat it as a standard on/off coil and confirm on site.",
+    "Units for the differential and alarm delays are not stated in the table."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 256,
+      "documented": "40257",
+      "name": "Probe 1 temperature (PRB1)",
+      "description": "Operating probe; degrees F.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 768,
+      "documented": "40769",
+      "name": "Differential (HY)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 829,
+      "documented": "40830",
+      "name": "Temperature alarm delay (ALd)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 830,
+      "documented": "40831",
+      "name": "Temperature alarm delay at startup (dAo)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 846,
+      "documented": "40847",
+      "name": "Digital input alarm delay (did)",
+      "description": "0-255 min.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 851,
+      "documented": "40852",
+      "name": "Modbus address (Adr)",
+      "description": "1-247.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 863,
+      "documented": "40864",
+      "name": "System set point (Set)",
+      "description": "Main set point.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 512,
+      "documented": "513",
+      "name": "On/off for control",
+      "description": "Enables or disables the controller.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 515,
+      "documented": "516",
+      "name": "Keypad lock",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 516,
+      "documented": "517",
+      "name": "Mute buzzer and any-alarm",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 519,
+      "documented": "520",
+      "name": "Digital input pin 9",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 520,
+      "documented": "521",
+      "name": "Probe 1 error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 521,
+      "documented": "522",
+      "name": "Probe 2 error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 522,
+      "documented": "523",
+      "name": "Probe 3 error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 523,
+      "documented": "524",
+      "name": "Probe 4 error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 524,
+      "documented": "525",
+      "name": "High temperature alarm Pb1",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 525,
+      "documented": "526",
+      "name": "Low temperature alarm Pb1",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 528,
+      "documented": "529",
+      "name": "Alarm from external input",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 531,
+      "documented": "532",
+      "name": "EEPROM failure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 537,
+      "documented": "538",
+      "name": "Any-alarm (can be muted)",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 542,
+      "documented": "543",
+      "name": "Relay call for heat",
+      "description": "On = burner signal on.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 544,
+      "documented": "545",
+      "name": "Buzzer on with external or high alarm",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Poll 9600 8N1. Read probe 1 at 40257 and the set point at 40864 with FC03; read status coils 513-545 with FC01, and switch the control on/off with coil 513.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 256,
+        "why": "Probe 1 temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 863,
+        "why": "System set point"
+      },
+      {
+        "table": "coil",
+        "address": 542,
+        "why": "Call for heat relay"
+      },
+      {
+        "table": "coil",
+        "address": 537,
+        "why": "Any-alarm"
+      },
+      {
+        "table": "coil",
+        "address": 512,
+        "why": "On/off for control"
+      },
+      {
+        "table": "coil",
+        "address": 520,
+        "why": "Probe 1 error"
+      }
+    ],
+    "enable": "Modbus RTU is available through the XJ485 serial interface connected to the XR10CX programming port.",
+    "watchdog": null,
+    "quirks": [
+      "Maximum 5 registers per request.",
+      "Register and coil numbers are Modicon-style; subtract 40001 for registers and 1 for coils.",
+      "Coils can be read up to 80 at a time but written only one at a time."
+    ],
+    "setup": [
+      "Fixed serial settings: 9600 baud, 8 data bits, no parity, 1 stop bit (not adjustable).",
+      "Set the slave address (1-247) on the keypad; each unit on the bus needs its own address.",
+      "Leave at least 500 ms before a retry. The controller has no bias resistors; bias the line at the master."
+    ],
+    "gotchas": [
+      "In OFF the display shows OFF and outputs are open, but temperatures can still be read."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

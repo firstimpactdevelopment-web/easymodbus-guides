@@ -1,0 +1,276 @@
+{
+  "manufacturer": "PVI Industries",
+  "manufacturer_slug": "pvi-industries",
+  "model": "TempTrac water heater electronic controller (Modbus RTU)",
+  "model_slug": "temptrac",
+  "short_model": "TempTrac",
+  "aliases": [
+    "TempTrac",
+    "PV500-42"
+  ],
+  "equipment_type": "Boiler (water heater controller)",
+  "applies_to": "PVI TempTrac thermostatic controllers (firmware 0.3 and 0.5) on RS-485 Modbus RTU, per PVI manual PV500-42 (06/2014).",
+  "summary": "TempTrac is PVI's electronic operating control for its water heaters. It is a Modbus RTU slave on 2-wire RS-485 at a fixed 9600 8N1 and uses only holding registers (FC03/06/16, up to 5 registers per request). This map covers the registers PVI lists for typical BMS use: probe temperatures, set point, modulation rate, burner hours, relay status, alarms and the on/off command.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The manual uses register numbers: holding register 40001 is address 0 on the wire, so subtract 40001 (40769 -> 768). Coils are numbered from 00001 the same way, so coil 513 is wire address 512."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "MODBUS-RTU Applied to the TempTrac Control",
+    "doc_number": "PV500-42 06/2014",
+    "revision_date": "2014-06",
+    "url": "https://www.ccontrols.com/support/dp/PV500-42.pdf",
+    "pages": "p. 4 (register numbering), pp. 10-14 (Table 2), pp. 15-16 (typical parameters, port setup)",
+    "unofficial": true
+  },
+  "notes": [
+    "PVI does not host this manual publicly that we could find; this copy is served by a controls distributor and is the unaltered PVI document (PVI Industries footer, document number on every page).",
+    "Only the registers in section 4.2 'Typical parameters' and the clearly readable status/alarm rows are included; the long parameter list in Table 2 (pp. 10-14) did not extract cleanly and is left out.",
+    "Temperatures are whole degrees F per section 4.2. The display resolution option (rES) applies only to Celsius; its effect on Modbus values is not documented, so Celsius operation is not covered here.",
+    "Alarm bits follow the decimal values and bit numbers in the manual (bit 0 = 1). The manual's hex values for Alarm 2 (0x1000) and Alarm 3 (0x0800) disagree with their decimal values (2048, 4096); the decimal/bit numbers are used.",
+    "Register 41281 also accepts keypad lock/unlock and buzzer-silence codes; PVI notes that only the on/off command is normally needed.",
+    "Table 2 gives a hex base-0 address next to each register number (e.g. St1 0x300 = 40769), which confirms the 40001 = address 0 rule."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 256,
+      "documented": "40257",
+      "name": "Probe 1 temperature (TP1)",
+      "description": "Operating probe that set point St1 controls to; degrees F.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 258,
+      "documented": "40259",
+      "name": "Probe 2 temperature (TP2)",
+      "description": "Returns an exception if probe 2 is disabled.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 260,
+      "documented": "40261",
+      "name": "Probe 3 temperature (TP3)",
+      "description": "Returns an exception if probe 3 is disabled.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 262,
+      "documented": "40263",
+      "name": "Modulation rate output",
+      "description": "Firmware 0.5 only: 4-20 mA modulation output, 0-100 % (0 = low fire on most units).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 768,
+      "documented": "40769",
+      "name": "Set point 1 (St1)",
+      "description": "Main system set point.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 848,
+      "documented": "40849",
+      "name": "Working hours relay 1 (ou1)",
+      "description": "Burner run hours, rolls over at 9999.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "h",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 857,
+      "documented": "40858",
+      "name": "Serial address (Adr)",
+      "description": "Modbus slave address 1-247.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2049,
+      "documented": "42050",
+      "name": "Relay status",
+      "description": "Relay 1 bit = call for heat (burner on).",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Relay 1 (burner on)",
+        "1": "Relay 2",
+        "2": "Relay 3"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 3328,
+      "documented": "43329",
+      "name": "Alarm register",
+      "description": "Bit meanings listed are the firmware 0.5 rows; on firmware 0.3, bit 12 flags input 2/3 alarms.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Low temperature alarm (LA)",
+        "1": "High temperature alarm (HA)",
+        "2": "Probe 1 error",
+        "8": "Probe 2 error",
+        "9": "Probe 3 error",
+        "10": "Alarm 1 (input 1)",
+        "11": "Alarm 2 (lockout, input 2)",
+        "12": "Alarm 3 (lockout, alarm on any failure)",
+        "13": "Maintenance relay 1",
+        "14": "Maintenance relay 2",
+        "15": "Maintenance relay 3"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 1280,
+      "documented": "41281",
+      "name": "Control command (on/off)",
+      "description": "Write-only command word; 257 = ON, 1 = OFF. Reads are invalid.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "257": "On",
+        "1": "Off",
+        "2056": "Keypad lock",
+        "8": "Keypad unlock",
+        "4112": "Silence buzzer"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Poll 9600 8N1 with FC03, no more than 5 registers per request. Read probe 1 (40257), relay status (42050) and alarms (43329); write the set point at 40769 and turn the heater on/off by writing 257/1 to 41281.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 256,
+        "why": "Probe 1 temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 768,
+        "why": "Set point 1"
+      },
+      {
+        "table": "holding_register",
+        "address": 2049,
+        "why": "Relay / burner status"
+      },
+      {
+        "table": "holding_register",
+        "address": 3328,
+        "why": "Alarm flags"
+      },
+      {
+        "table": "holding_register",
+        "address": 1280,
+        "why": "On/off command"
+      },
+      {
+        "table": "holding_register",
+        "address": 848,
+        "why": "Burner hours"
+      }
+    ],
+    "enable": "Modbus RTU is available through the XJ485 serial interface (TTL to RS-485) connected to the TempTrac's programming port.",
+    "watchdog": null,
+    "quirks": [
+      "Maximum 5 registers per read or write.",
+      "Register numbers are Modicon-style; subtract 40001.",
+      "41281 is write-only; reading it returns invalid data."
+    ],
+    "setup": [
+      "Fixed serial settings: 9600 baud, 8 data bits, no parity, 1 stop bit (not adjustable).",
+      "Set the slave address (1-247) on the keypad; each unit on the bus needs its own address.",
+      "Leave at least 500 ms before a retry. The controller has no bias resistors; bias the line at the master."
+    ],
+    "gotchas": [
+      "Reading probe 2 or 3 returns an exception when that probe is disabled.",
+      "In OFF the display shows OFF and outputs are open, but temperatures can still be read."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

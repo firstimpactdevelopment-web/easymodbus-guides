@@ -1,0 +1,25 @@
+﻿"# go-e go-eCharger (Modbus TCP, API v2) Modbus register map - easymodbus.com - source: https://raw.githubusercontent.com/goecharger/go-eCharger-API-v2/main/modbus-en.md"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,100,30101 (100),30101,CAR_STATE,Charging state as seen on the PWM pilot.,UINT16,1,,1,0,,Read,"0 = Unknown / charging station defective; 1 = Ready, no car; 2 = Car is charging; 3 = Waiting for car; 4 = Charging finished, car still connected"
+Input register,FC04 read,101,30102 (101),30102,PP_CABLE,"Type 2 cable current coding: 13-32 A, 0 = no cable.",UINT16,1,,1,0,A,Read,
+Input register,FC04 read,107,30108 (107),30108,ERROR,Error code.,UINT16,1,,1,0,,Read,"1 = RCCB (residual current breaker); 3 = Phase disturbance; 8 = No ground detected; 10 = Internal (others, default)"
+Holding register,"FC03 read / FC06, FC16 write",200,40201 (200),40201,ALLOW,Whether the PWM charging signal is allowed.,UINT16,1,,1,0,,Read/write,0 = No; 1 = Yes
+Holding register,"FC03 read / FC06, FC16 write",201,40202 (201),40202,ACCESS_STATE,Access control mode.,UINT16,1,,1,0,,Read/write,0 = Open; 1 = RFID / app needed; 2 = Electricity price / automatic; 3 = Scheduler
+Holding register,"FC03 read / FC06, FC16 write",204,40205 (204),40205,CABLE_LOCK_MODE,,UINT16,1,,1,0,,Read/write,0 = Lock while car is connected; 1 = Unlock automatically after charging; 2 = Always locked
+Holding register,"FC03 read / FC06, FC16 write",206,40207 (206),40207,LED_BRIGHTNESS,"0 = off, 255 = maximum.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",207,40208 (207),40208,LED_SAVE_ENERGY,LEDs switch off automatically after 10 s when on.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",208,40209 (208),40209,ELECTRICITY_PRICES_HOURS,Minimum hours to charge in electricity-price mode.,UINT16,1,,1,0,h,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",209,40210 (209),40210,ELECTRICITY_PRICES_FINISHED,Hour of day by which price-mode charging must be done.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",210,40211 (210),40211,ELECTRICITY_PRICES_ZONE,aWATTar price zone.,UINT16,1,,1,0,,Read/write,0 = Austria; 1 = Germany
+Holding register,"FC03 read / FC06, FC16 write",211,40212 (211),40212,AMPERE_MAX,Upper limit for the current setting.,UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",212,40213 (212),40213,AMPERE_L1,"Push-button current level 1: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",213,40214 (213),40214,AMPERE_L2,"Push-button current level 2: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",214,40215 (214),40215,AMPERE_L3,"Push-button current level 3: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",215,40216 (215),40216,AMPERE_L4,"Push-button current level 4: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",216,40217 (216),40217,AMPERE_L5,"Push-button current level 5: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",217,40218 (217),40218,CLOUD_DISABLED,,UINT16,1,,1,0,,Read/write,0 = Cloud enabled; 1 = Cloud disabled
+Holding register,"FC03 read / FC06, FC16 write",218,40219 (218),40219,NORWAY_MODE,Disables ground detection; for IT networks only.,UINT16,1,,1,0,,Read/write,0 = Off (ground detection on); 1 = On (no ground detection)
+Holding register,"FC03 read / FC06, FC16 write",299,40300 (299),40300,AMPERE_VOLATILE,"Charge current 6-32 A, not saved; use for energy management.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",300,40301 (300),40301,AMPERE_EEPROM,"Charge current 6-32 A, saved to EEPROM (about 100,000 writes).",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",332,40333 (332),40333,PHASE_SWITCH_MODE,"Same as API key psm; accepts 0, 1 or 2 (firmware 55.5+).",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",337,40338 (337),40338,FORCE_STATE,Same as API key frc (firmware 55.6+).,UINT16,1,,1,0,,Read/write,0 = Neutral; 1 = Off; 2 = On

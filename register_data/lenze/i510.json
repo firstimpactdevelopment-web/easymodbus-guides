@@ -1,0 +1,415 @@
+{
+  "manufacturer": "Lenze",
+  "manufacturer_slug": "lenze",
+  "model": "i510 cabinet inverter 0.25-2.2 kW (Modbus RTU)",
+  "model_slug": "i510",
+  "short_model": "i510",
+  "aliases": [
+    "i500 series",
+    "i510 Cabinet",
+    "I51AE"
+  ],
+  "equipment_type": "Variable frequency drive",
+  "applies_to": "Lenze i510 cabinet inverters 0.25-2.2 kW with the Modbus/CANopen control unit, selector set to Modbus, firmware 01.01.01.00 as documented in the commissioning manual.",
+  "summary": "Lenze's i510 is a compact cabinet frequency inverter whose Modbus/CANopen control unit acts as a Modbus RTU slave. Besides 24 freely mappable registers, it has fixed blocks: status data from 42001 and control data from 42101. This map covers those predefined registers: AC drive control and status words, frequency setpoint and actual frequency, drive status, error code, motor voltage and current, apparent power, temperatures, DC bus and torque.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": null,
+    "parity": null,
+    "data_bits": 8,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The manual states all data are 4X registers numbered from 1 but addressed from 0, so register 40001 is address 0; its example writes register 42101 to address 2100 (0x0834). So 42001 = wire 2000 and 42101 = wire 2100."
+  },
+  "default_word_order": "ABCD",
+  "firmware": "01.01.01.00",
+  "source": {
+    "title": "Inverter i510 Cabinet 0.25 ... 2.2 kW - Configuration | Commissioning | Service",
+    "doc_number": null,
+    "revision_date": null,
+    "url": "https://www.precision-elec.com/wp-content/uploads/2017/02/Lenze-AC-Tech-i500-i510-VFD-Users-Manual-For-Commissioning.pdf",
+    "unofficial": true,
+    "pages": "pp. 105-110 (AC drive control/status word, drive status, setpoint and actual frequency), pp. 127-137 (Modbus chapter: settings, function codes and addressing p. 131, predefined registers p. 132, short setup and example frame p. 137), pp. 229-250 (parameter attribute list: data type and factor)"
+  },
+  "notes": [
+    "This copy is hosted by the US distributor Precision Electric and is the unaltered Lenze commissioning manual; Lenze's own copy sits in its download portal and was not found as a direct public link.",
+    "Data types and scaling come from the parameter attribute list (data type and network factor: the integer read is divided by the factor, e.g. factor 10 -> scale 0.1).",
+    "Apparent power 42008/42009 is a 32-bit signed value; the register table states 42008 = high word and 42009 = low word (ABCD), factor 1000 (kW as printed).",
+    "Left out: 42012 digital inputs (0x60FD is a 32-bit parameter but only one register is assigned, so which half is sent is unclear); 42103 and 42104, because the register table gives 42103 as NETWordIN2 with address 0x4008:003 (which the attribute list calls NETWordIN3) and repeats 0x400B:001 for 42104.",
+    "The 24 freely mappable registers (0x232B:1-24, internal register numbers from 2500 shown in 0x232C) are not listed; their content depends on configuration.",
+    "Only function codes 3, 6, 16 and 23 are supported; all data are holding registers. Data are big-endian (most significant byte first)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 2000,
+      "documented": "42001",
+      "name": "AC Drive status word (0x400C:001)",
+      "description": "EtherNet/IP AC drive profile bits.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Fault/trip",
+        "1": "Reserved",
+        "2": "Running forward",
+        "3": "Running reverse",
+        "4": "Ready",
+        "5": "Control from network",
+        "6": "Reference from network",
+        "7": "At reference",
+        "8": "Reserved",
+        "9": "Reserved",
+        "10": "Reserved",
+        "11": "Reserved",
+        "12": "Process controller active",
+        "13": "Torque mode active",
+        "14": "Current limit reached",
+        "15": "DC braking active"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2001,
+      "documented": "42002",
+      "name": "Actual frequency (0x400C:006)",
+      "description": "Unsigned; direction is in the status word.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "Hz",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2002,
+      "documented": "42003",
+      "name": "Error code (0x603F)",
+      "description": "Active error code.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2003,
+      "documented": "42004",
+      "name": "Drive status (0x400C:005)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Error (non-resettable)",
+        "1": "Error",
+        "2": "Waiting for start",
+        "3": "Identification not executed",
+        "4": "Controller inhibit",
+        "5": "Stop",
+        "7": "Identification",
+        "8": "Running",
+        "9": "Acceleration",
+        "10": "Deceleration",
+        "11": "Deceleration override",
+        "12": "DC braking",
+        "13": "Flying start",
+        "14": "Current limit reached",
+        "16": "Process controller idle state"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2004,
+      "documented": "42005",
+      "name": "Actual motor voltage (0x2D89)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2005,
+      "documented": "42006",
+      "name": "Actual motor current (0x2D88)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2006,
+      "documented": "42007",
+      "name": "Current actual value (0x6078)",
+      "description": "Motor current in percent.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2007,
+      "documented": "42008",
+      "name": "Apparent power (0x2DA2:002)",
+      "description": "42008 = high word, 42009 = low word.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 0.001,
+      "units": "kW",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2009,
+      "documented": "42010",
+      "name": "Heatsink temperature (0x2D84:001)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2010,
+      "documented": "42011",
+      "name": "DC-bus voltage (0x2D87)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2012,
+      "documented": "42013",
+      "name": "Torque actual value (0x6077)",
+      "description": "Percent of rated motor torque.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2100,
+      "documented": "42101",
+      "name": "AC Drive control word (0x400B:001)",
+      "description": "EtherNet/IP AC drive profile bits.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Run forward",
+        "1": "Run reverse",
+        "2": "Reset error (0-1 edge)",
+        "3": "Reserved",
+        "4": "Reserved",
+        "5": "Control from network",
+        "6": "Reference from network",
+        "7": "Reserved",
+        "8": "Reserved",
+        "9": "Reserved",
+        "10": "Reserved",
+        "11": "Reserved",
+        "12": "Controller inhibit",
+        "13": "Quick stop",
+        "14": "Process controller off",
+        "15": "DC braking"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2101,
+      "documented": "42102",
+      "name": "Network setpoint frequency (0x400B:005)",
+      "description": "Unsigned, 0.00-599.00 Hz; direction via control word.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "Hz",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2104,
+      "documented": "42105",
+      "name": "Network process controller setpoint (0x400B:007)",
+      "description": "-300.00 to 300.00 process units.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "PUnit",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2105,
+      "documented": "42106",
+      "name": "Target torque (0x6071)",
+      "description": "100 % = motor rated torque (0x6076).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2106,
+      "documented": "42107",
+      "name": "NETWordIN1 (0x4008:001)",
+      "description": "Freely assignable bit functions (0x400E).",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2107,
+      "documented": "42108",
+      "name": "NETWordIN4 (0x4008:004)",
+      "description": "0.0-100.0 %.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set the front selector to Modbus, activate the network (0x2631:037 = TRUE) and make the network the setpoint source (0x2860:001 = 5). Write 0x0061 to 42101 (run forward + control and reference from network) and the frequency to 42102 in 0.01 Hz; read 42001-42011 for status and measurements.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 2100,
+        "why": "AC Drive control word (start/stop/reset)"
+      },
+      {
+        "table": "holding_register",
+        "address": 2101,
+        "why": "Frequency setpoint, 0.01 Hz"
+      },
+      {
+        "table": "holding_register",
+        "address": 2000,
+        "why": "AC Drive status word"
+      },
+      {
+        "table": "holding_register",
+        "address": 2001,
+        "why": "Actual frequency, 0.01 Hz"
+      },
+      {
+        "table": "holding_register",
+        "address": 2002,
+        "why": "Error code"
+      },
+      {
+        "table": "holding_register",
+        "address": 2005,
+        "why": "Motor current, 0.1 A"
+      },
+      {
+        "table": "holding_register",
+        "address": 2010,
+        "why": "DC-bus voltage"
+      }
+    ],
+    "enable": "Set the Modbus/CANopen selector on the inverter front to Modbus. Set 0x2631:037 (PAR 400/037) Activate network = TRUE and 0x2860:001 (PAR 201/001) = 5 Network. Set node address 0x2321:001 (1-247, default 1), baud 0x2321:002 and data format 0x2321:003 (both default Automatic), then restart Modbus communication (0x2320 = 1) or power-cycle.",
+    "watchdog": "0x2858:002 Time-out (0.0-300.0 s, default 2.0 s) with 0x2858:001 Response to time-out (default Error).",
+    "quirks": [
+      "Register 42101 is sent as address 2100 (0x0834).",
+      "The frequency setpoint and actual frequency are unsigned; direction comes from control word bits 0/1 and status bits 2/3.",
+      "With automatic baud rate or data format detection the first 5-10 messages after power-up are lost.",
+      "Digital input DI1 is 'Start enable' by default and must be high for the drive to start."
+    ],
+    "setup": [
+      "Baud 2400-115200 or automatic; data format 8E1, 8O1, 8N2 or automatic.",
+      "A minimum response delay can be set in 0x2321:004 (0-1000 ms)."
+    ],
+    "gotchas": [
+      "The manual's example: writing 0x0061 to 42101 on node 1 starts the drive if DI1 is high.",
+      "MOD-ERR LED blinking = communication error; MOD-RUN and MOD-ERR flickering = automatic baud detection still running."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

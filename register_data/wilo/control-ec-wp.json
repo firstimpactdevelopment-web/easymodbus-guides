@@ -1,0 +1,400 @@
+{
+  "manufacturer": "Wilo",
+  "manufacturer_slug": "wilo",
+  "model": "Wilo-Control EC-WP switchgear (ModBus RTU)",
+  "model_slug": "control-ec-wp",
+  "short_model": "Control EC-WP",
+  "aliases": [
+    "Control EC-WP",
+    "Wilo Control EC WP",
+    "EC-WP"
+  ],
+  "equipment_type": "Pump controller (switchgear)",
+  "applies_to": "Wilo-Control EC-WP for one or two fixed-speed pumps, hardware HW2, software SW102x (instructions Ed.01/2024-08, 2552567).",
+  "summary": "The Wilo-Control EC-WP is a switchgear for level- or pressure-dependent control of up to two fixed-speed pumps (float switch, electrodes, pressure switch or sensor). It has an RS485 ModBus RTU slave port. The holding registers cover pump enable, per-pump modes, pressure actual value and setpoints, general and float-switch status and the alarm history.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 10,
+    "baud": 19200,
+    "parity": "Even",
+    "data_bits": null,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The parameter table prints each holding register as 4xxxx with the protocol address in brackets, e.g. 40026 (25). The bracketed number goes on the wire."
+  },
+  "default_word_order": null,
+  "firmware": "SW102x",
+  "source": {
+    "title": "Wilo-Control EC-WP Installation and operating instructions",
+    "doc_number": "2552567 Ed.01/2024-08",
+    "revision_date": "2024-08",
+    "url": "https://cms.media.wilo.com/dcianimpfinder/wilo718556/9646785/Resources/pdf/6110468747__en.pdf",
+    "pages": "ModBus connection 6.5.14 (p. 19); Menu 2 ModBus settings 8.3.5 (p. 50); data types 13.4 and parameter overview 13.5 (pp. 63-64)"
+  },
+  "notes": [
+    "The same parameter table is published as an HTML appendix page: https://cms.media.wilo.com/dcianimpfinder/wilo718556/9646785/en-GB/2228099211.html.",
+    "BOOL registers are listed as UINT16 with 0/1; the manual treats any value above zero as true. ENUM registers are UINT16.",
+    "Left out: Fault status 40139-40140 (BITMAP32 over two registers, bits 0-20) because the manual does not say which register holds the low bits.",
+    "The data-type table describes BITMAP32 with the same 16-bit wording as BITMAP; this is a source wording issue.",
+    "The scaling column prints 0.1 for 'Fault number alarm history'; it is copied as printed."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "40001 (0)",
+      "name": "Communication profile version",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.001,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40002 (1)",
+      "name": "Wink service",
+      "description": "Boolean; makes the switchgear identify itself.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "False / off",
+        "1": "True / on"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "40003 (2)",
+      "name": "Type of switchgear",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "8": "EC"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 13,
+      "documented": "40014 (13)",
+      "name": "BusCommandTimer",
+      "description": "Bus command timer state.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "-",
+        "1": "Off",
+        "2": "Set",
+        "3": "Active",
+        "4": "Reset",
+        "5": "Manual"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 14,
+      "documented": "40015 (14)",
+      "name": "Drives on/off",
+      "description": "Boolean; enables or disables the pumps.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "False / off",
+        "1": "True / on"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 24,
+      "documented": "40025 (24)",
+      "name": "Control mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "p-c (constant pressure)",
+        "10": "Filling",
+        "11": "Draining"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 25,
+      "documented": "40026 (25)",
+      "name": "Actual value",
+      "description": "Measured pressure.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "bar",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 26,
+      "documented": "40027 (26)",
+      "name": "Current setpoint",
+      "description": "Setpoint now in force.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "bar",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 40,
+      "documented": "40041 (40)",
+      "name": "Pump mode 1",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "Manual",
+        "2": "Auto"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 41,
+      "documented": "40042 (41)",
+      "name": "Pump mode 2",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "Manual",
+        "2": "Auto"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 61,
+      "documented": "40062 (61)",
+      "name": "General status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "SBM (run signal)",
+        "1": "SSM (collective fault)",
+        "8": "EBM pump 1",
+        "9": "EBM pump 2"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 67,
+      "documented": "40068 (67)",
+      "name": "Setpoint 1",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "bar",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 73,
+      "documented": "40074 (73)",
+      "name": "Application",
+      "description": "Configured application; the table lists the element 2nd WP only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 140,
+      "documented": "40141 (140)",
+      "name": "Acknowledge",
+      "description": "Boolean fault acknowledge flag.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "False / off",
+        "1": "True / on"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 141,
+      "documented": "40142 (141)",
+      "name": "Alarm history index",
+      "description": "Selects the alarm history entry to read.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 142,
+      "documented": "40143 (142)",
+      "name": "Fault number alarm history",
+      "description": "Fault number of the selected history entry.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 197,
+      "documented": "40198 (197)",
+      "name": "Status of float switch",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Dry running",
+        "1": "Pumps off",
+        "2": "Pump 1 on",
+        "3": "Pump 2 on",
+        "4": "High water",
+        "5": "Dry run 2",
+        "6": "Pump 1 off",
+        "7": "Pump 2 off"
+      }
+    }
+  ],
+  "integration": {
+    "summary": "Turn ModBus on in Menu 2.01, wire RS485 and poll unit 10 at 19200 baud, even parity. Read the actual pressure (40026), general status (40062) and float-switch status (40198); enable the pumps with Drives on/off (40015).",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 25,
+        "why": "Actual pressure"
+      },
+      {
+        "table": "holding_register",
+        "address": 26,
+        "why": "Current setpoint"
+      },
+      {
+        "table": "holding_register",
+        "address": 61,
+        "why": "Run and fault signals"
+      },
+      {
+        "table": "holding_register",
+        "address": 14,
+        "why": "Pumps on/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 67,
+        "why": "Pressure setpoint"
+      },
+      {
+        "table": "holding_register",
+        "address": 197,
+        "why": "Float switch status"
+      }
+    ],
+    "enable": "Menu 2.01 switches the ModBus RTU interface on (factory setting on). Baud in 2.02, address in 2.03, parity in 2.04, stop bits in 2.05.",
+    "watchdog": null,
+    "quirks": [
+      "Pressure values are INT16/UINT16 in 0.1 bar.",
+      "Factory address is 10, not 1."
+    ],
+    "setup": [
+      "RS485 interface on the terminal strip; see the terminal diagram on the cover.",
+      "Baud rate 9600, 19200 (default), 38400 or 76800; parity none, even (default) or odd; 1 (default) or 2 stop bits.",
+      "The switchgear is terminated at the factory; remove jumper J2 if it is not at the end of the bus. Fit J3 and J4 if the bus needs polarisation."
+    ],
+    "gotchas": [
+      "A 'Fault status' block (40139-40140) exists but is not in this map; read General status (40062) for the collective fault bit."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

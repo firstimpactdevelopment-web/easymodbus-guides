@@ -1,0 +1,200 @@
+{
+  "manufacturer": "E+E Elektronik",
+  "manufacturer_slug": "e-e-elektronik",
+  "model": "EE160 humidity and temperature sensor for building automation (RS-485 Modbus RTU)",
+  "model_slug": "ee160",
+  "short_model": "EE160",
+  "aliases": [
+    "EE160",
+    "EE160-HT6",
+    "E+E EE160",
+    "EE 160"
+  ],
+  "equipment_type": "Sensor (humidity / temperature transmitter)",
+  "applies_to": "EE160 RH/T room/duct sensor with RS-485 interface in Modbus RTU mode, per user manual BA_EE160 v2.7 (04-2026).",
+  "summary": "The EE160 is an HVAC humidity and temperature sensor with an RS-485 Modbus RTU port. It gives temperature and relative humidity as 32-bit floats and as 16-bit integers scaled by 100, plus serial number, firmware version and sensor name.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 245,
+    "baud": 9600,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "The manual prints a decimal register number starting at 1 and a hex register address starting at 0. Send the hex address: temperature is register 26, address 0x19, and the manual's example request reads 0x0019."
+  },
+  "default_word_order": "CDAB",
+  "firmware": null,
+  "source": {
+    "title": "User Manual EE160 Humidity and Temperature Sensor for Building Automation",
+    "doc_number": "BA_EE160 v2.7",
+    "revision_date": "2026-04",
+    "url": "https://downloads.epluse.com/fileadmin/data/product/ee160/BA_EE160.pdf",
+    "pages": "Modbus settings and device-setup registers pp. 16-17 (Tab. 3-4); measured data p. 17 (Tab. 5); example and float decoding pp. 17-18 (Tab. 6-7)"
+  },
+  "notes": [
+    "Float word order: the manual's worked example reads 0x19 and gets 51 F0 41 BA, decoded as IEEE 754 0x41BA51F0 = 23.29 °C. The first register holds the low word, so floats are CDAB.",
+    "Metric or US units are fixed by the order code and cannot be changed with PCS10; the unit fields show the metric case.",
+    "The integer block uses scale 100 per the manual (2550 = 25.5).",
+    "Left out: write-only setup registers 0x00 (Modbus address) and 0x01 (protocol settings); the manual refers to E+E note AN0103 for their coding.",
+    "Measured values can be read with function 03 or 04; they are filed here as holding registers."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "1 (0x00)",
+      "name": "Serial number",
+      "description": "ASCII text across 8 registers; read all 8.",
+      "data_type": "STRING",
+      "length": 8,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "9 (0x08)",
+      "name": "Firmware version",
+      "description": "High byte = major release, low byte = minor release.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "10 (0x09)",
+      "name": "Sensor name",
+      "description": "ASCII text across 8 registers; read all 8.",
+      "data_type": "STRING",
+      "length": 8,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 25,
+      "documented": "26 (0x19)",
+      "name": "Temperature T",
+      "description": "Float; °F on non-metric order versions.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 27,
+      "documented": "28 (0x1B)",
+      "name": "Relative humidity RH",
+      "description": "Float.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 300,
+      "documented": "301 (0x12C)",
+      "name": "Temperature T (integer)",
+      "description": "Value x100; °F on non-metric order versions.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 301,
+      "documented": "302 (0x12D)",
+      "name": "Relative humidity RH (integer)",
+      "description": "Value x100.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Default 9600 baud 8E1, address 245. Read 2 registers at 0x19 for temperature and 2 at 0x1B for humidity (floats, low word first), or 0x12C/0x12D for x100 integers.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 25,
+        "why": "Temperature, float"
+      },
+      {
+        "table": "holding_register",
+        "address": 27,
+        "why": "Relative humidity, float"
+      },
+      {
+        "table": "holding_register",
+        "address": 300,
+        "why": "Temperature, integer x100"
+      },
+      {
+        "table": "holding_register",
+        "address": 301,
+        "why": "Relative humidity, integer x100"
+      }
+    ],
+    "enable": "Modbus RTU is the interface. Set address and serial settings with PCS10 and the USB-C configuration stick HA011070; a non-zero DIP-switch address overrides any software-set address.",
+    "watchdog": null,
+    "quirks": [
+      "Floats are low word first (CDAB).",
+      "Read both float registers in one request so both halves match.",
+      "Serial number and sensor name need all 8 registers read at once."
+    ],
+    "setup": [
+      "Factory settings: 9600 baud, 8 data bits, even parity, 1 stop bit, Modbus address 245.",
+      "Selectable: 9600-115200 baud, none/odd/even parity, 1 or 2 stop bits, address 1-247.",
+      "All DIP switches at 0 means the address set in PCS10 is used.",
+      "A jumper terminates the bus; it is off (not terminated) from the factory."
+    ],
+    "gotchas": [
+      "Default address is 245, not 1.",
+      "°C vs °F is an order option, not a setting."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

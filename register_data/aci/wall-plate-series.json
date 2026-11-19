@@ -1,0 +1,429 @@
+{
+  "manufacturer": "ACI (Automation Components Inc.)",
+  "manufacturer_slug": "aci",
+  "model": "Wall Plate Series BACnet/Modbus temperature/RH sensor",
+  "model_slug": "wall-plate-series",
+  "short_model": "Wall Plate Series",
+  "aliases": [
+    "A/RH-BM wall plate",
+    "Wall Plate Series BACnet Modbus"
+  ],
+  "equipment_type": "Sensor (room temperature / humidity)",
+  "applies_to": "ACI Wall Plate Series stainless wall-plate temperature, RH and temperature/RH sensors with the BACnet MS/TP / Modbus RTU interface (guide I0000931).",
+  "summary": "ACI's stainless wall-plate room sensor for temperature, humidity or both, with a DIP-switch selectable BACnet MS/TP or Modbus RTU RS-485 interface and no analog output. Readings are signed tenths in input registers; a few holding registers set units, offsets and user labels.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": 8,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "Each row gives a Reference (1-based, e.g. 3) and an Address (0-based, e.g. 2). The documented field here holds the Reference; the address field holds the Address column, which is what goes on the wire."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Wall Plate Series BACnet / Modbus User's Guide",
+    "doc_number": "I0000931",
+    "revision_date": null,
+    "url": "https://www.workaci.com/media/791/download",
+    "pages": "pp. 7-9 (interface, baud, EOL), p. 10 (address), p. 13 (framing, test mode), pp. 14-16 (Modbus RTU map)"
+  },
+  "notes": [
+    "The map prints a 1-based Reference column and a 0-based Address column side by side (e.g. Reference 3 = Address 2 for the temperature value); this map uses the Address column.",
+    "RH values and RH range registers are described only as tenths of %RH without a sign statement; they are listed as unsigned since RH cannot be negative. The RH offset is explicitly allowed to be negative (example -16 = -1.6 %RH) so it is INT16.",
+    "Temperature registers carry no fixed unit: the unit follows holding register 0 (62 °C, 63 K, 64 °F).",
+    "Temperature-only models have no RH element and RH-only models no temperature element; input register 0 shows which is fitted."
+  ],
+  "registers": [
+    {
+      "table": "coil",
+      "address": 1000,
+      "documented": "1001",
+      "name": "Test mode enable",
+      "description": "1 = IR3/IR4 return the test values in HR1001/HR1002; not kept after reset.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled (live values)",
+        "1": "Enabled (test values)"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 0,
+      "documented": "1",
+      "name": "Sensors present",
+      "description": "Which sensing elements are fitted.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Temperature sensor present",
+        "1": "RH sensor present"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 2,
+      "documented": "3",
+      "name": "Temperature sensor value",
+      "description": "Tenths, in the unit chosen in HR1 (address 0).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3,
+      "documented": "4",
+      "name": "RH sensor value",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2000,
+      "documented": "2001",
+      "name": "Temperature range min",
+      "description": "Lowest reportable temperature, tenths.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2001,
+      "documented": "2002",
+      "name": "Temperature range max",
+      "description": "Highest reportable temperature, tenths.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2002,
+      "documented": "2003",
+      "name": "RH range min",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2003,
+      "documented": "2004",
+      "name": "RH range max",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 9000,
+      "documented": "9001",
+      "name": "Unsigned test value",
+      "description": "Always 12345; checks decoding.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 9001,
+      "documented": "9002",
+      "name": "Signed test value",
+      "description": "Always -12345; checks signed decoding.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 9002,
+      "documented": "9003-9006",
+      "name": "Test string",
+      "description": "Always \"-123.45\", null terminated.",
+      "data_type": "STRING",
+      "length": 4,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 9006,
+      "documented": "9007-9010",
+      "name": "Serial number",
+      "description": "ASCII, not null terminated.",
+      "data_type": "STRING",
+      "length": 4,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 9010,
+      "documented": "9011-9016",
+      "name": "Firmware version",
+      "description": "ASCII, not null terminated, e.g. 02.00.000.90.",
+      "data_type": "STRING",
+      "length": 6,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "1",
+      "name": "Temperature units",
+      "description": "Unit used for the temperature value and ranges.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "62": "°C",
+        "63": "K",
+        "64": "°F"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "2",
+      "name": "Temperature offset",
+      "description": "Added to the reading; -5.0 to 5.0 °C/K (-9.0 to 9.0 °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "3",
+      "name": "RH offset",
+      "description": "Added to the RH reading; -10.0 to 10.0 %RH.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RH",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1000,
+      "documented": "1001",
+      "name": "Test mode temperature value",
+      "description": "Returned by IR3 while test mode is on.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1001,
+      "documented": "1002",
+      "name": "Test mode RH value",
+      "description": "Returned by IR4 while test mode is on.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RH",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9000,
+      "documented": "9001-9016",
+      "name": "Device name",
+      "description": "User text, null terminated.",
+      "data_type": "STRING",
+      "length": 16,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9016,
+      "documented": "9017-9048",
+      "name": "Device location",
+      "description": "User text, null terminated.",
+      "data_type": "STRING",
+      "length": 32,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9048,
+      "documented": "9049-9080",
+      "name": "Device description",
+      "description": "User text, null terminated.",
+      "data_type": "STRING",
+      "length": 32,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Switch the sensor to Modbus with SW4 DIP 4, give it a non-zero address and a fixed baud rate, then read input registers 2 (temperature, tenths) and 3 (RH) with function 04. Check input registers 9000/9001 once to confirm your master decodes unsigned and signed values correctly.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 2,
+        "why": "Temperature value"
+      },
+      {
+        "table": "input_register",
+        "address": 3,
+        "why": "Relative humidity"
+      },
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Temperature unit"
+      },
+      {
+        "table": "input_register",
+        "address": 0,
+        "why": "Which sensors are fitted"
+      },
+      {
+        "table": "input_register",
+        "address": 9000,
+        "why": "Decoding check 12345"
+      },
+      {
+        "table": "input_register",
+        "address": 9001,
+        "why": "Signed decoding check -12345"
+      }
+    ],
+    "enable": "SW4 DIP 4 ON selects Modbus RTU; address on switches 1-7 (must not be 0); baud on switches 8-10; power-cycle or press reset after any switch change.",
+    "watchdog": null,
+    "quirks": [
+      "Temperature unit is set by holding register 0, not fixed; values are tenths of that unit.",
+      "Test mode (coil 1000) substitutes HR1000/HR1001 values into the live registers and is cleared by reset or power cycle.",
+      "String registers: test string and user text are null terminated, serial number and firmware are not."
+    ],
+    "setup": [
+      "Set SW4 DIP 4 ON to select Modbus (factory default is BACnet MS/TP), then power-cycle or press reset.",
+      "Set the address on switches 1-7 (binary, 1-127). Address 0 is the factory default and cannot be used with Modbus.",
+      "Set the baud rate on switches 8-10 (9600-115200); auto-baud does not work in Modbus mode.",
+      "SW4 PAR 2 / PAR 1 DIP switches (1 = ON) set framing: 0/0 8-E-1, 0/1 8-O-1, 1/0 8-N-2, 1/1 8-N-1.",
+      "Move the EOL jumper to EN on the last device of the RS-485 trunk (default DIS)."
+    ],
+    "gotchas": [
+      "The factory default is BACnet MS/TP with auto-baud; a sensor left at defaults will not answer Modbus.",
+      "Address 0 is invalid for Modbus.",
+      "8-None-1 framing is labelled non-standard by ACI."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

@@ -527,6 +527,8 @@ def source_line(m):
         bits.append(esc(s["doc_number"]))
     if s.get("revision_date"):
         bits.append("rev. " + esc(s["revision_date"]))
+    if s.get("unofficial"):
+        bits.append("unofficial copy")
     return " &middot; ".join(bits)
 
 
@@ -728,6 +730,12 @@ def model_faq(m):
             qa.append(("What happens when the %s loses Modbus communication?" % mm, it["watchdog"]))
     qa.append(("Where is the official %s Modbus documentation?" % mm,
                "The source is %s%s%s, published free by %s at %s." % (
+                   s.get("title") or "the manufacturer's Modbus documentation",
+                   (" (" + s["doc_number"] + ")") if s.get("doc_number") else "",
+                   (", revision " + s["revision_date"]) if s.get("revision_date") else "",
+                   m["manufacturer"], s["url"]) if not s.get("unofficial") else
+               "The source is %s%s%s. %s doesn't publish it on its own website, so this map was re-typed from a "
+               "free copy at %s. It may be an older revision, so check it against the live unit." % (
                    s.get("title") or "the manufacturer's Modbus documentation",
                    (" (" + s["doc_number"] + ")") if s.get("doc_number") else "",
                    (", revision " + s["revision_date"]) if s.get("revision_date") else "",

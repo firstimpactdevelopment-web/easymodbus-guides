@@ -1,0 +1,24 @@
+﻿# AutomationDirect GS1 series AC drive Modbus register map - easymodbus.com - source: https://cdn.automationdirect.com/static/manuals/gs1m/ch5.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",2304,0900h (42305),42305,P9.00 Communication Address,Drive address 1-254.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2305,0901h (42306),42306,P9.01 Transmission Speed,,UINT16,1,,1,0,,Read/write,0 = 4800; 1 = 9600; 2 = 19200
+Holding register,"FC03 read / FC06, FC16 write",2306,0902h (42307),42307,P9.02 Communication Protocol,Factory default 0 is Modbus ASCII.,UINT16,1,,1,0,,Read/write,0 = ASCII 7N2; 1 = ASCII 7E1; 2 = ASCII 7O1; 3 = RTU 8N2; 4 = RTU 8E1; 5 = RTU 8O1
+Holding register,"FC03 read / FC06, FC16 write",2307,0903h (42308),42308,P9.03 Transmission Fault Treatment,,UINT16,1,,1,0,,Read/write,"0 = Display fault, keep running; 1 = Display fault, ramp to stop; 2 = Display fault, coast to stop; 3 = No fault, keep running"
+Holding register,"FC03 read / FC06, FC16 write",2308,0904h (42309),42309,P9.04 Time Out Detection,,UINT16,1,,1,0,,Read/write,0 = Disable; 1 = Enable
+Holding register,"FC03 read / FC06, FC16 write",2330,091Ah (42331),42331,P9.26 Serial Comm Speed Reference,0.0-400.0 Hz with implied decimal (600 = 60.0 Hz).,UINT16,1,,0.1,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2331,091Bh (42332),42332,P9.27 Serial Comm RUN Command,,UINT16,1,,1,0,,Read/write,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",2332,091Ch (42333),42333,P9.28 Serial Comm Direction Command,,UINT16,1,,1,0,,Read/write,0 = Forward; 1 = Reverse
+Holding register,"FC03 read / FC06, FC16 write",2333,091Dh (42334),42334,P9.29 Serial Comm External Fault,,UINT16,1,,1,0,,Read/write,0 = No fault; 1 = External fault
+Holding register,"FC03 read / FC06, FC16 write",2334,091Eh (42335),42335,P9.30 Serial Comm Fault Reset,,UINT16,1,,1,0,,Read/write,0 = No action; 1 = Fault reset
+Holding register,"FC03 read / FC06, FC16 write",2335,091Fh (42336),42336,P9.31 Serial Comm JOG Command,,UINT16,1,,1,0,,Read/write,0 = Stop; 1 = Jog
+Holding register,"FC03 read / FC06, FC16 write",8448,2100h (48449),48449,Status Monitor 1,Present fault code.,UINT16,1,,1,0,,Read,0 = No fault; 1 = Over-current (oc); 2 = Over-voltage (ov); 3 = Overheat (oH); 4 = Overload (oL); 5 = Overload 1 (oL1); 6 = Overload 2 (oL2); 7 = External fault (EF); 8 = CPU failure 1 (cF1); 9 = CPU failure 2 (cF2); 10 = CPU failure 3 (cF3); 11 = Hardware protection failure (HPF); 12 = Over-current during accel (ocA); 13 = Over-current during decel (ocd); 14 = Over-current at steady state (ocn); 16 = Low voltage (Lv); 18 = External base-block (bb); 19 = Auto adjust accel/decel failure (cFA); 20 = Software protection code (codE)
+Holding register,"FC03 read / FC06, FC16 write",8449,2101h (48450),48450,Status Monitor 2,Bits 0-1 run state (0 stop..3 run); bits 3-4 direction (0 FWD..3 REV).,BITMAP16,1,,1,0,,Read,bit 2 = JOG active; bit 5 = Frequency source = serial comm (P4.00 = 5); bit 6 = Frequency source = AI terminal; bit 7 = Operation source = serial comm (P3.00 = 3 or 4); bit 8 = Parameters locked (P9.07 = 1)
+Holding register,"FC03 read / FC06, FC16 write",8450,2102h (48451),48451,Frequency Command F,Frequency setpoint (XXX.X).,UINT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",8451,2103h (48452),48452,Output Frequency H,Output frequency (XXX.X).,UINT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",8452,2104h (48453),48453,Output Current A,Output current (XXX.X).,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",8453,2105h (48454),48454,DC Bus Voltage d,(XXX.X),UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",8454,2106h (48455),48455,Output Voltage U,RMS line-to-line output voltage (XXX.X).,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",8455,2107h (48456),48456,Motor RPM,Estimated motor speed.,UINT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",8456,2108h (48457),48457,Scale Frequency,"Output frequency x P8.01; low word at 2108h, high word at 2109h.",UINT32,2,CDAB,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8459,210Bh (48460),48460,% Load,Output current / drive rated current x 100.,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",8464,2110h (48465),48465,Firmware Version,,UINT16,1,,1,0,,Read,

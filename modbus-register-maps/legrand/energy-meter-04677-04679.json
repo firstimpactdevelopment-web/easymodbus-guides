@@ -1,0 +1,307 @@
+{
+ "manufacturer": "Legrand",
+ "manufacturer_slug": "legrand",
+ "model": "Energy meter 046 77 / 046 79 (2-module, RS485 Modbus)",
+ "model_slug": "energy-meter-04677-04679",
+ "short_model": "046 77/046 79",
+ "aliases": [
+  "04677",
+  "04679",
+  "046 77",
+  "046 79",
+  "Legrand 4 677",
+  "Legrand 4 679"
+ ],
+ "equipment_type": "Energy meter",
+ "applies_to": "Legrand 2-module DIN energy meters cat. no. 046 77 and 046 79 with RS485 (Modbus/JBUS), per the 'Communication protocol' sheet dated 01/07/2011.",
+ "summary": "Legrand's 046 77 and 046 79 are two-module DIN-rail energy meters with an RS485 port speaking Modbus/JBUS. The protocol sheet lists a small set of words: voltage, current, active power with a separate sign word, power factor with its inductive/capacitive sector, frequency, total and partial active energy, run time, a reset word and a device identifier.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "Addresses are printed in hex as sent in the request. The sheet's example reads 4 words starting at 0x200A with the frame 01 03 20 0A 00 04, and writes the reset word with 01 10 00 C8 00 01 02 00 01."
+ },
+ "default_word_order": "ABCD",
+ "firmware": null,
+ "source": {
+  "title": "Communication protocol - 046 77 / 046 79 Energy meter 2 module",
+  "doc_number": "CP-04677-04679b",
+  "revision_date": "2011-07-01",
+  "url": "https://assets.legrand.com/pim/NP-FT-GT/CP-04677-04679b.pdf",
+  "pages": "Physical level and data format pp. 2-3; commands p. 6; variables and examples p. 7"
+ },
+ "notes": [
+  "Data format (2.2): a 'long' is two words sent most significant word first, so 32-bit values are ABCD; the example answer 00 00 64 8C reads as 25740.",
+  "The sheet calls the 32-bit format just 'long' without saying signed or unsigned. Power and power factor are magnitudes with separate sign/sector words and energies only count up, so the values are listed as unsigned; any reading below 2^31 decodes the same either way.",
+  "Only functions 0x03 (read words) and 0x10 (write words) are supported. Address 0 is broadcast with no answer.",
+  "The sheet's example labels the second value read from 0x200A as 'total reactive energy', but the variables table puts positive partial active energy at 0x200C; the table is followed here.",
+  "Baud rate is programmable on the meter; the sheet gives 8 data bits and 1 stop bit but no parity or default speed.",
+  "Timing: keep gaps between characters under 100 ms; the meter answers no sooner than 25 ms."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 200,
+   "documented": "0x00c8",
+   "name": "Reset command",
+   "description": "Write-only; set the bit to reset that counter.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": null,
+   "bits": {
+    "0": "Reset partial active energy",
+    "3": "Reset operating time counter"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 768,
+   "documented": "0x0300",
+   "name": "Device identifier",
+   "description": "Fixed 0x0F for this meter.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8192,
+   "documented": "0x2000",
+   "name": "Voltage",
+   "description": "Sent in mV.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 0.001,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8194,
+   "documented": "0x2002",
+   "name": "Current",
+   "description": "Sent in mA.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 0.001,
+   "units": "A",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8196,
+   "documented": "0x2004",
+   "name": "Active power (magnitude)",
+   "description": "Size only; the sign is in 0x2006.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 0.01,
+   "units": "kW",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8198,
+   "documented": "0x2006",
+   "name": "Active power sign",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Positive",
+    "1": "Negative"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8199,
+   "documented": "0x2007",
+   "name": "Power factor",
+   "description": "Magnitude; inductive or capacitive sector is in 0x2008.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8200,
+   "documented": "0x2008",
+   "name": "Power factor sector",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "PF is 0 or 1",
+    "1": "Inductive",
+    "2": "Capacitive"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8201,
+   "documented": "0x2009",
+   "name": "Frequency",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8202,
+   "documented": "0x200a",
+   "name": "Positive active energy (total)",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 0.01,
+   "units": "kWh",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8204,
+   "documented": "0x200c",
+   "name": "Positive partial active energy",
+   "description": "Resettable via 0x00C8 bit 0.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 0.01,
+   "units": "kWh",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8206,
+   "documented": "0x200e",
+   "name": "Operating time counter",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "s",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read holding registers with function 03 from 0x2000: 16 words cover voltage, current, power with its sign word, power factor, frequency, total and partial energy and run time.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 8202,
+    "why": "Total positive active energy (0.01 kWh)"
+   },
+   {
+    "table": "holding_register",
+    "address": 8192,
+    "why": "Voltage (mV)"
+   },
+   {
+    "table": "holding_register",
+    "address": 8194,
+    "why": "Current (mA)"
+   },
+   {
+    "table": "holding_register",
+    "address": 8196,
+    "why": "Active power magnitude"
+   },
+   {
+    "table": "holding_register",
+    "address": 8198,
+    "why": "Active power sign"
+   },
+   {
+    "table": "holding_register",
+    "address": 8201,
+    "why": "Frequency"
+   }
+  ],
+  "enable": "Set the meter's Modbus address and baud rate on the device; the protocol sheet does not describe the menu.",
+  "watchdog": null,
+  "quirks": [
+   "Power is unsigned with a separate sign word (0x2006).",
+   "Voltage and current come in mV and mA.",
+   "Hex addresses are wire addresses."
+  ],
+  "setup": [
+   "8 data bits, 1 stop bit; baud rate programmable.",
+   "Up to 32 devices per segment without repeaters."
+  ],
+  "gotchas": [
+   "The sheet lists only function 03 for reading and 0x10 for writing.",
+   "The reset word 0x00C8 is write-only."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/legrand/energy-meter-04677-04679",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

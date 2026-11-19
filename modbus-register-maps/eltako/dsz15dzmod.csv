@@ -1,0 +1,21 @@
+﻿# Eltako DSZ15DZMOD-3x80A MID three-phase energy meter (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.eltako.com/fileadmin/downloads/de/_bedienung/Modbus-RTU_protocol_specification_for_DSZ15DZMOD_V1.6_English_version.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,30001 (0x0000),30001,Voltage L1-N,,UINT32,2,ABCD,0.01,0,V,Read,
+Input register,FC04 read,2,30003 (0x0002),30003,Voltage L2-N,,UINT32,2,ABCD,0.01,0,V,Read,
+Input register,FC04 read,4,30005 (0x0004),30005,Voltage L3-N,,UINT32,2,ABCD,0.01,0,V,Read,
+Input register,FC04 read,6,30007 (0x0006),30007,Current L1,,UINT32,2,ABCD,0.01,0,A,Read,
+Input register,FC04 read,8,30009 (0x0008),30009,Current L2,,UINT32,2,ABCD,0.01,0,A,Read,
+Input register,FC04 read,10,30011 (0x000A),30011,Current L3,,UINT32,2,ABCD,0.01,0,A,Read,
+Input register,FC04 read,30,30031 (0x001E),30031,Power factor L1,"Signed, 3 decimals.",INT32,2,ABCD,0.001,0,,Read,
+Input register,FC04 read,32,30033 (0x0020),30033,Power factor L2,"Signed, 3 decimals.",INT32,2,ABCD,0.001,0,,Read,
+Input register,FC04 read,34,30035 (0x0022),30035,Power factor L3,"Signed, 3 decimals.",INT32,2,ABCD,0.001,0,,Read,
+Input register,FC04 read,62,30063 (0x003E),30063,Total power factor,"Signed, 3 decimals.",INT32,2,ABCD,0.001,0,,Read,
+Input register,FC04 read,72,30073 (0x0048),30073,Total import active energy,The manual's example reads 0x000001CD = 4.61 kWh here.,UINT32,2,ABCD,0.01,0,kWh,Read,
+Input register,FC04 read,74,30075 (0x004A),30075,Total export active energy,,UINT32,2,ABCD,0.01,0,kWh,Read,
+Input register,FC04 read,96,30097 (0x0060),30097,Partial import active energy,,UINT32,2,ABCD,0.01,0,kWh,Read,
+Input register,FC04 read,98,30099 (0x0062),30099,Partial export active energy,,UINT32,2,ABCD,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",18,40019 (0x0012),40019,Parity / stop bits,,INT32,2,ABCD,1,0,,Read,"0 = 1 stop bit, no parity"
+Holding register,"FC03 read / FC06, FC16 write",20,40021 (0x0014),40021,Modbus address,1-250; the manual's example writes 0x2A with function 16.,INT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28,40029 (0x001C),40029,Baud rate,Default 2 (9600).,INT32,2,ABCD,1,0,,Read,0 = 2400; 1 = 4800; 2 = 9600; 3 = 19200; 5 = 1200
+Holding register,"FC03 read / FC06, FC16 write",86,40087 (0x0056),40087,Pulse output mode,Default 2; read with function 03 in the manual's example.,INT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64514,464515 (0xFC02),464515,Meter code,Fixed code; the table shows 0x0000000D.,INT32,2,ABCD,1,0,,Read,

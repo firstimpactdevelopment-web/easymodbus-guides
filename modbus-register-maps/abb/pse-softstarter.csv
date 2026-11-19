@@ -1,0 +1,69 @@
+﻿# ABB PSE softstarter (internal Modbus RTU) Modbus register map - easymodbus.com - source: https://www.precision-elec.com/wp-content/uploads/2020/11/PSE18-370-Fieldbus-Communication-Internal-Modbus-RTU-PSE.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",257,0101h,00258,Stop,Stops when set (priority over start); needs Auto mode coil.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",258,0102h,00259,Start,Starts when set; needs Auto mode coil.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",261,0105h,00262,Auto mode,Must be set for controlling the motor.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",262,0106h,00263,Fault reset,Resets an active fault or protection.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",268,010Ch,00269,Clear active diagnostics,Clears 2000h and 2003h.,BIT,1,,1,0,,Read/write,
+Discrete input,FC02 read,1,0001h,10002,Motor stopped status,1 = motor stopped.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,2,0002h,10003,Run status,1 = motor running.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,5,0005h,10006,Auto mode status,"1 = Modbus master control, 0 = local.",BIT,1,,1,0,,Read,
+Discrete input,FC02 read,6,0006h,10007,Fault status,1 = one or more active faults.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,11,000Bh,10012,Start status,Hardwired DI Start input state.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,12,000Ch,10013,Stop status,Hardwired DI Stop input state.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,13,000Dh,10014,Reset status,Hardwired DI Reset input state.,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,14,000Eh,10015,TOR status,1 = top of ramp (bypass closed).,BIT,1,,1,0,,Read,
+Discrete input,FC02 read,15,000Fh,10016,Ready to start status,1 = no fault and stable supply; a start will be accepted.,BIT,1,,1,0,,Read,
+Input register,FC04 read,512,0200h,30513,Motor current in % of Ie,0-800 %.,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,513,0201h,30514,Thermal load,Percent of trip temperature (0-100 %).,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,514,0202h,30515,Phase current L1,,UINT16,1,,1,0,A,Read,
+Input register,FC04 read,515,0203h,30516,Phase current L2,,UINT16,1,,1,0,A,Read,
+Input register,FC04 read,516,0204h,30517,Phase current L3,,UINT16,1,,1,0,A,Read,
+Input register,FC04 read,517,0205h,30518,Max phase current,,UINT16,1,,1,0,A,Read,
+Input register,FC04 read,518,0206h,30519,Measured frequency,,UINT16,1,,1,0,Hz,Read,
+Input register,FC04 read,519,0207h,30520,Measured power factor,100 = 1.00.,UINT16,1,,0.01,0,,Read,
+Input register,FC04 read,520,0208h,30521,Output voltage,Percent of line voltage.,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,521,0209h,30522,Counted number of starts,1 = 100 starts.,UINT16,1,,100,0,starts,Read,
+Input register,FC04 read,522,020Ah,30523,Run time,1 = 10 hours.,UINT16,1,,10,0,h,Read,
+Input register,FC04 read,523,020Bh,30524,Modbus failure register,Last address that could not be read or written.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,524,020Ch,30525,Modbus toggle bit,Toggles on every read.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,768,0300h,30769,Status word,Same bits as the digital input telegram.,BITMAP16,1,,1,0,,Read,bit 0 = Reserved; bit 1 = Motor stopped; bit 2 = Run status (running); bit 3 = Reserved; bit 4 = Reserved; bit 5 = Auto mode status (Modbus control); bit 6 = Fault status; bit 7 = Reserved; bit 8 = Reserved; bit 9 = Reserved; bit 10 = Reserved; bit 11 = DI Start active; bit 12 = DI Stop active; bit 13 = DI Reset active; bit 14 = TOR status (bypass closed); bit 15 = Ready to start
+Input register,FC04 read,8192,2000h,38193,Diagnostic word 1,Active faults and protections.,BITMAP16,1,,1,0,,Read,bit 0 = Reset possible on active event; bit 1 = Software fault; bit 2 = Shunt fault; bit 3 = By-pass open (does not close); bit 4 = Softstarter overload; bit 5 = Phase loss; bit 6 = Bad network quality; bit 7 = Current loss; bit 8 = Fieldbus fault; bit 9 = Low supply voltage; bit 10 = High current; bit 11 = Motor overload; bit 12 = Locked rotor protection; bit 13 = Underload protection; bit 14 = Reserved; bit 15 = Reserved
+Input register,FC04 read,8195,2003h,38196,Diagnostic word 4,Parameter-write errors; bits 8-15 fault code (line number or parameter number).,BITMAP16,1,,1,0,,Read,bit 4 = Parameter is read-only (last write failed); bit 5 = Parameter not settable now (e.g. during ramp); bit 6 = Parameter value out of range; bit 7 = Extended diagnostic available; bit 8 = Fault code bit 0; bit 9 = Fault code bit 1; bit 10 = Fault code bit 2; bit 11 = Fault code bit 3; bit 12 = Fault code bit 4; bit 13 = Fault code bit 5; bit 14 = Fault code bit 6; bit 15 = Fault code bit 7
+Input register,FC04 read,16431,402Fh,316432,Modbus CRC error count,Resets at power cycle.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,16432,4030h,316433,Modbus slave exception count,Resets at power cycle.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,16433,4031h,316434,Modbus slave address,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,16434,4032h,316435,Modbus baud rate (read),"Baud / 100, e.g. 192 = 19200.",UINT16,1,,100,0,baud,Read,
+Holding register,"FC03 read / FC06, FC16 write",1024,0400h,41025,Control word,Alternative to the coils; FC 06/16.,BITMAP16,1,,1,0,,Read/write,"bit 0 = Reserved; bit 1 = Stop (higher priority than start; needs auto mode); bit 2 = Start (needs auto mode); bit 3 = Reserved; bit 4 = Reserved; bit 5 = Auto mode (must be set to control the motor); bit 6 = Fault reset; bit 7 = Reserved; bit 8 = Reserved; bit 9 = Reserved; bit 10 = Reserved; bit 11 = Reserved; bit 12 = Clear active diagnostics (2000h, 2003h); bit 13 = Reserved; bit 14 = Reserved; bit 15 = Reserved"
+Holding register,"FC03 read / FC06, FC16 write",12288,3000h,412289,Motor rated current (Ie),Accepted range depends on unit size.,UINT16,1,,0.1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12289,3001h,412290,Start ramp time,"1-30 s, default 10.",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12290,3002h,412291,Stop ramp on,Default 0.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12291,3003h,412292,Stop ramp time,"1-30 s, default 1.",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12292,3004h,412293,Initial voltage,"30-70 %, default 40.",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12293,3005h,412294,End voltage,"30-70 %, default 30.",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12294,3006h,412295,Current limit,"1.5-7.0 x Ie, default 7.0.",UINT16,1,,0.1,0,xIe,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12295,3007h,412296,Torque control start,Default 0.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12296,3008h,412297,Torque control stop,Default 0.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12297,3009h,412298,Kick start on,Default 0.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12298,300Ah,412299,Kick start time,"0.1-1.0 s, default 0.2.",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12299,300Bh,412300,Kick start voltage,"30-100 %, default 50.",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12300,300Ch,412301,EOL protection on,Electronic overload; default 1.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12301,300Dh,412302,EOL trip class,Default 1 (class 10).,UINT16,1,,1,0,,Read/write,0 = 10A; 1 = 10; 2 = 20; 3 = 30
+Holding register,"FC03 read / FC06, FC16 write",12302,300Eh,412303,EOL protection reset type,Default 0.,UINT16,1,,1,0,,Read/write,0 = Hand; 1 = Auto
+Holding register,"FC03 read / FC06, FC16 write",12303,300Fh,412304,Underload protection on,Default 0.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12304,3010h,412305,Underload protection level,"0.2-1.0 x Ie, default 0.5.",UINT16,1,,0.1,0,xIe,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12305,3011h,412306,Underload protection reset type,Default 0.,UINT16,1,,1,0,,Read/write,0 = Hand; 1 = Auto
+Holding register,"FC03 read / FC06, FC16 write",12306,3012h,412307,Locked rotor protection on,Default 0.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12307,3013h,412308,Locked rotor protection level,"0.5-7.0 x Ie, default 1.2.",UINT16,1,,0.1,0,xIe,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12308,3014h,412309,Locked rotor protection reset type,Default 0.,UINT16,1,,1,0,,Read/write,0 = Hand; 1 = Auto
+Holding register,"FC03 read / FC06, FC16 write",12309,3015h,412310,Bad network fault reset type,Default 0.,UINT16,1,,1,0,,Read/write,0 = Hand; 1 = Auto
+Holding register,"FC03 read / FC06, FC16 write",12310,3016h,412311,Fieldbus control enabled,Read only over Modbus.,UINT16,1,,1,0,,Read,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12311,3017h,412312,Fieldbus address,"0-255, default 255; read only over Modbus.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",12312,3018h,412313,Fieldbus download parameter,Read only over Modbus.,UINT16,1,,1,0,,Read,0 = dPOff; 1 = dPOn
+Holding register,"FC03 read / FC06, FC16 write",12313,3019h,412314,Fieldbus fault reaction,Read only over Modbus.,UINT16,1,,1,0,,Read,0 = Trip; 1 = Switch to local
+Holding register,"FC03 read / FC06, FC16 write",12314,301Ah,412315,Fieldbus fault reset type,Read only over Modbus.,UINT16,1,,1,0,,Read,0 = Hand; 1 = Auto
+Holding register,"FC03 read / FC06, FC16 write",12315,301Bh,412316,Fieldbus interface type,Read only over Modbus.,UINT16,1,,1,0,,Read,0 = Fieldbus plug; 1 = Modbus RTU
+Holding register,"FC03 read / FC06, FC16 write",12316,301Ch,412317,Internal Modbus RTU timeout,"0.5-60.0 s, default 0.5; read only over Modbus.",UINT16,1,,0.1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",12317,301Dh,412318,Internal Modbus RTU baud rate,Read only over Modbus; default 1.,UINT16,1,,1,0,,Read,0 = 9600; 1 = 19200; 2 = 38400; 3 = 57600; 4 = 76800
+Holding register,"FC03 read / FC06, FC16 write",12318,301Eh,412319,Internal Modbus RTU frame format,Read only over Modbus; default 1.,UINT16,1,,1,0,,Read,0 = 8O1; 1 = 8E1; 2 = 8N2; 3 = 8N1
+Holding register,"FC03 read / FC06, FC16 write",16484,4064h,416485,Fieldbus baud rate (write),Baud / 100; master must follow after a change.,UINT16,1,,100,0,baud,Read/write,

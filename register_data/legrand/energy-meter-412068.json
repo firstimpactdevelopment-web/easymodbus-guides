@@ -1,0 +1,250 @@
+{
+  "manufacturer": "Legrand",
+  "manufacturer_slug": "legrand",
+  "model": "Energy meter 4 120 68 (RS-485 Modbus)",
+  "model_slug": "energy-meter-412068",
+  "short_model": "4 120 68",
+  "aliases": [
+    "412068",
+    "4 120 68",
+    "Legrand 412068"
+  ],
+  "equipment_type": "Energy meter",
+  "applies_to": "Legrand energy meter cat. no. 4 120 68 with RS-485 Modbus RTU, per Modbus table F02230EN-01.",
+  "summary": "Legrand's 4 120 68 is a meter with an RS-485 Modbus RTU port. Its short Modbus table gives voltage, current, frequency, active/reactive/apparent power and power factor as 16-bit words, two 32-bit energy counters, the internal temperature, a date/time block and the baud-rate and address settings. The energy counters are left out of this map because the table does not say which word comes first.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "The table gives a 1-based register number and the 0-based register address in decimal and hex (voltage: number 1, address 0). The address is sent on the wire: the date/time example reads register number 34 with the frame ADDR 03 0021 0004."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Modbus table F02230EN-01 (4 120 68)",
+    "doc_number": "F02230EN-01",
+    "revision_date": null,
+    "url": "https://assets.legrand.com/pim/NP-FT-GT/F02230EN-01%20(4%20120%2068).pdf",
+    "pages": "Table organisation, protocol and serial details p. 1; input registers p. 4; date/time and settings with example frames p. 5"
+  },
+  "notes": [
+    "Left out: positive active energy (address 7, 2 words, x10 Wh) and positive reactive energy (address 17, 2 words, x10 varh). The table only says data are 'Big Endian' (most significant byte first), which fixes the byte order inside a word but not which of the two words is sent first.",
+    "Supported functions: 03 (read) and 16 (write). Exception codes 1, 2 and 3.",
+    "Serial details: RS-485 two-wire, RTU, address 1-247, programmable baud rate, 8 data bits, no parity, 1 stop bit.",
+    "Timing: inter-character time-out 25 ms, response delay 25-100 ms, wait more than 25 ms between master requests.",
+    "Left out: the 4-register date/day-of-week/time block at 33 (packed BCD-style digits per the example).",
+    "The table heads the measurement page 'Input registers' but gives read function code 3, so they are listed here as holding registers (function 03)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "0",
+      "name": "Voltage",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "1",
+      "name": "Current",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "2",
+      "name": "Frequency",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "Hz",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "3",
+      "name": "Active power",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "W",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "4",
+      "name": "Reactive power",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "var",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "5",
+      "name": "Apparent power",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "VA",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "6",
+      "name": "Power factor",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.001,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 37,
+      "documented": "37",
+      "name": "Internal temperature",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 42,
+      "documented": "42",
+      "name": "Baud rate",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "1200",
+        "2": "2400",
+        "3": "4800",
+        "4": "9600"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 43,
+      "documented": "43",
+      "name": "Modbus address",
+      "description": "1-247.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read holding registers with function 03 from address 0: 7 words give voltage, current, frequency, active/reactive/apparent power and power factor. Address 37 is the internal temperature.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Voltage"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Current"
+      },
+      {
+        "table": "holding_register",
+        "address": 3,
+        "why": "Active power"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Frequency"
+      },
+      {
+        "table": "holding_register",
+        "address": 6,
+        "why": "Power factor"
+      }
+    ],
+    "enable": "Modbus RTU is active on the RS-485 port; baud rate (register 42) and address (register 43) can be written with function 16, e.g. ADDR 10 002A 0001 02 0002 sets 2400 baud.",
+    "watchdog": null,
+    "quirks": [
+      "Register numbers in the table are address + 1; send the address.",
+      "Power values are unsigned 16-bit."
+    ],
+    "setup": [
+      "Baud codes: 1 = 1200, 2 = 2400, 3 = 4800, 4 = 9600."
+    ],
+    "gotchas": [
+      "Active power is 16-bit whole watts, so it tops out at 65535 W."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

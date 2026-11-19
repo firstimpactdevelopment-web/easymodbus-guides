@@ -1,0 +1,695 @@
+{
+  "manufacturer": "Samsung",
+  "manufacturer_slug": "samsung",
+  "model": "MIM-B19N Modbus interface module (DVM / EHS / indoor units)",
+  "model_slug": "mim-b19n",
+  "short_model": "MIM-B19N",
+  "aliases": [
+    "MIM-B19N",
+    "Samsung Modbus interface module"
+  ],
+  "equipment_type": "VRF / split AC gateway",
+  "applies_to": "Samsung MIM-B19N Modbus interface module on the R1/R2 bus of one outdoor system with up to 48 indoor units (installation manual DB68-07538A-00).",
+  "summary": "The MIM-B19N links one Samsung outdoor system (up to 4 modular outdoor units) and up to 48 indoor units, hydro units, AHU kits, ERVs, chillers or FCUs on the R1/R2 bus to a Modbus RTU master. Each indoor unit gets a fixed 50-register block. This map covers the module status registers and the indoor-unit block: on/off, mode, fan speed, setpoints, room and water temperatures, errors, ventilation and hot-water functions. Addresses are given for indoor unit 0.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "The table prints both a 1-based register number and the Modbus PDU address; the PDU address is used. Indoor unit n (0-47) occupies PDU addresses 50 + n*50 + k. This map lists indoor unit 0 (addresses 50-81); add 50 per unit, e.g. indoor unit 3 on/off = 50 + 150 + 2 = 202."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Modbus Interface Module MIM-B19N Installation Manual",
+    "doc_number": "DB68-07538A-00",
+    "revision_date": null,
+    "url": "https://midsummerwholesale.co.uk/pdfs/mim-b19n-manual.pdf",
+    "unofficial": true,
+    "pages": "specifications and communication settings p. 8; communication sequence p. 9; address switches pp. 11-12; register table pp. 13-16"
+  },
+  "notes": [
+    "Source host: the unaltered Samsung manual hosted by a UK distributor; we did not find a public Samsung copy.",
+    "All values are single 16-bit registers, big-endian. Temperatures are Celsius x10; the manual's ranges go down to -41 °C, so they are listed as signed.",
+    "The manual marks each point R, W or R/W per unit type (indoor, HE/HT/EHS, AHU kit, ERV, ERV+, chiller, FCU, FCU kit). Read-only points are listed as input registers (FC 04) and writable points as holding registers (FC 03/06/16); the module supports both read functions but the manual does not say which table each read-only point lives in, so try FC 03 if FC 04 is refused.",
+    "Access shown is the widest across unit types; a point marked '-' for a unit type does not apply to it (e.g. water temperatures only for HE/HT/EHS and chillers, ventilation only for ERV).",
+    "Left out: the MCC chiller error-information registers (+26/+27, packed bytes) and the reserved ranges.",
+    "Any write to a holding register is always forwarded to the indoor unit as a command, even if the value is unchanged."
+  ],
+  "registers": [
+    {
+      "table": "input_register",
+      "address": 0,
+      "documented": "0",
+      "name": "Modbus interface module error status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Address error",
+        "1": "Communication error on R1/R2",
+        "2": "Tracking error"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 1,
+      "documented": "1",
+      "name": "Integrated outdoor unit error code",
+      "description": "100-999 = error code.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No error"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2,
+      "documented": "2",
+      "name": "Outdoor defrost operation",
+      "description": "0 or 0xFF = defrost off; other values = defrost on.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "3",
+      "name": "Buzzer on/off",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "0": "Turns the buzzer on",
+        "1": "Turns the buzzer off"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 50,
+      "documented": "(50 + IU*50) + 0",
+      "name": "Communication status",
+      "description": "Bits 0-2 all set (value 7) = unit tracked and ready for control.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Exist",
+        "1": "Type OK",
+        "2": "Ready",
+        "3": "Communication error"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 51,
+      "documented": "(50 + IU*50) + 1",
+      "name": "Unit type",
+      "description": "Low byte = model code (e.g. HE 110, ERV 100-102); high byte 10 = FCU.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 52,
+      "documented": "(50 + IU*50) + 2",
+      "name": "Air conditioner on/off",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53,
+      "documented": "(50 + IU*50) + 3",
+      "name": "Air conditioner mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Cool",
+        "2": "Dry",
+        "3": "Fan",
+        "4": "Heat",
+        "21": "Cool Storage",
+        "24": "Heat Storage"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 54,
+      "documented": "(50 + IU*50) + 4",
+      "name": "Indoor fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Low",
+        "2": "Middle",
+        "3": "High"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 55,
+      "documented": "(50 + IU*50) + 5",
+      "name": "Use of vertical air flow direction",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 56,
+      "documented": "(50 + IU*50) + 6",
+      "name": "Filter-cleaning reminder",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Filter alarm not present",
+        "1": "Filter alarm present"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 57,
+      "documented": "(50 + IU*50) + 7",
+      "name": "Canceling the filter-cleaning reminder",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "0": "No Clear Filter Alarm",
+        "1": "Clear Filter Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 58,
+      "documented": "(50 + IU*50) + 8",
+      "name": "Set temperature",
+      "description": "Celsius x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 59,
+      "documented": "(50 + IU*50) + 9",
+      "name": "Room temperature",
+      "description": "Celsius x10. Range -41 to 100 °C.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 60,
+      "documented": "(50 + IU*50) + 10",
+      "name": "Discharge temperature",
+      "description": "Celsius x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 61,
+      "documented": "(50 + IU*50) + 11",
+      "name": "Cooling discharge set temperature",
+      "description": "Celsius x10. Range 8 to 18 °C.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 62,
+      "documented": "(50 + IU*50) + 12",
+      "name": "Heating discharge set temperature",
+      "description": "Celsius x10. Range 30 to 43 °C.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 63,
+      "documented": "(50 + IU*50) + 13",
+      "name": "Integrated indoor unit error code",
+      "description": "100-999 = error code.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No error"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 64,
+      "documented": "(50 + IU*50) + 14",
+      "name": "Restrictions on the remote control",
+      "description": "Read 0 = none, other = restricted; write 0x0000 to release, 0x6363 to restrict.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 65,
+      "documented": "(50 + IU*50) + 15",
+      "name": "Water-in temperature",
+      "description": "Celsius x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 66,
+      "documented": "(50 + IU*50) + 16",
+      "name": "Water-out Temperature",
+      "description": "Celsius x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 67,
+      "documented": "(50 + IU*50) + 17",
+      "name": "MCC water-out temperature",
+      "description": "Celsius x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 68,
+      "documented": "(50 + IU*50) + 18",
+      "name": "Water-out set temperature",
+      "description": "Celsius x10; allowed range depends on unit type.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 69,
+      "documented": "(50 + IU*50) + 19",
+      "name": "Ventilation on/off",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 70,
+      "documented": "(50 + IU*50) + 20",
+      "name": "Ventilation mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Bypass",
+        "1": "HeatEx",
+        "2": "Auto",
+        "6": "Sleep"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 71,
+      "documented": "(50 + IU*50) + 21",
+      "name": "Ventilation fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "AUTO",
+        "2": "Low",
+        "3": "High",
+        "4": "Turbo"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 72,
+      "documented": "(50 + IU*50) + 22",
+      "name": "Hot water operation on/off",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "HotWater Off",
+        "1": "HotWater On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 73,
+      "documented": "(50 + IU*50) + 23",
+      "name": "Hot water mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Eco",
+        "1": "Standard",
+        "2": "Power",
+        "3": "Force (for the EHS only)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 74,
+      "documented": "(50 + IU*50) + 24",
+      "name": "Hot water set temperature",
+      "description": "Celsius x10; allowed range depends on unit type.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 75,
+      "documented": "(50 + IU*50) + 25",
+      "name": "Hot water temperature",
+      "description": "Celsius x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 78,
+      "documented": "(50 + IU*50) + 28",
+      "name": "Quiet control",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Slience Off",
+        "1": "Slience On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 79,
+      "documented": "(50 + IU*50) + 29",
+      "name": "Away function",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Outing Off",
+        "1": "Outing On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 80,
+      "documented": "(50 + IU*50) + 30",
+      "name": "Wind-Free function",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "9": "WindFree"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 81,
+      "documented": "(50 + IU*50) + 31",
+      "name": "360 air flow direction",
+      "description": "Other values = individual control.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "106": "Spot",
+        "85": "Mid",
+        "64": "Wide",
+        "15": "Swing"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set the module address with the DIP/rotary switches, connect RS-485 at 9600 8E1, wait until bits 0-2 of an indoor unit's communication status (50 + n*50) read 7, then read and write its 50-register block.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 50,
+        "why": "Indoor unit 0 communication status"
+      },
+      {
+        "table": "holding_register",
+        "address": 52,
+        "why": "Indoor unit 0 on/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 53,
+        "why": "Indoor unit 0 mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 58,
+        "why": "Indoor unit 0 set temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 59,
+        "why": "Indoor unit 0 room temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 63,
+        "why": "Indoor unit 0 error code"
+      },
+      {
+        "table": "input_register",
+        "address": 0,
+        "why": "Module error status"
+      }
+    ],
+    "enable": "Set the Modbus address (1-247) as the sum of the ON DIP switches plus the rotary switch value, connect R1/R2 to the outdoor unit, and give every indoor unit an address 0-47. Reset the module after changing indoor unit addresses or the central-control option.",
+    "watchdog": null,
+    "quirks": [
+      "Per-unit blocks: address = 50 + indoor address x 50 + offset.",
+      "Temperatures are x10 integers.",
+      "Holding values update only after the indoor unit reports a change."
+    ],
+    "setup": [
+      "Fixed serial format: 9600 bps, 8 data bits, even parity, 1 stop bit.",
+      "RS-485 2-wire, up to 1000 m; DC 12 V supply."
+    ],
+    "gotchas": [
+      "Leave at least 10 ms after each response before the next request.",
+      "Repeated identical writes are sent to the unit each time; write only when a change is needed.",
+      "After power-up all registers read 0 until tracking of the outdoor/indoor units completes."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

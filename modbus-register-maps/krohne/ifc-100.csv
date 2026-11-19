@@ -1,0 +1,65 @@
+﻿# KROHNE IFC 100 electromagnetic flow converter (Modbus RTU) Modbus register map - easymodbus.com - source: https://cdn.krohne.com/archive/AD_IFC100_Modbus_en_140728_4001410101_R01.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",1000,1000,01001,Cold start,Write 1 to cold-start the converter.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",1001,1001,01002,Warm start,Write 1 to warm-start; also activates new calibration values.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",1002,1002,01003,Error reset,Write 1 to reset errors.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",2000,2000,02001,Zero calibration,Write 1 to start; reads 1 while running.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",2001,2001,02002,Coil temperature calibration,Write 1 to start; reads 1 while running.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",2002,2002,02003,Electrode factor calibration,Write 1 to start; reads 1 while running.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",3000,3000,03001,Counter 1 start/stop,"Write 1 start, 0 stop; reads 1 while running.",BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",3001,3001,03002,Counter 2 start/stop,"Write 1 start, 0 stop; reads 1 while running.",BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",3003,3003,03004,Counter 1 reset,Write 1 to reset.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",3004,3004,03005,Counter 2 reset,Write 1 to reset.,BIT,1,,1,0,,Read/write,
+Input register,FC04 read,20000,20000,320001,Calibration result,Result of the last calibration function (first float).,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,30000,30000,330001,Flow speed,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,30002,30002,330003,Volume flow,,FLOAT32,2,ABCD,1,0,m3/s,Read,
+Input register,FC04 read,30004,30004,330005,Mass flow,,FLOAT32,2,ABCD,1,0,kg/s,Read,
+Input register,FC04 read,30006,30006,330007,Coil temperature,,FLOAT32,2,ABCD,1,0,K,Read,
+Input register,FC04 read,30008,30008,330009,Conductivity,Only measured when empty-pipe/conductivity function (42003) is on.,FLOAT32,2,ABCD,1,0,S/m,Read,
+Input register,FC04 read,30010,30010,330011,Diagnosis value,Meaning set by 42011: electrode noise (m/s) or terminal 2/3 DC (V).,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,30012,30012,330013,Display channel 1,"First line of the first measurement screen, SI units.",FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,30014,30014,330015,Display channel 2,"First line of the second measurement screen, SI units.",FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,30016,30016,330017,Operating time,,FLOAT32,2,ABCD,1,0,s,Read,
+Input register,FC04 read,30020,30020,330021,Counter 1,"m3 or kg, per counter 1 measurement.",FLOAT64,4,ABCD,1,0,,Read,
+Input register,FC04 read,30024,30024,330025,Counter 2,"m3 or kg, per counter 2 measurement.",FLOAT64,4,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",40000,40000,440001,Counter 1 function,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = Sum counter; 2 = + counter; 3 = - counter
+Holding register,"FC03 read / FC06, FC16 write",40001,40001,440002,Counter 1 measurement,,UINT16,1,,1,0,,Read/write,21 = Volume flow; 22 = Mass flow
+Holding register,"FC03 read / FC06, FC16 write",40002,40002,440003,Counter 2 function,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = Sum counter; 2 = + counter; 3 = - counter
+Holding register,"FC03 read / FC06, FC16 write",40003,40003,440004,Counter 2 measurement,,UINT16,1,,1,0,,Read/write,21 = Volume flow; 22 = Mass flow
+Holding register,"FC03 read / FC06, FC16 write",41000,41000,441001,Counter 1 low flow cutoff,m3/s or kg/s.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41002,41002,441003,Counter 1 time constant,,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41004,41004,441005,Counter 1 value (set/read),m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41006,41006,441007,Counter 2 low flow cutoff,m3/s or kg/s.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41008,41008,441009,Counter 2 time constant,,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41010,41010,441011,Counter 2 value (set/read),m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41018,41018,441019,Counter 1 preset,m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41020,41020,441021,Counter 2 preset,m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",42000,42000,442001,Flow direction,,UINT16,1,,1,0,,Read/write,0 = Normal; 1 = Reverse
+Holding register,"FC03 read / FC06, FC16 write",42001,42001,442002,Pulse filter,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On; 2 = Automatic
+Holding register,"FC03 read / FC06, FC16 write",42002,42002,442003,Noise filter,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",42003,42003,442004,Empty pipe / conductivity,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = Conductivity; 2 = Cond. + empty pipe (S); 3 = Cond. + empty pipe (F); 4 = Cond. + empty pipe (I)
+Holding register,"FC03 read / FC06, FC16 write",42009,42009,442010,Electrode noise,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",42010,42010,442011,Settling of field,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",42011,42011,442012,Diagnosis value selection,,UINT16,1,,1,0,,Read/write,8 = Terminal 2 DC; 9 = Terminal 3 DC; 25 = Off; 31 = Electrode noise
+Holding register,"FC03 read / FC06, FC16 write",43000,43000,443001,Limitation low,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43002,43002,443003,Limitation high,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43004,43004,443005,Time constant,,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43006,43006,443007,Pulse width (pulse filter on),,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43008,43008,443009,Pulse limitation,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43010,43010,443011,Noise level,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43012,43012,443013,Noise suppression,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43014,43014,443015,Low flow cutoff,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43016,43016,443017,Limit empty pipe,,FLOAT32,2,ABCD,1,0,S/m,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43022,43022,443023,Limit electrode noise,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43024,43024,443025,Zero point,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43026,43026,443027,"Coil resistance Rsp,20",,FLOAT32,2,ABCD,1,0,Ohm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43028,43028,443029,Coil temperature calibration point,,FLOAT32,2,ABCD,1,0,K,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43030,43030,443031,Coil resistance calibration point,,FLOAT32,2,ABCD,1,0,Ohm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43032,43032,443033,Electrode factor EF,,FLOAT32,2,ABCD,1,0,m,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43034,43034,443035,Conductivity calibration point,,FLOAT32,2,ABCD,1,0,S/m,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43036,43036,443037,Conductivity calibration point (second copy),Write the same target to 43034 and 43036.,FLOAT32,2,ABCD,1,0,S/m,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43038,43038,443039,Pulse width (pulse filter automatic),,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50000,50000,450001,Baud rate,1200-115200; default 19200.,UINT32,2,ABCD,1,0,baud,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50002,50002,450003,Slave address,"1-247, default 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50003,50003,450004,Parity,,UINT16,1,,1,0,,Read/write,0 = Even (default); 1 = Odd; 3 = None
+Holding register,"FC03 read / FC06, FC16 write",50004,50004,450005,Data format,,UINT16,1,,1,0,,Read/write,1 = Big endian; 2 = Little endian

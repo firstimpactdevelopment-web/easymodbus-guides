@@ -1,0 +1,671 @@
+{
+  "manufacturer": "ebm-papst",
+  "model": "EC fans with MODBUS Lite (series 84/112/150/200 Lite)",
+  "short_model": "MODBUS Lite EC fan",
+  "aliases": [
+    "MODBUS Lite V5.01",
+    "ebm-papst RadiCal Modbus",
+    "ebm-papst RadiPac Modbus",
+    "ebm-papst series 84 Lite",
+    "ebm-papst series 112 Lite",
+    "ebm-papst series 150 Lite",
+    "ebm-papst series 200 Lite"
+  ],
+  "equipment_type": "Air handler (EC fan)",
+  "applies_to": "ebm-papst EC fans and motors whose electronics report the MODBUS Lite parameter set (series 84 / 112 / 150 / 200 Lite), specification V5.01.",
+  "summary": "ebm-papst EC fans with MODBUS Lite electronics expose a common Modbus RTU parameter set on RS485. Live values (speed, status and warning bits, DC-link voltage/current, temperatures, power) are input registers from D000; settings such as set-value source, set value, control mode, address and serial format are holding registers. Speed, voltage, current and power are scaled against per-fan reference registers, so read those first.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 19200,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "Addresses are printed in hex and are the register address sent in the frame; the manual's own example telegrams write D149 as bytes D1 49 and trigger Adopt parameters with 06 D0 00. Input and holding registers both start at D000 but are separate tables."
+  },
+  "default_word_order": null,
+  "firmware": "MODBUS Lite specification V5.01",
+  "source": {
+    "title": "MODBUS parameters ebm-papst series 84 / 112 / 150 / 200 Lite (MODBUS Lite Basic Functionality V5.01)",
+    "doc_number": "V5.01",
+    "revision_date": null,
+    "url": "https://www.ebmpapst.com/content/dam/ebm-papst/loc/europe/gb/modbus-parameter-specifications/MODBUS%20Lite%20Basic%20Functionality%20V5_01.pdf",
+    "pages": "Holding registers ch. 2 (pp. 24-61), input registers ch. 3 (pp. 62-70)"
+  },
+  "notes": [
+    "Encoding: the document states parameters are big endian (high byte first). All registers listed here are single 16-bit values.",
+    "Speed values use 64000 = Maximum speed (D119); DC-link voltage and current use reference values D1A0 (20 mV steps) and D1A1 (2 mA steps); power uses both. Those registers carry raw values with scale 1 and the formula in the description.",
+    "Bit positions in Motor status (D011), Warning (D012) and Reset (D000) were read from the column layout of the encoding tables (MSB = bits 15-8, LSB = bits 7-0).",
+    "Left out: module temperature (D015) because the document gives no signed/unsigned format for it, unlike the motor and electronics temperatures; P/I factors, modulation limits, potentiometer curve, fail-safe, derating, error history, password, sensor scaling and production data.",
+    "Many holding registers need a password at a given authorisation level (write it to D002-D004); this map lists the customer-level settings an integrator normally touches."
+  ],
+  "registers": [
+    {
+      "table": "input_register",
+      "address": 53248,
+      "documented": "D000",
+      "name": "Identification",
+      "description": "Electronics/protocol type code; see the identification table in the source.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53249,
+      "documented": "D001",
+      "name": "Maximum number of bytes",
+      "description": "Largest telegram the fan accepts.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53250,
+      "documented": "D002",
+      "name": "Software name of bus controller",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53251,
+      "documented": "D003",
+      "name": "Software version of bus controller",
+      "description": "Version in the low byte; high byte is 0.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53264,
+      "documented": "D010",
+      "name": "Actual speed",
+      "description": "rpm = raw x nMax / 64000, where nMax is Maximum speed (D119). Capped at 0xFFF0.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53265,
+      "documented": "D011",
+      "name": "Motor status",
+      "description": "Errors currently detected; FB is set with every error.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "PHA: phase failure / mains undervoltage",
+        "2": "TFE: power module overheated",
+        "4": "FB: fan bad (general error)",
+        "5": "TFM: motor overheated",
+        "6": "HLL: Hall sensor error",
+        "7": "BLK: locked motor",
+        "12": "UzLow: DC-link undervoltage"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 53266,
+      "documented": "D012",
+      "name": "Warning",
+      "description": "Pre-alarm conditions.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "I_Limit: current limitation",
+        "2": "P_Limit: power limitation",
+        "3": "TE_high: output stage temperature high",
+        "4": "TM_high: motor temperature high",
+        "5": "TEI_high: interior electronics temperature high",
+        "6": "UzLow: DC-link voltage low",
+        "7": "Brake: braking against external drive",
+        "9": "n_Low: speed below running-monitor limit",
+        "10": "Cable break at analogue set value input",
+        "12": "UzHigh: DC-link voltage high",
+        "13": "nGrenz: limiting speed exceeded",
+        "14": "UeHigh: supply voltage high",
+        "15": "LRF: shedding function active"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 53267,
+      "documented": "D013",
+      "name": "DC-link voltage",
+      "description": "V = raw x reference Uz (D1A0) / 256.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53268,
+      "documented": "D014",
+      "name": "DC-link current",
+      "description": "A = raw x reference Iz (D1A1) / 256.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53270,
+      "documented": "D016",
+      "name": "Motor temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53271,
+      "documented": "D017",
+      "name": "Interior electronics temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53272,
+      "documented": "D018",
+      "name": "Current direction of rotation",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Anti-clockwise",
+        "1": "Clockwise"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53273,
+      "documented": "D019",
+      "name": "Current modulation level",
+      "description": "Percent = raw x 100 / 65536.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.00152587890625,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53274,
+      "documented": "D01A",
+      "name": "Current set value",
+      "description": "Speed control: rpm = raw x nMax / 64000, where nMax is Maximum speed (D119). PWM control: % = raw x 100 / 65536.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53275,
+      "documented": "D01B",
+      "name": "Sensor actual value",
+      "description": "Voltage at the analogue input = raw x 10 / 65536.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.000152587890625,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53277,
+      "documented": "D01D",
+      "name": "Current parameter set",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Parameter set 1",
+        "1": "Parameter set 2"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 53281,
+      "documented": "D021",
+      "name": "Current power",
+      "description": "W = raw x reference Uz x reference Iz / 65536.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53248,
+      "documented": "D000",
+      "name": "Reset",
+      "description": "Bits clear themselves once executed.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "User software reset (communication kept)",
+        "1": "Adopt parameters (EEPROM to RAM)",
+        "2": "Reset errors",
+        "3": "Full software reset (comms drop for seconds)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 53249,
+      "documented": "D001",
+      "name": "Default set value",
+      "description": "Set value when source is RS485. Speed: raw = rpm x 64000 / nMax; PWM: raw = % x 65536 / 100.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53257,
+      "documented": "D009",
+      "name": "Operating hours counter",
+      "description": "Stops at 65535. Only ebm-papst level may write it.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53258,
+      "documented": "D00A",
+      "name": "Operating minutes counter",
+      "description": "Only ebm-papst level may write it.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53504,
+      "documented": "D100",
+      "name": "Fan address",
+      "description": "1-247, low byte.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53505,
+      "documented": "D101",
+      "name": "Source set value",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Analogue input 0-10 V",
+        "1": "RS485 (default set value D001)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53506,
+      "documented": "D102",
+      "name": "Preferred running direction",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Anti-clockwise",
+        "1": "Clockwise"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53507,
+      "documented": "D103",
+      "name": "Save set value",
+      "description": "1 also stores D001 in EEPROM (limited to 100,000 writes).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Not stored (fan stopped after reset)",
+        "1": "Stored in EEPROM"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53509,
+      "documented": "D105",
+      "name": "Internal parameter set",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Parameter set 1",
+        "1": "Parameter set 2"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53510,
+      "documented": "D106",
+      "name": "Control mode (parameter set 1)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Closed-loop speed control",
+        "2": "Open-loop PWM control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53511,
+      "documented": "D107",
+      "name": "Control mode (parameter set 2)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Closed-loop speed control",
+        "2": "Open-loop PWM control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53529,
+      "documented": "D119",
+      "name": "Maximum speed (nMax)",
+      "description": "Reference for all speed values (64000 = nMax).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "rpm",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53577,
+      "documented": "D149",
+      "name": "Transfer rate",
+      "description": "Applied after Adopt parameters/Reset or power cycle.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "2400",
+        "2": "4800",
+        "3": "9600",
+        "4": "19200 (recommended)",
+        "5": "38400",
+        "6": "57600",
+        "7": "115200"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53578,
+      "documented": "D14A",
+      "name": "Parity configuration",
+      "description": "Applied after Adopt parameters/Reset or power cycle.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "8E1 (recommended)",
+        "1": "8O1",
+        "2": "8N2",
+        "3": "8N1"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53664,
+      "documented": "D1A0",
+      "name": "Reference value of DC-link voltage",
+      "description": "Raw x 20 mV; used to scale D013 and D021.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.02,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 53665,
+      "documented": "D1A1",
+      "name": "Reference value of DC-link current",
+      "description": "Raw x 2 mA; used to scale D014 and D021.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.002,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read D119 (nMax) and D1A0/D1A1 once, then poll input registers D010-D021 with function 04. To run the fan from Modbus set D101 = 1 and write the set value to holding register D001.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 53264,
+        "why": "Actual speed (scaled by nMax)"
+      },
+      {
+        "table": "input_register",
+        "address": 53265,
+        "why": "Motor status / error bits"
+      },
+      {
+        "table": "input_register",
+        "address": 53266,
+        "why": "Warning bits"
+      },
+      {
+        "table": "input_register",
+        "address": 53281,
+        "why": "Current power"
+      },
+      {
+        "table": "holding_register",
+        "address": 53249,
+        "why": "Set value from Modbus"
+      },
+      {
+        "table": "holding_register",
+        "address": 53505,
+        "why": "Set value source (1 = RS485)"
+      },
+      {
+        "table": "holding_register",
+        "address": 53529,
+        "why": "Maximum speed reference"
+      }
+    ],
+    "enable": "Write Source set value D101 = 1 (RS485) so the fan follows Default set value D001 instead of the 0-10 V input.",
+    "watchdog": "A fail-safe function can apply a separate set value and running direction when the Modbus connection breaks (sections 2.35-2.38 of the source); it is not mapped here.",
+    "quirks": [
+      "Do not enable Save set value (D103) if D001 is written often; the EEPROM allows about 100,000 writes.",
+      "The 4 least significant bits of the set value are ignored.",
+      "New baud/parity settings only apply after 'Adopt parameters' (D000 bit 1), a reset or power cycle."
+    ],
+    "setup": [
+      "Recommended/standard serial format: 19200 baud, 8E1. Changing D149/D14A needs at least customer-level password.",
+      "Emergency function: after 10 bad telegrams the fan falls back to 19200 8E1, after 10 more to 2400 8E1, which helps find an unknown setting.",
+      "Fan address is set in D100 (1-247)."
+    ],
+    "gotchas": [
+      "Input and holding registers overlap in address (both from D000); use function 04 for live values and 03 for settings.",
+      "Selecting 8N1 breaks the 11-bit frame rule of the Modbus serial specification; prefer 8E1 or 8N2."
+    ]
+  },
+  "manufacturer_slug": "ebm-papst",
+  "model_slug": "modbus-lite-ec-fans",
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

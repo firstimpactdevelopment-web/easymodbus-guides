@@ -1,0 +1,19 @@
+﻿# Realtime Control Systems RTD-RA Modbus interface for Daikin room air conditioners Modbus register map - easymodbus.com - source: https://www.daikin.es/content/dam/MDM/TechnicalDrawings/Split/EN/RTD-RA%20Installation%20Instructions%2021070-1.07_EN.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,121,I0121,30122,Is Fault,,UINT16,1,,1,0,,Read,0 = No unit fault; 1 = Unit in fault
+Input register,FC04 read,122,I0122,30123,Fault Code,"Two ASCII characters, high byte first.",UINT16,1,,1,0,,Read,"0 = Waiting for data; 255 = No fault; 14384 = 80 - group fault, no units found"
+Input register,FC04 read,123,I0123,30124,Return Air Temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,130,I0130,30131,Thermo On,,UINT16,1,,1,0,,Read,0 = Idle/Fan; 1 = Heating; 2 = Cooling
+Input register,FC04 read,131,I0131,30132,Coil Inlet Temperature,,INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,H0001,40002,Setpoint,"Whole degrees; heat 10..30, cool 18..32 (model dependent).",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,H0002,40003,Fanspeed,Some models have fewer than 5 speeds.,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Fan 1; 2 = Fan 2; 3 = Fan 3; 4 = Fan 4; 5 = Fan 5
+Holding register,"FC03 read / FC06, FC16 write",3,H0003,40004,Mode,,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Heat; 2 = Fan; 3 = Cool; 4 = Dry
+Holding register,"FC03 read / FC06, FC16 write",4,H0004,40005,Louvre,,UINT16,1,,1,0,,Read/write,0 = Stop; 1 = Swing
+Holding register,"FC03 read / FC06, FC16 write",5,H0005,40006,OnOff,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",10,H0010,40011,Global Update,,UINT16,1,,1,0,,Read/write,0 = Last Touch (unlocked); 1 = Central (local control locked); 2 = Local (writes not sent); 3 = On Change (sent only on change)
+Holding register,"FC03 read / FC06, FC16 write",20,H0020,40021,Setpoint Min,16..32; 0 = no limit.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",21,H0021,40022,Setpoint Max,16..32; 0 = no limit.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",22,H0022,40023,Fanspeed Inhibit,Set bits block those speeds; 0 = no inhibit.,BITMAP16,1,,1,0,,Read/write,bit 0 = Auto (1); bit 1 = Fan 1 (2); bit 2 = Fan 2 (4); bit 3 = Fan 3 (8); bit 4 = Fan 4 (16); bit 5 = Fan 5 (32)
+Holding register,"FC03 read / FC06, FC16 write",23,H0023,40024,Mode Inhibit,Set bits block those modes; 0 = no inhibit.,BITMAP16,1,,1,0,,Read/write,bit 0 = Auto (1); bit 1 = Heat (2); bit 2 = Fan (4); bit 3 = Cool (8); bit 4 = Dry (16)
+Holding register,"FC03 read / FC06, FC16 write",24,H0024,40025,Louvre Inhibit,Set bits block those louvre settings; 0 = no inhibit.,BITMAP16,1,,1,0,,Read/write,bit 0 = Stop (1); bit 1 = Swing (2)
+Holding register,"FC03 read / FC06, FC16 write",37,H0037,40038,Force Thermo Off,Holds the compressor off while the unit stays on.,UINT16,1,,1,0,,Read/write,0 = Thermo enabled; 1 = Thermo off

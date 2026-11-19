@@ -1,0 +1,907 @@
+{
+  "manufacturer": "Intesis (HMS Networks)",
+  "manufacturer_slug": "intesis",
+  "model": "IN485SAM001R000 Samsung AC to Modbus RTU / BACnet MS/TP gateway",
+  "model_slug": "in485sam001r000",
+  "short_model": "IN485SAM001R000 Samsung",
+  "aliases": [
+    "IN485SAM001R000",
+    "Intesis Samsung BACnet MS/TP Modbus"
+  ],
+  "equipment_type": "VRF / split AC gateway",
+  "applies_to": "Samsung indoor units on the F3F4 remote-controller bus, gateway set to Modbus RTU (SW1-5 ON); user manual version 1.0.0.",
+  "summary": "Dual-protocol gateway (BACnet MS/TP or Modbus RTU, chosen by DIP switch) for Samsung air conditioners on the F3F4 remote-controller bus. In Modbus mode, holding registers cover on/off, mode, fan, vanes, setpoints including dual setpoint, thermistor input, window contact logic, filter status, WindFree/AirClean, errors and firmware version.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 2400,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 2,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "Tables give 'Modbus address (base 0)' and 'PLC address (base 1)'; the base-0 address is the wire address and is used for 'documented'."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "IN485SAM001R000 User Manual",
+    "doc_number": "User Manual Version 1.0.0",
+    "revision_date": null,
+    "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-in485sam001r000.pdf",
+    "pages": "pp. 8-10 (DIP switches), p. 21 (functions, physical layer), pp. 22-27 (registers)"
+  },
+  "notes": [
+    "Temperatures can be set to °C, °C x10, °F or °F x10 with SW2-7/8; factory default is whole °C (x1). Temperature registers are listed as signed INT16 because the manual prints the no-value marker as 0x8000 (-32768).",
+    "The gateway ships set for BACnet MS/TP; SW1-5 must be ON for Modbus RTU. In Modbus mode the default baud rate is 2400 bps.",
+    "FC16 is accepted only with a length of 1 register.",
+    "Left out: machine minimum/maximum setpoint registers 1153-1156, because their scale (x1/x10) is not stated. The 'characterization bitfield' tables are not mapped because the manual does not tie them to Modbus addresses.",
+    "Error code list not reproduced; see the manual's error-code section."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "0",
+      "name": "On/Off",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "1",
+      "name": "Operation mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Heat",
+        "2": "Dry",
+        "3": "Fan",
+        "4": "Cool"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "2",
+      "name": "Fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Fan speed 1",
+        "2": "Fan speed 2",
+        "3": "Fan speed 3",
+        "4": "Fan speed 4"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "3",
+      "name": "Vane U/D position",
+      "description": "Cassette 360 uses register 139 instead.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto/Stop",
+        "10": "Swing"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "4",
+      "name": "Temperature (user) setpoint",
+      "description": "Setpoint requested by the BMS. SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": {
+        "-32768": "Initialisation value / no value (0x8000)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "5",
+      "name": "Indoor unit reference temperature",
+      "description": "SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "-32768": "Initialisation value / no value (0x8000)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "6",
+      "name": "Window contact protocol input",
+      "description": "0 = all closed; any bit set = its window contact is open.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "All window contacts closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "7",
+      "name": "Control objects disablement",
+      "description": "1 = BMS commands ignored, remote controller only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Objects enabled",
+        "1": "Objects disabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "8",
+      "name": "Remote control disablement",
+      "description": "1 = remote controller ignored, BMS only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "RC enabled",
+        "1": "RC disabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "9",
+      "name": "Operation time",
+      "description": "Accumulated running hours.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "h",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "10",
+      "name": "Alarm status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No error present",
+        "1": "Error present"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "11",
+      "name": "Error code",
+      "description": "See the manual's error code list.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 13,
+      "documented": "13",
+      "name": "Open window timeout",
+      "description": "0..30 minutes.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 14,
+      "documented": "14",
+      "name": "Baud rate",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "2400 bps",
+        "2": "4800 bps",
+        "3": "9600 bps",
+        "4": "19200 bps",
+        "5": "38400 bps (printed 38500)",
+        "6": "57600 bps",
+        "7": "76800 bps",
+        "8": "115200 bps"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15,
+      "documented": "15",
+      "name": "Modbus slave address",
+      "description": "1..63, set on SW2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 21,
+      "documented": "21",
+      "name": "Maximum number of fan speeds",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 22,
+      "documented": "22",
+      "name": "Input sensor temperature",
+      "description": "Room temperature from a BMS thermistor; 0x8000 = none. SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": {
+        "-32768": "Initialisation value / no value (0x8000)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "23",
+      "name": "AC real setpoint",
+      "description": "Setpoint sent to the indoor unit. SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 24,
+      "documented": "24",
+      "name": "Current AC maximum setpoint",
+      "description": "SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 25,
+      "documented": "25",
+      "name": "Current AC minimum setpoint",
+      "description": "SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 26,
+      "documented": "26",
+      "name": "Vane L/R position",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto/Stop",
+        "10": "Swing"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 31,
+      "documented": "31",
+      "name": "Window contact functional status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not active",
+        "1": "Active (window open)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 40,
+      "documented": "40",
+      "name": "Window contact On/Off disablement",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not disabling on/off",
+        "1": "Disabling on/off now"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 43,
+      "documented": "43",
+      "name": "Filter reset",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "1": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 44,
+      "documented": "44",
+      "name": "Filter status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Lit"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 48,
+      "documented": "48",
+      "name": "Switch value",
+      "description": "DIP-switch positions of SW1 and SW2 as bits.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 66,
+      "documented": "66",
+      "name": "Return path temperature",
+      "description": "SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": {
+        "-32768": "Initialisation value / no value (0x8000)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 67,
+      "documented": "67",
+      "name": "Number of IU connected",
+      "description": "Indoor units on the RC bus.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 68,
+      "documented": "68",
+      "name": "IU # status reported",
+      "description": "Position in the sorted unit list of the unit being reported.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 69,
+      "documented": "69",
+      "name": "IU address status reported",
+      "description": "Address of the unit whose status is reported.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 81,
+      "documented": "81",
+      "name": "Error address",
+      "description": "Indoor unit reporting the error.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 86,
+      "documented": "86",
+      "name": "Filter signal address",
+      "description": "Indoor unit reporting the filter sign.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 94,
+      "documented": "94",
+      "name": "FW version MSB",
+      "description": "First two firmware numbers in hex (1.2.3.4 shows 1.2).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 95,
+      "documented": "95",
+      "name": "FW version LSB",
+      "description": "Last two firmware numbers in hex.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 99,
+      "documented": "99",
+      "name": "Reset",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "1": "Reset"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 130,
+      "documented": "130",
+      "name": "Window contact step",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Contact weak (window closed)",
+        "1": "Contact strong (no action executed)",
+        "2": "Contact strong (action executed)",
+        "3": "Contact strong (action executed)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 137,
+      "documented": "137",
+      "name": "WindFree",
+      "description": "Cool, fan and dry modes only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 138,
+      "documented": "138",
+      "name": "AirClean",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 139,
+      "documented": "139",
+      "name": "360° air flow direction",
+      "description": "Cassette 360 up/down air flow.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Spot",
+        "1": "Mid",
+        "2": "Wide",
+        "3": "Swing",
+        "4": "Other"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 140,
+      "documented": "140",
+      "name": "Dual setpoint",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 141,
+      "documented": "141",
+      "name": "Dual setpoint heat temperature",
+      "description": "SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 142,
+      "documented": "142",
+      "name": "Dual setpoint cool temperature",
+      "description": "SW2-7/8 default x1 °C (x10: 0.1; or °F).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1000,
+      "documented": "1000",
+      "name": "Window contact reload last value",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1001,
+      "documented": "1001",
+      "name": "Window contact lock when open",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1002,
+      "documented": "1002",
+      "name": "Window timeout",
+      "description": "0..30 minutes.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1150,
+      "documented": "1150",
+      "name": "Machine mode",
+      "description": "2 = custom limits 1153-1156 apply.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Normal",
+        "1": "NA",
+        "2": "Limited setpoint"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1220,
+      "documented": "1220",
+      "name": "Remote lock kept after reset",
+      "description": "1 = register 8 keeps its value through a reset.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "RC enabled after reset",
+        "1": "Register 8 value kept after reset"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set SW1-5 ON for Modbus, choose baud on SW1-6..8 and address on SW2-1..6, reboot, then write 0-4 and poll 5, 10, 11, 44 and 66.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "On/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Setpoint"
+      },
+      {
+        "table": "holding_register",
+        "address": 5,
+        "why": "Reference temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 10,
+        "why": "Alarm flag"
+      },
+      {
+        "table": "holding_register",
+        "address": 11,
+        "why": "Error code"
+      },
+      {
+        "table": "holding_register",
+        "address": 44,
+        "why": "Filter sign"
+      }
+    ],
+    "enable": "Select Modbus RTU with SW1-5 ON (default is BACnet MS/TP), then reboot. If the gateway ignores commands, check register 7 is 0.",
+    "watchdog": null,
+    "quirks": [
+      "Factory baud in Modbus mode is 2400 bps.",
+      "FC16 with one register only.",
+      "Changing DIP switches only takes effect after a reboot."
+    ],
+    "setup": [
+      "8N2 (8N1 auto-detected).",
+      "Address 1..63 on SW2-1..6 (P1 = LSB).",
+      "Termination and bias on SW3.",
+      "Add a 12 V DC supply (105 mA) when the gateway shares the RC bus with other Samsung remote controllers."
+    ],
+    "gotchas": [
+      "In Fan mode the remote hides the setpoint; a setpoint written then may look mismatched on the remote until a later write."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

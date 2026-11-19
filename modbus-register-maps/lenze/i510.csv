@@ -1,0 +1,19 @@
+﻿# Lenze i510 cabinet inverter 0.25-2.2 kW (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.precision-elec.com/wp-content/uploads/2017/02/Lenze-AC-Tech-i500-i510-VFD-Users-Manual-For-Commissioning.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",2000,42001,42001,AC Drive status word (0x400C:001),EtherNet/IP AC drive profile bits.,BITMAP16,1,,1,0,,Read,bit 0 = Fault/trip; bit 1 = Reserved; bit 2 = Running forward; bit 3 = Running reverse; bit 4 = Ready; bit 5 = Control from network; bit 6 = Reference from network; bit 7 = At reference; bit 8 = Reserved; bit 9 = Reserved; bit 10 = Reserved; bit 11 = Reserved; bit 12 = Process controller active; bit 13 = Torque mode active; bit 14 = Current limit reached; bit 15 = DC braking active
+Holding register,"FC03 read / FC06, FC16 write",2001,42002,42002,Actual frequency (0x400C:006),Unsigned; direction is in the status word.,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",2002,42003,42003,Error code (0x603F),Active error code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2003,42004,42004,Drive status (0x400C:005),,UINT16,1,,1,0,,Read,0 = Error (non-resettable); 1 = Error; 2 = Waiting for start; 3 = Identification not executed; 4 = Controller inhibit; 5 = Stop; 7 = Identification; 8 = Running; 9 = Acceleration; 10 = Deceleration; 11 = Deceleration override; 12 = DC braking; 13 = Flying start; 14 = Current limit reached; 16 = Process controller idle state
+Holding register,"FC03 read / FC06, FC16 write",2004,42005,42005,Actual motor voltage (0x2D89),,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2005,42006,42006,Actual motor current (0x2D88),,INT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",2006,42007,42007,Current actual value (0x6078),Motor current in percent.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2007,42008,42008,Apparent power (0x2DA2:002),"42008 = high word, 42009 = low word.",INT32,2,ABCD,0.001,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",2009,42010,42010,Heatsink temperature (0x2D84:001),,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2010,42011,42011,DC-bus voltage (0x2D87),,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2012,42013,42013,Torque actual value (0x6077),Percent of rated motor torque.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2100,42101,42101,AC Drive control word (0x400B:001),EtherNet/IP AC drive profile bits.,BITMAP16,1,,1,0,,Read/write,bit 0 = Run forward; bit 1 = Run reverse; bit 2 = Reset error (0-1 edge); bit 3 = Reserved; bit 4 = Reserved; bit 5 = Control from network; bit 6 = Reference from network; bit 7 = Reserved; bit 8 = Reserved; bit 9 = Reserved; bit 10 = Reserved; bit 11 = Reserved; bit 12 = Controller inhibit; bit 13 = Quick stop; bit 14 = Process controller off; bit 15 = DC braking
+Holding register,"FC03 read / FC06, FC16 write",2101,42102,42102,Network setpoint frequency (0x400B:005),"Unsigned, 0.00-599.00 Hz; direction via control word.",UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2104,42105,42105,Network process controller setpoint (0x400B:007),-300.00 to 300.00 process units.,INT16,1,,0.01,0,PUnit,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2105,42106,42106,Target torque (0x6071),100 % = motor rated torque (0x6076).,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2106,42107,42107,NETWordIN1 (0x4008:001),Freely assignable bit functions (0x400E).,BITMAP16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2107,42108,42108,NETWordIN4 (0x4008:004),0.0-100.0 %.,UINT16,1,,0.1,0,%,Read/write,

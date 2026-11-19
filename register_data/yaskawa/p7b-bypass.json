@@ -1,0 +1,562 @@
+{
+  "manufacturer": "Yaskawa",
+  "manufacturer_slug": "yaskawa",
+  "model": "P7B drive/bypass (legacy) - Modbus RTU",
+  "model_slug": "p7b-bypass",
+  "short_model": "P7B Bypass",
+  "aliases": [
+    "P7B",
+    "P7 Bypass"
+  ],
+  "equipment_type": "Variable frequency drive (fan / pump bypass package)",
+  "applies_to": "Yaskawa P7B drive/bypass packages (P7 drive CIMR-P7U inside a bypass enclosure, option V native Modbus) using the drive's RS-422/485 terminals, per technical manual TM.P7B.01 Appendix D.",
+  "summary": "The P7B is a P7 fan/pump drive packaged with a bypass contactor panel and HAND/OFF/AUTO switch. Modbus RTU is served by the drive itself (option V, native protocol) using the same hex register layout as the P7, except that 0001H bits 0/1 are run/stop and direction. This map covers the Appendix D reference and monitor data and the Enter commands.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 31,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "Register numbers are hex and are sent unchanged: the 03H example reads starting address 00 20 (drive status) and the 10H example writes from 00 01."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "P7B Drive/Bypass Technical Manual (Appendix D Communications)",
+    "doc_number": "TM.P7B.01",
+    "revision_date": null,
+    "url": "https://www.yaskawa.com/delegate/getAttachment?documentId=TM.P7B.01&cmd=documents&documentName=TM.P7B.01.pdf",
+    "pages": "Appendix D: specifications p. D-2, function examples pp. D-7 to D-8, data tables pp. D-9 to D-13"
+  },
+  "notes": [
+    "TM.P7B.01 does not print Modbus addresses for parameters (b1, H5) or the U monitors, so only the Appendix D data-table registers are included; set H5 at the keypad.",
+    "0023H/0024H are listed raw: U1-01/U1-02 units change with o1-03 and the data table gives no resolution.",
+    "Left out because the manual prints no units or resolution: 0025H output voltage, 0026H output current, 0027H output power, 0028H torque reference and 0031H DC bus voltage.",
+    "The Enter command text in TM.P7B.01 names registers 0900H or 0901H but its table lists 0900H and 0910H; the table addresses are used here.",
+    "Broadcast (address 0) accepts only 0001H and 0002H (30000 = 100 %)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "0001H",
+      "name": "Operation command",
+      "description": "Run/stop, direction, external fault, fault reset, virtual inputs.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Run (0 = stop)",
+        "1": "Reverse (0 = forward)",
+        "2": "External fault (EFO)",
+        "3": "Fault reset",
+        "4": "ComNet",
+        "5": "ComCtrl",
+        "6": "Multi-function input command 3",
+        "7": "Multi-function input command 4",
+        "8": "Multi-function input command 5",
+        "9": "Multi-function input command 6",
+        "10": "Multi-function input command 7"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "0002H",
+      "name": "Frequency reference",
+      "description": "Units set by o1-03; unscaled here.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "0006H",
+      "name": "PI setpoint",
+      "description": "Used when 000FH bit 1 is set.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "0007H",
+      "name": "Analog output 1 setting",
+      "description": "-11 V = -726 ... 11 V = 726 (10 V = 660).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "0008H",
+      "name": "Analog output 2 setting",
+      "description": "-11 V = -726 ... 11 V = 726 (10 V = 660).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "0009H",
+      "name": "Multi-function contact output setting",
+      "description": "Network control of M1-M2, M3-M4 and fault contact.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Digital output 1 (M1-M2) on",
+        "1": "Digital output 2 (M3-M4) on",
+        "6": "Use bit 7 to drive fault contact MA-MC",
+        "7": "Fault contact (MA-MC) on"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 15,
+      "documented": "000FH",
+      "name": "Reference selection settings",
+      "description": "Enables network PI setpoint and broadcast S5-S7 inputs.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "1": "Input PI setpoint (0006H) enabled",
+        "12": "Broadcast terminal S5 input enabled",
+        "13": "Broadcast terminal S6 input enabled",
+        "14": "Broadcast terminal S7 input enabled"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 32,
+      "documented": "0020H",
+      "name": "Drive status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Running",
+        "1": "Reverse operation",
+        "2": "Drive startup complete",
+        "3": "Fault",
+        "4": "Data setting error",
+        "5": "Multi-function output 1 (M1-M2) on",
+        "6": "Multi-function output 2 (M3-M4) on"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 33,
+      "documented": "0021H",
+      "name": "Fault details",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Overcurrent (OC) / ground fault (GF)",
+        "1": "Main circuit overvoltage (OV)",
+        "2": "Drive overload (OL2)",
+        "3": "Drive overheat (OH1, OH2)",
+        "5": "Fuse blown (PUF)",
+        "6": "PI feedback reference lost (FbL)",
+        "7": "External error (EF, EFO)",
+        "8": "Hardware error (CPF)",
+        "9": "Motor overload (OL1) or overtorque 1 (OL3)",
+        "10": "PG broken wire (PGO), overspeed (OS), speed deviation (DEV)",
+        "11": "Main circuit undervoltage (UV) detected",
+        "12": "Undervoltage UV1, control power UV2, inrush circuit UV3, power loss",
+        "13": "Missing output phase (LF)",
+        "14": "Modbus communications error (CE)",
+        "15": "Operator disconnected (OPR)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 34,
+      "documented": "0022H",
+      "name": "Data link status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Writing data",
+        "3": "Upper/lower limit error",
+        "4": "Data integrity error"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 35,
+      "documented": "0023H",
+      "name": "Frequency reference (U1-01)",
+      "description": "Raw; units follow o1-03.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 36,
+      "documented": "0024H",
+      "name": "Output frequency (U1-02)",
+      "description": "Raw value; the data table gives no resolution.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 43,
+      "documented": "002BH",
+      "name": "Sequence input status",
+      "description": "Terminals S1-S7.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "S1 on",
+        "1": "S2 on",
+        "2": "S3 on",
+        "3": "S4 on",
+        "4": "S5 on",
+        "5": "S6 on",
+        "6": "S7 on"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 44,
+      "documented": "002CH",
+      "name": "Drive status 2",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Operating",
+        "1": "Zero speed",
+        "2": "Frequency agree",
+        "3": "Desired frequency agree",
+        "4": "Frequency detection 1 (output <= L4-01)",
+        "5": "Frequency detection 2 (output >= L4-01)",
+        "6": "Drive startup completed",
+        "7": "Low voltage detected",
+        "8": "Baseblock",
+        "9": "Frequency reference not from communication",
+        "10": "Run command not from communication",
+        "11": "Overtorque detected",
+        "12": "Frequency reference lost",
+        "13": "Retrying error",
+        "14": "Error (incl. Modbus time-out)",
+        "15": "Modbus communications time-out"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 45,
+      "documented": "002DH",
+      "name": "Multi-function digital output status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Output 1 (M1-M2) on",
+        "1": "Output 2 (M3-M4) on"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 56,
+      "documented": "0038H",
+      "name": "PI feedback level",
+      "description": "Unsigned, 10 = 1 % of max output frequency.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 57,
+      "documented": "0039H",
+      "name": "PI input level",
+      "description": "Signed, 10 = 1 % of max output frequency.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 58,
+      "documented": "003AH",
+      "name": "PI output level",
+      "description": "Signed, 10 = 1 % of max output frequency.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 59,
+      "documented": "003BH",
+      "name": "CPU software number",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 60,
+      "documented": "003CH",
+      "name": "Flash software number",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 61,
+      "documented": "003DH",
+      "name": "Communication error details",
+      "description": "Latched until a fault reset.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "CRC error",
+        "1": "Invalid data length",
+        "3": "Parity error",
+        "4": "Overrun error",
+        "5": "Framing error",
+        "6": "Time-out"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 62,
+      "documented": "003EH",
+      "name": "kVA setting",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 63,
+      "documented": "003FH",
+      "name": "Control method",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2304,
+      "documented": "0900H",
+      "name": "Enter command (EEPROM)",
+      "description": "Write 0 to store written parameters in EEPROM and RAM.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2320,
+      "documented": "0910H",
+      "name": "Enter command (RAM only)",
+      "description": "Write 0 to activate written parameters in RAM only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Put the HAND/OFF/AUTO switch in AUTO, set H5-01..H5-03 at the keypad and power-cycle, set the drive's reference and run source to serial, then write 0001H/0002H with function 10H and poll 0020H-002DH.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Run/stop and fault reset"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Frequency reference"
+      },
+      {
+        "table": "holding_register",
+        "address": 32,
+        "why": "Drive status"
+      },
+      {
+        "table": "holding_register",
+        "address": 33,
+        "why": "Fault details"
+      },
+      {
+        "table": "holding_register",
+        "address": 36,
+        "why": "Output frequency"
+      },
+      {
+        "table": "holding_register",
+        "address": 44,
+        "why": "Drive status 2 incl. comm timeout"
+      }
+    ],
+    "enable": "Set H5-01 (default 1F hex), H5-02 (default 3 = 9600) and H5-03 (default none) and cycle power. The HAND/OFF/AUTO switch must be in AUTO for serial run/stop and speed control; OFF overrides a serial run command. For monitoring only, just the H5 parameters are needed.",
+    "watchdog": "H5-05 = 1 enables CE detection after the H5-09 time; H5-04 sets the reaction. 002CH bit F shows a comm time-out.",
+    "quirks": [
+      "Registers are hex and 0-based.",
+      "Function codes 03H, 06H, 08H and 10H.",
+      "0001H bit 0 is run/stop and bit 1 is direction, unlike the stand-alone P7 (bit 0 forward, bit 1 reverse).",
+      "Parameter writes need 0 written to 0900H (EEPROM) or 0910H (RAM)."
+    ],
+    "setup": [
+      "Drive terminals S+, S-, R+, R-; for RS-485 jumper S+ to R+ and S- to R-. Up to 31 drives.",
+      "Terminating resistor: DIP switch S1-1 on the drive terminal board, ON only at the end of the line.",
+      "8 data bits, 1 stop bit; 1200-19200 baud."
+    ],
+    "gotchas": [
+      "The OFF position of the HAND/OFF/AUTO switch takes precedence over a serial run command."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

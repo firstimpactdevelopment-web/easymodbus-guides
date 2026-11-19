@@ -1,0 +1,64 @@
+﻿# Autonics TK series PID temperature controller (Modbus RTU) Modbus register map - easymodbus.com - source: https://cdn.automationdirect.com/static/manuals/autonics/autonicstkcommunicationsmanual.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,000001 (0000),00001,RUN/STOP,Control output run/stop.,BIT,1,,1,0,,Read/write,0 = RUN; 1 = STOP
+Coil,"FC01 read / FC05, FC15 write",1,000002 (0001),00002,Auto-tuning execute,,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Discrete input,FC02 read,0,100001 (0000),10001,°C unit indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,1,100002 (0001),10002,°F unit indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,2,100003 (0002),10003,% unit indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,3,100004 (0003),10004,OUT1 indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,4,100005 (0004),10005,OUT2 indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,5,100006 (0005),10006,AT indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,6,100007 (0006),10007,SV1 indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,7,100008 (0007),10008,SV2 indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,8,100009 (0008),10009,SV3 indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,9,100010 (0009),10010,AL1 indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,10,100011 (000A),10011,AL2 indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,11,100012 (000B),10012,MAN indicator,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,12,100013 (000C),10013,DI-1 input,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,13,100014 (000D),10014,DI-2 input,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Input register,FC04 read,100,300101 (0064),30101,Product number H,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,101,300102 (0065),30102,Product number L,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,102,300103 (0066),30103,Hardware version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,103,300104 (0067),30104,Software version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,104,300105-300114 (0068-0071),30105,Model name,"ASCII model text, e.g. 'TK4 14RR'.",STRING[20],10,,1,0,,Read,
+Input register,FC04 read,1000,301001 (03E8),31001,PV (present value),-1999..9999; Raw count; decimal point from 301002.,INT16,1,,1,0,,Read,30000 = HHHH (over range); 31000 = OPEN (sensor break); -30000 = LLLL (under range)
+Input register,FC04 read,1001,301002 (03E9),31002,Decimal point location,,UINT16,1,,1,0,,Read,0 = 0; 1 = 0.0; 2 = 0.00; 3 = 0.000
+Input register,FC04 read,1002,301003 (03EA),31003,Indicator unit,,UINT16,1,,1,0,,Read,0 = °C; 1 = °F; 2 = %; 3 = OFF
+Input register,FC04 read,1003,301004 (03EB),31004,SV setting value,Active setpoint. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read,
+Input register,FC04 read,1004,301005 (03EC),31005,Heating side MV,0..1000 = 0.0..100.0 %.,UINT16,1,,0.1,0,%,Read,
+Input register,FC04 read,1005,301006 (03ED),31006,Cooling side MV,0..1000 = 0.0..100.0 %.,UINT16,1,,0.1,0,%,Read,
+Input register,FC04 read,1006,301007 (03EE),31007,Indicator / input status bits,,BITMAP16,1,,1,0,,Read,bit 0 = °C unit indicator; bit 1 = °F unit indicator; bit 2 = % unit indicator; bit 3 = OUT1 indicator; bit 4 = OUT2 indicator; bit 5 = AT indicator; bit 6 = SV1 indicator; bit 7 = SV2 indicator; bit 8 = SV3 indicator; bit 9 = AL1 indicator; bit 10 = AL2 indicator; bit 11 = MAN indicator; bit 12 = DI-1 input; bit 13 = DI-2 input
+Holding register,"FC03 read / FC06, FC16 write",0,400001 (0000),40001,SV set value,Within L-SV..H-SV. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,400002 (0001),40002,Heating MV (manual),0..1000 = 0.0..100.0 %.,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,400003 (0002),40003,Cooling MV (manual),0..1000 = 0.0..100.0 %.,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,400004 (0003),40004,Auto/Manual control,,UINT16,1,,1,0,,Read/write,0 = AUTO; 1 = MAN
+Holding register,"FC03 read / FC06, FC16 write",50,400051 (0032),40051,R-S control output run/stop,,UINT16,1,,1,0,,Read/write,0 = RUN; 1 = STOP
+Holding register,"FC03 read / FC06, FC16 write",51,400052 (0033),40052,SV-N multi SV number,,UINT16,1,,1,0,,Read/write,0 = SV-0; 1 = SV-1; 2 = SV-2; 3 = SV-3
+Holding register,"FC03 read / FC06, FC16 write",52,400053 (0034),40053,CT-A heater current monitoring,0..500 = 0.0..50.0 A.,UINT16,1,,0.1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",53,400054 (0035),40054,AL1.L alarm 1 low limit,Deviation or absolute value per alarm mode. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",54,400055 (0036),40055,AL1.H alarm 1 high limit,Deviation or absolute value per alarm mode. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",55,400056 (0037),40056,AL2.L alarm 2 low limit,Deviation or absolute value per alarm mode. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",56,400057 (0038),40057,AL2.H alarm 2 high limit,Deviation or absolute value per alarm mode. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57,400058 (0039),40058,SV-0 set value,Multi-SV setpoint. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",58,400059 (003A),40059,SV-1 set value,Multi-SV setpoint. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",59,400060 (003B),40060,SV-2 set value,Multi-SV setpoint. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",60,400061 (003C),40061,SV-3 set value,Multi-SV setpoint. Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",61,400062 (003D),40062,AL3.L alarm 3 low limit,Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",62,400063 (003E),40063,AL3.H alarm 3 high limit,Raw count; decimal point from 301002.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",100,400101 (0064),40101,AT auto-tuning run/stop,,UINT16,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",101,400102 (0065),40102,H-P heating proportional band,1..9999 = 0.1..999.9 (°C/°F or %).,UINT16,1,,0.1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",102,400103 (0066),40103,C-P cooling proportional band,1..9999 = 0.1..999.9.,UINT16,1,,0.1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",103,400104 (0067),40104,H-I heating integral time,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",104,400105 (0068),40105,C-I cooling integral time,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",105,400106 (0069),40106,H-D heating derivative time,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",106,400107 (006A),40107,C-D cooling derivative time,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",108,400109 (006C),40109,REST manual reset,0..1000 = 0.0..100.0 %.,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",151,400152 (0097),40152,UNIT sensor temperature unit,,UINT16,1,,1,0,,Read/write,0 = °C; 1 = °F
+Holding register,"FC03 read / FC06, FC16 write",157,400158 (009D),40158,D.UNT display unit,,UINT16,1,,1,0,,Read/write,0 = °C; 1 = °F; 2 = %; 3 = OFF
+Holding register,"FC03 read / FC06, FC16 write",163,400164 (00A3),40164,C-MD control type,"Standard: 0 PID, 1 ON/OFF. Heat&cool: 0 P.P, 1 P.ON, 2 ON.P, 3 ON.ON.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",218,400219 (00DA),40219,ADRS communication address,1..99.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",219,400220 (00DB),40220,BPS communication speed,,UINT16,1,,1,0,,Read/write,0 = 2400; 1 = 4800; 2 = 9600; 3 = 19200; 4 = 38400
+Holding register,"FC03 read / FC06, FC16 write",220,400221 (00DC),40221,PRTY parity,,UINT16,1,,1,0,,Read/write,0 = None; 1 = Even; 2 = Odd
+Holding register,"FC03 read / FC06, FC16 write",221,400222 (00DD),40222,STP stop bits,,UINT16,1,,1,0,,Read/write,0 = 1; 1 = 2
+Holding register,"FC03 read / FC06, FC16 write",222,400223 (00DE),40223,RSW.T response waiting time,"5..99 ms, default 20.",UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",223,400224 (00DF),40224,COMW communication write,,UINT16,1,,1,0,,Read/write,0 = Enabled; 1 = Disabled

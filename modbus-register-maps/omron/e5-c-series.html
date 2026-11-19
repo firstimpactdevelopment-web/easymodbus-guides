@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omron E5CC / E5EC Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="Omron E5CC / E5EC Modbus register map: 20 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/omron/e5-c-series">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Omron E5CC / E5EC Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="Omron E5CC / E5EC Modbus register map: 20 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/omron/e5-c-series">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Omron E5CC / E5EC Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="Omron E5CC / E5EC Modbus register map: 20 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/omron/e5-c-series",
+   "url": "https://easymodbus.com/modbus-register-maps/omron/e5-c-series",
+   "name": "Omron E5CC / E5EC Modbus Register List & Map | Easy Modbus",
+   "description": "Omron E5CC / E5EC Modbus register map: 20 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-17",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/omron/e5-c-series#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/omron/e5-c-series#dataset",
+   "name": "Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus register map",
+   "description": "Omron's E5_C temperature controllers speak CompoWay/F or Modbus RTU on their RS-485 option. The variable area can be read in 4-byte mode (two registers per value) or 2-byte mode (one register per value, addresses from 0x2000); this map uses 2-byte mode for PV, set points, MV, heater current, alarms and status, plus the operation-command register for RUN/STOP, auto/manual and auto-tune. Omron E5CC / E5EC Modbus register map: 20 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/omron/e5-c-series",
+   "keywords": [
+    "Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus register map",
+    "Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus registers",
+    "Omron Modbus map",
+    "E5CC Modbus register map",
+    "E5EC Modbus register map",
+    "E5AC Modbus register map",
+    "E5DC Modbus register map",
+    "E5CC-U Modbus register map",
+    "E5@C Modbus register map",
+    "E5_C Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "dateModified": "2026-11-17",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "E5@C Digital Temperature Controllers Communications Manual",
+    "url": "https://files.omron.eu/downloads/latest/manual/en/h175_e5_c_communications_manual_en.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Omron"
+    }
+   },
+   "about": {
+    "@type": "Product",
+    "name": "Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)",
+    "brand": {
+     "@type": "Brand",
+     "name": "Omron"
+    },
+    "category": "Sensor (digital temperature controller)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/omron/e5-c-series.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/omron/e5-c-series.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@id": "https://easymodbus.com/modbus-register-maps/#catalog"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 20 registers: 20 holding registers. 10 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Addresses are printed in hex and sent as-is: the manual's 2-byte example reads PV with 01 03 20 00 00 01. 4-byte mode addresses (0000, 0002, ...) hold the same data as two registers each; only 2-byte mode addresses are listed here."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 8192 PV (PV); HR 8193 Status (low word) (Status low word (alarms, errors, outputs)); HR 8196 MV monitor (heating) (Heating MV); HR 8451 Set point (Set point); HR 9223 Status (high word) (Status high word (run/stop, auto/manual)); HR 9232 Decimal point monitor (Decimal point); HR 65535 Operation command (Operation command (write enable, RUN/STOP))."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Set Protocol Setting (psel) to Modbus in the communications setting level, set unit number and baud, then cycle power. Writes need 'communications writing ON' via the operation command."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is E5@C Digital Temperature Controllers Communications Manual (H175-E1-17), revision 2022-09, published free by Omron at https://files.omron.eu/downloads/latest/manual/en/h175_e5_c_communications_manual_en.pdf."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Omron",
+     "item": "https://easymodbus.com/modbus-register-maps/omron/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)",
+     "item": "https://easymodbus.com/modbus-register-maps/omron/e5-c-series"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/omron/">Omron</a></li><li aria-current="page">E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)</li></ol>
+<p class="eyebrow">Sensor (digital temperature controller) &middot; Modbus register map</p><h1><span class="mfr">Omron</span> E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus register map</h1><p class="updated">Updated 17 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>Omron&#x27;s E5_C temperature controllers speak CompoWay/F or Modbus RTU on their RS-485 option. The variable area can be read in 4-byte mode (two registers per value) or 2-byte mode (one register per value, addresses from 0x2000); this map uses 2-byte mode for PV, set points, MV, heater current, alarms and status, plus the operation-command register for RUN/STOP, auto/manual and auto-tune.</p>
+<p>This page lists <strong>20 Modbus registers</strong> for the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) &mdash; 10 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Omron&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/omron/">Omron</a></dd></div><div><dt>Model</dt><dd>E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/valves-actuators-sensors/">Sensor (digital temperature controller)</a></dd></div><div><dt>Registers</dt><dd>20 (10 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>Also known as</dt><dd>E5CC, E5EC, E5AC, E5DC, E5CC-U, E5@C, E5_C</dd></div><div><dt>Source document</dt><dd><a href="https://files.omron.eu/downloads/latest/manual/en/h175_e5_c_communications_manual_en.pdf" rel="nofollow noopener" target="_blank">E5@C Digital Temperature Controllers Communications Manual &middot; H175-E1-17 &middot; rev. 2022-09</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/omron/e5-c-series.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/omron/e5-c-series.json">JSON</a>
+  <a class="btn" href="https://files.omron.eu/downloads/latest/manual/en/h175_e5_c_communications_manual_en.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)</h2>
+<div class="answer"><b>Integration in brief</b><p>Read 0x2000-0x2005 with FC03 for PV, status, internal SP, heater current and MV; read 0x2410 once for the decimal point. To change the set point, first write 0x0001 to 0xFFFF (communications writing ON), then write 0x2103.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-8192">HR 8192</a></td><td class="n">PV</td><td class="f">INT16</td><td>PV</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-8193">HR 8193</a></td><td class="n">Status (low word)</td><td class="f">BITMAP16</td><td>Status low word (alarms, errors, outputs)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-8196">HR 8196</a></td><td class="n">MV monitor (heating)</td><td class="f">INT16</td><td>Heating MV</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-8451">HR 8451</a></td><td class="n">Set point</td><td class="f">INT16</td><td>Set point</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-9223">HR 9223</a></td><td class="n">Status (high word)</td><td class="f">BITMAP16</td><td>Status high word (run/stop, auto/manual)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-9232">HR 9232</a></td><td class="n">Decimal point monitor</td><td class="f">INT16</td><td>Decimal point</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-65535">HR 65535</a></td><td class="n">Operation command</td><td class="f">UINT16</td><td>Operation command (write enable, RUN/STOP)</td><td><span class="acc W">Write</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Set Protocol Setting (psel) to Modbus in the communications setting level, set unit number and baud, then cycle power. Writes need &#x27;communications writing ON&#x27; via the operation command.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Values carry no decimal point; check 2410.</li><li>Use 2-byte mode addresses (0x2000+) for 16-bit tools; 4-byte mode needs even addresses and even counts.</li><li>Reading in setup area 1 freezes or clears some status bits.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Protocol (psel), unit no. (u-no, default 1), baud (bps), parity (prty) and send data wait (sdwt, default 20 ms) are set on the front panel in the communications setting level; reset the controller to apply changes.</li><li>Up to 106 registers per read in 2-byte mode.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>In backup mode every communications write of an operation/adjustment parameter is also saved to non-volatile memory; RAM write mode (0x0401) skips that until backup mode or &#x27;save RAM data&#x27;.</li></ul>
+</section>
+<h2 id="registers">Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>20</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">20 of 20 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-8192"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8192<small>doc 2000</small></td><td class="n">PV</td><td class="d">Process value. Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8193"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8193<small>doc 2001</small></td><td class="n">Status (low word)</td><td class="d">Bits 0-15 of the 32-bit status.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Heater overcurrent (CT1); bit 1 = Heater current hold (CT1); bit 2 = A/D converter error; bit 3 = HS alarm (CT1); bit 4 = RSP input error; bit 6 = Input error; bit 7 = Potentiometer input error; bit 8 = Control output (heating) / open output ON; bit 9 = Control output (cooling) / close output ON; bit 10 = HB alarm (CT1); bit 11 = HB alarm (CT2); bit 12 = Alarm 1; bit 13 = Alarm 2; bit 14 = Alarm 3; bit 15 = Program end output</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8194"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8194<small>doc 2002</small></td><td class="n">Internal set point</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8195"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8195<small>doc 2003</small></td><td class="n">Heater current 1</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8196"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8196<small>doc 2004</small></td><td class="n">MV monitor (heating)</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8197"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8197<small>doc 2005</small></td><td class="n">MV monitor (cooling)</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8451"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8451<small>doc 2103</small></td><td class="n">Set point</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8452"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8452<small>doc 2104</small></td><td class="n">Alarm value 1</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8453"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8453<small>doc 2105</small></td><td class="n">Alarm 1 upper limit</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8454"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8454<small>doc 2106</small></td><td class="n">Alarm 1 lower limit</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8455"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8455<small>doc 2107</small></td><td class="n">Alarm value 2</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8456"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8456<small>doc 2108</small></td><td class="n">Alarm 2 upper limit</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8457"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8457<small>doc 2109</small></td><td class="n">Alarm 2 lower limit</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9220"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9220<small>doc 2404</small></td><td class="n">Multi-SP number</td><td class="d">Active set point 0-7.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9223"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9223<small>doc 2407</small></td><td class="n">Status (high word)</td><td class="d">Bits 16-31 of the 32-bit status, shown here as bits 0-15.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Event input 1; bit 1 = Event input 2; bit 2 = Event input 3; bit 3 = Event input 4; bit 4 = Write mode (1 = RAM write mode); bit 5 = Non-volatile memory differs from RAM; bit 6 = Setup area 1; bit 7 = AT in progress; bit 8 = Stop (0 = Run); bit 9 = Communications writing enabled; bit 10 = Manual mode (0 = automatic); bit 11 = Program start; bit 12 = Heater overcurrent (CT2); bit 13 = Heater current hold (CT2); bit 15 = HS alarm (CT2)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9232"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9232<small>doc 2410</small></td><td class="n">Decimal point monitor</td><td class="d">Decimal places (0-3) used by PV, SP and alarm values.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9728"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9728<small>doc 2600</small></td><td class="n">Manual MV</td><td class="d">Output in manual mode.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9729"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9729<small>doc 2601</small></td><td class="n">Set point (operation level)</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9730"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9730<small>doc 2602</small></td><td class="n">Remote SP monitor</td><td class="d">Raw value without decimal point; decimal places per 2410.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-65535"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">65535<small>doc FFFF</small></td><td class="n">Operation command</td><td class="d">FC06 only: command code in the high byte, related information in the low byte.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc W">Write</span></td><td class="s">0 = 0x0000: communications writing OFF; 1 = 0x0001: communications writing ON; 256 = 0x0100: RUN; 257 = 0x0101: STOP; 768 = 0x0300: AT cancel; 769 = 0x0301: 100% AT execute; 770 = 0x0302: 40% AT execute; 1024 = 0x0400: backup write mode; 1025 = 0x0401: RAM write mode; 1280 = 0x0500: save RAM data; 1536 = 0x0600: software reset; 2304 = 0x0900: automatic mode; 2305 = 0x0901: manual mode; 3087 = 0x0C0F: cancel all alarm latches; 3328 = 0x0D00: local SP mode; 3329 = 0x0D01: remote SP mode</td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>Values are sent without the decimal point (105.0 is sent as 1050). PV, set points and alarm values use the decimal places reported by 2410; MV (x0.1 %) and heater current (x0.1 A) have fixed scaling per the setting ranges.</li><li>In 2-byte mode 2001 and 2406 return the low 16 bits of the 32-bit status and 2407 the high 16 bits; bit meanings come from the status table on pp. 3-23 to 3-25.</li><li>Before any write, send operation command &#x27;communications writing ON&#x27; (0x0001 to address FFFF). FC06 single writes work only in 2-byte mode; FC16 works in both.</li><li>The manual states a default unit number of 1 and a default send data wait of 20 ms; default baud rate and parity are only shown as highlighted cells, so they are not listed. With Modbus the data length is fixed at 8 bits, with 1 stop bit for even/odd parity or 2 for none.</li><li>Left out: the rest of the adjustment, initial-setting and advanced levels (PID, scaling, input type and so on), alarm 3/4 values, valve opening, and program/SP ramp parameters.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)</h2><div class="faq"><details open><summary>What Modbus registers does the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) have?</summary><p>This map lists 20 registers: 20 holding registers. 10 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Addresses are printed in hex and sent as-is: the manual&#x27;s 2-byte example reads PV with 01 03 20 00 00 01. 4-byte mode addresses (0000, 0002, ...) hold the same data as two registers each; only 2-byte mode addresses are listed here.</p></details><details><summary>What are the minimum Modbus registers to integrate the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)?</summary><p>Start with HR 8192 PV (PV); HR 8193 Status (low word) (Status low word (alarms, errors, outputs)); HR 8196 MV monitor (heating) (Heating MV); HR 8451 Set point (Set point); HR 9223 Status (high word) (Status high word (run/stop, auto/manual)); HR 9232 Decimal point monitor (Decimal point); HR 65535 Operation command (Operation command (write enable, RUN/STOP)).</p></details><details><summary>How do I enable Modbus control of the Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series)?</summary><p>Set Protocol Setting (psel) to Modbus in the communications setting level, set unit number and baud, then cycle power. Writes need &#x27;communications writing ON&#x27; via the operation command.</p></details><details><summary>Where is the official Omron E5CC / E5EC / E5AC / E5DC digital temperature controllers (E5_C series) Modbus documentation?</summary><p>The source is E5@C Digital Temperature Controllers Communications Manual (H175-E1-17), revision 2022-09, published free by Omron at https://files.omron.eu/downloads/latest/manual/en/h175_e5_c_communications_manual_en.pdf.</p></details></div>
+<h2>More Omron Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/omron/km-n2-flk" data-row><span class="k">Power meter (multi-circuit power monitor)</span><h3>Omron KM-N2-FLK multi-circuit power monitor</h3><p>Omron KM-N2-FLK power monitor (catalog N200-E1-04).</p><div class="meta">62 registers &middot; 10 writable &middot; RTU</div><span class="sr-only"> Also known as: KM-N2-FLK, KM-N2</span></a></li><li><a class="card" href="/modbus-register-maps/omron/km-n3-flk" data-row><span class="k">Power meter (multi-circuit power monitor)</span><h3>Omron KM-N3-FLK on-panel power monitor</h3><p>Omron KM-N3-FLK power monitor (catalog N214-E1-04).</p><div class="meta">68 registers &middot; 10 writable &middot; RTU</div><span class="sr-only"> Also known as: KM-N3-FLK, KM-N3</span></a></li></ul>
+<p class="updated">Source: <a href="https://files.omron.eu/downloads/latest/manual/en/h175_e5_c_communications_manual_en.pdf" rel="nofollow noopener" target="_blank">E5@C Digital Temperature Controllers Communications Manual &middot; H175-E1-17 &middot; rev. 2022-09</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

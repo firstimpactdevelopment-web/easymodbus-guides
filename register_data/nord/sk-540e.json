@@ -1,0 +1,341 @@
+{
+  "manufacturer": "NORD Drivesystems",
+  "manufacturer_slug": "nord",
+  "model": "SK 540E / SK 545E frequency inverter (built-in Modbus RTU)",
+  "model_slug": "sk-540e",
+  "short_model": "SK 540E",
+  "aliases": [
+    "SK 540E",
+    "SK 545E",
+    "SK 54xE",
+    "NORDAC SK 500E series (SK 540E and above)"
+  ],
+  "equipment_type": "Variable frequency drive",
+  "applies_to": "NORD SK 500E-series inverters from SK 540E up (SK 540E, SK 545E) on the RS485 interface, per supplementary manual BU 0050 (GB-3111).",
+  "summary": "NORD's SK 540E/545E inverters answer Modbus RTU on the same RS485 interface as USS, switching protocol automatically. Every parameter is reached at (parameter number x 64 + array index), so the hidden process-data arrays P050 (control word and setpoints) and P051 (status word and actual values) give the cyclic control block. This map covers that process data and the bus setup parameters.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 38400,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "The start address is the parameter number in bits 6-15 and the array index (or parameter set) in bits 0-5, sent as-is: P102 parameter set 1 = 0x1980, set 2 = 0x1981; P510 array element 2 = 0x7F81. The manual's examples read P051 from 0x0CC0 (status word + 3 actual values) and write setpoints 1-3 from 0x0C81. Registers here use index 0 (first element / parameter set 1)."
+  },
+  "default_word_order": "ABCD",
+  "firmware": null,
+  "source": {
+    "title": "BU 0050 USS Bus modules and MODBUS RTU - Supplementary manual for NORD frequency inverters",
+    "doc_number": "BU 0050 GB-3111",
+    "revision_date": "2011-08",
+    "url": "https://media.nord.com/res/Document/60557.pdf",
+    "pages": "1.5.3.3-1.5.3.6 STW/ZSW bits and setpoint/actual value scaling pp. 30-34; 1.8 P509-P513 pp. 52-53; 2 Modbus RTU pp. 61-70 (features, function codes and frame examples, watchdog, coil list, process data P050/P051, parameter address model)"
+  },
+  "notes": [
+    "This manual offers Modbus RTU only on SK 540E and SK 545E; the other series it covers (SK 300E, rest of SK 500E, SK 700E/750E) use USS on this interface.",
+    "Each 16-bit parameter is one address; read normally takes one parameter per request, except P050/P051 whose four elements can be read or written together. 32-bit parameters must be written with function 16; the manual's example writes P613 = 0x00123456 as 00 12 then 34 56, i.e. high word first.",
+    "Setpoints and actual values are relative: 16384 (0x4000) = 100 %, 0xC000 = -100 %, range about +/-200 %; setpoint 100 % = P105 maximum frequency of the active parameter set. They are kept raw.",
+    "Bus I/O coils 0x0000-0x0007 (Bus IO In 1-8, R/W) and 0x0008-0x000F (Bus IO Out 1-8, R) work only when P480/P481 assign them and P509/P510 are set to control terminals; they are not listed.",
+    "Left out: P513 telegram timeout (the manual gives 0.1 s steps on the keypad but no bus scaling), P543-P548 function lists, and fault parameters P700/P701 (array format not described in this manual)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 3200,
+      "documented": "0x0C80 (P050[-01])",
+      "name": "Process data IN: control word (STW)",
+      "description": "Needs P509 = 2. 0x047E = ready, 0x047F = run.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "1 = ON (ready), 0 = OFF1 ramp stop",
+        "1": "0 = OFF2 (output off, switch-on disabled)",
+        "2": "0 = OFF3 quick stop",
+        "3": "1 = enable operation",
+        "4": "1 = enable ramp generator (0 = ramp to zero)",
+        "5": "1 = release ramp (0 = hold frequency)",
+        "6": "1 = enable setpoint",
+        "7": "Fault acknowledge on 0->1",
+        "8": "Bus bit 8 (function in P480)",
+        "9": "Bus bit 9 (function in P480)",
+        "10": "1 = process data valid",
+        "11": "Rotation right",
+        "12": "Rotation left",
+        "14": "Parameter set select bit 0",
+        "15": "Parameter set select bit 1"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 3201,
+      "documented": "0x0C81 (P050[-02])",
+      "name": "Process data IN: setpoint 1",
+      "description": "Default setpoint frequency: 16384 = 100 % of P105 max frequency.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3202,
+      "documented": "0x0C82 (P050[-03])",
+      "name": "Process data IN: setpoint 2",
+      "description": "Function set in P546[-02].",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3203,
+      "documented": "0x0C83 (P050[-04])",
+      "name": "Process data IN: setpoint 3",
+      "description": "Function set in P546[-03].",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3264,
+      "documented": "0x0CC0 (P051[-01])",
+      "name": "Process data OUT: status word (ZSW)",
+      "description": "0x0B31 = ready for switch-on.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Ready to start",
+        "1": "Ready for operation",
+        "2": "Operation enabled",
+        "3": "Fault",
+        "4": "0 = OFF2 active",
+        "5": "0 = OFF3 active",
+        "6": "Starting disabled",
+        "7": "Warning",
+        "8": "Actual value OK (setpoint reached)",
+        "9": "Guidance requested from master",
+        "10": "Bus bit 10 (function in P481)",
+        "11": "Rotation right",
+        "12": "Rotation left",
+        "13": "Bus bit 13 (function in P481)",
+        "14": "Active parameter set bit 0",
+        "15": "Active parameter set bit 1"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 3265,
+      "documented": "0x0CC1 (P051[-02])",
+      "name": "Process data OUT: actual value 1",
+      "description": "Default actual frequency: 16384 = 100 % of nominal.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3266,
+      "documented": "0x0CC2 (P051[-03])",
+      "name": "Process data OUT: actual value 2",
+      "description": "Function set in P543[-02].",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3267,
+      "documented": "0x0CC3 (P051[-04])",
+      "name": "Process data OUT: actual value 3",
+      "description": "Function set in P543[-03].",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 32576,
+      "documented": "P509",
+      "name": "P509 Control word source",
+      "description": "Set 2 for Modbus (protocol detected automatically).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Control terminals or keypad",
+        "1": "Control terminals only",
+        "2": "USS / Modbus RTU control word"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 32640,
+      "documented": "P510[-01]",
+      "name": "P510[-01] Main setpoint source",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto (follows P509)",
+        "1": "Control terminals",
+        "2": "USS / Modbus RTU",
+        "3": "CAN",
+        "4": "Profibus",
+        "5": "InterBus",
+        "6": "CANopen",
+        "7": "DeviceNet",
+        "8": "EtherCAT",
+        "9": "CAN broadcast",
+        "10": "CANopen broadcast"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 32704,
+      "documented": "P511",
+      "name": "P511 USS / Modbus baud rate",
+      "description": "Factory 3 = 38400; Modbus allows 38400 max.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "4800",
+        "1": "9600",
+        "2": "19200",
+        "3": "38400",
+        "4": "57600 (SK 54xE)",
+        "5": "115200 (SK 54xE)",
+        "6": "230400 (SK 54xE)",
+        "7": "460800 (SK 54xE)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 32768,
+      "documented": "P512",
+      "name": "P512 USS / Modbus address",
+      "description": "0-30, factory 0 (broadcast); use 1 or 3-30, never 2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set P509 = 2 and P510[-01] = 2, P512 to 1 or 3-30, P511 to 38400 or less, then write 0x047E and next 0x047F to P050[-01] (0x0C80) with setpoint 1 at 0x0C81 (16384 = P105). Poll 0x0CC0-0x0CC3 for status word and actual values.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 3200,
+        "why": "Control word STW"
+      },
+      {
+        "table": "holding_register",
+        "address": 3201,
+        "why": "Setpoint 1 (16384 = 100 %)"
+      },
+      {
+        "table": "holding_register",
+        "address": 3264,
+        "why": "Status word ZSW"
+      },
+      {
+        "table": "holding_register",
+        "address": 3265,
+        "why": "Actual value 1 (frequency %)"
+      },
+      {
+        "table": "holding_register",
+        "address": 32576,
+        "why": "P509 control word source"
+      },
+      {
+        "table": "holding_register",
+        "address": 32768,
+        "why": "P512 bus address"
+      }
+    ],
+    "enable": "Set P509 = 2 (USS control word; Modbus is detected automatically on SK 540E+) and P510[-01] = 2 for the setpoint. Set P512 to 1 or 3-30 (factory 0 is the broadcast address, and address 2 must not be used: it stops the automatic switch to Modbus) and P511 baud (Modbus max 38400). The format is fixed at 8 data bits, even parity, 1 stop bit.",
+    "watchdog": "P513 telegram downtime: monitoring starts with the first valid telegram; if no new telegram arrives in time the inverter trips with E010 (error 10.0 Bus Time Out). 0.0 = off (factory); -0.1 = no error even if communication is lost.",
+    "quirks": [
+      "Addresses are parameter x 64 + index, not the parameter number: P509 = 32576.",
+      "Control word follows the USS/PROFIdrive pattern: 0x047E = ready for switch-on, then set bit 0 (0x047F) to run; bit 10 must be 1 or the process data is ignored.",
+      "Address 2 disables Modbus (the port stays USS)."
+    ],
+    "setup": [
+      "Connect RS485 on terminals X7:73/74 (SK 520E and above) or the RJ12 socket X11; switch on the termination with DIP 1 at the bus ends.",
+      "Up to 32 devices per RS485 segment; RS232 only for point-to-point."
+    ],
+    "gotchas": [
+      "Baud rates above 38400 exist in P511 but are not valid for Modbus.",
+      "If a digital input is set for fault acknowledge, do not hold control-word bit 7 at 1 from the bus, or the edge detection stops working."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

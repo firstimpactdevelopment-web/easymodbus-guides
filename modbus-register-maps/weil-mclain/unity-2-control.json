@@ -1,0 +1,714 @@
+{
+ "manufacturer": "Weil-McLain",
+ "manufacturer_slug": "weil-mclain",
+ "model": "Unity 2 control (ECO Tec 80-199, SVF 500/600 boilers)",
+ "model_slug": "unity-2-control",
+ "short_model": "Unity 2",
+ "aliases": [
+  "ECO Tec 80",
+  "ECO Tec 110",
+  "ECO Tec 150",
+  "ECO Tec 199",
+  "ECO Tec Combi",
+  "SVF 500",
+  "SVF 600",
+  "Unity2"
+ ],
+ "equipment_type": "Boiler",
+ "applies_to": "Weil-McLain boilers with the Unity 2 control (ECO Tec 80/110/150/199 wall-mount and combi, SVF 500/600), per Modbus supplement 550-100-266/1023.",
+ "summary": "Weil-McLain's Unity 2 boiler control has a built-in Modbus RTU slave on the BMS terminals of J12 (a plug-in harness on ECO Tec, pre-installed board on SVF). This map covers the supplement's 'frequently used points': model, boiler state, active priority, blower speed and modulation, flame signal, all temperature sensors in degrees F, DHW flow, gas valve and 120 V output status, and gas type.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "The supplement lists each register in decimal and hex and says the control speaks hex: use the hex value as the register address. 0xA002 (decimal 40962) is sent as 0xA002; it is not a Modicon 4xxxx number, so do not subtract 40001."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Unity 2 Control Modbus Supplement - Software Interface Specification (Eco Tec 80/110/150/199 and SVF 500/600)",
+  "doc_number": "550-100-266/1023",
+  "revision_date": "2023-10",
+  "url": "https://www.weil-mclain.com/wp-content/uploads/ECT-SVF-Unity2-Control-Modbus-Supplement.pdf",
+  "pages": "Settings p. 3; wiring and how to read the table p. 4; frequently used points pp. 5-7; boiler specific p. 7"
+ },
+ "notes": [
+  "Several registers are typed UINT8 in the list; Modbus returns them as a 16-bit register and they are typed UINT16 here.",
+  "Temperatures are whole degrees F; the values 1233-1237 are sensor fault codes, not temperatures.",
+  "Only the frequently used points list and gas type are mapped. The 118-page supplement also covers priorities, network/shadow boilers, faults and history; those registers are left out to keep the map short.",
+  "Modbus settings (enable, address 0-255, parity even/odd/none, baud 4800/9600/38400, 1 or 2 stop bits) are made on the boiler display's Modbus settings screen; no defaults are given.",
+  "The supplement does not name Modbus function codes. Its single register list mixes read-only and user-writable registers, which fits the holding-register table, so the points are listed as holding registers (function 03).",
+  "Revision date taken from the part number suffix /1023 (October 2023)."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 40961,
+   "documented": "40961 / 0xA001",
+   "name": "Boiler model",
+   "description": "Printed type UINT8.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "16": "Eco Tec 80",
+    "17": "Eco Tec 110",
+    "18": "Eco Tec 110 Combi",
+    "19": "Eco Tec 150",
+    "20": "Eco Tec 150 Combi",
+    "21": "Eco Tec 199",
+    "22": "Eco Tec 199 Combi",
+    "64": "SVF 500",
+    "65": "SVF 600",
+    "255": "Not configured"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40962,
+   "documented": "40962 / 0xA002",
+   "name": "Boiler state",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Standby",
+    "1": "Prepump",
+    "2": "Prepurge",
+    "3": "Ignition speed",
+    "4": "Pre-ignition",
+    "5": "GV open test",
+    "6": "GV closed test",
+    "7": "Ignition",
+    "8": "Heating",
+    "9": "Postpurge",
+    "10": "Lockout",
+    "11": "Postpump",
+    "12": "Inter-purge",
+    "13": "Init",
+    "14": "Config check"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40963,
+   "documented": "40963 / 0xA003",
+   "name": "Active inputs",
+   "description": "No value coding given in the list.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40964,
+   "documented": "40964 / 0xA004",
+   "name": "Active priority",
+   "description": "Printed type UINT8.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Local priority 1",
+    "1": "Network 1",
+    "2": "Network 2",
+    "3": "Local priority 2",
+    "4": "Local priority 3",
+    "6": "Freeze protection",
+    "7": "System pump",
+    "8": "Priority off",
+    "9": "No active priority"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40965,
+   "documented": "40965 / 0xA005",
+   "name": "Desired blower speed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "rpm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40966,
+   "documented": "40966 / 0xA006",
+   "name": "Actual blower speed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "rpm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40967,
+   "documented": "40967 / 0xA007",
+   "name": "Modulation percentage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40968,
+   "documented": "40968 / 0xA008",
+   "name": "Desired blower PWM",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40969,
+   "documented": "40969 / 0xA009",
+   "name": "Flame signal",
+   "description": "23 = 2.3 µA.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "µA",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40970,
+   "documented": "40970 / 0xA00A",
+   "name": "Target temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40971,
+   "documented": "40971 / 0xA00B",
+   "name": "Boiler out 1 temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40972,
+   "documented": "40972 / 0xA00C",
+   "name": "Boiler out 2 temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40973,
+   "documented": "40973 / 0xA00D",
+   "name": "Boiler in temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40974,
+   "documented": "40974 / 0xA00E",
+   "name": "Flue 1 temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40975,
+   "documented": "40975 / 0xA00F",
+   "name": "Flue 2 temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40976,
+   "documented": "40976 / 0xA010",
+   "name": "System supply temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40977,
+   "documented": "40977 / 0xA011",
+   "name": "System return temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40978,
+   "documented": "40978 / 0xA012",
+   "name": "Outdoor temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40979,
+   "documented": "40979 / 0xA013",
+   "name": "DHW 1 temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40980,
+   "documented": "40980 / 0xA014",
+   "name": "DHW 2 temperature",
+   "description": "Degrees F; 1233-1237 are sensor fault codes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": {
+    "1233": "No sensor",
+    "1234": "Sensor shorted",
+    "1235": "Sensor open",
+    "1236": "Redundant sensor failed",
+    "1237": "Lost communications to sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40982,
+   "documented": "40982 / 0xA016",
+   "name": "DHW flow rate",
+   "description": "35 = 3.5 GPM.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "gpm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40983,
+   "documented": "40983 / 0xA017",
+   "name": "Gas valve relay 1",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40984,
+   "documented": "40984 / 0xA018",
+   "name": "Gas valve relay 2",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40985,
+   "documented": "40985 / 0xA019",
+   "name": "External ignition/pilot relay",
+   "description": "Printed type UINT8.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40986,
+   "documented": "40986 / 0xA01A",
+   "name": "120 V output 1",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40987,
+   "documented": "40987 / 0xA01B",
+   "name": "120 V output 2",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40988,
+   "documented": "40988 / 0xA01C",
+   "name": "120 V output 3",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40989,
+   "documented": "40989 / 0xA01D",
+   "name": "120 V output 4",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40990,
+   "documented": "40990 / 0xA01E",
+   "name": "120 V output 5",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 41091,
+   "documented": "41091 / 0xA083",
+   "name": "Gas type",
+   "description": "Printed type UINT8.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Natural gas",
+    "1": "Liquid propane"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Enable Modbus on the boiler's contractor menu, match address/baud/parity/stop bits, then read 0xA002-0xA01E with function 03 for state, firing and temperatures.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 40962,
+    "why": "Boiler state"
+   },
+   {
+    "table": "holding_register",
+    "address": 40967,
+    "why": "Modulation %"
+   },
+   {
+    "table": "holding_register",
+    "address": 40970,
+    "why": "Target temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 40971,
+    "why": "Boiler outlet temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 40973,
+    "why": "Boiler inlet temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 40978,
+    "why": "Outdoor temperature"
+   }
+  ],
+  "enable": "Contractor menu (press and hold the WM logo on the home screen) > Modbus settings: set Enable = YES, address, parity, baud and stop bits. BMS wiring is J12-1 (A+), J12-2 (B-), J12-5 (common).",
+  "watchdog": null,
+  "quirks": [
+   "Register numbers like 40962 are real addresses (0xA002), not Modicon references.",
+   "Temperatures in F with fault codes 1233-1237."
+  ],
+  "setup": [
+   "Baud 4800, 9600 or 38400; parity even/odd/none; 1 or 2 stop bits."
+  ],
+  "gotchas": [
+   "On multi-boiler systems the Unity 2 must be the master control."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/weil-mclain/unity-2-control",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

@@ -1,0 +1,14 @@
+﻿"# Legrand Energy meter 046 77 / 046 79 (2-module, RS485 Modbus) Modbus register map - easymodbus.com - source: https://assets.legrand.com/pim/NP-FT-GT/CP-04677-04679b.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",200,0x00c8,40201,Reset command,Write-only; set the bit to reset that counter.,BITMAP16,1,,1,0,,Write,bit 0 = Reset partial active energy; bit 3 = Reset operating time counter
+Holding register,"FC03 read / FC06, FC16 write",768,0x0300,40769,Device identifier,Fixed 0x0F for this meter.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8192,0x2000,48193,Voltage,Sent in mV.,UINT32,2,ABCD,0.001,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",8194,0x2002,48195,Current,Sent in mA.,UINT32,2,ABCD,0.001,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",8196,0x2004,48197,Active power (magnitude),Size only; the sign is in 0x2006.,UINT32,2,ABCD,0.01,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",8198,0x2006,48199,Active power sign,,UINT16,1,,1,0,,Read,0 = Positive; 1 = Negative
+Holding register,"FC03 read / FC06, FC16 write",8199,0x2007,48200,Power factor,Magnitude; inductive or capacitive sector is in 0x2008.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8200,0x2008,48201,Power factor sector,,UINT16,1,,1,0,,Read,0 = PF is 0 or 1; 1 = Inductive; 2 = Capacitive
+Holding register,"FC03 read / FC06, FC16 write",8201,0x2009,48202,Frequency,,UINT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",8202,0x200a,48203,Positive active energy (total),,UINT32,2,ABCD,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",8204,0x200c,48205,Positive partial active energy,Resettable via 0x00C8 bit 0.,UINT32,2,ABCD,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",8206,0x200e,48207,Operating time counter,,UINT32,2,ABCD,1,0,s,Read,

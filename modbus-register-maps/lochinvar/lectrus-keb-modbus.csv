@@ -1,0 +1,38 @@
+﻿# Lochinvar Lectrus KEB electric boilers / water heaters 0015-0150 (Modbus communication board) Modbus register map - easymodbus.com - source: https://assets.lochinvar.com/damroot/Original/10017/MODB-I-O-KEB_100389961_2000844370_Rev_A_(63600).pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,00001,00001,Boiler Enable,Enable command from the BAS.,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",4,00005,00005,DHW Enable,DHW (tank thermostat) demand from the BAS.,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Discrete input,FC02 read,1,10002,10002,Flow Switch,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,2,10003,10003,Low Pressure Switch,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,3,10004,10004,External Low Water Cut Off,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,4,10005,10005,Low Water Cut Off / Manual Reset High Limit,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,6,10007,10007,Auto Reset High Limit,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,8,10009,10009,SH Enable,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,9,10010,10010,DHW Enable,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,32,10033,10033,Run-time Contacts,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,33,10034,10034,Alarm Contacts,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,34,10035,10035,Boiler Pump,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,35,10036,10036,DHW Pump,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,36,10037,10037,Low Water Cut Off Enable,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,37,10038,10038,Safety Monitor Relay,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,38,10039,10039,System Pump,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,0,30001,30001,Discrete Inputs 1-15,Packed copy of discrete inputs 1-15.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,1,30002,30002,Discrete Inputs 16-31,Packed copy of discrete inputs 16-31.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,2,30003,30003,Discrete Inputs 32-47,Packed copy of discrete inputs 32-47.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,4,30005,30005,System Pump Speed,0-100 %.,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,5,30006,30006,Cascade Total Power,Total cascade capacity (100-800 %).,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,6,30007,30007,Cascade Current Power,Current cascade output (0-800 %).,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,8,30009,30009,Outlet Temperature,Raw is degrees C x 10 (manual example: 683 = 68.3 C).,UINT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,9,30010,30010,Inlet Temperature,,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,11,30012,30012,Modulation Rate,0-100 %.,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,12,30013,30013,Boiler Pump Speed,0-100 %.,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,13,30014,30014,Boiler Status Code,What the boiler is doing; 40 = lockout.,UINT16,1,,1,0,,Read,"2 = Heat demand blocked: high absolute outlet temperature; 4 = Heat demand blocked: high absolute delta T (outlet - inlet); 8 = Heat demand blocked: low 24 VDC; 10 = Blocked: boiler switched off at the display; 16 = Service function; 19 = DHW function, storage tank; 21 = Heat demand from input sensor; 22 = Heat demand from boiler management system; 23 = Heat demand from cascade; 30 = Heat demand from freeze protection; 32 = DHW pump delay; 33 = Boiler pump delay; 34 = No heat function (after pump delay); 40 = Lockout; 32767 = Code not present"
+Input register,FC04 read,14,30015,30015,Boiler Blocking Code,Why heat demand is blocked.,UINT16,1,,1,0,,Read,2 = Low 24 VDC supply; 5 = Boiler switched off (display ENTER switch); 7 = High delta T; 9 = High outlet temperature; 13 = Anti-cycling time; 18 = Power limited: high delta T
+Input register,FC04 read,15,30016,30016,Boiler Lockout Code,Only valid while the status code is 40.,UINT16,1,,1,0,,Read,166 = EEPROM: auto reset high limit; 167 = EEPROM: auxiliary alarm contact; 168 = EEPROM: flow switch open; 169 = EEPROM: water pressure; 170 = EEPROM: external low water cut-off; 179 = Sensor 2 (inlet) fault; 180 = Sensor 2 (inlet) missing; 192 = Sensor 1 (outlet) fault; 193 = Sensor 1 (outlet) error; 230 = EEPROM: main control board error; 235 = EEPROM: LWCO / manual reset high limit; 237 = EEPROM: monitor relay not working properly; 241 = Low water cut-off recycling; 242 = Auxiliary alarm contact recycling; 243 = Flow switch recycling; 244 = Water pressure recycling
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Configuration,Selects which values the BAS supplies instead of the boiler's own inputs.,BITMAP16,1,,1,0,,Read/write,bit 0 = Boiler Enable from BAS; bit 1 = DHW Enable from BAS; bit 2 = 0-10V BMS input from BAS; bit 3 = Tank Setpoint from BAS; bit 4 = System Supply Temperature from BAS; bit 5 = Outdoor Temperature from BAS; bit 6 = Tank Temperature from BAS
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,BV 0-4,"Command word ('Coils / BV'); manual examples: 0x0001 enables, 0x0008 = tank thermostat, 0x0000 disables.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,0-10 BMS,"Rate command: modulation % or setpoint, per the BMS Type setting (0-100).",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Tank Temperature,Tank temperature supplied by the BAS (0-130 C).,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Outdoor Temperature,Outdoor temperature supplied by the BAS (-40 to 60 C).,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,System Supply Temperature,System supply temperature supplied by the BAS.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7,40008,40008,DHW Recirculation Temperature,DHW recirculation temperature supplied by the BAS.,INT16,1,,0.1,0,°C,Read/write,

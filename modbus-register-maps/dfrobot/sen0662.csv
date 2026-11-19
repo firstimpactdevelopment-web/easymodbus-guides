@@ -1,0 +1,28 @@
+﻿# DFRobot SEN0662 Gravity BMV080 PM2.5 air quality sensor (UART Modbus RTU) Modbus register map - easymodbus.com - source: https://wiki.dfrobot.com/sen0662/docs/25056
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,0x0000,30001,Product ID (PIDR),Reads 0x0296 for this module.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,1,0x0001,30002,Vendor ID (VIDR),Reads 0x3343 (DFRobot).,UINT16,1,,1,0,,Read,
+Input register,FC04 read,2,0x0002,30003,Firmware Version,0x1000 = V1.0.0.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,3,0x0003,30004,Register Map Version,Default 0x0004.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,4,0x0004,30005,Operating Status,,UINT16,1,,1,0,,Read,"0 = Booting; 1 = Ready, waiting for measurement; 2 = Continuous measurement running; 3 = Duty-cycle measurement running; 4 = Stopped; 5 = Error"
+Input register,FC04 read,5,0x0005,30006,Last Status Code,Result of the last BMV080 SDK call; 0 = success.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,6,0x0006,30007,PM1.0,"Mass concentration, IEEE 754 float, high word first.",FLOAT32,2,ABCD,1,0,µg/m³,Read,
+Input register,FC04 read,8,0x0008,30009,PM2.5,"Mass concentration, IEEE 754 float, high word first.",FLOAT32,2,ABCD,1,0,µg/m³,Read,
+Input register,FC04 read,10,0x000A,30011,PM10,"Mass concentration, IEEE 754 float, high word first.",FLOAT32,2,ABCD,1,0,µg/m³,Read,
+Input register,FC04 read,12,0x000C,30013,Operating Duration,"Float, high word first.",FLOAT32,2,ABCD,1,0,s,Read,
+Input register,FC04 read,14,0x000E,30015,Status Flags,Status bits; bits 10-15 reserved.,BITMAP16,1,,1,0,,Read,"bit 0 = Sensor blockage; bit 1 = PM2.5 out of range; bit 2 = New PM data ready (cleared once data, flags and counter are read); bit 3 = Sensor initialisation complete; bit 4 = Measurement in progress; bit 5 = Parameter change pending; bit 6 = Parameters validated; bit 7 = Parameters being applied; bit 8 = Reserved (always 0 with float map); bit 9 = A float input was NaN/Inf and was written as 0"
+Input register,FC04 read,15,0x000F,30016,Sample Counter,Increments per sample; wraps after 65535.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,16,0x0010,30017,SDK Major Version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,17,0x0011,30018,SDK Minor Version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,18,0x0012,30019,SDK Patch Version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,19,0x0013,30020,Sensor Unique ID,"12 ASCII characters across 6 registers, high byte first.",STRING[12],6,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,0x0000,40001,RTU Slave Address,"1-247, default 0x57; stored in non-volatile memory.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,0x0001,40002,Baud Rate,Stored; applies after reboot.,UINT16,1,,1,0,,Read/write,1 = 2400; 2 = 4800; 3 = 9600; 4 = 14400; 5 = 19200; 6 = 38400; 7 = 57600; 8 = 115200
+Holding register,"FC03 read / FC06, FC16 write",2,0x0002,40003,Parity & Stop Bit Configuration,"High byte parity: 0 none, 1 even, 2 odd. Low byte stop bits: 1=1, 2=1.5, 3=2.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,0x0003,40004,Operation Command,Reads back 0. Not stored.,UINT16,1,,1,0,,Write,1 = Start measurement; 2 = Stop measurement; 3 = Restore default configuration
+Holding register,"FC03 read / FC06, FC16 write",4,0x0004,40005,Measurement Mode,Send a start command after changing.,UINT16,1,,1,0,,Read/write,0 = Continuous; 1 = Duty cycle
+Holding register,"FC03 read / FC06, FC16 write",5,0x0005,40006,Measurement Algorithm,Duty-cycle mode forces Fast Response.,UINT16,1,,1,0,,Read/write,1 = Fast Response; 2 = Balanced; 3 = High Precision
+Holding register,"FC03 read / FC06, FC16 write",6,0x0006,40007,Blockage Detection Switch,,UINT16,1,,1,0,,Read/write,0 = Disabled; 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",7,0x0007,40008,Vibration Filter Switch,,UINT16,1,,1,0,,Read/write,0 = Disabled; 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",8,0x0008,40009,Integration Time,"Float, high word first; default 10.0.",FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",10,0x000A,40011,Duty-Cycle Period,Integration time plus sleep time; default 30.,UINT16,1,,1,0,s,Read/write,

@@ -1,0 +1,500 @@
+{
+  "manufacturer": "go-e",
+  "manufacturer_slug": "go-e",
+  "model": "go-eCharger (Modbus TCP API v1)",
+  "model_slug": "go-echarger-api-v1",
+  "short_model": "go-eCharger API v1",
+  "aliases": [
+    "go-eCharger Modbus API v1",
+    "go-e Charger"
+  ],
+  "equipment_type": "EV charger",
+  "applies_to": "go-eCharger wallboxes running firmware 0.40 or newer with the v1 API (Modbus TCP API v1 document version 1.0, 2020-10-01).",
+  "summary": "The go-eCharger wallbox exposes a Modbus TCP server over WLAN once API access is enabled in the app. This map covers the single-register status and control points: charging state, errors, charge permission, access mode, cable lock, current setpoints and the push-button current levels.",
+  "transport": [
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": 502
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "The document says register IDs are 0-indexed and some clients must add 1. The table numbers are wire addresses: AMPERE_VOLATILE 299 is request address 299 (holding register 40300 in 1-based tools)."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "GO-E Charger Modbus TCP/IP Documentation English",
+    "doc_number": "go-eCharger Modbus TCP API v1 EN, version 1.0",
+    "revision_date": "2020-10-01",
+    "url": "https://raw.githubusercontent.com/goecharger/go-eCharger-API-v1/master/go-eCharger%20Modbus%20TCP%20API%20v1%20EN.md",
+    "pages": "Modbus register table (single markdown page)"
+  },
+  "notes": [
+    "The v1 document does not name which charger hardware generations it covers; check the API version against your charger's firmware.",
+    "Official go-e documentation hosted in the goecharger GitHub organisation.",
+    "Left out: all 32-bit values (voltages, currents, power, energy, power factor). The document only says the 16-bit registers are big-endian and does not state which register of a pair holds the high word, so the word order is not established.",
+    "Left out: firmware version, MAC, serial number, host name and network addresses (ASCII/binary blocks).",
+    "The source spells register 213 'AMLERE_L2'; it is listed here as AMPERE_L2."
+  ],
+  "registers": [
+    {
+      "table": "input_register",
+      "address": 100,
+      "documented": "100",
+      "name": "CAR_STATE",
+      "description": "Charging state as seen on the PWM pilot.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Unknown / charging station defective",
+        "1": "Ready, no car",
+        "2": "Car is charging",
+        "3": "Waiting for car",
+        "4": "Charging finished, car still connected"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 101,
+      "documented": "101",
+      "name": "PP_CABLE",
+      "description": "Type 2 cable current coding: 13-32 A, 0 = no cable.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 107,
+      "documented": "107",
+      "name": "ERROR",
+      "description": "Error code.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "RCCB (residual current breaker)",
+        "3": "Phase disturbance",
+        "8": "No ground detected",
+        "10": "Internal (others, default)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 200,
+      "documented": "200",
+      "name": "ALLOW",
+      "description": "Whether the PWM charging signal is allowed.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 201,
+      "documented": "201",
+      "name": "ACCESS_STATE",
+      "description": "Access control mode.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Open",
+        "1": "RFID / app needed",
+        "2": "Electricity price / automatic",
+        "3": "Scheduler"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 202,
+      "documented": "202",
+      "name": "ADAPTER_INPUT",
+      "description": "Adapter fitted to the charger.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No adapter",
+        "1": "16 A adapter"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 203,
+      "documented": "203",
+      "name": "UNLOCKED_BY",
+      "description": "Number of the RFID card that started this charge.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 204,
+      "documented": "204",
+      "name": "CABLE_LOCK_MODE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Lock while car is connected",
+        "1": "Unlock automatically after charging",
+        "2": "Always locked"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 205,
+      "documented": "205",
+      "name": "PHASES",
+      "description": "Phase presence before/after the contactor.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Phase 1 after contactor",
+        "1": "Phase 2 after contactor",
+        "2": "Phase 3 after contactor",
+        "3": "Phase 1 before contactor",
+        "4": "Phase 2 before contactor",
+        "5": "Phase 3 before contactor"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 206,
+      "documented": "206",
+      "name": "LED_BRIGHTNESS",
+      "description": "0 = off, 255 = maximum.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 207,
+      "documented": "207",
+      "name": "LED_SAVE_ENERGY",
+      "description": "LEDs switch off automatically after 10 s when on.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 208,
+      "documented": "208",
+      "name": "ELECTRICITY_PRICES_HOURS",
+      "description": "Minimum hours to charge in electricity-price mode.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "h",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 209,
+      "documented": "209",
+      "name": "ELECTRICITY_PRICES_FINISHED",
+      "description": "Hour of day by which price-mode charging must be done.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 210,
+      "documented": "210",
+      "name": "ELECTRICITY_PRICES_ZONE",
+      "description": "aWATTar price zone.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Austria",
+        "1": "Germany"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 211,
+      "documented": "211",
+      "name": "AMPERE_MAX",
+      "description": "Upper limit for the current setting.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 212,
+      "documented": "212",
+      "name": "AMPERE_L1",
+      "description": "Push-button current level 1: 6-32 A, 0 = skipped.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 213,
+      "documented": "213",
+      "name": "AMPERE_L2",
+      "description": "Push-button current level 2: 6-32 A, 0 = skipped.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 214,
+      "documented": "214",
+      "name": "AMPERE_L3",
+      "description": "Push-button current level 3: 6-32 A, 0 = skipped.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 215,
+      "documented": "215",
+      "name": "AMPERE_L4",
+      "description": "Push-button current level 4: 6-32 A, 0 = skipped.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 216,
+      "documented": "216",
+      "name": "AMPERE_L5",
+      "description": "Push-button current level 5: 6-32 A, 0 = skipped.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 217,
+      "documented": "217",
+      "name": "CLOUD_DISABLED",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Cloud enabled",
+        "1": "Cloud disabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 218,
+      "documented": "218",
+      "name": "NORWAY_MODE",
+      "description": "Disables ground detection; for IT networks only.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off (ground detection on)",
+        "1": "On (no ground detection)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 299,
+      "documented": "299",
+      "name": "AMPERE_VOLATILE",
+      "description": "Charge current 6-32 A, not saved; use for energy management.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 300,
+      "documented": "300",
+      "name": "AMPERE_EEPROM",
+      "description": "Charge current 6-32 A, saved to EEPROM (about 100,000 writes).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Connect to port 502, unit 1. Read CAR_STATE (100) and ERROR (107), allow charging with ALLOW (200) and set the current with AMPERE_VOLATILE (299) for dynamic load management.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 100,
+        "why": "Charging state"
+      },
+      {
+        "table": "input_register",
+        "address": 107,
+        "why": "Error code"
+      },
+      {
+        "table": "holding_register",
+        "address": 200,
+        "why": "Allow charging"
+      },
+      {
+        "table": "holding_register",
+        "address": 299,
+        "why": "Set charge current (not saved)"
+      },
+      {
+        "table": "input_register",
+        "address": 205,
+        "why": "Phases available"
+      }
+    ],
+    "enable": "Allow API access in the go-eCharger app under Advanced Settings, then restart the charger. Needs firmware 0.40 or newer.",
+    "watchdog": null,
+    "quirks": [
+      "Addresses are 0-based; 1-based tools need +1.",
+      "Unit ID is 1 and the port is 502 over WLAN."
+    ],
+    "setup": [
+      "Enable API access in the app (Advanced Settings) and reboot the charger.",
+      "Connect to the charger IP on TCP port 502, unit ID 1."
+    ],
+    "gotchas": [
+      "Use AMPERE_VOLATILE (299) for frequent changes; AMPERE_EEPROM (300) is stored in EEPROM with roughly 100,000 write cycles.",
+      "AMPERE_VOLATILE resets to the stored EEPROM value at the next boot."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

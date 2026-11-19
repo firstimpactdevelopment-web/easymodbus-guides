@@ -1,0 +1,21 @@
+﻿# Vertiv (Alber) Alber MPM-100 and BDS series battery monitors (Modbus ASCII) Modbus register map - easymodbus.com - source: https://www.vertiv.com/4ab422/globalassets/shared/alber-bds-and-mpm-100-modbus-protocol-.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40001 / 0000H,40001,Cell voltage 1,Raw / 2^10. Cell voltages 1-512 run 40001-40512.,UINT16,1,,0.0009765625,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,40002 / 0001H,40002,Cell voltage 2,Raw / 2^10.,UINT16,1,,0.0009765625,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",511,40512 / 01FFH,40512,Cell voltage 512,Raw / 2^10.,UINT16,1,,0.0009765625,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",512,40513 / 0200H,40513,Intercell resistance 1,Raw x 10^3 / 2^13. Intercell 1-48 run 40513-40560.,UINT16,1,,0.1220703125,0,µΩ,Read,
+Holding register,"FC03 read / FC06, FC16 write",559,40560 / 022FH,40560,Intercell resistance 48,Raw x 10^3 / 2^13.,UINT16,1,,0.1220703125,0,µΩ,Read,
+Holding register,"FC03 read / FC06, FC16 write",1024,41025 / 0400H,41025,Overall voltage,Raw / 2^4.,UINT16,1,,0.0625,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1038,41039 / 040EH,41039,Intertier resistance 1 (MPM),Raw x 10^3 / 2^11. Intertier 1-8 for MPM run 41039-41046.,UINT16,1,,0.48828125,0,µΩ,Read,
+Holding register,"FC03 read / FC06, FC16 write",1068,41069 / 042CH,41069,Intertier resistance 1 (BDS),Raw x 10^3 / 2^11. BDS intertier 1-15 run 41069-41083.,UINT16,1,,0.48828125,0,µΩ,Read,
+Holding register,"FC03 read / FC06, FC16 write",1135,41136 / 046FH,41136,Time-to-go #1,Hours x 100; 720 = 7.2 h. MPM 2.00+.,UINT16,1,,0.01,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",1137,41138 / 0471H,41138,Time-to-go #2,Hours x 100; 720 = 7.2 h. MPM 2.00+.,UINT16,1,,0.01,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",1139,41140 / 0473H,41140,Time-to-go #3,Hours x 100; 720 = 7.2 h. MPM 2.00+.,UINT16,1,,0.01,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",1141,41142 / 0475H,41142,Time-to-go #4,Hours x 100; 720 = 7.2 h. MPM 2.00+.,UINT16,1,,0.01,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",1152,41153 / 0480H,41153,Alarm type of first current alarm,Bit 15: 0 = active; bits 9-14 alarm number; bits 0-8 cell/sensor number.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1536,41537 / 0600H,41537,String ID,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1540,41541 / 0604H,41541,System status,,BITMAP16,1,,1,0,,Read,bit 0 = Hardware problem; bit 1 = Calibration in progress; bit 2 = Memory test finished; bit 3 = In diagnostic mode; bit 4 = Warning; bit 5 = Resistance values logged; bit 6 = Resistance test in progress; bit 7 = Discharge report logged; bit 8 = Discharge in progress; bit 9 = Discharge disabled; bit 10 = Historical alarm logged; bit 11 = DCM communication error; bit 12 = Logging discharge data; bit 13 = Maintenance alarm happened; bit 14 = Critical alarm happened; bit 15 = Alarm disabled
+Holding register,"FC03 read / FC06, FC16 write",1541,41542 / 0605H,41542,Firmware control,Write a command code (function 16).,UINT16,1,,1,0,,Read/write,0 = Start resistance test; 1 = Stop resistance test; 2 = Start firmware scan; 3 = Stop firmware scan; 5 = Load off; 6 = Start diagnostics; 7 = Stop diagnostics; 8 = Reset alarm; 10 = Start load test; 11 = Stop load test; 12 = Start EEPROM test; 16 = Enable alarm; 17 = Disable alarm; 18 = Close alarm contact; 19 = Open alarm contact; 20 = Close charger contact; 21 = Open charger contact
+Holding register,"FC03 read / FC06, FC16 write",1553,41554 / 0611H,41554,DIP switch,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1598,41599 / 063EH,41599,Cell connection,"BDS40 only (DCM 2.45+, controller 2.31+).",UINT16,1,,1,0,,Read,128 = Good; 255 = Connection problem
+Holding register,"FC03 read / FC06, FC16 write",1600,41601 / 0640H,41601,Total cell number,,UINT16,1,,1,0,,Read/write,

@@ -1,0 +1,59 @@
+﻿# ABB ACS310 pump and fan drive (embedded Modbus RTU) Modbus register map - easymodbus.com - source: https://search.abb.com/library/Download.aspx?DocumentID=3AUA0000044201&LanguageCode=en&DocumentPartId=1&Action=Launch
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Control word (ABB Drives),ABB DRV LIM/FULL only (5305).,BITMAP16,1,,1,0,,Read/write,"bit 0 = OFF1 CONTROL: 1 = ready to operate, 0 = ramp stop; bit 1 = OFF2 CONTROL: 0 = emergency OFF, coast to stop; bit 2 = OFF3 CONTROL: 0 = emergency stop (2208 time); bit 3 = INHIBIT OPERATION: 1 = operation enabled (run), 0 = inhibit; bit 4 = RAMP_OUT_ZERO (ABB DRV FULL only): 0 = force ramp output to zero; bit 5 = RAMP_HOLD: 0 = halt ramping; bit 6 = RAMP_IN_ZERO: 0 = force ramp input to zero; bit 7 = RESET: 0->1 = fault reset (1604 = COMM); bit 8 = Not in use; bit 9 = Not in use; bit 10 = REMOTE_CMD (ABB DRV FULL only): 1 = fieldbus control enabled; bit 11 = EXT CTRL LOC: 1 = EXT2, 0 = EXT1 (1102 = COMM); bit 12 = MOTOR_HEAT: 1 = start motor heating; bit 13 = Reserved; bit 14 = Reserved; bit 15 = Reserved"
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Reference 1 (REF1),Signed; 20000 = 1105 REF1 MAX (frequency).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Reference 2 (REF2),Signed; 10000 = 1108 REF2 MAX.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,40004,40004,Status word (ABB Drives),ABB DRV LIM/FULL only (5305).,BITMAP16,1,,1,0,,Read,"bit 0 = RDY_ON: ready to switch on; bit 1 = RDY_RUN: ready to operate; bit 2 = RDY_REF: operation enabled; bit 3 = TRIPPED: fault; bit 4 = OFF_2_STA: 1 = OFF2 inactive; bit 5 = OFF_3_STA: 1 = OFF3 inactive; bit 6 = SWC_ON_INHIB: switch-on inhibited; bit 7 = ALARM; bit 8 = AT_SETPOINT: output frequency at reference; bit 9 = REMOTE: 1 = EXT1/EXT2, 0 = local; bit 10 = ABOVE_LIMIT: supervised value above limit (group 32); bit 11 = EXT CTRL LOC: 1 = EXT2 selected; bit 12 = EXT RUN ENABLE: run enable received; bit 13 = MOTOR_HEAT: motor heating on; bit 14 = Reserved; bit 15 = Reserved"
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Actual value 1,Signal chosen by 5310; scaling is that of the chosen signal.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Actual value 2,Signal chosen by 5311.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,40031,40031,DCU control word LSW (0301),DCU profile only.,BITMAP16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",31,40032,40032,DCU control word MSW (0302),DCU profile only.,BITMAP16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32,40033,40033,DCU status word LSW (0303),DCU profile only.,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",33,40034,40034,DCU status word MSW (0304),DCU profile only.,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",100,40101,40101,0101 Speed & dir,Calculated motor speed; negative = reverse.,INT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",101,40102,40102,0102 Speed,Calculated motor speed.,UINT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",102,40103,40103,0103 Output freq,,UINT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",103,40104,40104,0104 Current,Measured motor current.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",104,40105,40105,0105 Torque,Percent of nominal motor torque.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",105,40106,40106,0106 Power,Measured motor power.,INT16,1,,0.1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",106,40107,40107,0107 DC bus voltage,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",108,40109,40109,0109 Output voltage,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",109,40110,40110,0110 Drive temp,IGBT temperature.,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",110,40111,40111,0111 External ref 1,REF1 in Hz.,INT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",111,40112,40112,0112 External ref 2,REF2 in percent.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",112,40113,40113,0113 Ctrl location,,UINT16,1,,1,0,,Read,0 = LOCAL; 1 = EXT1; 2 = EXT2
+Holding register,"FC03 read / FC06, FC16 write",113,40114,40114,0114 Run time (R),Resettable run hours.,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",114,40115,40115,0115 kWh counter (R),Rolls over at 65535; resettable.,UINT16,1,,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",139,40140,40140,0140 Run time,Run time in thousands of hours.,UINT16,1,,0.01,0,kh,Read,
+Holding register,"FC03 read / FC06, FC16 write",140,40141,40141,0141 MWh counter,Rolls over at 65535.,UINT16,1,,1,0,MWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",142,40143,40143,0143 Drive on time hi,Control board power-on time in days.,UINT16,1,,1,0,days,Read,
+Holding register,"FC03 read / FC06, FC16 write",143,40144,40144,0144 Drive on time lo,Power-on time in 2 s ticks within the day.,UINT16,1,,2,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",161,40162,40162,0162 RO status,Relay output 1: 1 = energized.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",304,40305,40305,0305 Fault word 1,,BITMAP16,1,,1,0,,Read,bit 0 = OVERCURRENT; bit 1 = DC OVERVOLT; bit 2 = DEV OVERTEMP; bit 3 = SHORT CIRC; bit 4 = Reserved; bit 5 = DC UNDERVOLT; bit 6 = AI1 LOSS; bit 7 = AI2 LOSS; bit 8 = MOT OVERTEMP; bit 9 = PANEL LOSS; bit 10 = Reserved; bit 11 = MOTOR STALL; bit 12 = Reserved; bit 13 = EXT FAULT 1; bit 14 = EXT FAULT 2; bit 15 = EARTH FAULT
+Holding register,"FC03 read / FC06, FC16 write",305,40306,40306,0306 Fault word 2,,BITMAP16,1,,1,0,,Read,bit 0 = Reserved; bit 1 = THERM FAIL; bit 2 = Reserved; bit 3 = Reserved; bit 4 = CURR MEAS; bit 5 = SUPPLY PHASE; bit 6 = Reserved; bit 7 = OVERSPEED; bit 8 = Reserved; bit 9 = DRIVE ID; bit 10 = CONFIG FILE; bit 11 = SERIAL 1 ERR; bit 12 = EFB CON FILE; bit 13 = FORCE TRIP; bit 14 = MOTOR PHASE; bit 15 = OUTP WIRING
+Holding register,"FC03 read / FC06, FC16 write",306,40307,40307,0307 Fault word 3,,BITMAP16,1,,1,0,,Read,bit 0 = EFB 1; bit 1 = EFB 2; bit 2 = EFB 3; bit 3 = INCOMPATIBLE SW; bit 4 = USER LOAD CURVE; bit 5 = UNKNOWN EXTENSION; bit 6 = INLET VERY LOW; bit 7 = OUTLET VERY HIGH; bit 8 = INLET LOW; bit 9 = OUTLET HIGH; bit 10 = System error; bit 11 = System error; bit 12 = System error; bit 13 = System error; bit 14 = System error; bit 15 = Parameter setting fault
+Holding register,"FC03 read / FC06, FC16 write",307,40308,40308,0308 Alarm word 1,,BITMAP16,1,,1,0,,Read,bit 0 = OVERCURRENT; bit 1 = OVERVOLTAGE; bit 2 = UNDERVOLTAGE; bit 3 = DIR LOCK; bit 4 = IO COMM; bit 5 = AI1 LOSS; bit 6 = AI2 LOSS; bit 7 = PANEL LOSS; bit 8 = DEVICE OVERTEMP; bit 9 = MOTOR TEMP; bit 10 = Reserved; bit 11 = MOTOR STALL; bit 12 = AUTORESET; bit 13 = AUTOCHANGE; bit 14 = PFC I LOCK; bit 15 = Reserved
+Holding register,"FC03 read / FC06, FC16 write",308,40309,40309,0309 Alarm word 2,,BITMAP16,1,,1,0,,Read,bit 0 = Reserved; bit 1 = PID SLEEP; bit 2 = Reserved; bit 3 = Reserved; bit 4 = START ENABLE 1 MISSING; bit 5 = START ENABLE 2 MISSING; bit 6 = EMERGENCY STOP; bit 7 = Reserved; bit 8 = FIRST START; bit 9 = Reserved; bit 10 = USER LOAD CURVE; bit 11 = START DELAY; bit 12 = Reserved; bit 13 = INLET LOW; bit 14 = OUTLET HIGH; bit 15 = PIPE FILL
+Holding register,"FC03 read / FC06, FC16 write",309,40310,40310,0310 Alarm word 3,Bits 2-15 reserved.,BITMAP16,1,,1,0,,Read,bit 0 = INLET VERY LOW; bit 1 = OUTLET VERY HIGH
+Holding register,"FC03 read / FC06, FC16 write",400,40401,40401,0401 Last fault,Latest fault code; 0 = history clear.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",403,40404,40404,0404 Speed at flt,,INT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",404,40405,40405,0405 Freq at flt,,INT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",405,40406,40406,0406 Voltage at flt,DC voltage at the fault.,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",406,40407,40407,0407 Current at flt,,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",407,40408,40408,0408 Torque at flt,,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",411,40412,40412,0412 Previous fault 1,Second latest fault code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",412,40413,40413,0413 Previous fault 2,Third latest fault code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1606,41607,41607,1607 Param save,Write 1 to save parameters to permanent memory.,UINT16,1,,1,0,,Read/write,0 = DONE; 1 = SAVE...
+Holding register,"FC03 read / FC06, FC16 write",3017,43018,43018,3018 Comm fault func,Reaction to fieldbus communication loss.,UINT16,1,,1,0,,Read/write,0 = NOT SEL; 1 = FAULT; 2 = CONST SP 7; 3 = LAST SPEED
+Holding register,"FC03 read / FC06, FC16 write",3018,43019,43019,3019 Comm fault time,Delay before 3018 acts (0.0-600.0 s).,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5301,45302,45302,5302 EFB station ID,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5302,45303,45303,5303 EFB baud rate,1.2-76.8 kbit/s.,UINT16,1,,0.1,0,kbit/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5303,45304,45304,5304 EFB parity,,UINT16,1,,1,0,,Read/write,0 = 8 NONE 1; 1 = 8 NONE 2; 2 = 8 EVEN 1; 3 = 8 ODD 1
+Holding register,"FC03 read / FC06, FC16 write",5304,45305,45305,5305 EFB ctrl profile,,UINT16,1,,1,0,,Read/write,0 = ABB DRV LIM; 1 = DCU PROFILE; 2 = ABB DRV FULL
+Holding register,"FC03 read / FC06, FC16 write",5305,45306,45306,5306 EFB OK messages,Count of valid messages.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",5306,45307,45307,5307 EFB CRC errors,Count of messages with CRC errors.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",5307,45308,45308,5308 EFB UART errors,Count of character errors.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",5308,45309,45309,5309 EFB status,,UINT16,1,,1,0,,Read,0 = IDLE; 1 = EXECUT INIT; 2 = TIME OUT; 3 = CONFIG ERROR; 4 = OFF-LINE; 5 = ON-LINE; 6 = RESET; 7 = LISTEN ONLY
+Holding register,"FC03 read / FC06, FC16 write",5309,45310,45310,5310 EFB par 10,Parameter index mapped to 40005.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5310,45311,45311,5311 EFB par 11,Parameter index mapped to 40006.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9801,49802,49802,9802 Comm prot sel,,UINT16,1,,1,0,,Read/write,0 = NOT SEL; 1 = STD MODBUS; 10 = MODBUS RS232

@@ -1,0 +1,91 @@
+﻿# KROHNE UFC 400 ultrasonic flow converter (Modbus RTU) Modbus register map - easymodbus.com - source: https://core.instrumart.com/assets/Krohne-UFC-400-Modbus-Manual.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",1000,1000,01001,Restart device,Write 1 to restart the converter.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",1001,1001,01002,Reset errors,Clears the system error flags.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",1002,1002,01003,Apply changes,Write 1 to apply pending configuration changes.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",1003,1003,01004,Discard changes,Discard changes since the last apply.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",1004,1004,01005,Reset to factory data,,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",2000,2000,02001,Zero calibration start,Write 1 to start zero calibration.,BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",3000,3000,03001,Totaliser 1 start/stop,"0 = stop, 1 = start.",BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",3001,3001,03002,Totaliser 2 start/stop,"0 = stop, 1 = start.",BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",3002,3002,03003,Totaliser 3 start/stop (modular carrier only),"0 = stop, 1 = start.",BIT,1,,1,0,,Read/write,
+Coil,"FC01 read / FC05, FC15 write",3003,3003,03004,Totaliser 1 reset,Write 1 to set the totaliser to zero.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",3004,3004,03005,Totaliser 2 reset,Write 1 to set the totaliser to zero.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",3005,3005,03006,Totaliser 3 reset (modular carrier only),Write 1 to set the totaliser to zero.,BIT,1,,1,0,,Write,
+Discrete input,FC02 read,10001,10001,110002,Unsaved changes pending,1 = unapplied configuration changes exist.,BIT,1,,1,0,,Read,
+Input register,FC04 read,20000,20000,320001,Zero calibration result,,UINT16,1,,1,0,,Read,0 = Not OK; 1 = OK
+Input register,FC04 read,30000,30000,330001,Flow velocity,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,30002,30002,330003,Volume flow,,FLOAT32,2,ABCD,1,0,m3/s,Read,
+Input register,FC04 read,30004,30004,330005,Mass flow,,FLOAT32,2,ABCD,1,0,kg/s,Read,
+Input register,FC04 read,30006,30006,330007,Velocity of sound,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,30008,30008,330009,Gain,,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,30010,30010,330011,Signal-to-noise ratio,,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,30012,30012,330013,Diagnosis 1,Value chosen by selector 41002.,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,30014,30014,330015,Diagnosis 2,Value chosen by selector 41003.,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,30500,30500,330501,NE 107 status of flow velocity,No bit set = no status message.,BITMAP16,1,,1,0,,Read,"bit 0 = Value too small, limited; bit 1 = Value too large, limited; bit 2 = Maintenance required (M); bit 3 = Initial value; bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)"
+Input register,FC04 read,30501,30501,330502,NE 107 status of volume flow,No bit set = no status message.,BITMAP16,1,,1,0,,Read,"bit 0 = Value too small, limited; bit 1 = Value too large, limited; bit 2 = Maintenance required (M); bit 3 = Initial value; bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)"
+Input register,FC04 read,30502,30502,330503,NE 107 status of mass flow,No bit set = no status message.,BITMAP16,1,,1,0,,Read,"bit 0 = Value too small, limited; bit 1 = Value too large, limited; bit 2 = Maintenance required (M); bit 3 = Initial value; bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)"
+Input register,FC04 read,30503,30503,330504,NE 107 status of velocity of sound,No bit set = no status message.,BITMAP16,1,,1,0,,Read,"bit 0 = Value too small, limited; bit 1 = Value too large, limited; bit 2 = Maintenance required (M); bit 3 = Initial value; bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)"
+Input register,FC04 read,30504,30504,330505,NE 107 status of gain,No bit set = no status message.,BITMAP16,1,,1,0,,Read,"bit 0 = Value too small, limited; bit 1 = Value too large, limited; bit 2 = Maintenance required (M); bit 3 = Initial value; bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)"
+Input register,FC04 read,30505,30505,330506,NE 107 status of signal-to-noise ratio,No bit set = no status message.,BITMAP16,1,,1,0,,Read,"bit 0 = Value too small, limited; bit 1 = Value too large, limited; bit 2 = Maintenance required (M); bit 3 = Initial value; bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)"
+Input register,FC04 read,30506,30506,330507,NE 107 status of diagnosis 1,No bit set = no status message.,BITMAP16,1,,1,0,,Read,"bit 0 = Value too small, limited; bit 1 = Value too large, limited; bit 2 = Maintenance required (M); bit 3 = Initial value; bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)"
+Input register,FC04 read,30507,30507,330508,NE 107 status of diagnosis 2,No bit set = no status message.,BITMAP16,1,,1,0,,Read,"bit 0 = Value too small, limited; bit 1 = Value too large, limited; bit 2 = Maintenance required (M); bit 3 = Initial value; bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)"
+Input register,FC04 read,31000,31000,331001,Velocity of sound path 1,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,31002,31002,331003,Velocity of sound path 2,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,31004,31004,331005,Velocity of sound path 3,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,31006,31006,331007,Flow speed path 1,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,31008,31008,331009,Flow speed path 2,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,31010,31010,331011,Flow speed path 3,,FLOAT32,2,ABCD,1,0,m/s,Read,
+Input register,FC04 read,31012,31012,331013,Gain path 1,,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,31014,31014,331015,Gain path 2,,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,31016,31016,331017,Gain path 3,,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,31018,31018,331019,SNR path 1,,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,31020,31020,331021,SNR path 2,,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,31022,31022,331023,SNR path 3,,FLOAT32,2,ABCD,1,0,dB,Read,
+Input register,FC04 read,31024,31024,331025,Reynolds number,,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,31026,31026,331027,Reynolds correction,,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,32000,32000,332001,Totaliser 1 value (double),m3 or kg.,FLOAT64,4,ABCD,1,0,,Read,
+Input register,FC04 read,32004,32004,332005,Totaliser 2 value (double),m3 or kg.,FLOAT64,4,ABCD,1,0,,Read,
+Input register,FC04 read,32008,32008,332009,Totaliser 3 value (double) (modular carrier only),m3 or kg.,FLOAT64,4,ABCD,1,0,,Read,
+Input register,FC04 read,32100,32100,332101,Totaliser 1 value (single),m3 or kg.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,32102,32102,332103,Totaliser 2 value (single),m3 or kg.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,32104,32104,332105,Totaliser 3 value (single) (modular carrier only),m3 or kg.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,39002,39002,339003,Device operation time,,FLOAT32,2,ABCD,1,0,s,Read,
+Input register,FC04 read,39100,39100,339101,NE 107 device status,,BITMAP16,1,,1,0,,Read,bit 0 = Information (I); bit 2 = Maintenance required (M); bit 4 = Function check (C); bit 5 = Out of specification (S); bit 7 = Failure (F)
+Holding register,"FC03 read / FC06, FC16 write",40000,40000,440001,Totaliser 1 function,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = Absolute total; 2 = Increment; 3 = Decrement
+Holding register,"FC03 read / FC06, FC16 write",40001,40001,440002,Totaliser 1 measurement,,UINT16,1,,1,0,,Read/write,0 = Volume flow; 2 = Mass flow
+Holding register,"FC03 read / FC06, FC16 write",40002,40002,440003,Totaliser 2 function,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = Absolute total; 2 = Increment; 3 = Decrement
+Holding register,"FC03 read / FC06, FC16 write",40003,40003,440004,Totaliser 2 measurement,,UINT16,1,,1,0,,Read/write,0 = Volume flow; 2 = Mass flow
+Holding register,"FC03 read / FC06, FC16 write",40004,40004,440005,Totaliser 3 function (modular carrier only),,UINT16,1,,1,0,,Read/write,0 = Off; 1 = Absolute total; 2 = Increment; 3 = Decrement
+Holding register,"FC03 read / FC06, FC16 write",40005,40005,440006,Totaliser 3 measurement (modular carrier only),,UINT16,1,,1,0,,Read/write,0 = Volume flow; 2 = Mass flow
+Holding register,"FC03 read / FC06, FC16 write",40500,40500,440501,Totaliser 1 low flow cut-off,m3/s or kg/s.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40502,40502,440503,Totaliser 1 time constant,0-100 s.,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40504,40504,440505,Totaliser 1 set or read value,m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40506,40506,440507,Totaliser 1 preset,m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40508,40508,440509,Totaliser 2 low flow cut-off,m3/s or kg/s.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40510,40510,440511,Totaliser 2 time constant,0-100 s.,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40512,40512,440513,Totaliser 2 set or read value,m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40514,40514,440515,Totaliser 2 preset,m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40516,40516,440517,Totaliser 3 low flow cut-off (modular carrier only),m3/s or kg/s.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40518,40518,440519,Totaliser 3 time constant (modular carrier only),0-100 s.,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40520,40520,440521,Totaliser 3 set or read value (modular carrier only),m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40522,40522,440523,Totaliser 3 preset (modular carrier only),m3 or kg.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41000,41000,441001,Flow direction,,UINT16,1,,1,0,,Read/write,0 = Normal; 1 = Reverse
+Holding register,"FC03 read / FC06, FC16 write",41001,41001,441002,Linearization,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",41004,41004,441005,Plausibility counter decrease,1-99.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41005,41005,441006,Plausibility counter limit,0-999.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41502,41502,441503,GK,,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41504,41504,441505,Limitation min,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41506,41506,441507,Limitation max,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41508,41508,441509,Time constant,,FLOAT32,2,ABCD,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41510,41510,441511,Low flow cut-off threshold,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41512,41512,441513,Low flow cut-off hysteresis,,FLOAT32,2,ABCD,1,0,m/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41514,41514,441515,Plausibility error limit,,FLOAT32,2,ABCD,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41516,41516,441517,Dynamic viscosity,,FLOAT32,2,ABCD,1,0,kg/ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41518,41518,441519,Pipe temperature,,FLOAT32,2,ABCD,1,0,K,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41520,41520,441521,Density,,FLOAT32,2,ABCD,1,0,kg/m3,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50000,50000,450001,Baud rate,1200-115200; default 19200.,UINT32,2,ABCD,1,0,bps,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50004,50004,450005,Slave address,"1-247, default 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50005,50005,450006,Parity,,UINT16,1,,1,0,,Read/write,0 = Even (default); 1 = Odd; 3 = Off
+Holding register,"FC03 read / FC06, FC16 write",50006,50006,450007,Register format,,UINT16,1,,1,0,,Read/write,0 = Little endian; 1 = Big endian (default)
+Holding register,"FC03 read / FC06, FC16 write",50007,50007,450008,Stop bits,,UINT16,1,,1,0,,Read/write,1 = 1 stop bit (default); 2 = 2 stop bits

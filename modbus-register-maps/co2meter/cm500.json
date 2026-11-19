@@ -1,0 +1,306 @@
+{
+ "manufacturer": "CO2Meter",
+ "manufacturer_slug": "co2meter",
+ "model": "CM500 CO2 sensor / controller (RS-485 Modbus RTU)",
+ "model_slug": "cm500",
+ "short_model": "CM500",
+ "aliases": [
+  "CM500",
+  "CO2Meter CM500"
+ ],
+ "equipment_type": "Sensor (CO2 / gas)",
+ "applies_to": "CO2Meter.com CM500 with the RS-485 Modbus RTU interface, per the vendor's 'RS485 Communications Modbus Protocol' sheet (no document number).",
+ "summary": "The CM500 is a CO2 sensor and controller with an RS-485 port that speaks Modbus RTU using FC03 reads and FC06 writes. Readings are single 16-bit registers. The shared register sheet also lists other gas, particulate and RTC registers that only answer on units fitted with those sensors.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 104,
+  "baud": 19200,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "Registers are listed as hex addresses sent unchanged in the request; the examples read CO2 with start address 0x0014 (table row 14H)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "CM500 RS-485 Modbus RTU protocol (RS485 Communications Modbus Protocol)",
+  "doc_number": null,
+  "revision_date": null,
+  "url": "https://cdn.shopify.com/s/files/1/0019/5952/files/CO2Meter-CM500-RS-485-Modbus-RTU-protocol.pdf",
+  "pages": "pp. 1-4",
+  "unofficial": true
+ },
+ "notes": [
+  "The sheet is served from a Shopify file CDN (cdn.shopify.com) used by CO2Meter's store, not from a CO2Meter-branded host, so it is marked unofficial.",
+  "Note 1 on page 2 says the CO2 start address is 0x0B, but the register table and both example frames use 0x14; 0x14 is used here.",
+  "Default slave address is printed as 0x068 (104). The examples use 0xFA, which the sheet reserves for broadcast.",
+  "Left out: O2, ambient temperature, barometer, RH, dew point and battery voltage (12H, 19H-1DH). The sheet only shows display formats such as 'xx.xx%', not the register scaling.",
+  "Writable RTC registers (78H-7BH) are left out because their layout is not described."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "00H",
+   "name": "Slave address",
+   "description": "1-249; 250 (0xFA) is reserved for broadcast. Stored in EEPROM.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "01H",
+   "name": "Baud rate",
+   "description": "Takes effect after a power cycle.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "38400",
+    "1": "19200 (default)",
+    "2": "9600",
+    "3": "4800"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "02H",
+   "name": "UART parity / framing",
+   "description": "Takes effect after a power cycle.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "N82",
+    "1": "N81 (default)",
+    "2": "E81",
+    "3": "O81"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 19,
+   "documented": "13H",
+   "name": "NH3",
+   "description": "Whole ppm (only on units with this sensor).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "ppm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 20,
+   "documented": "14H",
+   "name": "CO2",
+   "description": "Whole ppm; the manual's example reads 0x0318 = 792 ppm.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "ppm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 21,
+   "documented": "15H",
+   "name": "CO",
+   "description": "Whole ppm (only on units with this sensor).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "ppm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "16H",
+   "name": "VOC",
+   "description": "Whole ppb (only on units with this sensor).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "ppb",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "17H",
+   "name": "PM2.5",
+   "description": "Only on units with this sensor.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "µg/m³",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 24,
+   "documented": "18H",
+   "name": "PM10",
+   "description": "Only on units with this sensor.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "µg/m³",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 30,
+   "documented": "1EH",
+   "name": "RTC year",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 31,
+   "documented": "1FH",
+   "name": "RTC month-day",
+   "description": "Packing not described.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 32,
+   "documented": "20H",
+   "name": "RTC hour-minute",
+   "description": "Packing not described.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 33,
+   "documented": "21H",
+   "name": "RTC seconds",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Poll 19200 8N1 at address 104 (0x68) with FC03 and read register 0x14 for CO2 in ppm. Change address, baud or parity with FC06 and power-cycle the sensor.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 20,
+    "why": "CO2 ppm"
+   },
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Slave address"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Baud rate code"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Parity code"
+   }
+  ],
+  "enable": "Modbus RTU is the RS-485 interface's protocol; no enable step is described.",
+  "watchdog": null,
+  "quirks": [
+   "Only FC03 and FC06 are supported.",
+   "Baud and parity changes need a power cycle."
+  ],
+  "setup": [
+   "Defaults: 19200 baud, 8 data bits, no parity, 1 stop bit."
+  ],
+  "gotchas": [
+   "Address 250 (0xFA) is broadcast; do not assign it to a sensor."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/co2meter/cm500",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

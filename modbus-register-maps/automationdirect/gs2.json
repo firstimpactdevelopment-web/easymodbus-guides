@@ -1,0 +1,514 @@
+{
+ "manufacturer": "AutomationDirect",
+ "manufacturer_slug": "automationdirect",
+ "model": "GS2 series AC drive",
+ "model_slug": "gs2",
+ "short_model": "GS2",
+ "aliases": [
+  "GS2-10P2",
+  "GS2-10P5",
+  "GS2-11P0",
+  "GS2-20P5",
+  "GS2-21P0",
+  "GS2-22P0",
+  "GS2-23P0",
+  "GS2-25P0",
+  "GS2-27P5",
+  "GS2-41P0",
+  "GS2-42P0",
+  "GS2-43P0",
+  "GS2-45P0",
+  "GS2-47P5"
+ ],
+ "equipment_type": "Variable frequency drive",
+ "applies_to": "All GS2 drives; status addresses and P9.xx serial-communication parameters from chapter 5 of the user manual.",
+ "summary": "The GS2 is an AutomationDirect AC drive with a built-in RS-485 port running Modbus ASCII or RTU. Drive parameters P0.00-P9.xx map to holding registers (parameter group x 256 + number), and read-only status registers at 2100h report fault code, run state, frequencies, voltages and load. This map covers the status block and the P9 serial control parameters used to run the drive over Modbus.",
+ "transport": [
+  "RTU",
+  "ASCII"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "The manual lists each register in hex and as a Modicon number: hex 0000h = 40001, 2100h = 48449. The hex value is the wire address."
+ },
+ "default_word_order": "CDAB",
+ "firmware": null,
+ "source": {
+  "title": "GS2 Series AC Drive User Manual - Chapter 5: GS2 Modbus Communications",
+  "doc_number": "GS2-M 1st Ed. Rev. C 12/2006 (chapter 5)",
+  "revision_date": null,
+  "url": "https://cdn.automationdirect.com/static/manuals/gs2m/ch5.pdf",
+  "pages": "Comm parameter summary pp. 5-2 to 5-3; parameter addresses pp. 5-4 to 5-8; status addresses pp. 5-9 to 5-11"
+ },
+ "notes": [
+  "AutomationDirect's own manual chapter (cdn.automationdirect.com).",
+  "Parameter-to-register rule: Px.yy is at hex x*256 + yy (e.g. P9.26 = 091Ah = 42331); the full list is in the chapter's parameter address tables. Only the P9 communication/control parameters are included here.",
+  "Status values marked XXX.X in the manual carry one implied decimal (scale 0.1).",
+  "Scale Frequency is split into low word (2108h) and high word (2109h), so it is listed as a 32-bit value with the low word first (CDAB); its unit depends on P8.01.",
+  "P9.05 (communication time-out, 0.1-60.0 s) is left out because its raw encoding is not stated in this chapter.",
+  "The factory protocol (P9.02 = 0) is Modbus ASCII 7N2; set 3, 4 or 5 for RTU.",
+  "Speed reference scaling: the DirectLOGIC example loads P9.26 'with implied decimal place' (K150 = 15.0 Hz, 600 = 60.0 Hz).",
+  "Left out: Output Current (2104h) and Power Factor Angle (210Ah) because the GS2 chapter gives no decimal format for them."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 2304,
+   "documented": "0900h (42305)",
+   "name": "P9.00 Communication Address",
+   "description": "Drive address 1-254.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2305,
+   "documented": "0901h (42306)",
+   "name": "P9.01 Transmission Speed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "4800",
+    "1": "9600",
+    "2": "19200",
+    "3": "38400"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2306,
+   "documented": "0902h (42307)",
+   "name": "P9.02 Communication Protocol",
+   "description": "Factory default 0 is Modbus ASCII.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "ASCII 7N2",
+    "1": "ASCII 7E1",
+    "2": "ASCII 7O1",
+    "3": "RTU 8N2",
+    "4": "RTU 8E1",
+    "5": "RTU 8O1"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2307,
+   "documented": "0903h (42308)",
+   "name": "P9.03 Transmission Fault Treatment",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Display fault, keep running",
+    "1": "Display fault, ramp to stop",
+    "2": "Display fault, coast to stop",
+    "3": "No fault, keep running"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2308,
+   "documented": "0904h (42309)",
+   "name": "P9.04 Time Out Detection",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable",
+    "1": "Enable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2330,
+   "documented": "091Ah (42331)",
+   "name": "P9.26 Serial Comm Speed Reference",
+   "description": "0.0-400.0 Hz with implied decimal (600 = 60.0 Hz).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "Hz",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2331,
+   "documented": "091Bh (42332)",
+   "name": "P9.27 Serial Comm RUN Command",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Stop",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2332,
+   "documented": "091Ch (42333)",
+   "name": "P9.28 Serial Comm Direction Command",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Forward",
+    "1": "Reverse"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2333,
+   "documented": "091Dh (42334)",
+   "name": "P9.29 Serial Comm External Fault",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No fault",
+    "1": "External fault"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2334,
+   "documented": "091Eh (42335)",
+   "name": "P9.30 Serial Comm Fault Reset",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No action",
+    "1": "Fault reset"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2335,
+   "documented": "091Fh (42336)",
+   "name": "P9.31 Serial Comm JOG Command",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Stop",
+    "1": "Jog"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8448,
+   "documented": "2100h (48449)",
+   "name": "Status Monitor 1",
+   "description": "Present fault code.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No fault",
+    "1": "Over-current (oc)",
+    "2": "Over-voltage (ov)",
+    "3": "Overheat (oH)",
+    "4": "Overload (oL)",
+    "5": "Overload 1 (oL1)",
+    "6": "Overload 2 (oL2)",
+    "7": "External fault (EF)",
+    "8": "CPU failure 1 (cF1)",
+    "9": "CPU failure 2 (cF2)",
+    "10": "CPU failure 3 (cF3)",
+    "11": "Hardware protection failure (HPF)",
+    "12": "Over-current during accel (ocA)",
+    "13": "Over-current during decel (ocd)",
+    "14": "Over-current at steady state (ocn)",
+    "16": "Low voltage (Lv)",
+    "18": "External base-block (bb)",
+    "19": "Auto adjust accel/decel failure (cFA)",
+    "20": "Software protection code (codE)",
+    "15": "Ground fault or fuse failure (GFF)",
+    "17": "Input power 3-phase loss (PHL)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8449,
+   "documented": "2101h (48450)",
+   "name": "Status Monitor 2",
+   "description": "Bits 0-1 run state (0 stop..3 run); bits 3-4 direction (0 FWD..3 REV).",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "2": "JOG active",
+    "5": "Frequency source = serial comm (P4.00 = 5)",
+    "6": "Frequency source = AI terminal",
+    "7": "Operation source = serial comm (P3.00 = 3 or 4)",
+    "8": "Parameters locked (P9.07 = 1)"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8450,
+   "documented": "2102h (48451)",
+   "name": "Frequency Command F",
+   "description": "Frequency setpoint (XXX.X).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8451,
+   "documented": "2103h (48452)",
+   "name": "Output Frequency H",
+   "description": "Output frequency (XXX.X).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8453,
+   "documented": "2105h (48454)",
+   "name": "DC Bus Voltage d",
+   "description": "(XXX.X)",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8454,
+   "documented": "2106h (48455)",
+   "name": "Output Voltage U",
+   "description": "RMS line-to-line output voltage (XXX.X).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8455,
+   "documented": "2107h (48456)",
+   "name": "Motor RPM",
+   "description": "Estimated motor speed.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "rpm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8456,
+   "documented": "2108h (48457)",
+   "name": "Scale Frequency",
+   "description": "Output frequency x P8.01; low word at 2108h, high word at 2109h.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8459,
+   "documented": "210Bh (48460)",
+   "name": "% Load",
+   "description": "Output current / drive rated current x 100.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8464,
+   "documented": "2110h (48465)",
+   "name": "Firmware Version",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set P9.02 to an RTU mode, P3.00 to serial operation and P4.00 = 5 for serial frequency source, then write speed (P9.26, x10) and run (P9.27). Monitor Status Monitor 1/2 and output frequency at 2100h-2103h.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 2330,
+    "why": "Speed reference"
+   },
+   {
+    "table": "holding_register",
+    "address": 2331,
+    "why": "Run/stop"
+   },
+   {
+    "table": "holding_register",
+    "address": 2332,
+    "why": "Direction"
+   },
+   {
+    "table": "holding_register",
+    "address": 8448,
+    "why": "Fault code"
+   },
+   {
+    "table": "holding_register",
+    "address": 8449,
+    "why": "Run state bits"
+   },
+   {
+    "table": "holding_register",
+    "address": 8451,
+    "why": "Output frequency"
+   }
+  ],
+  "enable": "Set P3.00 (source of operation) to 3 or 4 and P4.00 (source of frequency) to 5 for serial control, as referenced in Status Monitor 2; set P9.00-P9.02 for address, baud and protocol from the keypad.",
+  "watchdog": "P9.04 enables communication time-out detection, P9.05 sets the time (0.1-60.0 s) and P9.03 selects the reaction (keep running, ramp stop, coast stop).",
+  "quirks": [
+   "Factory protocol is Modbus ASCII, not RTU.",
+   "Speed reference has an implied decimal: write 600 for 60.0 Hz.",
+   "Hex addresses are wire addresses: 091Ah = 2330 decimal = 42331 Modicon."
+  ],
+  "setup": [
+   "P9.00 address (default 1), P9.01 baud (default 9600), P9.02 protocol/format.",
+   "Writes to P0-P8 parameters can be grouped through the block transfer parameters P9.11 onward."
+  ],
+  "gotchas": [
+   "Output current (2104h) and power factor angle (210Ah) have no stated decimal format in this chapter; they are not in this map."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/automationdirect/gs2",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

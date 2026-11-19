@@ -1,0 +1,22 @@
+﻿# Radwag MW-01-A / MW-01-A7 mass converter Modbus register map - easymodbus.com - source: https://radwag.com/document/en/user-manual-modbus-communication-protocol-of-mw-01-a-mw-01-a7-mass-converter__MODBUS-MW-01-A-ITKP-41-01-11-21-EN.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,30001,30001,Mass,Mass in the currently displayed unit.,FLOAT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,2,30003,30003,Tare,Tare in the adjustment (calibration) unit.,FLOAT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,4,30005,30005,Unit,Bit set shows the unit now displayed.,BITMAP16,1,,1,0,,Read,bit 0 = gram [g]; bit 1 = kilogram [kg]; bit 2 = carat [ct]; bit 3 = pound [lb]; bit 4 = ounce [oz]; bit 5 = Newton [N]
+Input register,FC04 read,5,30006,30006,Status,,BITMAP16,1,,1,0,,Read,bit 0 = Measurement correct (no error); bit 1 = Measurement stable; bit 2 = Indicating zero; bit 3 = Tared; bit 4 = In weighing range II; bit 5 = In weighing range III; bit 6 = NULL error; bit 7 = LH error; bit 8 = FULL error
+Input register,FC04 read,6,30007,30007,LO threshold,In the adjustment unit.,FLOAT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,32,30033,30033,Dosing status,,UINT16,1,,1,0,,Read,0 = Process disabled; 1 = Dosing in progress; 2 = Process stopped; 3 = Process finished
+Input register,FC04 read,33,30034,30034,Input status,"Bitmask of converter inputs; the 8 low bits are the inputs, bit 0 = input 1.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,34,30035,30035,Min,"MIN threshold, adjustment unit.",FLOAT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,36,30037,30037,Max,"MAX threshold, adjustment unit.",FLOAT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,38,30039,30039,Fast dosing threshold,Adjustment unit.,FLOAT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,50,30051,30051,Adjustment status,State of the adjustment (calibration) process.,UINT16,1,,1,0,,Read,0 = Process finished correctly; 1 = Start mass / adjustment factor determination in progress; 2 = Range exceeded; 3 = Time exceeded; 4 = Process aborted; 5 = Awaiting data
+Holding register,"FC03 read / FC06, FC16 write",256,40257,40257,Command,Set a bit to run that action once; clear it before repeating.,BITMAP16,1,,1,0,,Read/write,bit 0 = Zero the platform; bit 1 = Tare the platform; bit 5 = Process start; bit 6 = Process stop; bit 8 = Start mass determination; bit 9 = Adjustment factor determination; bit 10 = Record adjustment parameters
+Holding register,"FC03 read / FC06, FC16 write",257,40258,40258,Command with parameter,Set a bit to apply the matching parameter register below.,BITMAP16,1,,1,0,,Read/write,bit 0 = Set tare value; bit 1 = Set LO threshold; bit 2 = Set outputs state; bit 3 = Set MIN threshold; bit 4 = Set MAX threshold; bit 5 = Set fast dosing threshold; bit 6 = Set precise dosing threshold; bit 9 = Set adjustment weight mass
+Holding register,"FC03 read / FC06, FC16 write",258,40259,40259,Platform,Platform number for parameter commands (always 1).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",259,40260,40260,Tare,"Tare to set, adjustment unit.",FLOAT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",261,40262,40262,LO threshold,"LO threshold to set, adjustment unit.",FLOAT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",263,40264,40264,Output state,"Output mask to apply, bit 0 = output 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",264,40265,40265,Min,MIN threshold to set.,FLOAT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",266,40267,40267,Max,MAX threshold to set.,FLOAT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",268,40269,40269,Fast dosing threshold,Fast dosing threshold to set.,FLOAT32,2,CDAB,1,0,,Read/write,

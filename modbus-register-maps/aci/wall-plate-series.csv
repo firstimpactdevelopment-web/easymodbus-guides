@@ -1,0 +1,23 @@
+﻿# ACI (Automation Components Inc.) Wall Plate Series BACnet/Modbus temperature/RH sensor Modbus register map - easymodbus.com - source: https://www.workaci.com/media/791/download
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",1000,1001,01001,Test mode enable,1 = IR3/IR4 return the test values in HR1001/HR1002; not kept after reset.,BIT,1,,1,0,,Read/write,0 = Disabled (live values); 1 = Enabled (test values)
+Input register,FC04 read,0,1,30001,Sensors present,Which sensing elements are fitted.,BITMAP16,1,,1,0,,Read,bit 0 = Temperature sensor present; bit 1 = RH sensor present
+Input register,FC04 read,2,3,30003,Temperature sensor value,"Tenths, in the unit chosen in HR1 (address 0).",INT16,1,,0.1,0,,Read,
+Input register,FC04 read,3,4,30004,RH sensor value,,UINT16,1,,0.1,0,%RH,Read,
+Input register,FC04 read,2000,2001,32001,Temperature range min,"Lowest reportable temperature, tenths.",INT16,1,,0.1,0,,Read,
+Input register,FC04 read,2001,2002,32002,Temperature range max,"Highest reportable temperature, tenths.",INT16,1,,0.1,0,,Read,
+Input register,FC04 read,2002,2003,32003,RH range min,,UINT16,1,,0.1,0,%RH,Read,
+Input register,FC04 read,2003,2004,32004,RH range max,,UINT16,1,,0.1,0,%RH,Read,
+Input register,FC04 read,9000,9001,39001,Unsigned test value,Always 12345; checks decoding.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,9001,9002,39002,Signed test value,Always -12345; checks signed decoding.,INT16,1,,1,0,,Read,
+Input register,FC04 read,9002,9003-9006,39003,Test string,"Always ""-123.45"", null terminated.",STRING[8],4,,1,0,,Read,
+Input register,FC04 read,9006,9007-9010,39007,Serial number,"ASCII, not null terminated.",STRING[8],4,,1,0,,Read,
+Input register,FC04 read,9010,9011-9016,39011,Firmware version,"ASCII, not null terminated, e.g. 02.00.000.90.",STRING[12],6,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Temperature units,Unit used for the temperature value and ranges.,UINT16,1,,1,0,,Read/write,62 = °C; 63 = K; 64 = °F
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Temperature offset,Added to the reading; -5.0 to 5.0 °C/K (-9.0 to 9.0 °F).,INT16,1,,0.1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,3,40003,RH offset,Added to the RH reading; -10.0 to 10.0 %RH.,INT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1000,1001,41001,Test mode temperature value,Returned by IR3 while test mode is on.,INT16,1,,0.1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1001,1002,41002,Test mode RH value,Returned by IR4 while test mode is on.,UINT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9000,9001-9016,49001,Device name,"User text, null terminated.",STRING[32],16,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9016,9017-9048,49017,Device location,"User text, null terminated.",STRING[64],32,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9048,9049-9080,49049,Device description,"User text, null terminated.",STRING[64],32,,1,0,,Read/write,

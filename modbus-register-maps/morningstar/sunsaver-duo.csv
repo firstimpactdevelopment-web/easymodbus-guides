@@ -1,0 +1,54 @@
+﻿# Morningstar SunSaver Duo dual-battery PWM charge controller (Modbus RTU via MeterBus) Modbus register map - easymodbus.com - source: https://www.morningstarcorp.com/wp-content/uploads/technical-doc-sunsaver-duo-modbus-specification-en.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",20,0x0014,00021,Clear faults,Some faults need 30 s before they can be cleared.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",22,0x0016,00023,Force EEPROM update,Writes RAM values to EEPROM.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",23,0x0017,00024,Reset min/max volts and amps,Set only; reads 0.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",241,0x00F1,00242,Switch to Meterbus protocol,Hands the port back to the Morningstar remote meter protocol.,BIT,1,,1,0,,Write,
+Coil,"FC01 read / FC05, FC15 write",255,0x00FF,00256,Reset controller,Reboots the controller software.,BIT,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",0,0x0000,40001,vb1 - battery 1 voltage,Filtered (about 2.5 s).,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,0x0001,40002,vb2 - battery 2 voltage,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,0x0002,40003,va - solar voltage,,UINT16,1,,0.0009689922,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",3,0x0003,40004,ia1 - charge current battery 1,,UINT16,1,,0.0014858841,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,0x0004,40005,ia2 - charge current battery 2,,UINT16,1,,0.0014858841,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,0x0008,40009,vref1 - charge reference battery 1,Temperature-compensated target voltage.,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,0x0009,40010,vref2 - charge reference battery 2,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,0x000A,40011,dutcyc1 - PWM duty battery 1,0-417 = 0-100 %.,UINT16,1,,0.2398081535,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",11,0x000B,40012,dutcyc2 - PWM duty battery 2,,UINT16,1,,0.2398081535,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,0x000C,40013,vmaxb1 - max battery 1 voltage,Since last min/max clear.,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,0x000D,40014,vminb1 - min battery 1 voltage,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,0x000E,40015,vmaxb2 - max battery 2 voltage,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",15,0x000F,40016,vminb2 - min battery 2 voltage,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,0x0010,40017,iamax - max solar current,,UINT16,1,,0.0014858841,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,0x001B,40028,tcompcoef - temperature compensation in use,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",28,0x001C,40029,priority - battery 1 charge priority,Share of charge current to battery 1 (0-417 = 0-100 %).,UINT16,1,,0.2398081535,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,0x001D,40030,vabs1 - absorption voltage battery 1,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,0x001E,40031,veql1 - equalize voltage battery 1,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",31,0x001F,40032,vfloat1 - float voltage battery 1,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",32,0x0020,40033,vclamp1 - max regulation voltage battery 1,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",33,0x0021,40034,tfloat1 - float timer battery 1,,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",34,0x0022,40035,teq1 - equalize timer battery 1,,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",35,0x0023,40036,vabs2 - absorption voltage battery 2,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",36,0x0024,40037,veql2 - equalize voltage battery 2,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",37,0x0025,40038,vfloat2 - float voltage battery 2,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",38,0x0026,40039,vclamp2 - max regulation voltage battery 2,,UINT16,1,,0.0005555556,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",39,0x0027,40040,tfloat2 - float timer battery 2,,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",40,0x0028,40041,teq2 - equalize timer battery 2,,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",262,0x0106,40263,dc1 - duty cycle battery 1,Pre-scaled percent.,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",263,0x0107,40264,dc2 - duty cycle battery 2,,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",264,0x0108,40265,state - controller state,,UINT16,1,,1,0,,Read,1 = NORMAL; 3 = NIGHT; 4 = FAULT
+Holding register,"FC03 read / FC06, FC16 write",265,0x0109,40266,faults - fault bitfield,,BITMAP16,1,,1,0,,Read,bit 0 = Reverse polarity solar; bit 1 = Reverse polarity battery 1; bit 2 = Reverse polarity battery 2; bit 3 = Damaged local temperature sensor; bit 4 = Damaged or removed RTS; bit 5 = Over-current; bit 6 = High temperature disconnect; bit 7 = High voltage disconnect
+Holding register,"FC03 read / FC06, FC16 write",266,0x010A,40267,flags - controller flags,,BITMAP16,1,,1,0,,Read,bit 3 = Regulation; bit 4 = Valid RTS; bit 5 = Alternating; bit 6 = On/off regulation; bit 7 = Started
+Holding register,"FC03 read / FC06, FC16 write",267,0x010B,40268,DIP switch positions,,BITMAP16,1,,1,0,,Read,bit 0 = DIP 1; bit 1 = DIP 2; bit 2 = DIP 3; bit 3 = DIP 4; bit 4 = DIP 5
+Holding register,"FC03 read / FC06, FC16 write",269,0x010D,40270,b1_state - battery 1 charge state,,UINT16,1,,1,0,,Read,0 = NORMAL; 1 = EQUALIZE; 2 = FLOAT
+Holding register,"FC03 read / FC06, FC16 write",270,0x010E,40271,b2_state - battery 2 charge state,,UINT16,1,,1,0,,Read,0 = NORMAL; 1 = EQUALIZE; 2 = FLOAT
+Holding register,"FC03 read / FC06, FC16 write",271,0x010F,40272,b1_detect - battery 1 detected,,UINT16,1,,1,0,,Read,0 = Disconnected; 1 = Connected
+Holding register,"FC03 read / FC06, FC16 write",272,0x0110,40273,b2_detect - battery 2 detected,,UINT16,1,,1,0,,Read,0 = Disconnected; 1 = Connected
+Holding register,"FC03 read / FC06, FC16 write",57346,0xE002,457347,"priority_off - battery 1 priority, DIP 3 off",EEPROM custom setting (0-417).,UINT16,1,,0.2398081535,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57347,0xE003,457348,"priority_on - battery 1 priority, DIP 3 on",,UINT16,1,,0.2398081535,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57348,0xE004,457349,tcompcoef - temperature compensation (EEPROM),Per 12 V battery per °C; typical 0.030.,UINT16,1,,0.0005555556,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57350,0xE006,457351,Battery 1 (DIP 1 off) absorption voltage,,UINT16,1,,0.0005555556,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57351,0xE007,457352,Battery 1 (DIP 1 off) equalize voltage,0 disables equalize.,UINT16,1,,0.0005555556,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57352,0xE008,457353,Battery 1 (DIP 1 off) float voltage,,UINT16,1,,0.0005555556,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57362,0xE012,457363,Battery 2 (DIP 2 off) absorption voltage,,UINT16,1,,0.0005555556,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57363,0xE013,457364,Battery 2 (DIP 2 off) equalize voltage,,UINT16,1,,0.0005555556,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57364,0xE014,457365,Battery 2 (DIP 2 off) float voltage,,UINT16,1,,0.0005555556,0,V,Read/write,

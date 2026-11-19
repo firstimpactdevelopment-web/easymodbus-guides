@@ -1,0 +1,7 @@
+Device Name,Host,Port,Unit ID,Transport,Reading Name,Table,Wire Address,Register Number,Modicon,Data Type,Word Order,Bit,Multiplier,Offset Value,Units,Value,Status,Notes
+Lenze SCF,,502,1,RTU_OVER_TCP,Drive control (AC Tech register 1),Holding Register,1,2,40002,UINT16,,,1,0,,,,"One command per write: 0004h stop, 0008h start, 0040h reverse, 0080h forward, 0200h manual. | bit 2 = Stop (per P04); bit 3 = Start; bit 6 = Set reverse (needs P17 = 2); bit 7 = Set forward; bit 9 = Manual mode (use keypad speed register)"
+Lenze SCF,,502,1,RTU_OVER_TCP,Status block start (AC Tech register 24),Holding Register,24,25,40025,UINT16,,,1,0,,,,First of a 6-register status block; read 6 registers from here.
+Lenze SCF,,502,1,RTU_OVER_TCP,"Run status (AC Tech register 26, low byte)",Holding Register,26,27,40027,UINT16,,,1,0,,,,Low byte = operational status code; see values. | 0 = Fault lockout; 1 = Fault; 2 = Start pending; 3 = Stop; 4 = DC brake; 5 = Run at 0 Hz; 6 = Run; 7 = Accel; 8 = Decel; 9 = Current limit; 10 = Decel override; 11 = Lower transistors switching on
+Lenze SCF,,502,1,RTU_OVER_TCP,Keypad speed command (AC Tech register 40),Holding Register,40,41,40041,UINT16,,,0.1,0,Hz,,,Network speed when P05 = 01 (keypad); 412 = 41.2 Hz.
+Lenze SCF,,502,1,RTU_OVER_TCP,Unlock (AC Tech register 48),Holding Register,48,49,40049,UINT16,,,1,0,,,,0 unlocks control only; password (default 225) also unlocks parameters.
+Lenze SCF,,502,1,RTU_OVER_TCP,P19 acceleration time,Holding Register,69,70,40070,UINT16,,,0.1,0,s,,,Example of the parameter rule: register = parameter + 51.

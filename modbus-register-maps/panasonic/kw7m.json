@@ -1,0 +1,344 @@
+{
+ "manufacturer": "Panasonic",
+ "manufacturer_slug": "panasonic",
+ "model": "KW7M Eco-POWER METER",
+ "model_slug": "kw7m",
+ "short_model": "KW7M",
+ "aliases": [
+  "AKW7111",
+  "AKW7111B"
+ ],
+ "equipment_type": "Energy meter",
+ "applies_to": "Panasonic KW7M (AKW7111 / AKW7111B) with Modbus RTU selected, user manual ARCT1F434E-6.",
+ "summary": "The KW7M is a small DIN-rail energy meter for single-phase or three-phase three-wire circuits using dedicated or 5 A CTs, with an RS485 port that speaks MEWTOCOL or Modbus RTU. Its Modbus table is short: two phase currents, two line voltages, active power and the metering and alarm settings, all as holding registers.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 19200,
+  "parity": "Odd",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "hex 0-based",
+  "note": "Addresses are printed in hex (0064H) and go into the request unchanged; the manual's Modbus example resets energy by writing 2 words at data item 0064H. The MEWTOCOL DT number in decimal equals the hex Modbus address."
+ },
+ "default_word_order": "CDAB",
+ "firmware": null,
+ "source": {
+  "title": "KW7M Eco-POWER METER User's Manual",
+  "doc_number": "ARCT1F434E-6",
+  "revision_date": "2016-06",
+  "url": "https://mediap.industry.panasonic.eu/assets/custom-upload/Factory%20%26%20Automation/Eco-POWER%20METERS/Manuals/mn_kw7m_user_pidsx_en.pdf",
+  "pages": "Section 7.4.2 Data Register List, manual p. 33 (PDF p. 41)"
+ },
+ "notes": [
+  "Word order: 32-bit rows are printed as two registers marked <LSB> (lower address) and <MSB> (higher address), so the low word comes first (CDAB).",
+  "Integral active energy (0064H/0065H, 0.01 kWh, read/write, writing 0 resets it) is left out: that row has no LSB/MSB mark, so the manual does not state its word order.",
+  "Pulse-output unit codes 999, 777 and 333 turn the output into a power, current or stand-by alarm instead of an energy pulse.",
+  "Registers not listed read 0. Phase/wire system and the communication settings are not in the Modbus table; set them on the front panel."
+ ],
+ "integration": {
+  "summary": "Select MODBUS(RTU) in Mode 2 on the front panel, then poll 00B0H (kW x0.01), 006BH/006DH (A x0.1) and 00AAH/00ACH (V x0.1) with function 03. 32-bit values are low word first.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 176,
+    "why": "Instantaneous active power"
+   },
+   {
+    "table": "holding_register",
+    "address": 107,
+    "why": "L1 current"
+   },
+   {
+    "table": "holding_register",
+    "address": 109,
+    "why": "L2 current"
+   },
+   {
+    "table": "holding_register",
+    "address": 170,
+    "why": "Voltage 1-2"
+   },
+   {
+    "table": "holding_register",
+    "address": 172,
+    "why": "Voltage 2-3"
+   }
+  ],
+  "enable": "Protocol defaults to MEWTOCOL. In Mode 2 change Protocol to MODBUS(RTU), then set station number, speed, format and response time.",
+  "watchdog": null,
+  "quirks": [
+   "Only 8-bit transmission formats work with Modbus RTU (8bit-o, 8bit-n, 8bit-E); the default 8bit-o is odd parity.",
+   "Writes outside the allowed range are acknowledged but not applied."
+  ],
+  "setup": [
+   "Defaults: station 1, 19200 bps, 8bit-o, response time 5 ms.",
+   "Speeds available: 2400, 4800, 9600, 19200, 38400 bps.",
+   "Broadcast address 0 is accepted but gets no reply."
+  ],
+  "gotchas": [
+   "AKW7111B and AKW7111 are not interchangeable; only AKW4x0xB CTs can be used with the AKW7111B.",
+   "Settings written over Modbus are stored in EEPROM; don't write them in a loop."
+  ]
+ },
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 50,
+   "documented": "0032H",
+   "name": "Rate",
+   "description": "Electricity rate per kWh used for the charge display.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 60,
+   "documented": "003CH",
+   "name": "CT type",
+   "description": "Dedicated CT rating: 5, 50, 100, 250 or 400.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "A",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 61,
+   "documented": "003DH",
+   "name": "Unit for pulse output",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "0.001 kWh",
+    "10": "0.01 kWh",
+    "100": "0.1 kWh",
+    "1000": "1 kWh",
+    "10000": "10 kWh",
+    "100000": "100 kWh",
+    "999": "Power alarm output (uses alarm value 0040H)",
+    "777": "Current alarm output (uses ratio 0045H)",
+    "333": "Stand-by alarm output (uses 004DH/004EH)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 63,
+   "documented": "003FH",
+   "name": "CT primary current (5 A CT)",
+   "description": "Used with a commercial 5 A secondary CT, 1-4000.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "A",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 64,
+   "documented": "0040H",
+   "name": "Alarm value (instantaneous power)",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 0.01,
+   "units": "kW",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 66,
+   "documented": "0042H",
+   "name": "VT ratio",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 68,
+   "documented": "0044H",
+   "name": "Cut-off current",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 69,
+   "documented": "0045H",
+   "name": "Ratio for current alarm",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 77,
+   "documented": "004DH",
+   "name": "Ratio for stand-by current",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 78,
+   "documented": "004EH",
+   "name": "Time for stand-by alarm",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "min",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 107,
+   "documented": "006BH",
+   "name": "L1 (CT1) phase current",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "A",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 109,
+   "documented": "006DH",
+   "name": "L2 (CT2) phase current",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "A",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 170,
+   "documented": "00AAH",
+   "name": "Voltage between 1 and 2",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 0.1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 172,
+   "documented": "00ACH",
+   "name": "Voltage between 2 and 3",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 0.1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 176,
+   "documented": "00B0H",
+   "name": "Instantaneous active power",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 0.01,
+   "units": "kW",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "page": "https://easymodbus.com/modbus-register-maps/panasonic/kw7m",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

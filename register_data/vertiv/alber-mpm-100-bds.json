@@ -1,0 +1,423 @@
+{
+  "manufacturer": "Vertiv (Alber)",
+  "manufacturer_slug": "vertiv",
+  "model": "Alber MPM-100 and BDS series battery monitors (Modbus ASCII)",
+  "model_slug": "alber-mpm-100-bds",
+  "short_model": "Alber MPM-100 / BDS",
+  "aliases": [
+    "Alber MPM-100",
+    "Alber BDS",
+    "BDS-40",
+    "BDS40",
+    "MPM100",
+    "Vertiv Alber battery monitor",
+    "SL-29417"
+  ],
+  "equipment_type": "Sensor (battery monitoring system)",
+  "applies_to": "Alber MPM-100 (firmware 1.20+) and BDS series (controller firmware 2.20+) battery monitors with BMDM software 4.10+, per protocol document SL-29417 Rev 7.05.",
+  "summary": "The Alber MPM-100 and BDS monitor stationary battery strings: cell voltages, intercell and intertier resistances, string voltage, currents, temperatures and alarms. They speak Modbus ASCII (7 data bits, 2 stop bits, 9600 baud) with functions 03 and 16; values are 16-bit integers with power-of-two scaling. This map covers representative cell voltage and resistance registers, overall voltage, time-to-go, system status, the firmware command register and configuration basics.",
+  "transport": [
+    "ASCII"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 7,
+    "stop_bits": 2,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Each row gives a 4xxxx reference and the hex data address used in the frame: Cell Voltage 1 is reference 40001 at data address 0000H, overall voltage is 41025 at 0400H. Wire address = reference - 40001."
+  },
+  "default_word_order": null,
+  "firmware": "MPM 1.20+, BDS controller 2.20+",
+  "source": {
+    "title": "Modbus Protocol for MPM-100 and BDS Series Monitors",
+    "doc_number": "590-2102-501A/SL-29417/4200-080 Rev 7.05",
+    "revision_date": "2015-06-23",
+    "url": "https://www.vertiv.com/4ab422/globalassets/shared/alber-bds-and-mpm-100-modbus-protocol-.pdf",
+    "pages": "Frame settings p. 1 (PDF p. 6); register list pp. 2-22; notes pp. 22-25; data transformation pp. 40-42"
+  },
+  "notes": [
+    "Left out: discharge time (41026), the battery amp-hour rows (41818-41825) and amp-hours remaining #1-#4 (41137, 41139, 41141, 41143). All are marked '(High - Low)' and the list does not explain whether that means two registers or a split value, so size or encoding is not settled.",
+    "Scaling comes from the data transformation table: overall voltage / 2^4, cell voltage / 2^10, intertier resistance x 10^3 / 2^11, intercell resistance x 10^3 / 2^13. Scales are written here as decimals (0.0625, 0.0009765625, 0.48828125, 0.1220703125).",
+    "Left out: currents (scaled by the shunt value or a float-current constant), internal cell resistance (model-dependent RConstant), and temperatures, which use sign-and-magnitude encoding (bit 15 = negative) divided by 128 or by 45 depending on DCM/MPM firmware.",
+    "Only the first, second and last cell voltage and the first/last intercell rows are listed; the rest follow at one register per cell.",
+    "Device address: MPM is 01H; BDS strings 1-16 are 01H-10H."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "40001 / 0000H",
+      "name": "Cell voltage 1",
+      "description": "Raw / 2^10. Cell voltages 1-512 run 40001-40512.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.0009765625,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40002 / 0001H",
+      "name": "Cell voltage 2",
+      "description": "Raw / 2^10.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.0009765625,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 511,
+      "documented": "40512 / 01FFH",
+      "name": "Cell voltage 512",
+      "description": "Raw / 2^10.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.0009765625,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 512,
+      "documented": "40513 / 0200H",
+      "name": "Intercell resistance 1",
+      "description": "Raw x 10^3 / 2^13. Intercell 1-48 run 40513-40560.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1220703125,
+      "units": "µΩ",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 559,
+      "documented": "40560 / 022FH",
+      "name": "Intercell resistance 48",
+      "description": "Raw x 10^3 / 2^13.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1220703125,
+      "units": "µΩ",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1024,
+      "documented": "41025 / 0400H",
+      "name": "Overall voltage",
+      "description": "Raw / 2^4.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.0625,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1038,
+      "documented": "41039 / 040EH",
+      "name": "Intertier resistance 1 (MPM)",
+      "description": "Raw x 10^3 / 2^11. Intertier 1-8 for MPM run 41039-41046.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.48828125,
+      "units": "µΩ",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1068,
+      "documented": "41069 / 042CH",
+      "name": "Intertier resistance 1 (BDS)",
+      "description": "Raw x 10^3 / 2^11. BDS intertier 1-15 run 41069-41083.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.48828125,
+      "units": "µΩ",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1135,
+      "documented": "41136 / 046FH",
+      "name": "Time-to-go #1",
+      "description": "Hours x 100; 720 = 7.2 h. MPM 2.00+.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1137,
+      "documented": "41138 / 0471H",
+      "name": "Time-to-go #2",
+      "description": "Hours x 100; 720 = 7.2 h. MPM 2.00+.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1139,
+      "documented": "41140 / 0473H",
+      "name": "Time-to-go #3",
+      "description": "Hours x 100; 720 = 7.2 h. MPM 2.00+.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1141,
+      "documented": "41142 / 0475H",
+      "name": "Time-to-go #4",
+      "description": "Hours x 100; 720 = 7.2 h. MPM 2.00+.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1536,
+      "documented": "41537 / 0600H",
+      "name": "String ID",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1540,
+      "documented": "41541 / 0604H",
+      "name": "System status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "15": "Alarm disabled",
+        "14": "Critical alarm happened",
+        "13": "Maintenance alarm happened",
+        "12": "Logging discharge data",
+        "11": "DCM communication error",
+        "10": "Historical alarm logged",
+        "9": "Discharge disabled",
+        "8": "Discharge in progress",
+        "7": "Discharge report logged",
+        "6": "Resistance test in progress",
+        "5": "Resistance values logged",
+        "4": "Warning",
+        "3": "In diagnostic mode",
+        "2": "Memory test finished",
+        "1": "Calibration in progress",
+        "0": "Hardware problem"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 1541,
+      "documented": "41542 / 0605H",
+      "name": "Firmware control",
+      "description": "Write a command code (function 16).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Start resistance test",
+        "1": "Stop resistance test",
+        "2": "Start firmware scan",
+        "3": "Stop firmware scan",
+        "5": "Load off",
+        "6": "Start diagnostics",
+        "7": "Stop diagnostics",
+        "8": "Reset alarm",
+        "10": "Start load test",
+        "11": "Stop load test",
+        "12": "Start EEPROM test",
+        "16": "Enable alarm",
+        "17": "Disable alarm",
+        "18": "Close alarm contact",
+        "19": "Open alarm contact",
+        "20": "Close charger contact",
+        "21": "Open charger contact"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1553,
+      "documented": "41554 / 0611H",
+      "name": "DIP switch",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1598,
+      "documented": "41599 / 063EH",
+      "name": "Cell connection",
+      "description": "BDS40 only (DCM 2.45+, controller 2.31+).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "128": "Good",
+        "255": "Connection problem"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1600,
+      "documented": "41601 / 0640H",
+      "name": "Total cell number",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1152,
+      "documented": "41153 / 0480H",
+      "name": "Alarm type of first current alarm",
+      "description": "Bit 15: 0 = active; bits 9-14 alarm number; bits 0-8 cell/sensor number.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Poll with Modbus ASCII function 03 at 9600 baud, 7 data bits, no parity, 2 stop bits; read cell voltages from 0000H and string values from 0400H, applying the power-of-two scaling.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Cell voltage 1"
+      },
+      {
+        "table": "holding_register",
+        "address": 1024,
+        "why": "Overall string voltage"
+      },
+      {
+        "table": "holding_register",
+        "address": 1135,
+        "why": "Time-to-go"
+      },
+      {
+        "table": "holding_register",
+        "address": 1540,
+        "why": "System status bits"
+      },
+      {
+        "table": "holding_register",
+        "address": 1152,
+        "why": "First active alarm"
+      }
+    ],
+    "enable": "Modbus ASCII is the monitor's native protocol; set the master to ASCII mode.",
+    "watchdog": null,
+    "quirks": [
+      "ASCII framing with 7 data bits and 2 stop bits.",
+      "Power-of-two scaling on voltages and resistances.",
+      "Temperatures are sign-magnitude, not two's complement."
+    ],
+    "setup": [
+      "9600 baud, 7 data bits, no parity, 2 stop bits.",
+      "MPM address 01H; BDS string n = address n."
+    ],
+    "gotchas": [
+      "Alarm reset and tests are commands written to 41542 (data address 0605H)."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honeywell SOLA Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="Honeywell SOLA Modbus register map: 140 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Honeywell SOLA Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="Honeywell SOLA Modbus register map: 140 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Honeywell SOLA Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="Honeywell SOLA Modbus register map: 140 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control",
+   "url": "https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control",
+   "name": "Honeywell SOLA Modbus Register List & Map | Easy Modbus",
+   "description": "Honeywell SOLA Modbus register map: 140 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-17",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control#dataset",
+   "name": "Honeywell SOLA hydronic boiler control (Modbus interface) Modbus register map",
+   "description": "SOLA is Honeywell's integrated burner and hydronic control used by many boiler OEMs. Its RS-485 Modbus RTU port exposes everything as 16-bit holding registers, with digital signals packed into bit-map registers. This map covers the status area: change flags, digital I/O, limits, demand source, temperatures, firing rate, flame signal, burner control status and lockout codes, sensor states, CH/DHW/lead-lag status and pump status. Honeywell SOLA Modbus register map: 140 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control",
+   "keywords": [
+    "Honeywell SOLA hydronic boiler control (Modbus interface) Modbus register map",
+    "Honeywell SOLA hydronic boiler control (Modbus interface) Modbus registers",
+    "Honeywell Modbus map",
+    "R7910 Modbus register map",
+    "R7911 Modbus register map",
+    "Honeywell SOLA Modbus register map",
+    "SOLA ICP Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   },
+   "dateModified": "2026-11-17",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "Software Interface Specification - SOLA Modbus Interface",
+    "url": "https://www.ccontrols.com/support/dp/OEMModbusSIS4_1_1_1_1.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Honeywell"
+    }
+   },
+   "about": {
+    "@type": "Product",
+    "name": "Honeywell SOLA hydronic boiler control (Modbus interface)",
+    "brand": {
+     "@type": "Brand",
+     "name": "Honeywell"
+    },
+    "category": "Boiler controller"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@id": "https://easymodbus.com/modbus-register-maps/#catalog"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Honeywell SOLA hydronic boiler control (Modbus interface) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 140 registers: 140 holding registers. 1 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Honeywell SOLA hydronic boiler control (Modbus interface) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The specification says register addresses start at 0 per the Modbus specification; add 40001 to the decimal address for traditional 4xxxx numbering. Register 7 (outlet temperature) is requested as address 7 (40008)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Honeywell SOLA hydronic boiler control (Modbus interface)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 7 Outlet (S3S4) or Outlet limit (S3) sensor (Outlet temperature); HR 8 Firing rate (Firing rate); HR 10 Flame signal (Flame signal); HR 32 Burner control status (Burner control status); HR 34 Lockout code (Lockout code); HR 6 Demand source (Demand source); HR 16 Active CH setpoint (Active CH setpoint)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Honeywell SOLA hydronic boiler control (Modbus interface)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Use one of the SOLA's RS-485 Modbus ports (MB1 or MB2); the control answers to a single Modbus address. Register writes are limited by the access level shown in register 19 (none, installer, OEM or all)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Honeywell SOLA hydronic boiler control (Modbus interface) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is Software Interface Specification - SOLA Modbus Interface (Rev. 4.1.1), revision 2013-10-14. Honeywell doesn't publish it on its own website, so this map was re-typed from a free copy at https://www.ccontrols.com/support/dp/OEMModbusSIS4_1_1_1_1.pdf. It may be an older revision, so check it against the live unit."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Honeywell",
+     "item": "https://easymodbus.com/modbus-register-maps/honeywell/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "SOLA hydronic boiler control (Modbus interface)",
+     "item": "https://easymodbus.com/modbus-register-maps/honeywell/sola-hydronic-control"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/honeywell/">Honeywell</a></li><li aria-current="page">SOLA hydronic boiler control (Modbus interface)</li></ol>
+<p class="eyebrow">Boiler controller &middot; Modbus register map</p><h1><span class="mfr">Honeywell</span> SOLA hydronic boiler control (Modbus interface) Modbus register map</h1><p class="updated">Updated 17 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>SOLA is Honeywell&#x27;s integrated burner and hydronic control used by many boiler OEMs. Its RS-485 Modbus RTU port exposes everything as 16-bit holding registers, with digital signals packed into bit-map registers. This map covers the status area: change flags, digital I/O, limits, demand source, temperatures, firing rate, flame signal, burner control status and lockout codes, sensor states, CH/DHW/lead-lag status and pump status.</p>
+<p>This page lists <strong>140 Modbus registers</strong> for the Honeywell SOLA hydronic boiler control (Modbus interface) &mdash; 1 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Honeywell&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/honeywell/">Honeywell</a></dd></div><div><dt>Model</dt><dd>SOLA hydronic boiler control (Modbus interface)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/boilers/">Boiler controller</a></dd></div><div><dt>Registers</dt><dd>140 (1 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>38400 baud, 8N1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Also known as</dt><dd>R7910, R7911, Honeywell SOLA, SOLA ICP</dd></div><div><dt>Source document</dt><dd><a href="https://www.ccontrols.com/support/dp/OEMModbusSIS4_1_1_1_1.pdf" rel="nofollow noopener" target="_blank">Software Interface Specification - SOLA Modbus Interface &middot; Rev. 4.1.1 &middot; rev. 2013-10-14 &middot; unofficial copy</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/honeywell/sola-hydronic-control.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/honeywell/sola-hydronic-control.json">JSON</a>
+  <a class="btn" href="https://www.ccontrols.com/support/dp/OEMModbusSIS4_1_1_1_1.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: Honeywell SOLA hydronic boiler control (Modbus interface)</h2>
+<div class="answer"><b>Integration in brief</b><p>Connect to the SOLA&#x27;s 3-pin RS-485 Modbus port (38400 8N1) and read holding registers with FC 03 from address 0. Temperatures are 0.1 °C integers; burner status is at 32, lockout code at 34.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-7">HR 7</a></td><td class="n">Outlet (S3S4) or Outlet limit (S3) sensor</td><td class="f">UINT16</td><td>Outlet temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-8">HR 8</a></td><td class="n">Firing rate</td><td class="f">UINT16</td><td>Firing rate</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-10">HR 10</a></td><td class="n">Flame signal</td><td class="f">UINT16</td><td>Flame signal</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-32">HR 32</a></td><td class="n">Burner control status</td><td class="f">UINT16</td><td>Burner control status</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-34">HR 34</a></td><td class="n">Lockout code</td><td class="f">UINT16</td><td>Lockout code</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-6">HR 6</a></td><td class="n">Demand source</td><td class="f">UINT16</td><td>Demand source</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-16">HR 16</a></td><td class="n">Active CH setpoint</td><td class="f">UINT16</td><td>Active CH setpoint</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Use one of the SOLA&#x27;s RS-485 Modbus ports (MB1 or MB2); the control answers to a single Modbus address. Register writes are limited by the access level shown in register 19 (none, installer, OEM or all).</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Addresses are 0-based; add 40001 for 4xxxx tools.</li><li>Status-change registers 0, 1 and 23 clear when read.</li><li>Digital signals are bits inside holding registers, not coils.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>RS-485 terminals: 1 = Data+ (a), 2 = Data- (b), 3 = common.</li><li>Fixed format: 38400 bps, 8 data bits, no parity, 1 stop bit.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>OEM boilers may disable or relabel some SOLA functions; confirm with the boiler maker&#x27;s documentation.</li><li>0x8FFF in a temperature register means that function is not enabled; 0x7FFF and 0x8000-0x8500 are sensor fault codes.</li></ul>
+</section>
+<h2 id="registers">Honeywell SOLA hydronic boiler control (Modbus interface) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>140</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">140 of 140 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Honeywell SOLA hydronic boiler control (Modbus interface) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-0"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">0<small>doc 0000</small></td><td class="n">Status Change</td><td class="d">Cleared after read; flags which register groups changed.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Active Lockout; bit 1 = Burner control status; bit 2 = Sensor status; bit 3 = Demand&amp;Modulation status; bit 4 = CH status; bit 5 = DHW status; bit 6 = Pump status; bit 7 = Statistics; bit 8 = Lead Lag status; bit 9 = Lockout history; bit 10 = Alert log</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1<small>doc 0001</small></td><td class="n">Configuration Change</td><td class="d">Cleared after read; flags which register groups changed.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = System configuration; bit 1 = Modulation configuration; bit 2 = CH configuration; bit 3 = Burner control configuration; bit 4 = Fan configuration; bit 5 = Pump configuration; bit 6 = Annunciation configuration; bit 7 = DHW configuration; bit 8 = Limits configuration; bit 9 = Anti-condensation configuration; bit 10 = Outdoor reset configuration; bit 11 = Frost protection configuration; bit 12 = Lead Lag configuration; bit 14 = PM configuration; bit 15 = PCB configuration</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2<small>doc 0002</small></td><td class="n">Digital I/O</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Pump A; bit 1 = Pump B; bit 2 = Pump C; bit 3 = Blower motor/HSI; bit 4 = External ignition; bit 5 = Pilot valve; bit 6 = Main valve; bit 7 = Alarm; bit 8 = Interlock (ILK); bit 9 = Pre-ignition interlock (PII); bit 10 = Load Control Input(LCI); bit 11 = Low Fire Switch (LFS); bit 12 = High Fire Switch (HFS); bit 13 = STAT (Demand); bit 14 = Time of Day; bit 15 = Safety relay</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3<small>doc 0003</small></td><td class="n">Annunciation I/O</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Annunciator 1/IAS; bit 1 = Annunciator 2; bit 2 = Annunciator 3; bit 3 = Annunciator 4; bit 4 = Annunciator 5; bit 5 = Annunciator 6; bit 6 = Annunciator 7/HFS; bit 7 = Annunciator 8/LFS</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4<small>doc 0004</small></td><td class="n">Limits</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Outlet high limit; bit 1 = DHW high limit; bit 2 = Stack limit; bit 3 = Delta T inlet/outlet limit; bit 4 = Delta T exchanger/outlet limit; bit 5 = Delta T inlet/exchanger limit; bit 6 = Inversion inlet/outlet limit; bit 7 = Inversion exchanger/outlet limit; bit 8 = Inversion inlet/exchanger limit; bit 9 = Outlet T-rise limit; bit 10 = Exchanger T-rise limit; bit 11 = Heat exchanger high limit</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-5"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">5<small>doc 0005</small></td><td class="n">Program Module (PM) status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = PM installed; bit 1 = Lead/Lag enabled; bit 2 = Valid copyright; bit 8 = OEM parameter PCB stored in PM; bit 9 = OEM range PCB stored in PM; bit 10 = OEM alert PCB stored in PM</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6<small>doc 0006</small></td><td class="n">Demand source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Unknown; 1 = No source demand; 2 = CH; 3 = DHW; 4 = Lead Lag slave; 5 = Lead Lag master; 6 = CH frost protection; 7 = DHW frost protection; 8 = No demand due to burner switch (register 199) turned off; 9 = DHW storage; 11 = Warm weather shutdown; 12 = Hot standby</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7<small>doc 0007</small></td><td class="n">Outlet (S3S4) or Outlet limit (S3) sensor</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8<small>doc 0008</small></td><td class="n">Firing rate</td><td class="d">Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9<small>doc 0009</small></td><td class="n">Fan speed</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>RPM</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10<small>doc 0010</small></td><td class="n">Flame signal</td><td class="d">0.01 V or 0.01 uA, depending on flame sensor (0.00-50.00).</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11<small>doc 0011</small></td><td class="n">Inlet (S1) sensor</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12<small>doc 0012</small></td><td class="n">DHW (S6S7) or DHW limit (S6) sensor</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-13"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">13<small>doc 0013</small></td><td class="n">S5 sensor</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-14"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">14<small>doc 0014</small></td><td class="n">Stack (S8S9) or Stack limit (S8) sensor</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15<small>doc 0015</small></td><td class="n">4-20 mA remote control input (S2) terminal</td><td class="d">0.1 mA units when S2 is a 4-20 mA input; other uses per register 609.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>mA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16<small>doc 0016</small></td><td class="n">Active CH setpoint</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-17"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">17<small>doc 0017</small></td><td class="n">Active DHW setpoint</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-18"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">18<small>doc 0018</small></td><td class="n">Active LL setpoint</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-19"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">19<small>doc 0019</small></td><td class="n">Register Access Status</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No register writes allowed; 1 = Installer register writes allowed; 2 = OEM register writes allowed; 3 = All register writes allowed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-20"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">20<small>doc 0020</small></td><td class="n">Steam pressure</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>psi</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-21"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">21<small>doc 0021</small></td><td class="n">Analog modulation input</td><td class="d">0 = no signal, else 4-20 mA (0.1 mA); mirrors register 15 for 4-20 mA S2.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>mA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-22"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">22<small>doc 0022</small></td><td class="n">Active CH pressure setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>psi</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-23"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">23<small>doc 0023</small></td><td class="n">Extended Status Change</td><td class="d">Cleared after read; flags which register groups changed.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 3 = DHW plate heat exchanger status; bit 4 = DHW plate heat exchanger configuration</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-25"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">25<small>doc 0025</small></td><td class="n">Active CH operating point</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-26"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">26<small>doc 0026</small></td><td class="n">Active DHW operating point</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-27"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">27<small>doc 0027</small></td><td class="n">Active Lead Lag operating point</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-28"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">28<small>doc 0028</small></td><td class="n">Active system operating point</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-29"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">29<small>doc 0029</small></td><td class="n">Active system setpoint</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-30"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">30<small>doc 0030</small></td><td class="n">Active system on hysteresis</td><td class="d">0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-31"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">31<small>doc 0031</small></td><td class="n">Active system off hysteresis</td><td class="d">0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32<small>doc 0032</small></td><td class="n">Burner control status</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Disabled; 1 = Locked out; 4 = Anti-short cycle; 5 = Unconfigured safety data; 34 = Standby Hold; 35 = Standby Delay; 48 = Normal Standby; 49 = Preparing; 50 = Ignition; 51 = Firing; 52 = Postpurge</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-33"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">33<small>doc 0033</small></td><td class="n">Burner control state</td><td class="d">Sequence state code, see table 12 in the source.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-34"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">34<small>doc 0034</small></td><td class="n">Lockout code</td><td class="d">1-4096 = lockout number (table 9 in the source).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No lockout</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-35"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">35<small>doc 0035</small></td><td class="n">Alarm reason</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Lockout (see Lockout code, register 34); 2 = Alert (see Table 11); 3 = Other</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-36"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">36<small>doc 0036</small></td><td class="n">Annunciator first out</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None or undetermined; 1 = ILK; 2 = PII; 11 = Annunciator 1; 12 = Annunciator 2; 13 = Annunciator 3; 14 = Annunciator 4; 15 = Annunciator 5; 16 = Annunciator 6; 17 = Annunciator 7; 18 = Annunciator 8</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-37"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">37<small>doc 0037</small></td><td class="n">Annunciator hold</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None or undetermined; 1 = ILK; 2 = PII; 3 = LCI; 11 = Annunciator 1; 12 = Annunciator 2; 13 = Annunciator 3; 14 = Annunciator 4; 15 = Annunciator 5; 16 = Annunciator 6; 17 = Annunciator 7; 18 = Annunciator 8</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-38"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">38<small>doc 0038</small></td><td class="n">Sequence time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-39"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">39<small>doc 0039</small></td><td class="n">Delay time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40<small>doc 0040</small></td><td class="n">Hold code</td><td class="d">Hold reason; same codes as lockout (table 8 in the source).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-41"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">41<small>doc 0041</small></td><td class="n">Burner control flags</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Flame detected; bit 1 = DHW remote STAT demand indicated; bit 2 = Blocked condensate detected</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-42"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">42<small>doc 0042</small></td><td class="n">CH remote Stat</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No remote STAT demand; 1 = Remote STAT demand indicated</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-43"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">43<small>doc 0043</small></td><td class="n">Outlet operation (S4=J8-10) terminal</td><td class="d">0.1 °C units (listed as U16, range from -40 °C); other sensor types per register 610.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-44"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">44<small>doc 0044</small></td><td class="n">DHW operation (S7=J9-3) terminal</td><td class="d">0.1 °C units (listed as U16, range from -40 °C); other sensor types per register 612.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-45"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">45<small>doc 0045</small></td><td class="n">Stack or Heat exchanger operation (S9=J9-6) terminal</td><td class="d">0.1 °C units (listed as U16, range from -40 °C); other sensor types per register 613.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-46"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">46<small>doc 0046</small></td><td class="n">Outlet operation sensor (S4=J8-10) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-47"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">47<small>doc 0047</small></td><td class="n">DHW operation sensor (S7=J9-3) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-48"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">48<small>doc 0048</small></td><td class="n">Outlet limit sensor (S3=J8-8) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-49"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">49<small>doc 0049</small></td><td class="n">Inlet sensor (S1=J8-4) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-50"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">50<small>doc 0050</small></td><td class="n">DHW limit sensor (S7=J9-1) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-51"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">51<small>doc 0051</small></td><td class="n">Stack limit sensor (S8=J9-4) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-52"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">52<small>doc 0052</small></td><td class="n">S5 (J8-11) sensor state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-53"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">53<small>doc 0053</small></td><td class="n">4-20mA remote control input (S2=J8-6) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-54"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">54<small>doc 0054</small></td><td class="n">Pressure sensor (S1=J8-4) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-55"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">55<small>doc 0055</small></td><td class="n">Stack operation or Heat exchanger sensor (S9=J9-6) state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-56"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">56<small>doc 0056</small></td><td class="n">Active rate limiter</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Outlet high limit; 2 = Delta T limit; 3 = Stack limit; 4 = Slow start limit; 5 = Anti-condensation; 6 = Minimum modulation; 7 = Forced rate; 8 = IAS is open</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-57"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">57<small>doc 0057</small></td><td class="n">Limited rate</td><td class="d">Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-58"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">58<small>doc 0058</small></td><td class="n">Active rate override</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Burner control default; 2 = Burner control; 3 = Manual firing rate; 4 = Manual firing rate off; 5 = Fan on during off cycle; 6 = Assured low fire cutoff</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-59"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">59<small>doc 0059</small></td><td class="n">Override rate</td><td class="d">Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-60"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">60<small>doc 0060</small></td><td class="n">Demand rate</td><td class="d">Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-61"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">61<small>doc 0061</small></td><td class="n">Active system sensor</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No active sensor; 1 = DHW (S6S7) sensor; 2 = Outlet (S3S4) sensor; 3 = Inlet (S1) sensor; 4 = 4-20mA input (S2); 5 = S5 sensor; 6 = S10 sensor; 7 = Steam (S1) sensor; 8 = DHW (S6S7) and Inlet (S1) sensor; 9 = DHW (S6S7) and S5 sensor; 10 = Outlet (S3S4) and Inlet (S1) sensor; 11 = Outlet (S3S4) and S5 sensor</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-62"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">62<small>doc 0062</small></td><td class="n">Active Lead Lag sensor</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No active sensor; 2 = Outlet (S3S4) sensor; 5 = S5 sensor; 6 = S10 sensor</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-64"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">64<small>doc 0064</small></td><td class="n">CH status</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Unknown; 1 = Disabled; 2 = Normal; 3 = Suspended</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-65"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">65<small>doc 0065</small></td><td class="n">CH setpoint source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Unknown; 1 = Normal setpoint; 2 = TOD setpoint; 3 = Outdoor reset; 4 = Remote control; 7 = Outdoor reset time of day; 9 = Outdoor boost</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-66"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">66<small>doc 0066</small></td><td class="n">CH heat demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-67"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">67<small>doc 0067</small></td><td class="n">CH burner demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-68"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">68<small>doc 0068</small></td><td class="n">CH requested rate</td><td class="d">Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-69"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">69<small>doc 0069</small></td><td class="n">CH frost heat demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-70"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">70<small>doc 0070</small></td><td class="n">CH frost burner demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-71"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">71<small>doc 0071</small></td><td class="n">Active CH on hysteresis</td><td class="d">0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-72"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">72<small>doc 0072</small></td><td class="n">Active CH off hysteresis</td><td class="d">0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-73"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">73<small>doc 0073</small></td><td class="n">Active CH pressure on hysteresis</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>psi</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-74"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">74<small>doc 0074</small></td><td class="n">Active CH pressure off hysteresis</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>psi</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-75"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">75<small>doc 0075</small></td><td class="n">Active CH pressure operating point</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>psi</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-76"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">76<small>doc 0076</small></td><td class="n">Active CH sensor</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No active sensor; 2 = Outlet (S3S4) sensor; 3 = Inlet (S1) sensor; 4 = 4-20mA input (S2); 5 = S5 sensor; 6 = S10 sensor; 7 = Steam (S1) sensor</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-77"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">77<small>doc 0077</small></td><td class="n">Heat Demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-78"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">78<small>doc 0078</small></td><td class="n">BURNER DEMAND</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-79"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">79<small>doc 0079</small></td><td class="n">Active DHW sensor</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No active sensor; 1 = DHW (S6S7) sensor; 2 = Outlet (S3S4) sensor; 3 = Inlet (S1) sensor</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-80"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">80<small>doc 0080</small></td><td class="n">DHW status</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Unknown; 1 = Disabled; 2 = Normal; 3 = Suspended</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-81"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">81<small>doc 0081</small></td><td class="n">DHW setpoint source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Unknown; 1 = Normal setpoint; 2 = TOD setpoint; 5 = DHW tap setpoint; 6 = DHW preheat setpoint</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-82"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">82<small>doc 0082</small></td><td class="n">DHW priority count</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-83"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">83<small>doc 0083</small></td><td class="n">DHW heat demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-84"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">84<small>doc 0084</small></td><td class="n">DHW burner demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-85"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">85<small>doc 0085</small></td><td class="n">DHW requested rate</td><td class="d">Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-86"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">86<small>doc 0086</small></td><td class="n">DHW frost heat demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-87"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">87<small>doc 0087</small></td><td class="n">DHW frost burner demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-88"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">88<small>doc 0088</small></td><td class="n">Active DHW on hysteresis</td><td class="d">0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-89"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">89<small>doc 0089</small></td><td class="n">Active DHW off hysteresis</td><td class="d">0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-90"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">90<small>doc 0090</small></td><td class="n">DHW storage time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-91"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">91<small>doc 0091</small></td><td class="n">DHW storage heat demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-92"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">92<small>doc 0092</small></td><td class="n">DHW storage burner demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-93"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">93<small>doc 0093</small></td><td class="n">Pump A status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = On due to normal demand; bit 1 = Forced on; bit 2 = Forced off; bit 3 = On due to overrun; bit 4 = On due to exercise; bit 5 = Pump exercise requested; bit 6 = Pump assigned to logical pump; bit 8 = CH pump demand; bit 9 = DHW pump demand; bit 10 = Boiler pump demand; bit 11 = System pump demand; bit 12 = Auxiliary 1 pump demand; bit 13 = Auxiliary 2 pump demand</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-94"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">94<small>doc 0094</small></td><td class="n">Pump B status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = On due to normal demand; bit 1 = Forced on; bit 2 = Forced off; bit 3 = On due to overrun; bit 4 = On due to exercise; bit 5 = Pump exercise requested; bit 6 = Pump assigned to logical pump; bit 8 = CH pump demand; bit 9 = DHW pump demand; bit 10 = Boiler pump demand; bit 11 = System pump demand; bit 12 = Auxiliary 1 pump demand; bit 13 = Auxiliary 2 pump demand</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-95"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">95<small>doc 0095</small></td><td class="n">CH pump start delay time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-96"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">96<small>doc 0096</small></td><td class="n">CH pump status</td><td class="d">Coding depends on application build (tables 13/14 in the source).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-97"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">97<small>doc 0097</small></td><td class="n">CH pump overrun time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-98"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">98<small>doc 0098</small></td><td class="n">CH FP overrun time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-99"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">99<small>doc 0099</small></td><td class="n">CH pump idle days count</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>days</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-100"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">100<small>doc 0100</small></td><td class="n">DHW pump status</td><td class="d">Coding depends on application build (tables 13/14 in the source).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-101"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">101<small>doc 0101</small></td><td class="n">DHW pump start delay time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-102"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">102<small>doc 0102</small></td><td class="n">DHW pump overrun time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-103"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">103<small>doc 0103</small></td><td class="n">DHW FP overrun time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-104"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">104<small>doc 0104</small></td><td class="n">DHW pump idle days count</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>days</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-105"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">105<small>doc 0105</small></td><td class="n">System pump status</td><td class="d">Coding depends on application build (tables 13/14 in the source).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-106"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">106<small>doc 0106</small></td><td class="n">System pump overrun time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-107"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">107<small>doc 0107</small></td><td class="n">System pump idle days count</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>days</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-108"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">108<small>doc 0108</small></td><td class="n">Boiler pump status</td><td class="d">Coding depends on application build (tables 13/14 in the source).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-109"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">109<small>doc 0109</small></td><td class="n">Boiler pump overrun time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-110"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">110<small>doc 0110</small></td><td class="n">Boiler pump idle days count</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>days</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-111"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">111<small>doc 0111</small></td><td class="n">Auxiliary 1 pump status</td><td class="d">Coding depends on application build (tables 13/14 in the source).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-112"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">112<small>doc 0112</small></td><td class="n">Auxiliary 1 pump idle days count</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>days</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-113"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">113<small>doc 0113</small></td><td class="n">Auxiliary 2 pump status</td><td class="d">See table 14 in the source.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-114"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">114<small>doc 0114</small></td><td class="n">Auxiliary 2 pump overrun time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-115"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">115<small>doc 0115</small></td><td class="n">Auxiliary 2 pump idle days count</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>days</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-119"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">119<small>doc 0119</small></td><td class="n">Auxiliary 1 pump overrun time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-148"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">148<small>doc 0148</small></td><td class="n">Auxiliary 2 pump start delay time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-149"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">149<small>doc 0149</small></td><td class="n">Boiler pump start delay time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-150"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">150<small>doc 0150</small></td><td class="n">System pump start delay time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-151"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">151<small>doc 0151</small></td><td class="n">Auxiliary 1 pump start delay time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-152"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">152<small>doc 0152</small></td><td class="n">DHW tap heat demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-153"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">153<small>doc 0153</small></td><td class="n">DHW preheat demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-154"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">154<small>doc 0154</small></td><td class="n">DHW change rate</td><td class="d">Rate of change, 0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-155"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">155<small>doc 0155</small></td><td class="n">DHW tap on recognition time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-156"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">156<small>doc 0156</small></td><td class="n">DHW tap on time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-157"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">157<small>doc 0157</small></td><td class="n">DHW preheat delay after tap time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-158"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">158<small>doc 0158</small></td><td class="n">DHW preheat on recognition time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-159"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">159<small>doc 0159</small></td><td class="n">DHW preheat on time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-160"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">160<small>doc 0160</small></td><td class="n">Lead Lag master status</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Unknown; 1 = Disabled; 2 = Normal; 3 = Suspended</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-161"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">161<small>doc 0161</small></td><td class="n">Lead Lag slave status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 9 = Local frost protection request; bit 10 = Frost protection burner request; bit 11 = DHW frost protection request; bit 12 = CH frost protection request; bit 13 = Slave is modulating; bit 14 = Slave mode has priority over CH &amp; DHW; bit 15 = Slave command received</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-162"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">162<small>doc 0162</small></td><td class="n">Lead Lag master setpoint source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Unknown; 1 = CH setpoint; 2 = CH TOD setpoint; 3 = Outdoor reset; 4 = Remote control (4-20mA or Modbus); 7 = Outdoor reset time of day; 9 = Outdoor boost</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-163"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">163<small>doc 0163</small></td><td class="n">Lead Lag master heat demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-164"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">164<small>doc 0164</small></td><td class="n">Lead Lag slave burner demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-165"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">165<small>doc 0165</small></td><td class="n">Lead Lag slave requested rate</td><td class="d">Firing rate: RPM, or 0.1 % steps if bit 15 is set (per modulation output setting).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-166"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">166<small>doc 0166</small></td><td class="n">Active Lead Lag on hysteresis</td><td class="d">0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-167"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">167<small>doc 0167</small></td><td class="n">Active Lead Lag off hysteresis</td><td class="d">0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-168"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">168<small>doc 0168</small></td><td class="n">Pump C status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = On due to normal demand; bit 1 = Forced on; bit 2 = Forced off; bit 3 = On due to overrun; bit 4 = On due to exercise; bit 5 = Pump exercise requested; bit 6 = Pump assigned to logical pump; bit 8 = CH pump demand; bit 9 = DHW pump demand; bit 10 = Boiler pump demand; bit 11 = System pump demand; bit 12 = Auxiliary 1 pump demand; bit 13 = Auxiliary 2 pump demand</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-170"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">170<small>doc 0170</small></td><td class="n">Outdoor temperature</td><td class="d">0.1 °C units; register listed as U16 although the range starts at -40 °C.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-171"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">171<small>doc 0171</small></td><td class="n">Outdoor sensor state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = None; 1 = Normal; 2 = Open; 3 = Shorted; 4 = Outside high range; 5 = Outside low range; 6 = Not reliable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-172"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">172<small>doc 0172</small></td><td class="n">Outlet T-rise rate</td><td class="d">Rate of change, 0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-173"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">173<small>doc 0173</small></td><td class="n">Exchanger T-rise rate</td><td class="d">Rate of change, 0.1 °C units.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>Source host: Honeywell&#x27;s specification as hosted by Contemporary Controls (a Honeywell integration partner); Honeywell does not host it publicly that we could find.</li><li>All temperatures are in 0.1 °C regardless of the display unit setting. The specification lists these registers as U16 even though the range is -40 to 130 °C; check how sub-zero values arrive on site. A temperature that does not apply (function not enabled) reads 0x8FFF; sensor faults replace the reading with the codes in table 4 of the source (0x7FFF, 0x8000-0x8500).</li><li>Firing-rate type registers carry either RPM or a 0.1 % value; the most significant bit tells which (0 = RPM, 1 = %), as set by the modulation output parameter (register 192).</li><li>Left out: the 32-bit statistics counters (128-147); the specification says 32-bit items use two consecutive registers but does not state the word order. Also left out: configuration registers above 173, alert/lockout history, lead-lag slave tables and the variable-length data items.</li><li>Pump status coding depends on application build (before/after 1600); see tables 13-14 in the source.</li><li>Up to 125 registers per read and 20 per write; variable-length items must be read on their own.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Honeywell SOLA hydronic boiler control (Modbus interface)</h2><div class="faq"><details open><summary>What Modbus registers does the Honeywell SOLA hydronic boiler control (Modbus interface) have?</summary><p>This map lists 140 registers: 140 holding registers. 1 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Honeywell SOLA hydronic boiler control (Modbus interface) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The specification says register addresses start at 0 per the Modbus specification; add 40001 to the decimal address for traditional 4xxxx numbering. Register 7 (outlet temperature) is requested as address 7 (40008).</p></details><details><summary>What are the minimum Modbus registers to integrate the Honeywell SOLA hydronic boiler control (Modbus interface)?</summary><p>Start with HR 7 Outlet (S3S4) or Outlet limit (S3) sensor (Outlet temperature); HR 8 Firing rate (Firing rate); HR 10 Flame signal (Flame signal); HR 32 Burner control status (Burner control status); HR 34 Lockout code (Lockout code); HR 6 Demand source (Demand source); HR 16 Active CH setpoint (Active CH setpoint).</p></details><details><summary>How do I enable Modbus control of the Honeywell SOLA hydronic boiler control (Modbus interface)?</summary><p>Use one of the SOLA&#x27;s RS-485 Modbus ports (MB1 or MB2); the control answers to a single Modbus address. Register writes are limited by the access level shown in register 19 (none, installer, OEM or all).</p></details><details><summary>Where is the official Honeywell SOLA hydronic boiler control (Modbus interface) Modbus documentation?</summary><p>The source is Software Interface Specification - SOLA Modbus Interface (Rev. 4.1.1), revision 2013-10-14. Honeywell doesn&#x27;t publish it on its own website, so this map was re-typed from a free copy at https://www.ccontrols.com/support/dp/OEMModbusSIS4_1_1_1_1.pdf. It may be an older revision, so check it against the live unit.</p></details></div>
+
+<p class="updated">Source: <a href="https://www.ccontrols.com/support/dp/OEMModbusSIS4_1_1_1_1.pdf" rel="nofollow noopener" target="_blank">Software Interface Specification - SOLA Modbus Interface &middot; Rev. 4.1.1 &middot; rev. 2013-10-14 &middot; unofficial copy</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

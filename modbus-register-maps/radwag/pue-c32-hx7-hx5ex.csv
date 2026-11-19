@@ -1,0 +1,38 @@
+﻿# Radwag PUE C32 / PUE HX7 / PUE HX5.EX weighing indicators Modbus register map - easymodbus.com - source: https://radwag.com/pdf2/en/MODBUS-ITKP-56-01-05-24-EN.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,30001,30001,Platform 1 mass,Mass on platform 1 in the currently displayed unit.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,2,30003,30003,Platform 1 tare,Tare of platform 1 in the adjustment (calibration) unit.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,4,30005,30005,Platform 1 unit,Bit set shows the unit now displayed.,BITMAP16,1,,1,0,,Read,bit 0 = gram [g]; bit 1 = kilogram [kg]; bit 2 = carat [ct]; bit 3 = pound [lb]; bit 4 = ounce [oz]; bit 5 = Newton [N]
+Input register,FC04 read,5,30006,30006,Platform 1 status,,BITMAP16,1,,1,0,,Read,bit 0 = Measurement correct (no error); bit 1 = Measurement stable; bit 2 = Indicating zero; bit 3 = Tared; bit 4 = In weighing range II; bit 5 = In weighing range III; bit 6 = NULL error; bit 7 = LH error; bit 8 = FULL error
+Input register,FC04 read,6,30007,30007,Platform 1 LO threshold,In the adjustment unit.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,8,30009,30009,Platform 2 mass,PUE HX7 only.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,10,30011,30011,Platform 2 tare,PUE HX7 only; adjustment unit.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,12,30013,30013,Platform 2 unit,PUE HX7 only.,BITMAP16,1,,1,0,,Read,bit 0 = gram [g]; bit 1 = kilogram [kg]; bit 2 = carat [ct]; bit 3 = pound [lb]; bit 4 = ounce [oz]; bit 5 = Newton [N]
+Input register,FC04 read,13,30014,30014,Platform 2 status,PUE HX7 only.,BITMAP16,1,,1,0,,Read,bit 0 = Measurement correct (no error); bit 1 = Measurement stable; bit 2 = Indicating zero; bit 3 = Tared; bit 4 = In weighing range II; bit 5 = In weighing range III; bit 6 = NULL error; bit 7 = LH error; bit 8 = FULL error
+Input register,FC04 read,14,30015,30015,Platform 2 LO threshold,PUE HX7 only.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,32,30033,30033,Process status,Dosing / formulation process state.,UINT16,1,,1,0,,Read,0 = Process disabled; 1 = Process stopped; 2 = Process aborted; 3 = Process finished
+Input register,FC04 read,33,30034,30034,Input status,Lowest 4 bits are the indicator inputs 1-4.,BITMAP16,1,,1,0,,Read,bit 0 = Input 1; bit 1 = Input 2; bit 2 = Input 3; bit 3 = Input 4
+Input register,FC04 read,34,30035,30035,MIN threshold,In the current unit.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,36,30037,30037,MAX threshold,In the current unit.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,42,30043,30043,Lot number,Numeric lot number (non-digits are dropped).,INT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,44,30045,30045,Operator,Code of the logged-in operator.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,45,30046,30046,Product,Code of the selected product.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,46,30047,30047,Customer,Code of the selected customer.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,47,30048,30048,Packaging,Code of the selected packaging.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,50,30051,30051,Formulation,Code of the selected formulation.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,51,30052,30052,Dosing process,Code of the selected dosing process.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",500,40501,40501,Command,Set a bit to run that action once; clear it before repeating.,BITMAP16,1,,1,0,,Read/write,bit 0 = Zero the platform; bit 1 = Tare the platform; bit 2 = Delete statistics; bit 3 = Save/Print; bit 4 = Process start; bit 5 = Process stop
+Holding register,"FC03 read / FC06, FC16 write",501,40502,40502,Command with parameter,Set a bit to apply the matching parameter register below.,BITMAP16,1,,1,0,,Read/write,bit 0 = Set tare value; bit 1 = Set LO threshold; bit 2 = Set lot number; bit 3 = Set outputs state; bit 4 = Select operator; bit 5 = Select product; bit 6 = Select packaging; bit 7 = Set MIN threshold; bit 8 = Select customer; bit 9 = Select source warehouse; bit 10 = Select target warehouse; bit 11 = Select dosing process; bit 12 = Set MAX threshold
+Holding register,"FC03 read / FC06, FC16 write",502,40503,40503,Platform,"Platform number (1, or 2 on PUE HX7) for parameter commands.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",503,40504,40504,Tare,"Tare to set, adjustment unit.",FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",505,40506,40506,LO threshold,"LO threshold to set, adjustment unit.",FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",507,40508,40508,Output state,"Output mask to apply, bit 0 = output 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",508,40509,40509,Min,MIN threshold to set.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",510,40511,40511,Max,MAX threshold to set.,FLOAT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",516,40517,40517,Lot number,Numeric lot number to set.,INT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",518,40519,40519,Operator,Operator code to select.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",519,40520,40520,Product,Product code to select.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",520,40521,40521,Customer,Customer code to select.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",521,40522,40522,Packaging,Packaging code to select.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",524,40525,40525,Formulation,Formulation code to select.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",525,40526,40526,Dosing process,Dosing process code to select.,UINT16,1,,1,0,,Read/write,

@@ -1,0 +1,39 @@
+﻿# Realtime Control Systems RTD-NET Modbus interface for Daikin VRV / Sky Air Modbus register map - easymodbus.com - source: https://www.daikin.eu/content/dam/document-library/installation-manuals/ctrl/RTD-NET%20installation%20instructions_18870-1.06%20EN_Installation%20manuals_English.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,20,I0020,30021,Unit Count,"Indoor units found on the P1/P2 bus, 0..16.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,21,I0021,30022,Is Fault (group),,UINT16,1,,1,0,,Read,0 = No fault; 1 = At least one unit in fault
+Input register,FC04 read,22,I0022,30023,Fault Code (group),"Code of the first faulted unit; two ASCII characters, high byte first.",UINT16,1,,1,0,,Read,"0 = Waiting for data; 255 = No fault; 14384 = 80 - group fault, no units found; 14388 = 84 - unit missing"
+Input register,FC04 read,23,I0023,30024,Return Air Average,Mean of all unit return-air temperatures.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,24,I0024,30025,Filter Alarm (group),,UINT16,1,,1,0,,Read,0 = No alarm; 1 = At least one unit with filter alarm
+Input register,FC04 read,25,I0025,30026,Return Air Min,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,26,I0026,30027,Return Air Max,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,30,I0030,30031,Thermo On (group),Summary of what the group is doing.,UINT16,1,,1,0,,Read,0 = Idle/Fan; 1 = Heating; 2 = Cooling; 3 = Heat and Cool
+Input register,FC04 read,35,I0035,30036,Defrost,Also set during pressure equalisation and hot start.,UINT16,1,,1,0,,Read,0 = No defrost; 1 = At least one unit in defrost
+Input register,FC04 read,50,I0050,30051,RC Temperature,Remote controller sensor; only with one indoor unit and RC as MAIN.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,51,I0051,30052,RC Operation Mode,,UINT16,1,,1,0,,Read,0 = Idle/Fan; 1 = Heating; 2 = Cooling; 3 = Heat and Cool
+Input register,FC04 read,120,0120,30121,Unit 1 Unit Exists,Unit n: register n*100+20.,UINT16,1,,1,0,,Read,0 = No unit found; 1 = Unit found
+Input register,FC04 read,121,0121,30122,Unit 1 Is Fault,,UINT16,1,,1,0,,Read,0 = No unit fault; 1 = Unit in fault
+Input register,FC04 read,122,0122,30123,Unit 1 Fault Code,"Two ASCII characters, high byte first; 255 = no fault.",UINT16,1,,1,0,,Read,255 = No fault
+Input register,FC04 read,123,0123,30124,Unit 1 Return Air Temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,124,0124,30125,Unit 1 Filter Alarm,,UINT16,1,,1,0,,Read,0 = No alarm; 1 = Filter alarm
+Input register,FC04 read,130,0130,30131,Unit 1 Thermo On,Only when the RTD runs as P1/P2 MAIN.,UINT16,1,,1,0,,Read,0 = Idle/Fan; 1 = Heating; 2 = Cooling
+Input register,FC04 read,131,0131,30132,Unit 1 Coil In Temperature,Only when the RTD runs as P1/P2 MAIN.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,132,0132,30133,Unit 1 Coil Out Temperature,Only when the RTD runs as P1/P2 MAIN.,INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,H0001,40002,Setpoint,"Group setpoint, whole degrees 16..32.",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,H0002,40003,Fanspeed,High2 is HighHigh only where that speed is enabled.,UINT16,1,,1,0,,Read/write,1 = Low; 2 = High1; 3 = High2
+Holding register,"FC03 read / FC06, FC16 write",3,H0003,40004,Mode,,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Heat; 2 = Fan; 3 = Cool; 4 = Dry
+Holding register,"FC03 read / FC06, FC16 write",4,H0004,40005,Louvre,,UINT16,1,,1,0,,Read/write,1 = Swing; 2 = 0 degrees; 3 = 20 degrees; 4 = 45 degrees; 5 = 70 degrees; 6 = 90 degrees
+Holding register,"FC03 read / FC06, FC16 write",5,H0005,40006,OnOff,Also switches VAM/VKM ventilation units.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",10,H0010,40011,Global Update,Writes the same update mode to all update registers.,UINT16,1,,1,0,,Read/write,"0 = Last Touch (keypad unlocked); 1 = Central (keypad locked, value re-sent); 2 = Local (keypad unlocked, writes not sent); 3 = On Change (sent only when value changes)"
+Holding register,"FC03 read / FC06, FC16 write",11,H0011,40012,Setpoint Update,,UINT16,1,,1,0,,Read/write,"0 = Last Touch (keypad unlocked); 1 = Central (keypad locked, value re-sent); 2 = Local (keypad unlocked, writes not sent); 3 = On Change (sent only when value changes)"
+Holding register,"FC03 read / FC06, FC16 write",12,H0012,40013,Fanspeed Update,,UINT16,1,,1,0,,Read/write,"0 = Last Touch (keypad unlocked); 1 = Central (keypad locked, value re-sent); 2 = Local (keypad unlocked, writes not sent); 3 = On Change (sent only when value changes)"
+Holding register,"FC03 read / FC06, FC16 write",13,H0013,40014,Mode Update,,UINT16,1,,1,0,,Read/write,"0 = Last Touch (keypad unlocked); 1 = Central (keypad locked, value re-sent); 2 = Local (keypad unlocked, writes not sent); 3 = On Change (sent only when value changes)"
+Holding register,"FC03 read / FC06, FC16 write",14,H0014,40015,Louvre Update,,UINT16,1,,1,0,,Read/write,"0 = Last Touch (keypad unlocked); 1 = Central (keypad locked, value re-sent); 2 = Local (keypad unlocked, writes not sent); 3 = On Change (sent only when value changes)"
+Holding register,"FC03 read / FC06, FC16 write",15,H0015,40016,OnOff Update,,UINT16,1,,1,0,,Read/write,"0 = Last Touch (keypad unlocked); 1 = Central (keypad locked, value re-sent); 2 = Local (keypad unlocked, writes not sent); 3 = On Change (sent only when value changes)"
+Holding register,"FC03 read / FC06, FC16 write",20,H0020,40021,Setpoint Min,"Lowest setpoint allowed locally, 16..32; 0 = no limit.",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",21,H0021,40022,Setpoint Max,"Highest setpoint allowed locally, 16..32; 0 = no limit.",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",22,H0022,40023,Fanspeed Inhibit,Sum of inhibit values of speeds to block; 0 = none. See notes.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",23,H0023,40024,Mode Inhibit,Set bits block those modes; 0 = no inhibit.,BITMAP16,1,,1,0,,Read/write,bit 0 = Auto (1); bit 1 = Heat (2); bit 2 = Fan (4); bit 3 = Cool (8); bit 4 = Dry (16)
+Holding register,"FC03 read / FC06, FC16 write",24,H0024,40025,Louvre Inhibit,Set bits block those louvre settings; 0 = no inhibit.,BITMAP16,1,,1,0,,Read/write,bit 1 = Swing (2); bit 2 = 0 degrees (4); bit 3 = 20 degrees (8); bit 4 = 45 degrees (16); bit 5 = 70 degrees (32); bit 6 = 90 degrees (64)
+Holding register,"FC03 read / FC06, FC16 write",30,H0030,40031,VAM Damper Control,,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Cross flow / heat recovery; 2 = Bypass
+Holding register,"FC03 read / FC06, FC16 write",31,H0031,40032,VAM Fanspeed,,UINT16,1,,1,0,,Read/write,1 = Low; 2 = High

@@ -1,0 +1,423 @@
+{
+  "manufacturer": "Bonfiglioli",
+  "manufacturer_slug": "bonfiglioli",
+  "model": "Agile frequency inverter (Modbus RTU/ASCII)",
+  "model_slug": "agile",
+  "short_model": "Agile",
+  "aliases": [
+    "Agile",
+    "AGL",
+    "Bonfiglioli Agile"
+  ],
+  "equipment_type": "Variable frequency drive",
+  "applies_to": "Bonfiglioli Agile 230 V / 400 V frequency inverters, Modbus on the X21 RJ45 connection or a CM-232/CM-485 module, per Modbus communication manual VEC 691 R1 (02/2011).",
+  "summary": "Bonfiglioli's Agile general purpose inverter speaks Modbus RTU or ASCII on its X21 RJ45 port. The register address is the parameter number in the low 12 bits plus the data set number in the top 4 bits, and 32-bit parameters are read as two registers at a single parameter address. This map covers the control and status words, the RAM frequency and percentage references, error and warning readouts and the Modbus settings.",
+  "transport": [
+    "RTU",
+    "ASCII"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "The start address field carries the parameter number (0-1599) in bits 0-11 and the data set (0-9) in bits 12-15, sent as-is: parameter 481 in data set 1 is 0x11E1, in data set 0 it is 0x01E1 (= 481). This map lists data set 0 addresses (parameter number). For another data set add 0x1000 x data set (data set 2 of parameter 372 = 0x2174)."
+  },
+  "default_word_order": "ABCD",
+  "firmware": null,
+  "source": {
+    "title": "Modbus Communication manual - Frequency inverter 230V / 400V Agile",
+    "doc_number": "VEC 691 R1",
+    "revision_date": "2011-02",
+    "url": "https://www.bonfiglioli.com/_default_upload_bucket/AGL_Modbus_EN_VEC691R1.pdf",
+    "pages": "Ch. 5.4-6 protocol and Modbus parameters pp. 21-23; 7.3 function codes pp. 25-36; 8 data sets p. 43; 9.1.2 32-bit examples pp. 48-50; 10 control/reference pp. 62-72; 11-12 actual values and parameter list pp. 73-74"
+  },
+  "notes": [
+    "Word order comes from the manual's 32-bit examples: writing 44.50 Hz to parameter 482 sends 00 00 11 62 and an out-of-range value sends 00 03 0D 40, i.e. high word first.",
+    "A 32-bit parameter occupies one parameter number: request 2 registers starting at that number (function 3 or 16); a 32-bit read with register count 1 is rejected. Function codes 100/101 also read/write 32-bit values.",
+    "Values with decimals are sent as integers (10.3 A -> 103); the scale for 484 and 524 follows their two-decimal ranges.",
+    "Parameters that exist in four data sets return error 9 in register 11 when read with data set 0 and the sets differ; register 11 must be read to clear an error before the next write is accepted.",
+    "The manual does not state factory baud rate or parity, so those defaults are left null. It lists the watchdog range as 0-1000 s in one table and 0-10000 s in another.",
+    "Left out: 282/283 reference bus/ramp frequency (actual values with no stated data type) and 392 state-transition 5 (selection list not given in this manual)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "11",
+      "name": "VABus SST error register",
+      "description": "Modbus/VABus error code (0-15); read it to acknowledge write errors.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 249,
+      "documented": "249",
+      "name": "Active data set",
+      "description": "Currently active data set 1-4.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 260,
+      "documented": "260",
+      "name": "Actual error",
+      "description": "Code of the current fault (0-0xFFFF).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 270,
+      "documented": "270",
+      "name": "Warnings",
+      "description": "Bit-coded warnings; several can be set at once.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Warning Ixt (set with bit 1 or 2)",
+        "1": "Short-time Ixt",
+        "2": "Long-time Ixt",
+        "3": "Heat sink temperature",
+        "4": "Inside temperature",
+        "5": "Current limit",
+        "6": "Init",
+        "7": "Motor temperature",
+        "8": "Mains phase failure",
+        "9": "Motor protective switch",
+        "10": "Fmax",
+        "11": "Analog input MFI1A",
+        "12": "Analog input MFI2A",
+        "13": "Systembus slave in fault",
+        "14": "DC link voltage (Udc)",
+        "15": "Application warning (see 274)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 274,
+      "documented": "274",
+      "name": "Application warnings",
+      "description": "Application warning status bits.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 395,
+      "documented": "395",
+      "name": "Protocol (CM / X21)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "CM: VABus / X21: VABus",
+        "1": "CM: VABus / X21: Modbus",
+        "2": "CM: Modbus / X21: VABus"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 410,
+      "documented": "410",
+      "name": "Control word",
+      "description": "Used when Local/Remote 412 = 1 (statemachine); write in data set 0.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Switch on",
+        "1": "Enable voltage",
+        "2": "Quick stop (0 = quick stop)",
+        "3": "Enable operation",
+        "7": "Reset fault (rising edge)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 411,
+      "documented": "411",
+      "name": "Status word",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Ready to switch on",
+        "1": "Switched on",
+        "2": "Operation enabled",
+        "3": "Error",
+        "4": "Voltage enabled (mains present)",
+        "5": "Quick stop",
+        "6": "Switch on disabled",
+        "7": "Warning (see 270)",
+        "9": "Remote",
+        "10": "Reference value reached",
+        "11": "Limit value reached",
+        "15": "Warning 2 (fault switch-off imminent)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 412,
+      "documented": "412",
+      "name": "Local/Remote",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Control via contacts",
+        "1": "Control via statemachine (control word 410)",
+        "2": "Control via remote contacts"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 414,
+      "documented": "414",
+      "name": "Data set selection",
+      "description": "0 = digital inputs; 1-4 = set by bus; 5 = switch only when not released.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 484,
+      "documented": "484",
+      "name": "Reference frequency RAM",
+      "description": "Long, two decimals: -999.99 to 999.99 Hz. Read/write 2 registers at 484.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 0.01,
+      "units": "Hz",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 524,
+      "documented": "524",
+      "name": "Reference percentage RAM",
+      "description": "Long, two decimals: -300.00 to 300.00 %. Read/write 2 registers at 524.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 0.01,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1375,
+      "documented": "1375",
+      "name": "Modbus parity",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Even",
+        "1": "Odd",
+        "2": "None"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1376,
+      "documented": "1376",
+      "name": "Modbus address",
+      "description": "1-247, factory 1.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1503,
+      "documented": "1503",
+      "name": "Modbus mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "RTU",
+        "1": "ASCII"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1504,
+      "documented": "1504",
+      "name": "Modbus baud rate",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "2400",
+        "2": "4800",
+        "3": "9600",
+        "4": "19200",
+        "5": "57600",
+        "6": "115200",
+        "7": "230400"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1505,
+      "documented": "1505",
+      "name": "Modbus watchdog timer",
+      "description": "0 = off (factory); fault if no valid exchange in this time.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set 395 so Modbus is on the port you use, set 1376/1504/1375, then 412 = 1 to control by statemachine. Write 484 (2 registers, 0.01 Hz) and drive control word 410 through Shutdown (0x0006), Switch on (0x0007) and Enable operation (0x000F); poll 411 status and 260 actual error.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 410,
+        "why": "Control word"
+      },
+      {
+        "table": "holding_register",
+        "address": 411,
+        "why": "Status word"
+      },
+      {
+        "table": "holding_register",
+        "address": 484,
+        "why": "Frequency reference, 0.01 Hz (32-bit)"
+      },
+      {
+        "table": "holding_register",
+        "address": 412,
+        "why": "Local/Remote: 1 = statemachine"
+      },
+      {
+        "table": "holding_register",
+        "address": 260,
+        "why": "Actual error"
+      },
+      {
+        "table": "holding_register",
+        "address": 270,
+        "why": "Warnings"
+      },
+      {
+        "table": "holding_register",
+        "address": 11,
+        "why": "Modbus error register"
+      }
+    ],
+    "enable": "Parameter 395 Protocol picks which port runs Modbus (factory 1: X21 RJ45 = Modbus). Set 1503 mode (RTU/ASCII), 1504 baud, 1375 parity and 1376 address; these take effect immediately without a restart. Set 412 Local/Remote = 1 for control-word operation (or 2 for remote contacts). The hardware release (STOA/STOB) and a Start Right/Left digital input must still be present to reach Operation enabled.",
+    "watchdog": "1505 Modbus watchdog timer in seconds (factory 0 = off). If no correct exchange occurs within that time the inverter trips with a fault.",
+    "quirks": [
+      "Address = parameter number + 0x1000 x data set. Data set 0 writes all four EEPROM sets; data sets 5-9 write RAM only (set + 5). Control word 410 and references 484/524 always use data set 0.",
+      "32-bit values are high word first and are read as 2 registers at one parameter number.",
+      "Leave 2 ms after each response before the next request; response time can exceed 500 ms at high CPU load."
+    ],
+    "setup": [
+      "Modbus runs on the X21 RJ45 connection or on a CM-232 / CM-485 communication module, as selected by 395.",
+      "Control word 410 and references 484/524 live in RAM; address them in data set 0."
+    ],
+    "gotchas": [
+      "A write error blocks further writes until register 11 is read.",
+      "Transition to Switched on only happens while status bit 4 (voltage enabled) is set."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

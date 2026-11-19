@@ -1,0 +1,39 @@
+﻿# Wilo Stratos PICO plus with CIF module Modbus RTU Modbus register map - easymodbus.com - source: https://cms.media.wilo.com/cdndoc/wilo194406/11516106/wilo194406.html
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,1,1,30002,pressure,Actual pressure (head) at the pump.,UINT16,1,,10,0,cm H₂O,Read,
+Input register,FC04 read,2,2,30003,flow,"Actual or calculated flow. Error value 9999 up to module 6.00, 65535 from 6.01.",UINT16,1,,0.1,0,m³/h,Read,
+Input register,FC04 read,3,3,30004,energyConsumption,Energy consumption counter.,UINT16,1,,1,0,kWh,Read,
+Input register,FC04 read,4,4,30005,powerInput,Electrical power input.,UINT16,1,,1,0,W,Read,
+Input register,FC04 read,7,7,30008,speed,Motor speed.,INT16,1,,1,0,1/min,Read,
+Input register,FC04 read,8,8,30009,temperatureFluid@Device,"Fluid temperature measured at the pump, in kelvin.",UINT16,1,,0.1,0,K,Read,
+Input register,FC04 read,10,10,30011,controlFunction,Active control mode.,UINT16,1,,1,0,,Read,1 = Gen_Spd; 3 = Gen_PHdConst; 4 = Gen_PHdVar; 15 = INVALID; 80 = Gen_DA
+Input register,FC04 read,18,18,30019,speed max-pres-value,Maximum speed.,UINT16,1,,1,0,1/min,Read,
+Input register,FC04 read,19,19,30020,speed min-pres-value,Minimum speed.,UINT16,1,,1,0,1/min,Read,
+Input register,FC04 read,24,24,30025,flow max-pres-value,Maximum (calculated) flow.,UINT16,1,,0.1,0,m³/h,Read,
+Input register,FC04 read,36,36,30037,Error Type,Legacy register; prefer I 940 for new work.,BITMAP16,1,,1,0,,Read,bit 3 = errorPresent
+Input register,FC04 read,38,38,30039,Pump Status,Legacy controller status flags.,BITMAP16,1,,1,0,,Read,bit 0 = device/functionOn; bit 5 = localOperation
+Input register,FC04 read,39,39,30040,State Diagnostics,Legacy diagnostic flags.,BITMAP16,1,,1,0,,Read,bit 0 = errorPresent; bit 8 = localOperation; bit 10 = device/functionOn
+Input register,FC04 read,102,102,30103,Pump Status,Status flags of the partner pump (twin-head).,BITMAP16,1,,1,0,,Read,bit 5 = localOperation
+Input register,FC04 read,200,200,30201,dutyPointRel,Setpoint the pump is actually using (200 = 100 %). Module 3.00+.,INT16,1,,0.5,0,%,Read,
+Input register,FC04 read,202,202,30203,dutyPointRel maximum-output,Upper limit of the active setpoint. Module 3.00+.,INT16,1,,0.5,0,%,Read,
+Input register,FC04 read,204,204,30205,dutyPointRel minimum-output,Lower limit; lower writes are limited to it. Module 3.00+.,INT16,1,,0.5,0,%,Read,
+Input register,FC04 read,206,206,30207,dutyPoint100%Val,Engineering value at 100 % in the current mode; unit in I 208. Module 3.00+.,FLOAT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,208,208,30209,dutyPointRel units,Unit code for I 206. Module 3.00+.,UINT16,1,,1,0,,Read,3 = A; 19 = kWh; 47 = W; 73 = s; 95 = {noUnit}; 104 = min-1; 135 = m3/h
+Input register,FC04 read,210,210,30211,setpointSignalSource,Module 3.00+.,UINT16,1,,1,0,,Read,1 = IF-Module; 6 = Internal; 9 = INVALID
+Input register,FC04 read,320,320,30321,voltageInput,Mains input voltage. Module 3.00+.,UINT16,1,,0.1,0,V,Read,
+Input register,FC04 read,400,400,30401,dutyPointRel,Duty point currently in use.,INT16,1,,0.5,0,%,Read,
+Input register,FC04 read,402,402,30403,Pump Command active,Command currently in effect.,BITMAP16,1,,1,0,,Read,bit 0 = device/functionOn
+Input register,FC04 read,404,404,30405,Operation Status,Main run / warning / error flags.,BITMAP16,1,,1,0,,Read,bit 0 = ready4Operation; bit 1 = device/functionOn; bit 3 = warningPresent; bit 4 = errorPresent; bit 5 = finalErrorPresent
+Input register,FC04 read,500,500,30501,heartbeatCount,Counts pump-to-module heartbeats; resets on restart.,UINT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,504,504,30505,busCmd.TimerTimeRemain.,Seconds left before the bus command timer elapses (module 3.02+).,UINT16,1,,1,0,s,Read,
+Input register,FC04 read,940,940,30941,warning/errorMessage,Active Wilo warning/error code.,UINT16,1,,1,0,,Read,255 = INVALID
+Holding register,"FC03 read / FC06, FC16 write",1,1,40002,dutyPointRel,Setpoint in % of the active mode's 100 % value (200 = 100 %).,INT16,1,,0.5,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40,40,40041,Pump Command in,On/off and override command word.,BITMAP16,1,,1,0,,Read/write,bit 0 = device/functionOn; bit 4 = overrideOff (module 3.00+)
+Holding register,"FC03 read / FC06, FC16 write",42,42,40043,controlFunction,Control mode; unsupported values are ignored.,UINT16,1,,1,0,,Read/write,1 = Gen_Spd; 3 = Gen_PHdConst; 4 = Gen_PHdVar; 15 = INVALID; 80 = Gen_DA
+Holding register,"FC03 read / FC06, FC16 write",300,300,40301,busCmd.Timer,Bus command timer / fallback state machine.,UINT16,1,,1,0,,Read/write,1 = OFF; 2 = SET; 3 = ACTIVE; 4 = RESET; 5 = MANUAL; 6 = SET_PRESET; 7 = ACTIVE_PRESET; 8 = RESET_PRESET; 9 = MANUAL_PRESET; 10 = INVALID
+Holding register,"FC03 read / FC06, FC16 write",400,400,40401,busCmd.TimerTimeout,Bus command timer timeout. Module 3.00+.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",401,401,40402,setpointSignalSource,Where the setpoint comes from; write 1 for bus control.,UINT16,1,,1,0,,Read/write,1 = IF-Module; 6 = Internal; 9 = INVALID
+Holding register,"FC03 read / FC06, FC16 write",402,402,40403,dutyPointRel preset,Fallback setpoint used by the bus command timer.,INT16,1,,0.5,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",403,403,40404,controlFunction preset,Fallback control mode.,UINT16,1,,1,0,,Read/write,1 = Gen_Spd; 3 = Gen_PHdConst; 4 = Gen_PHdVar; 15 = INVALID; 80 = Gen_DA
+Holding register,"FC03 read / FC06, FC16 write",404,404,40405,Pump Command preset,Fallback on/off command.,BITMAP16,1,,1,0,,Read/write,bit 0 = device/functionOn preset
+Holding register,"FC03 read / FC06, FC16 write",405,405,40406,setpointSignalSource preset,Fallback setpoint source.,UINT16,1,,1,0,,Read/write,1 = IF-Module; 6 = Internal; 9 = INVALID

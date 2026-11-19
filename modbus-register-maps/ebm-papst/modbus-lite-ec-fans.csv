@@ -1,0 +1,35 @@
+﻿# ebm-papst EC fans with MODBUS Lite (series 84/112/150/200 Lite) Modbus register map - easymodbus.com - source: https://www.ebmpapst.com/content/dam/ebm-papst/loc/europe/gb/modbus-parameter-specifications/MODBUS%20Lite%20Basic%20Functionality%20V5_01.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,53248,D000,353249,Identification,Electronics/protocol type code; see the identification table in the source.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,53249,D001,353250,Maximum number of bytes,Largest telegram the fan accepts.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,53250,D002,353251,Software name of bus controller,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,53251,D003,353252,Software version of bus controller,Version in the low byte; high byte is 0.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,53264,D010,353265,Actual speed,"rpm = raw x nMax / 64000, where nMax is Maximum speed (D119). Capped at 0xFFF0.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,53265,D011,353266,Motor status,Errors currently detected; FB is set with every error.,BITMAP16,1,,1,0,,Read,bit 0 = PHA: phase failure / mains undervoltage; bit 2 = TFE: power module overheated; bit 4 = FB: fan bad (general error); bit 5 = TFM: motor overheated; bit 6 = HLL: Hall sensor error; bit 7 = BLK: locked motor; bit 12 = UzLow: DC-link undervoltage
+Input register,FC04 read,53266,D012,353267,Warning,Pre-alarm conditions.,BITMAP16,1,,1,0,,Read,bit 0 = I_Limit: current limitation; bit 2 = P_Limit: power limitation; bit 3 = TE_high: output stage temperature high; bit 4 = TM_high: motor temperature high; bit 5 = TEI_high: interior electronics temperature high; bit 6 = UzLow: DC-link voltage low; bit 7 = Brake: braking against external drive; bit 9 = n_Low: speed below running-monitor limit; bit 10 = Cable break at analogue set value input; bit 12 = UzHigh: DC-link voltage high; bit 13 = nGrenz: limiting speed exceeded; bit 14 = UeHigh: supply voltage high; bit 15 = LRF: shedding function active
+Input register,FC04 read,53267,D013,353268,DC-link voltage,V = raw x reference Uz (D1A0) / 256.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,53268,D014,353269,DC-link current,A = raw x reference Iz (D1A1) / 256.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,53270,D016,353271,Motor temperature,,INT16,1,,1,0,°C,Read,
+Input register,FC04 read,53271,D017,353272,Interior electronics temperature,,INT16,1,,1,0,°C,Read,
+Input register,FC04 read,53272,D018,353273,Current direction of rotation,,UINT16,1,,1,0,,Read,0 = Anti-clockwise; 1 = Clockwise
+Input register,FC04 read,53273,D019,353274,Current modulation level,Percent = raw x 100 / 65536.,UINT16,1,,0.0015258789,0,%,Read,
+Input register,FC04 read,53274,D01A,353275,Current set value,"Speed control: rpm = raw x nMax / 64000, where nMax is Maximum speed (D119). PWM control: % = raw x 100 / 65536.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,53275,D01B,353276,Sensor actual value,Voltage at the analogue input = raw x 10 / 65536.,UINT16,1,,0.0001525879,0,V,Read,
+Input register,FC04 read,53277,D01D,353278,Current parameter set,,UINT16,1,,1,0,,Read,0 = Parameter set 1; 1 = Parameter set 2
+Input register,FC04 read,53281,D021,353282,Current power,W = raw x reference Uz x reference Iz / 65536.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",53248,D000,453249,Reset,Bits clear themselves once executed.,BITMAP16,1,,1,0,,Read/write,bit 0 = User software reset (communication kept); bit 1 = Adopt parameters (EEPROM to RAM); bit 2 = Reset errors; bit 3 = Full software reset (comms drop for seconds)
+Holding register,"FC03 read / FC06, FC16 write",53249,D001,453250,Default set value,Set value when source is RS485. Speed: raw = rpm x 64000 / nMax; PWM: raw = % x 65536 / 100.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",53257,D009,453258,Operating hours counter,Stops at 65535. Only ebm-papst level may write it.,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",53258,D00A,453259,Operating minutes counter,Only ebm-papst level may write it.,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",53504,D100,453505,Fan address,"1-247, low byte.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",53505,D101,453506,Source set value,,UINT16,1,,1,0,,Read/write,0 = Analogue input 0-10 V; 1 = RS485 (default set value D001)
+Holding register,"FC03 read / FC06, FC16 write",53506,D102,453507,Preferred running direction,,UINT16,1,,1,0,,Read/write,0 = Anti-clockwise; 1 = Clockwise
+Holding register,"FC03 read / FC06, FC16 write",53507,D103,453508,Save set value,"1 also stores D001 in EEPROM (limited to 100,000 writes).",UINT16,1,,1,0,,Read/write,0 = Not stored (fan stopped after reset); 1 = Stored in EEPROM
+Holding register,"FC03 read / FC06, FC16 write",53509,D105,453510,Internal parameter set,,UINT16,1,,1,0,,Read/write,0 = Parameter set 1; 1 = Parameter set 2
+Holding register,"FC03 read / FC06, FC16 write",53510,D106,453511,Control mode (parameter set 1),,UINT16,1,,1,0,,Read/write,0 = Closed-loop speed control; 2 = Open-loop PWM control
+Holding register,"FC03 read / FC06, FC16 write",53511,D107,453512,Control mode (parameter set 2),,UINT16,1,,1,0,,Read/write,0 = Closed-loop speed control; 2 = Open-loop PWM control
+Holding register,"FC03 read / FC06, FC16 write",53529,D119,453530,Maximum speed (nMax),Reference for all speed values (64000 = nMax).,UINT16,1,,1,0,rpm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",53577,D149,453578,Transfer rate,Applied after Adopt parameters/Reset or power cycle.,UINT16,1,,1,0,,Read/write,1 = 2400; 2 = 4800; 3 = 9600; 4 = 19200 (recommended); 5 = 38400; 6 = 57600; 7 = 115200
+Holding register,"FC03 read / FC06, FC16 write",53578,D14A,453579,Parity configuration,Applied after Adopt parameters/Reset or power cycle.,UINT16,1,,1,0,,Read/write,0 = 8E1 (recommended); 1 = 8O1; 2 = 8N2; 3 = 8N1
+Holding register,"FC03 read / FC06, FC16 write",53664,D1A0,453665,Reference value of DC-link voltage,Raw x 20 mV; used to scale D013 and D021.,UINT16,1,,0.02,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",53665,D1A1,453666,Reference value of DC-link current,Raw x 2 mA; used to scale D014 and D021.,UINT16,1,,0.002,0,A,Read,

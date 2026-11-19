@@ -1,0 +1,441 @@
+{
+  "manufacturer": "Condair",
+  "manufacturer_slug": "condair",
+  "model": "RO-E reverse osmosis water treatment (Integrated Controller, Modbus RTU/TCP)",
+  "model_slug": "ro-e",
+  "short_model": "RO-E",
+  "aliases": [
+    "Condair RO-E",
+    "RO-E+",
+    "Condair RO-E+"
+  ],
+  "equipment_type": "Pump (reverse osmosis water treatment unit)",
+  "applies_to": "Condair RO-E / RO-E+ with the Integrated Controller, per addendum 2603326-G.",
+  "summary": "The Condair RO-E is a reverse osmosis unit that makes demineralised water for humidifiers. Its Integrated Controller is a Modbus RTU slave or Modbus TCP server. This map covers fault and RO status, valve states, unit type and capacity, pressures, permeate conductivity, temperature and flow, and service counters.",
+  "transport": [
+    "RTU",
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": 10,
+    "baud": 19200,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": 502
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Tables print the 5-digit register (32001 = input register, 43001 = holding register) and the 0-based address beside it (2000 / 3000). The address column is what goes on the wire; the manual's own example: register 43004 = address 3003."
+  },
+  "default_word_order": "ABCD",
+  "firmware": null,
+  "source": {
+    "title": "Modbus addendum manual for DL II, ME II, RS II, RO-E and Vita (Integrated Controller)",
+    "doc_number": "2603326-G EN 2607",
+    "revision_date": null,
+    "url": "https://www.condair.com/m/0/2603326-e-modbus-for-dl-series-addendum.pdf",
+    "pages": "RO-E tables pp. 29-30; settings pp. 10-17"
+  },
+  "notes": [
+    "Input registers are read with function 04; holding registers with 03 and written with 06 or 16.",
+    "Floats use 'Register Sequence': MSR first (high register first, ABCD) is the factory setting; LSR first (CDAB) is the option. The map assumes the factory setting.",
+    "Factory serial settings: Modbus RTU, address 10, 19200 baud, even parity, 8 data bits, 1 stop bit. Modbus TCP uses port 502 and unit ID 255 (per the TCP technical data).",
+    "Units marked metric/imperial follow the controller's Metric/Imperial setting; the listed unit is the metric one.",
+    "Left out: holding registers 'Minimum / Maximum tank pressure', printed as 43501 / 43503 but with addresses 13500 / 13502, which do not match each other."
+  ],
+  "registers": [
+    {
+      "table": "input_register",
+      "address": 2003,
+      "documented": "32004",
+      "name": "Error or Warning Code",
+      "description": "0 = no error; other codes are listed in the device operation manual.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2500,
+      "documented": "32501",
+      "name": "Fault Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No Error",
+        "1": "Warning",
+        "2": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2501,
+      "documented": "32502",
+      "name": "Y11 Inlet valve",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Closed",
+        "1": "Open"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2502,
+      "documented": "32503",
+      "name": "Y12 Drain valve",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2503,
+      "documented": "32504",
+      "name": "Y13 Outlet valve",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2504,
+      "documented": "32505",
+      "name": "Y15 Permeate valve",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Drain",
+        "1": "Tank"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2505,
+      "documented": "32506",
+      "name": "Y16 Concentrate valve",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Closed",
+        "1": "Open"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2506,
+      "documented": "32507",
+      "name": "UO Type",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "RO-E",
+        "1": "RO-E+"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2507,
+      "documented": "32508",
+      "name": "RO Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Initializing",
+        "1": "Diagnostic",
+        "2": "Stopped",
+        "3": "Hold",
+        "4": "Filling",
+        "5": "Standby",
+        "6": "Flushing",
+        "7": "Draining"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2508,
+      "documented": "32509",
+      "name": "UO Capacity",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "20 l/h / 5.3 gal/hr",
+        "1": "40 l/h / 10.6 gal/hr",
+        "2": "100 l/h / 26.4 gal/hr",
+        "3": "200 l/h / 52.8 gal/hr",
+        "4": "300 l/h / 79.3 gal/hr"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2510,
+      "documented": "32511",
+      "name": "UO Maintenance status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No Info",
+        "1": "Warning",
+        "2": "Warning Sys",
+        "3": "Warning Commissioning",
+        "4": "Warning Activation",
+        "5": "Error",
+        "6": "Warning Disinfection"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2513,
+      "documented": "32514",
+      "name": "Inlet pressure",
+      "description": "Range 0 - 6 bar 0 - 87.0 psi. Metric or imperial per controller setting.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "bar",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2515,
+      "documented": "32516",
+      "name": "Tank pressure",
+      "description": "Range 0 - 6 bar 0 - 87.0 psi. Metric or imperial per controller setting.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "bar",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2517,
+      "documented": "32518",
+      "name": "Membrane pressure",
+      "description": "Range 0 - 20 bar 0 - 290.0 psi. Metric or imperial per controller setting.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "bar",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2519,
+      "documented": "32520",
+      "name": "Permeate conductivity",
+      "description": "Range 0 - 100 µS/cm.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "uS/cm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2521,
+      "documented": "32522",
+      "name": "Permeate temperature",
+      "description": "Range 0 - 60 °C 32 - 140 °F. Metric or imperial per controller setting.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2523,
+      "documented": "32524",
+      "name": "Permeat flow",
+      "description": "Range 0 - 400 l/h 0 - 106 gal/hr.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "l/h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2525,
+      "documented": "32526",
+      "name": "Next maintenance",
+      "description": "Range 0 - 4000 h.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2527,
+      "documented": "32528",
+      "name": "Next Disinfection",
+      "description": "Range 0 - 365 [Days].",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "d",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2528,
+      "documented": "32529",
+      "name": "Operating hours",
+      "description": "Range 0 - 1200000 h.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "h",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "watchdog": null,
+    "quirks": [
+      "The address column is the wire address; 32001 is address 2000.",
+      "Floats are two registers, MSR first by default."
+    ],
+    "summary": "Read input registers 2500-2510 (UInt16 states) and 2513-2529 (floats and the disinfection counter).",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 2500,
+        "why": "Fault status"
+      },
+      {
+        "table": "input_register",
+        "address": 2507,
+        "why": "RO status"
+      },
+      {
+        "table": "input_register",
+        "address": 2513,
+        "why": "Inlet pressure"
+      },
+      {
+        "table": "input_register",
+        "address": 2517,
+        "why": "Membrane pressure"
+      },
+      {
+        "table": "input_register",
+        "address": 2519,
+        "why": "Permeate conductivity"
+      }
+    ],
+    "enable": "Network > Modbus Settings on the controller.",
+    "setup": [
+      "Menu > password 8808 > Network > Modbus Settings: set protocol (Modbus/RTU or Modbus/TCP), address, parity, baud rate and register sequence; the controller restarts after a protocol change.",
+      "For Modbus TCP set the IP parameters under Network > IP Settings (factory setting DHCP)."
+    ],
+    "gotchas": [
+      "2527 (next disinfection) is UInt16 between two floats; read it on its own or mind the block layout."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

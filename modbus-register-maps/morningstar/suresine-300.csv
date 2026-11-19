@@ -1,0 +1,26 @@
+﻿# Morningstar SureSine-300 off-grid sine-wave inverter (Modbus RTU via MeterBus) Modbus register map - easymodbus.com - source: https://www.morningstarcorp.com/wp-content/uploads/technical-doc-suresine-modbus-specification-en.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0x0000,40001,"adc_vb - battery voltage, unfiltered",DC input voltage.,UINT16,1,,0.0002581787,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,0x0004,40005,"Vb - battery voltage, filtered",DC input voltage with slow filter.,UINT16,1,,0.0002581787,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",6,0x0006,40007,Ths - heatsink temperature,-128 to +127.,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,0x0007,40008,Fault bitfield,A fault stops the inverter.,BITMAP16,1,,1,0,,Read,bit 0 = Reset; bit 1 = Over-current; bit 3 = Software; bit 4 = HVD; bit 5 = Hot (heatsink over 95 °C); bit 6 = DIP switch; bit 7 = Settings edit
+Holding register,"FC03 read / FC06, FC16 write",8,0x0008,40009,Alarm bitfield,Alarms do not stop the inverter.,BITMAP16,1,,1,0,,Read,bit 0 = Heatsink sensor open; bit 1 = Heatsink sensor shorted; bit 3 = Heatsink hot (above 80 °C)
+Holding register,"FC03 read / FC06, FC16 write",10,0x000A,40011,DIP switch settings,,BITMAP16,1,,1,0,,Read,bit 0 = DIP 1 on; bit 1 = DIP 2 on; bit 2 = DIP 3 on; bit 3 = DIP 4 on
+Holding register,"FC03 read / FC06, FC16 write",11,0x000B,40012,Load state,,UINT16,1,,1,0,,Read,0 = Start-up; 1 = Load on; 2 = LVD warning; 3 = LVD; 4 = Fault; 5 = Load disconnected (by meter/Modbus); 6 = Load off; 8 = Standby
+Holding register,"FC03 read / FC06, FC16 write",12,0x000C,40013,Modulation index,0xFF = 100 %.,UINT16,1,,0.390625,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,0x000D,40014,Output voltage setting,"Nominal rating, not a measurement.",UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,0x000E,40015,Output frequency setting,"Nominal rating, not a measurement.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",15,0x000F,40016,m_disconnect - remote off,Non-zero turns the AC output off; write 0 to resume.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16,0x0010,40017,modbus_reset - software reset,Non-zero resets the inverter; returns to 0.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",57344,0xE000,457345,EVb_min - minimum battery voltage,Since last reset.,UINT16,1,,0.0002581787,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",57345,0xE001,457346,EVb_max - maximum battery voltage,,UINT16,1,,0.0002581787,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",57346,0xE002,457347,Emodbus_id - Modbus ID,"1-247, factory 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57347,0xE003,457348,Emeter_id - MeterBus ID,"1-15, factory 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57348,0xE004,457349,Ev_lvd2 - custom low voltage disconnect,0 disables.,UINT16,1,,0.0002581787,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57349,0xE005,457350,Ev_lvr2 - custom low voltage reconnect,,UINT16,1,,0.0002581787,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57350,0xE006,457351,Ev_hvd2 - custom high voltage disconnect,,UINT16,1,,0.0002581787,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57351,0xE007,457352,Ev_hvr2 - custom high voltage reconnect,,UINT16,1,,0.0002581787,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57352,0xE008,457353,Et_lvd_warn2 - LVD warning timer,,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57353,0xE009,457354,Ev_lvdwarn_beep2 - LVD beeper limit,,UINT16,1,,0.0002581787,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57354,0xE00A,457355,Ev_lvrwarn_beep2 - LVD beeper reset limit,,UINT16,1,,0.0002581787,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57355,0xE00B,457356,Ev_startlvd2 - start-up LVD setting,,UINT16,1,,0.0002581787,0,V,Read/write,

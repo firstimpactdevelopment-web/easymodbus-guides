@@ -1,0 +1,376 @@
+{
+ "manufacturer": "Seneca",
+ "manufacturer_slug": "seneca",
+ "model": "Z-D-IN 5-channel digital input / counter module (Modbus RTU)",
+ "model_slug": "z-d-in",
+ "short_model": "Z-D-IN",
+ "aliases": [
+  "ZDIN",
+  "Z D IN",
+  "Seneca Z-D-IN"
+ ],
+ "equipment_type": "Sensor (digital input / counter I/O module)",
+ "applies_to": "Z-D-IN DIN-rail module, user manual MI00252-3-EN (revision 3, 13/01/2022).",
+ "summary": "The Z-D-IN is a DIN-rail module with five digital inputs, each feeding a counter, on an RS-485 Modbus RTU port. Address and baud rate come from DIP switches or from EEPROM. This map covers input states, the five counters (IN5 can run as a 32-bit counter), filter, configuration flags and the save/reset command register.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 38400,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The table prints both the Modbus address (40001 = first register) and the offset address (0). The offset is what goes on the wire."
+ },
+ "default_word_order": "CDAB",
+ "firmware": null,
+ "source": {
+  "title": "User Manual Z-D-IN",
+  "doc_number": "MI00252-3-EN",
+  "revision_date": "2022-01-13",
+  "url": "https://www.seneca.it/media/2495/mi00252-3-en.pdf",
+  "pages": "DIP switches p. 8; Modbus rules p. 9; register table pp. 10-13"
+ },
+ "notes": [
+  "All registers are holding registers; functions 03, 06 and 16 are supported.",
+  "The only 32-bit value, the IN5 32-bit counter, is stored LSW at 40019 and MSW at 40020 (CDAB), as printed in the table.",
+  "Register 40010 holds node address and baud rate together. Its bit description is self-contradictory (it gives bits 0-7 to both the baud code and the node address), so it is left out; set these with the DIP switches or Easy Setup.",
+  "R/W(*) registers (40008-40010) only reach EEPROM after bit 0 of the command register (40011) is set.",
+  "Default serial settings from the manual: 38400 baud, 8 data bits, no parity, 1 stop bit, address 1."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "Machine ID",
+   "description": "Module identification code.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "Input status and counter overflows",
+   "description": "Overflow bits can be written to 0 to clear them.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "IN1 state",
+    "1": "IN2 state",
+    "2": "IN3 state",
+    "3": "IN4 state",
+    "4": "IN5 state",
+    "8": "Counter 1 overflow/underflow",
+    "9": "Counter 2 overflow/underflow",
+    "10": "Counter 3 overflow/underflow",
+    "11": "Counter 4 overflow/underflow",
+    "12": "Counter 5 overflow/underflow"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40003",
+   "name": "Counter 1",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "40004",
+   "name": "Counter 2",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40005",
+   "name": "Counter 3",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40006",
+   "name": "Counter 4",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40007",
+   "name": "Counter 5 (16-bit mode)",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable. In 32-bit mode use 18-19.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "40008",
+   "name": "Input filter",
+   "description": "1-254 ms, applied to all inputs (not IN5 in 32-bit mode). Default 3.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "ms",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40009",
+   "name": "Configuration flags",
+   "description": "Saved to EEPROM only after the save command bit.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "Input logic: 0 direct, 1 inverted",
+    "1": "Count mode: 0 up, 1 down",
+    "2": "RS485 reply pause: 0 none, 1 insert pause",
+    "3": "Parity: 0 none, 1 on",
+    "4": "Parity type: 0 even, 1 odd",
+    "7": "IN5 32-bit mode (filter off, up to 10 kHz)"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "40011",
+   "name": "Bit command register",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "Write 1: save 40008-40010 to EEPROM",
+    "1": "Write 1: reset module"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "40013",
+   "name": "Firmware revision",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "40015",
+   "name": "Counter 1 copy",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "40016",
+   "name": "Counter 2 copy",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "40017",
+   "name": "Counter 3 copy",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 17,
+   "documented": "40018",
+   "name": "Counter 4 copy",
+   "description": "16-bit counter (0-65535) kept in FeRAM; writable.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 18,
+   "documented": "40019 (LSW) / 40020 (MSW)",
+   "name": "Counter 5 (32-bit mode)",
+   "description": "32-bit counter used when IN5 32-bit mode is on; LSW first.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read holding registers 0-6 (function 03) for the input states and the five counters. Write a counter register to preset or clear it.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Input states and overflow flags"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Counter 1"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Counter 2"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Counter 3"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Counter 4"
+   },
+   {
+    "table": "holding_register",
+    "address": 6,
+    "why": "Counter 5"
+   }
+  ],
+  "enable": "Modbus RTU is always on. DIP switches 3-8 set the address (all off = take address and baud from EEPROM), 1-2 the baud rate, 9-10 the RS-485 terminator.",
+  "watchdog": null,
+  "quirks": [
+   "Offset address is the wire address.",
+   "The 32-bit IN5 counter is LSW first."
+  ],
+  "setup": [
+   "Default 38400 8N1, address 1.",
+   "After writing the filter or flags, set bit 0 of register 10 to save to EEPROM."
+  ],
+  "gotchas": [
+   "Overflow flags in register 1 stay set until written back to 0."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/seneca/z-d-in",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

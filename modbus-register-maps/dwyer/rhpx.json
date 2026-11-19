@@ -1,0 +1,403 @@
+{
+ "manufacturer": "Dwyer",
+ "manufacturer_slug": "dwyer",
+ "model": "Series RHPX communicating humidity/temperature transmitter",
+ "model_slug": "rhpx",
+ "short_model": "RHPX",
+ "aliases": [
+  "RHPX",
+  "Dwyer RHPX BACnet/Modbus",
+  "607xxx"
+ ],
+ "equipment_type": "Sensor (humidity / temperature transmitter)",
+ "applies_to": "Dwyer Series RHPX humidity and temperature transmitters with the BACnet MS/TP / Modbus RTU communication board, set to Modbus with DIP switch 9 (bulletin AQ-RHPX-C).",
+ "summary": "The Dwyer RHPX is a duct or wall humidity and temperature transmitter that talks BACnet MS/TP or Modbus RTU on RS-485, chosen by DIP switch. Measurements are 32-bit floats in input registers: relative humidity, dew point, enthalpy and absolute humidity in two unit sets, and temperature. Offsets and display units are holding registers. This map covers every published register.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 127,
+  "baud": null,
+  "parity": null,
+  "data_bits": 8,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "1-based",
+  "note": "Tables list register numbers starting at 0001 and state that the register address is one less than the register number, so 0001-0002 (relative humidity) is read at address 0. Float registers 1-2000 are big-endian; the same values can be read with other byte orders by adding 2000 (byte swap), 4000 (word swap) or 6000 (little-endian)."
+ },
+ "default_word_order": "ABCD",
+ "firmware": null,
+ "source": {
+  "title": "Series RHPX Humidity/Temperature Communicating Transmitter - Specifications, Installation and Operating Instructions",
+  "doc_number": "Bulletin AQ-RHPX-C",
+  "revision_date": "2024-03",
+  "url": "https://assets.dwyeromega.com/manuals-do/AQ_RHPX_C.pdf",
+  "pages": "p. 4 (DIP switches, baud rates, function codes, input and holding register tables, error flags), p. 5 (multi-address byte-order table)"
+ },
+ "notes": [
+  "Byte order: addresses 1-2000 use big-endian order (ABCD for floats). Adding 2000 gives byte-swapped (BADC), 4000 word-swapped (CDAB) and 6000 little-endian (DCBA) copies; the info registers (8001+) exist only big-endian.",
+  "Strings are read as a stream: first character in the high byte of the first register; unused bytes are zero.",
+  "Holding register 0007-0023 Device name (String(32), default 'RHPX') is left out: the printed range spans 17 registers while a 32-character string needs 16.",
+  "Supported functions: 03 (read holding), 04 (read input), 06 and 16.",
+  "Default address 127 comes from the default DIP setting (switches 1-7 on). Baud, parity and stop bits are detected automatically ('Intelligent Serial Configuration'); supported: 9600-115200 baud, even/odd/none, 1 or 2 stop bits."
+ ],
+ "registers": [
+  {
+   "table": "input_register",
+   "address": 0,
+   "documented": "0001-0002",
+   "name": "Relative humidity",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "%RH",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 2,
+   "documented": "0003-0004",
+   "name": "Dew point (°F)",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 4,
+   "documented": "0005-0006",
+   "name": "Dew point (°C)",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 6,
+   "documented": "0007-0008",
+   "name": "Enthalpy (BTU/lb)",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "BTU/lb",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8,
+   "documented": "0009-0010",
+   "name": "Enthalpy (kJ/kg)",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "kJ/kg",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 10,
+   "documented": "0011-0012",
+   "name": "Absolute humidity (g/m3)",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "g/m3",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 12,
+   "documented": "0013-0014",
+   "name": "Absolute humidity (lb/million ft3)",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "lb/MMCF",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 14,
+   "documented": "0015-0016",
+   "name": "Temperature (°F)",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "°F",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 16,
+   "documented": "0017-0018",
+   "name": "Temperature (°C)",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 18,
+   "documented": "0019-0020",
+   "name": "Error flags",
+   "description": "Bit-coded errors (bits 0-7 used).",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Invalid address",
+    "1": "Sensor range exceeded",
+    "2": "Sensor error",
+    "3": "No sensor",
+    "4": "User settings invalid",
+    "5": "Factory settings invalid",
+    "6": "External memory failure",
+    "7": "Internal memory failure"
+   },
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8000,
+   "documented": "8001-8016",
+   "name": "Model number",
+   "description": "ASCII, 32 characters, e.g. 'RHPX-XXX'.",
+   "data_type": "STRING",
+   "length": 16,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8016,
+   "documented": "8017-8020",
+   "name": "Serial number",
+   "description": "ASCII, 8 characters.",
+   "data_type": "STRING",
+   "length": 4,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8020,
+   "documented": "8021-8028",
+   "name": "Firmware version",
+   "description": "ASCII, 16 characters.",
+   "data_type": "STRING",
+   "length": 8,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8028,
+   "documented": "8029-8032",
+   "name": "Date code",
+   "description": "ASCII, 8 characters.",
+   "data_type": "STRING",
+   "length": 4,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0001-0002",
+   "name": "Humidity offset",
+   "description": "-3.5 to +3.5 %RH.",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "%RH",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "0003-0004",
+   "name": "Temperature offset",
+   "description": "-5.0 to +5.0 °F.",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "°F",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "0005",
+   "name": "Humidity display unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Dew point (°F)",
+    "1": "Dew point (°C)",
+    "2": "Relative humidity (%RH)",
+    "3": "Enthalpy (BTU/lb)",
+    "4": "Enthalpy (lb/million ft3)",
+    "5": "Absolute humidity (kJ/kg)",
+    "6": "Absolute humidity (g/m3)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "0006",
+   "name": "Temperature display unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "°F",
+    "1": "°C"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set the address with DIP switches 1-8 and switch 9 to Modbus, power up and let the transmitter auto-detect the line settings from the master's traffic, then read input registers 0-17 as big-endian floats.",
+  "minimum_registers": [
+   {
+    "table": "input_register",
+    "address": 0,
+    "why": "Relative humidity"
+   },
+   {
+    "table": "input_register",
+    "address": 16,
+    "why": "Temperature °C"
+   },
+   {
+    "table": "input_register",
+    "address": 14,
+    "why": "Temperature °F"
+   },
+   {
+    "table": "input_register",
+    "address": 4,
+    "why": "Dew point °C"
+   },
+   {
+    "table": "input_register",
+    "address": 18,
+    "why": "Error flags"
+   }
+  ],
+  "enable": "DIP switch 9 ON selects Modbus (OFF = BACnet); switches 1-8 set the address bits (128...1), switch 10 enables the 120 ohm terminator. Modbus addresses must be 1-247.",
+  "watchdog": null,
+  "quirks": [
+   "Register address = register number - 1.",
+   "Pick the byte order by address range (+2000/+4000/+6000) instead of configuring the master.",
+   "The red LED blinks until the transmitter has locked onto the bus settings; if the bus settings change, power-cycle it."
+  ],
+  "setup": [
+   "Terminate the RS-485 line at both ends with 120 ohm (switch 10 on an end device).",
+   "If the transmitter is set up offline, send read requests to it so it can detect the baud rate."
+  ],
+  "gotchas": [
+   "The factory DIP setting is address 127; change it before putting several units on one bus."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/dwyer/rhpx",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

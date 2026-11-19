@@ -1,0 +1,354 @@
+{
+  "manufacturer": "SEW-EURODRIVE",
+  "manufacturer_slug": "sew-eurodrive",
+  "model": "MOVITRAC LTE-B+ frequency inverter (built-in Modbus RTU)",
+  "model_slug": "movitrac-lte-b-plus",
+  "short_model": "MOVITRAC LTE-B+",
+  "aliases": [
+    "MOVITRAC LTE-B+",
+    "LTE-B+",
+    "MC LTE B+",
+    "MOVITRAC LTE B plus"
+  ],
+  "equipment_type": "Variable frequency drive",
+  "applies_to": "SEW-EURODRIVE MOVITRAC LTE-B+ inverters on the RJ45 Modbus RTU port, per product manual 31965822/EN edition 03/2024.",
+  "summary": "SEW-EURODRIVE's compact frequency inverter with Modbus RTU on the RJ45 communication socket. Registers 1-3 carry the SEW process output words (control word, speed setpoint, ramp time), registers 6-8 the process input words (status, actual speed, actual current), and the monitoring and setup parameters have fixed Modbus register numbers listed in the parameter overview. This map covers the process data and the monitoring values whose scaling the manual states.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 115200,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "The manual's register numbers start at 1 and it warns that zero-based masters must subtract 1. Its frame examples confirm this: reading registers 135/136 (P-07/P-08) sends start address 0x0086 = 134, and writing register 2 (setpoint speed) sends start address 0x0001."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Product Manual - Frequency Inverters MOVITRAC LTE-B+",
+    "doc_number": "31965822/EN",
+    "revision_date": "2024-03",
+    "url": "https://download.sew-eurodrive.com/download/pdf/31965822.pdf",
+    "pages": "Ch. 10.1 parameter overview pp. 90-94 (Modbus register column); ch. 10.2 P-12 p. 98 and P-36 p. 110; ch. 12.1.1 process data words pp. 124-125; ch. 12.3 Modbus RTU pp. 129-130 (specification, register allocation, frame examples)"
+  },
+  "notes": [
+    "PO2/PI2 speed and PI3 current are relative values (16384 = 100 % of P-01 or of P-08), so they are kept raw; multiply by P-01/16384 or P-08/16384 in the master.",
+    "Left out: PI4 motor torque (register 9) because no scaling is given; P00-03 speed setpoint (22/40) because its unit switches between Hz and rpm with P-10 and the resolution is not stated; P00-07 motor voltage (43), the kWh/MWh counters (32/33, resolution not stated) and the hours/minutes counters (25/26, 28) because the register format is not described.",
+    "Parameter registers follow 128 + parameter number (P-01 = 129 ... P-60 = 188), but the manual does not give the Modbus scaling for most of them; only P-07 (confirmed by the frame example) and P-12 are listed. P-36 (address, baud, timeout) has three levels behind one register number and is left out.",
+    "The manual's own example reads P-08 (register 136) as 0x2B = 43 % of the nominal inverter current, i.e. not in amperes; it is left out because the scaling is only shown by that one example.",
+    "The PI1 high byte holds the 'fault code status word' column of the fault list (e.g. 0x2B = fault 50 Modbus communication error) when bit 5 = 1.",
+    "Only function codes 03 (read holding registers) and 06 (write single register) are named in the Modbus chapter."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "1",
+      "name": "PO1 Control word",
+      "description": "0x0006 = run; 0x0000 = rapid stop; 0x0001 = coast; bit 6 edge = reset.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Output stage inhibit: 0 = start, 1 = stop (coast)",
+        "1": "0 = rapid stop on P-24 ramp, 1 = start",
+        "2": "0 = stop on process ramp (P-03/P-04 or PO3), 1 = start",
+        "6": "Fault reset on 0->1 edge"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "2",
+      "name": "PO2 Setpoint speed",
+      "description": "Raw: 16384 (0x4000) = 100 % of P-01; negative (two's complement) = CCW.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "3",
+      "name": "PO3 Ramp time",
+      "description": "1 digit = 1 ms (100-65535 ms); used when P-12 = 6.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.001,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "6",
+      "name": "PI1 Status word",
+      "description": "High byte: 1 inhibited, 2 not enabled, 4 running, 5 factory set; else fault code.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Output stage enabled",
+        "1": "Inverter ready",
+        "2": "PO data enabled",
+        "5": "Fault/warning",
+        "8": "High byte (bits 8-15): status code, or fault code when bit 5 = 1 (see description)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "7",
+      "name": "PI2 Actual speed",
+      "description": "Same raw scaling as PO2 (16384 = 100 % of P-01).",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "8",
+      "name": "PI3 Actual current",
+      "description": "Raw: 16384 (0x4000) = 100 % of P-08 rated motor current.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "11",
+      "name": "P00-04 Digital input status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "DI1",
+        "1": "DI2",
+        "2": "DI3",
+        "3": "DI4"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 19,
+      "documented": "20",
+      "name": "P00-01 Analog input 1 value",
+      "description": "1000 = 100 % of max input voltage or current.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 20,
+      "documented": "21",
+      "name": "P00-02 Analog input 2 value",
+      "description": "1000 = 100 % of max input voltage or current.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 22,
+      "documented": "23",
+      "name": "P00-08 DC link voltage",
+      "description": "600 = 600 V.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "24",
+      "name": "P00-09 Heat sink temperature",
+      "description": "Power electronics; -20 to 100 °C.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 38,
+      "documented": "39",
+      "name": "P00-05 Control electronics temperature",
+      "description": "-25 to 125 °C.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 134,
+      "documented": "135",
+      "name": "P-07 Rated motor voltage",
+      "description": "Manual example reads 0x00E6 = 230 V.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 139,
+      "documented": "140",
+      "name": "P-12 Control signal source",
+      "description": "5 or 6 for Modbus RTU.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Terminal mode",
+        "1": "Keypad, unipolar",
+        "2": "Keypad, bipolar",
+        "3": "SBus MOVILINK, internal ramps",
+        "4": "SBus MOVILINK, ramps via PO3",
+        "5": "Modbus RTU, internal ramps P-03/P-04",
+        "6": "Modbus RTU, ramps via PO3 (register 3)",
+        "7": "CANopen, internal ramps",
+        "8": "CANopen, ramps via PO3",
+        "9": "PI controller",
+        "10": "PI controller + analog input 1",
+        "11": "Slave mode"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set P-14 = 101, P-12 = 5 (or 6 to send ramp times in register 3) and P-15 per the fieldbus table, then write register 1 = 0x0006 with register 2 = speed (16384 = P-01). Poll register 6 for status, 7 for actual speed and 8 for current.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "PO1 control word"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "PO2 speed setpoint (16384 = P-01)"
+      },
+      {
+        "table": "holding_register",
+        "address": 5,
+        "why": "PI1 status word"
+      },
+      {
+        "table": "holding_register",
+        "address": 6,
+        "why": "PI2 actual speed"
+      },
+      {
+        "table": "holding_register",
+        "address": 7,
+        "why": "PI3 actual current"
+      },
+      {
+        "table": "holding_register",
+        "address": 22,
+        "why": "DC link voltage"
+      },
+      {
+        "table": "holding_register",
+        "address": 23,
+        "why": "Heat sink temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 139,
+        "why": "P-12 control signal source"
+      }
+    ],
+    "enable": "Set P-14 = 101 for extended parameter access, P-12 = 5 (Modbus RTU, internal ramps P-03/P-04) or 6 (ramps from PO3), and P-15 as the manual's Modbus table shows. P-36 level 1 sets the address (1-63, factory 1) and level 2 the Modbus baud rate (0 = 9.6, 1 = 115.2 (factory), 2 = 19.2, 3 = 38.4, 4 = 57.6, 5 = 76.8 kbit/s). The digital inputs must still be wired so the inverter is enabled.",
+    "watchdog": "P-36 level 3 sets the reaction to a communication failure: 0 = keep the last setpoint (no fault), 1-4 = coast to a stop after 30/100/1000/3000 ms, 5-8 = rapid stop on P-24 after 30/100/1000/3000 ms. The fault list has fault 50 for a Modbus communication error (0x2B in the PI1 high byte).",
+    "quirks": [
+      "Register numbers are 1-based: subtract 1 for the wire address.",
+      "Control word logic is inverted against most drives: bit 0 = 1 inhibits the output stage; 0x0006 runs, 0x0000 rapid-stops, 0x0001 coasts.",
+      "Speed is a signed relative value: 16384 = +100 % of P-01, -16384 = -100 % (CCW)."
+    ],
+    "setup": [
+      "Wire RS485- (Modbus) to RJ45 pin 7 and RS485+ to pin 8; pins 4/5 are the engineering port.",
+      "Up to 32 stations; 1200 m at 115200 bit/s with 0.5 mm2 cable.",
+      "Framing is fixed at 8 data bits, no parity, 1 stop bit."
+    ],
+    "gotchas": [
+      "Parameters above P-15 are only reachable after P-14 = 101 (or the code set in P-37).",
+      "With P-36 level 3 = 0 the inverter keeps running on the last setpoint if the master disappears."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

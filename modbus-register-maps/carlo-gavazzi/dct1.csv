@@ -1,0 +1,39 @@
+﻿# Carlo Gavazzi DCT1 DC energy meter (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/DCT1_CPP_%20V1.1_05042024.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,300001 / 0000h,30001,Voltage,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,2,300003 / 0002h,30003,Current,,INT32,2,CDAB,0.001,0,A,Read,
+Input register,FC04 read,4,300005 / 0004h,30005,Power,Signed DC power.,INT32,2,CDAB,0.1,0,W,Read,
+Input register,FC04 read,11,300012 / 000Bh,30012,Carlo Gavazzi identification code,Read one word at a time.,UINT16,1,,1,0,,Read,1808 = DCT1A60V10LS1X; 1809 = DCT1A60V10LS2EC; 1810 = DCT1A60V10LS3EC; 1812 = DCT1A30V10LS1X; 1813 = DCT1A30V10LS2EC; 1814 = DCT1A30V10LS3EC
+Input register,FC04 read,16,300017 / 0010h,30017,kWh (+) TOT,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,18,300019 / 0012h,30019,Ah (+) TOT,,INT32,2,CDAB,0.1,0,Ah,Read,
+Input register,FC04 read,20,300021 / 0014h,30021,kWh (+) PAR,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,22,300023 / 0016h,30023,Ah (+) PAR,,INT32,2,CDAB,0.1,0,Ah,Read,
+Input register,FC04 read,32,300033 / 0020h,30033,kWh (-) TOT,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,34,300035 / 0022h,30035,Ah (-) TOT,,INT32,2,CDAB,0.1,0,Ah,Read,
+Input register,FC04 read,36,300037 / 0024h,30037,kWh (-) PAR,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,38,300039 / 0026h,30039,Ah (-) PAR,,INT32,2,CDAB,0.1,0,Ah,Read,
+Input register,FC04 read,44,300045 / 002Ch,30045,Run hour meter,,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,46,300047 / 002Eh,30047,Run hour meter kWh-,Hours counted while energy flows in the negative direction.,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,48,300049 / 0030h,30049,Run hour meter ON time,Hours the meter has been powered.,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,50,300051 / 0032h,30051,Run hour meter PAR,,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,52,300053 / 0034h,30053,Run hour meter kWh- PAR,,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,54,300055 / 0036h,30055,Run hour meter ON time PAR,,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,80,300081 / 0050h,30081,T1 (shunt terminal 1 temperature),,INT32,2,CDAB,0.1,0,°C,Read,
+Input register,FC04 read,82,300083 / 0052h,30083,T2 (shunt terminal 2 temperature),,INT32,2,CDAB,0.1,0,°C,Read,
+Input register,FC04 read,770,300771 / 0302h,30771,Firmware version and revision,"High byte: bits 0-3 minor, bits 4-7 major; low byte: revision.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4355,304356 / 1103h,44356,Easy connection,,UINT16,1,,1,0,,Read/write,0 = Disabled (default); 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",4363,304360 / 110Bh,44364,Startup current of run hour counter,"Range 480-600000 (0.48-600 A), default 480. Write with function 10h only.",UINT32,2,CDAB,0.001,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8192,308193 / 2000h,48193,RS485 instrument address,"1-247, default 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8193,308194 / 2001h,48194,RS485 baud rate,,UINT16,1,,1,0,,Read/write,1 = 9.6 kbps (default); 2 = 19.2 kbps; 3 = 38.4 kbps; 4 = 57.6 kbps; 5 = 115.2 kbps
+Holding register,"FC03 read / FC06, FC16 write",8194,308195 / 2002h,48195,RS485 parity,,UINT16,1,,1,0,,Read/write,1 = No parity (default); 2 = Even parity
+Holding register,"FC03 read / FC06, FC16 write",8195,308196 / 2003h,48196,Stop bit,,UINT16,1,,1,0,,Read/write,1 = 1 (default); 2 = 2
+Holding register,"FC03 read / FC06, FC16 write",8196,308197 / 2004h,48197,RS485 delay on reply,"0-1000, default 20.",UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8208,308209 / 2010h,48209,Update serial communication settings,Write 1 to apply new serial settings; other values do nothing.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9471,309472 / 24FFh,49472,Signature type,,UINT16,1,,1,0,,Read,0 = 256-bit signature; 1 = 384-bit signature; 2 = No signature
+Holding register,"FC03 read / FC06, FC16 write",16387,316388 / 4003h,416388,Reset total counters,"Write 1. Non-certified: totals, Ah, run hours. Certified: Ah and run hours only.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16388,316389 / 4004h,416389,Reset partial counters,"Write 1 to clear partial energy, Ah and run-hour counters.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20487,320488 / 5007h,420488,Production year,Four digits.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",20498,320499 / 5012h,420499,Device state,,BITMAP16,1,,1,0,,Read,"bit 0 = Voltage over range (beyond ±1150.1 V); bit 1 = Current over range (±600.1 A on A60 models, ±300.1 A on A30 models); bit 2 = Terminal 1 temperature below -25.1 °C; bit 3 = Terminal 1 temperature above 120.1 °C; bit 4 = Terminal 2 temperature below -25.1 °C; bit 5 = Terminal 2 temperature above 120.1 °C; bit 15 = Internal device fault"
+Holding register,"FC03 read / FC06, FC16 write",20499,320500 / 5013h,420500,Shunt temperature position 1,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",20500,320501 / 5014h,420501,Shunt temperature position 2,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",20736,320737 / 5100h,420737,Cable loss value,Cable resistance used to correct energy.,INT32,2,CDAB,1,0,mOhm,Read,

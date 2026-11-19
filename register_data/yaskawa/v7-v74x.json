@@ -1,0 +1,617 @@
+{
+  "manufacturer": "Yaskawa",
+  "manufacturer_slug": "yaskawa",
+  "model": "V7 / V74X compact drive (legacy) - Modbus RTU",
+  "model_slug": "v7-v74x",
+  "short_model": "V7 / V74X",
+  "aliases": [
+    "CIMR-V7AM",
+    "CIMR-V7CU",
+    "V74X"
+  ],
+  "equipment_type": "Variable frequency drive",
+  "applies_to": "Yaskawa V7 (CIMR-V7AM) and V74X (CIMR-V7CU) compact drives with built-in Modbus RTU (keypad RJ-45 or R+/R-/S+/S- terminals), per TM.V7.11 Rev 07-01.",
+  "summary": "The V7 and its NEMA 4X twin V74X are Yaskawa's legacy compact drives with built-in Modbus RTU. Commands go to hex registers 0001h, 0002h and 0009h, status, fault and monitors are read from 0020h-003Dh, and parameters n001-n179 sit at 0101h-01B3h. This map covers the command and monitor registers with published units, and the run/reference source and Modbus setup parameters.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "Addresses are hex and go on the wire unchanged: the read example asks for starting register 00h 20h (0020h-0023h). Parameter nXXX lives at its hex address in Table 4.4 (n003 = 0103h, n153 = 0199h); ENTER/ACCEPT are printed as 900/910."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Modbus Communication Manual V7 and V74X Drives",
+    "doc_number": "TM.V7.11 Rev 07-01",
+    "revision_date": "2007-01-05",
+    "url": "https://www.yaskawa.com/delegate/getAttachment?documentId=TM.V7.11&cmd=documents&documentName=TM.V7.11.pdf",
+    "pages": "p. 19 (03h example), p. 41 (command registers), p. 42 (broadcast), pp. 43-44 (monitor registers), p. 45 (n003/n004), p. 52 (n151-n157), p. 56 (ENTER/ACCEPT)"
+  },
+  "notes": [
+    "n153 defaults to 0, so a factory-fresh drive has no valid Modbus slave address; set n153 to 1-31 first. The defaults block shows the printed parameter defaults (n153 = 0, n154 = 2 = 9600, n155 = 2 = none).",
+    "Left out because the sign is not stated: 002Fh frequency reference bias, 0032h torque monitor, 0037h output power, 0038h-003Ah PID feedback/input/output.",
+    "Frequency registers follow n152 (default 0 = 0.1 Hz) and are left unscaled.",
+    "The CM091/CM092 Modbus TCP/IP option card uses a different command layout (Table 4.5) that is not covered here.",
+    "Broadcast (slave 0): 0001h bit 0 run, bit 1 reverse, bit 4 external fault, bit 5 fault reset; 0002h fixed at 30000 = 100 % of n011."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "0001h",
+      "name": "Digital input command",
+      "description": "Run, direction, external fault, reset, network inputs S1-S7.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Run command (0 stop, 1 run)",
+        "1": "Reverse (0 forward, 1 reverse)",
+        "2": "External fault",
+        "3": "Fault reset",
+        "4": "Terminal S1 (n050)",
+        "5": "Terminal S2 (n051)",
+        "6": "Terminal S3 (n052)",
+        "7": "Terminal S4 (n053)",
+        "8": "Terminal S5 (n054)",
+        "9": "Terminal S6 (n055)",
+        "10": "Terminal S7 (n056)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "0002h",
+      "name": "Frequency reference",
+      "description": "Unit set by n152 (0.1 Hz default).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "0009h",
+      "name": "Digital output command",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Output MA/MB/MC",
+        "1": "Output P1-PC",
+        "2": "Output P2-PC"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 32,
+      "documented": "0020h",
+      "name": "Status signal 1",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "During run",
+        "1": "Reverse direction",
+        "2": "Inverter ready",
+        "3": "Fault",
+        "4": "Data set error",
+        "5": "Output MA-MC closed",
+        "6": "Output P1-PC closed",
+        "7": "Output P2-PC closed"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 33,
+      "documented": "0021h",
+      "name": "Fault content 1",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Overcurrent (OC)",
+        "1": "Overvoltage (OV)",
+        "2": "Inverter overload (OL2)",
+        "3": "Inverter overheat (OH)",
+        "6": "PID feedback (FbL)",
+        "7": "External fault (EF, EF0) or emergency stop (STP)",
+        "8": "Hardware fault (Fxx)",
+        "9": "Motor overload (OL1)",
+        "10": "Overtorque detection",
+        "11": "Undertorque detection",
+        "12": "Undervoltage (UV1)",
+        "13": "Control power supply fault (UV2)",
+        "14": "Modbus communications timeout (CE)",
+        "15": "Operator connection fault (oPA)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 34,
+      "documented": "0022h",
+      "name": "Data link status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "During data write",
+        "3": "Limit fault",
+        "4": "Matching fault"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 35,
+      "documented": "0023h",
+      "name": "Frequency reference (U-01)",
+      "description": "Unit set by n152.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 36,
+      "documented": "0024h",
+      "name": "Output frequency (U-02)",
+      "description": "Unit set by n152.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 39,
+      "documented": "0027h",
+      "name": "Output current (U-03)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 40,
+      "documented": "0028h",
+      "name": "Output voltage (U-04)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 43,
+      "documented": "002Bh",
+      "name": "Digital input status",
+      "description": "Terminals S1-S7 closed.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "S1 closed",
+        "1": "S2 closed",
+        "2": "S3 closed",
+        "3": "S4 closed",
+        "4": "S5 closed",
+        "5": "S6 closed",
+        "6": "S7 closed"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 44,
+      "documented": "002Ch",
+      "name": "Status signal 2",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "During run",
+        "1": "Zero speed",
+        "2": "Speed agree",
+        "3": "Alarm",
+        "4": "Frequency detection 1",
+        "5": "Frequency detection 2",
+        "6": "Inverter ready",
+        "7": "Undervoltage detection",
+        "8": "Baseblock",
+        "9": "Frequency reference source (0 network, 1 n004)",
+        "10": "Run command source (0 network, 1 n003)",
+        "11": "Overtorque detection",
+        "12": "Undertorque detection",
+        "13": "Fault retry",
+        "14": "Fault",
+        "15": "Communication timeout"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 45,
+      "documented": "002Dh",
+      "name": "Digital output status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "MA-MC closed",
+        "1": "P1-PC closed",
+        "2": "P2-PC closed"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 49,
+      "documented": "0031h",
+      "name": "DC bus voltage (U-05)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 61,
+      "documented": "003Dh",
+      "name": "Modbus error",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "CRC error",
+        "1": "Data length error",
+        "3": "Parity error",
+        "4": "Overrun error",
+        "5": "Framing error",
+        "6": "Timeout"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 259,
+      "documented": "0103h",
+      "name": "n003 Run/stop source",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Keypad",
+        "1": "Terminal strip",
+        "2": "Built-in Modbus RTU",
+        "3": "Option card"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 260,
+      "documented": "0104h",
+      "name": "n004 Frequency reference source",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Keypad potentiometer",
+        "1": "Frequency reference 1 (n024)",
+        "2": "0-10 V (FR)",
+        "3": "4-20 mA (FR)",
+        "4": "0-20 mA (FR)",
+        "5": "Pulse train (RP)",
+        "6": "Built-in Modbus RTU",
+        "7": "Multi-function analog input 0-10 V (keypad CN2)",
+        "8": "Multi-function analog input 4-20 mA (keypad CN2)",
+        "9": "Option card"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 407,
+      "documented": "0197h",
+      "name": "n151 Modbus time-out detection",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Coast to stop",
+        "1": "Ramp to stop (n020)",
+        "2": "Ramp to stop (n022)",
+        "3": "Continue with alarm",
+        "4": "Disabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 408,
+      "documented": "0198h",
+      "name": "n152 Frequency reference unit",
+      "description": "Applies to 0002h, 0023h, 0024h.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "1 = 0.1 Hz",
+        "1": "1 = 0.01 Hz",
+        "2": "30000 = n011 (max frequency)",
+        "3": "1 = 0.1 %"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 409,
+      "documented": "0199h",
+      "name": "n153 Modbus RTU slave address",
+      "description": "0-31 decimal.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 410,
+      "documented": "019Ah",
+      "name": "n154 Modbus RTU baud rate",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "2400",
+        "1": "4800",
+        "2": "9600",
+        "3": "19200"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 411,
+      "documented": "019Bh",
+      "name": "n155 Modbus RTU parity",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Even",
+        "1": "Odd",
+        "2": "None"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 412,
+      "documented": "019Ch",
+      "name": "n156 Modbus RTU send delay",
+      "description": "0-65 ms.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ms",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 413,
+      "documented": "019Dh",
+      "name": "n157 Modbus RTU RTS control",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Enabled (RS-485 2-wire)",
+        "1": "Disabled (RS-422 / RS-485 4-wire)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2304,
+      "documented": "900",
+      "name": "ENTER",
+      "description": "Write 0 to store off-line parameter data in EEPROM (about 100,000 writes).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2320,
+      "documented": "910",
+      "name": "ACCEPT",
+      "description": "Write 0 to activate off-line parameter data in RAM.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set n153 (address), n154 (baud) and n155 (parity), then n003 = 2 and n004 = 6 to take run and reference from Modbus. Write 0001h/0002h and poll 0020h-0031h.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Run/stop, direction, reset"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Frequency reference"
+      },
+      {
+        "table": "holding_register",
+        "address": 32,
+        "why": "Run/ready/fault"
+      },
+      {
+        "table": "holding_register",
+        "address": 33,
+        "why": "Fault content"
+      },
+      {
+        "table": "holding_register",
+        "address": 36,
+        "why": "Output frequency"
+      },
+      {
+        "table": "holding_register",
+        "address": 39,
+        "why": "Output current"
+      },
+      {
+        "table": "holding_register",
+        "address": 44,
+        "why": "Status incl. comm timeout"
+      }
+    ],
+    "enable": "n153 slave address 1-31 (default 0), n154 baud (default 2 = 9600), n155 parity (default 2 = none). n003 = 2 and n004 = 6 select built-in Modbus RTU for run/stop and frequency reference. n157 = 0 for 2-wire RS-485.",
+    "watchdog": "n151 selects the time-out response: 0 coast (default), 1 ramp with n020, 2 ramp with n022, 3 continue with alarm, 4 disabled. 002Ch bit F shows a communication timeout.",
+    "quirks": [
+      "Registers and addresses are hex.",
+      "1-8 registers per 03h read.",
+      "Parameter writes (0101h-01B3h) go to an off-line area until 0 is written to 0910h (ACCEPT) or 0900h (ENTER, about 100,000 writes).",
+      "Network digital inputs are ORed with the physical terminals."
+    ],
+    "setup": [
+      "Modbus is available on the keypad RJ-45 jack or the R+/R-/S+/S- terminals.",
+      "Slave address 1-20h (1-32) per the protocol chapter; n153 accepts 0-31.",
+      "Baud 2400-19200."
+    ],
+    "gotchas": [
+      "Factory default n153 = 0 means the drive does not answer reads until an address is set."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

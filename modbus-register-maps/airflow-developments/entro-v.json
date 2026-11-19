@@ -1,0 +1,728 @@
+{
+ "manufacturer": "Airflow Developments",
+ "manufacturer_slug": "airflow-developments",
+ "model": "Entro-V heat recovery unit controller (Basic / Digital controller, Modbus RTU)",
+ "model_slug": "entro-v",
+ "short_model": "Entro-V",
+ "aliases": [
+  "Entro-V Basic Controller",
+  "Entro-V Digital Controller",
+  "90001308",
+  "90001299",
+  "DuplexVent Entro-V"
+ ],
+ "equipment_type": "Air handler (heat recovery ventilation unit)",
+ "applies_to": "Airflow Entro-V MVHR units with the Entro-V control board (Basic controller 90001308 / Digital controller 90001299), per controls manual 80001022 Issue 1 (08/20).",
+ "summary": "The Entro-V is a heat recovery ventilation unit whose control board acts as a Modbus RTU slave on RS-485. Only function 03 (read) and 06 (write single) are supported and every point is a single 16-bit register. The map covers on/off, fan speed stages and mode, temperatures and sensor values, output and input states, the set point and the alarm code.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The register list's ID column is the wire address. The manual's example frame reads the '2nd register' with register ID bytes 0x00 0x02, and the list starts at ID 0 (program version), so use the ID unchanged in the request."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Entro-V Controls - Basic Controller, Digital Controller and Other Control Options - User Manual",
+  "doc_number": "80001022 Issue 1",
+  "revision_date": "2020-08",
+  "url": "https://www.specifiedby.com/airflow/entro-v-basic-controller/airflow_entro-v-basic-controller_operations_1_entro-v20controls20user20manual.pdf",
+  "pages": "pp. 21-23 (section 9, Modbus function and register list), p. 25 (fault code list), pp. 28-32 (full parameter list)",
+  "unofficial": true
+ },
+ "notes": [
+  "Airflow does not host this manual as a direct PDF on airflow.com that we could find; this copy sits in Airflow's product listing on the SpecifiedBy library and is the unaltered Airflow document (Airflow Developments Ltd footer).",
+  "Registers listed here are those in section 9.4 'Modbus Register List' (the IDs flagged for Modbus in the full parameter list). The full list on pp. 28-32 has more IDs (service settings, I/O assignment, timers); they are not flagged as Modbus points and are left out.",
+  "Temperatures have a -40 to 80 °C range with multiplier 0.1, so they are treated as signed 16-bit; the manual does not spell out the signed encoding.",
+  "The CO2 register (30) is printed with multiplier 0.1 and unit ppm; check against a known reading before relying on it.",
+  "Alarm code values come from the fault code list (Part III, p. 25)."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0",
+   "name": "Version of program",
+   "description": "Installed program version as MMYY.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1",
+   "name": "Unit on/off",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Stop",
+    "1": "Start"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "Alarm code",
+   "description": "Active fault number; 0 when running normally.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal operation",
+    "1": "ERR 1 Fire alarm (FRE input)",
+    "2": "ERR 2 Electric heater failure (HTI)",
+    "3": "ERR 3 Fresh air fan failure",
+    "4": "ERR 4 Exhaust air fan failure",
+    "5": "ERR 5 Outdoor air temperature sensor failure (T_OA)",
+    "6": "ERR 6 Return air temperature sensor failure (T_RA)",
+    "7": "ERR 7 Panel temperature sensor failure (T_PA)",
+    "8": "ERR 8 Supply air temperature sensor failure (T_SA)",
+    "9": "ERR 9 Sensor-1 failure (SE1)",
+    "10": "ERR 10 Sensor-2 failure (SE2)",
+    "11": "ERR 11 Freon pressure failure (DXH/DXL)",
+    "12": "ERR 12 Filter dirty alarm (FIL)",
+    "13": "ERR 13 Clock malfunction",
+    "14": "ERR 14 RF communication failure",
+    "15": "ERR 15 Digital controller communication failure",
+    "16": "ERR 16 Constant flow maximum limit failure"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "Fresh air fan speed",
+   "description": "Measured fan speed.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "rpm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4",
+   "name": "Exhaust air fan speed",
+   "description": "Measured fan speed.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "rpm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "5",
+   "name": "PWM value of fresh air fan",
+   "description": "0-100 %.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6",
+   "name": "PWM value of exhaust air fan",
+   "description": "0-100 %.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 20,
+   "documented": "20",
+   "name": "Outdoor air temperature",
+   "description": "Sensor T_OA, -40 to 80 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 21,
+   "documented": "21",
+   "name": "Return air temperature",
+   "description": "Sensor T_RA, -40 to 80 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "22",
+   "name": "Supply air temperature",
+   "description": "Sensor T_SA, -40 to 80 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "23",
+   "name": "Panel temperature",
+   "description": "Controller panel sensor T_PA, -40 to 80 °C; listed read/write.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 24,
+   "documented": "24",
+   "name": "Sensor 1 value",
+   "description": "Input voltage on SE1.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 25,
+   "documented": "25",
+   "name": "Sensor 2 value",
+   "description": "Input voltage on SE2.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 26,
+   "documented": "26",
+   "name": "RF sensor 1 value",
+   "description": "Voltage value of wireless sensor SR1.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 27,
+   "documented": "27",
+   "name": "RF sensor 2 value",
+   "description": "Voltage value of the second wireless sensor (table labels it SR1).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 29,
+   "documented": "29",
+   "name": "Relative humidity",
+   "description": "Processed humidity sensor reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 30,
+   "documented": "30",
+   "name": "CO2 value",
+   "description": "Processed CO2 sensor reading; multiplier 0.1 as printed.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "ppm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 31,
+   "documented": "31",
+   "name": "Pressure value",
+   "description": "Processed pressure sensor reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "hPa",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 60,
+   "documented": "60",
+   "name": "DO1 output [RUN]",
+   "description": "Run indication relay.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 61,
+   "documented": "61",
+   "name": "DO2 output [FLT]",
+   "description": "Fault indication relay.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 62,
+   "documented": "62",
+   "name": "LP0 output [BYP]",
+   "description": "Bypass output.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 63,
+   "documented": "63",
+   "name": "LP1 output [HT1]",
+   "description": "Electric heater stage 1.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 64,
+   "documented": "64",
+   "name": "LP2 output [HT2]",
+   "description": "Electric heater stage 2.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 65,
+   "documented": "65",
+   "name": "LP3 output [PH1]",
+   "description": "Electric preheater stage 1.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 66,
+   "documented": "66",
+   "name": "LP4 output [PH2]",
+   "description": "Electric preheater stage 2.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 80,
+   "documented": "80",
+   "name": "DI1 input [BST]",
+   "description": "Boost input.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 81,
+   "documented": "81",
+   "name": "DI2 input [BMS]",
+   "description": "External BMS on/off input.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 82,
+   "documented": "82",
+   "name": "DI3 input [FRE]",
+   "description": "Fire input.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 83,
+   "documented": "83",
+   "name": "DI4 input [HTI]",
+   "description": "Heater failure input.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 84,
+   "documented": "84",
+   "name": "DI5 input [FIL]",
+   "description": "Filter alarm input.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Run"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 100,
+   "documented": "100",
+   "name": "Mode selection",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Standard fan speed",
+    "1": "VOD"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 101,
+   "documented": "101",
+   "name": "Fresh air fan speed stage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Low",
+    "1": "Mid",
+    "2": "High",
+    "3": "Stop"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 102,
+   "documented": "102",
+   "name": "Exhaust air fan speed stage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Low",
+    "1": "Mid",
+    "2": "High",
+    "3": "Stop"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 128,
+   "documented": "128",
+   "name": "Set temperature",
+   "description": "Temperature set point, 18-28 °C, default 22.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Wire RS-485 to the MODBUS connector on the control board, poll address 1 at 9600 8N1 with FC03, and use FC06 to write. Start/stop with ID 1, set fan stages with IDs 101/102 and the set point with ID 128; watch ID 2 for faults.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Unit on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Alarm code"
+   },
+   {
+    "table": "holding_register",
+    "address": 101,
+    "why": "Fresh air fan speed stage"
+   },
+   {
+    "table": "holding_register",
+    "address": 102,
+    "why": "Exhaust air fan speed stage"
+   },
+   {
+    "table": "holding_register",
+    "address": 22,
+    "why": "Supply air temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 20,
+    "why": "Outdoor air temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 21,
+    "why": "Return air temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 128,
+    "why": "Set temperature"
+   }
+  ],
+  "enable": "Modbus is built into the control board. Slave address (ID 153), link speed (ID 154, 0 = 9600) and frame type (ID 155, 0 = N81 RTU) are service-level parameters in the full list.",
+  "watchdog": null,
+  "quirks": [
+   "Only FC03 and FC06 are supported: no FC04, no FC16 multi-register writes.",
+   "IDs are 0-based wire addresses.",
+   "Fan speed stage values run 0 = Low, 1 = Mid, 2 = High, 3 = Stop."
+  ],
+  "setup": [
+   "Defaults: address 1, 9600 baud, no parity, 8 data bits, 1 stop bit.",
+   "Fit a 120 ohm terminating resistor at each end of a long RS-485 line, as the manual advises.",
+   "Avoid duplicate addresses when several units share the bus."
+  ],
+  "gotchas": [
+   "The link to the digital controller panel uses its own Modbus address parameters (IDs 235/236), separate from the BMS slave address (ID 153)."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/airflow-developments/entro-v",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

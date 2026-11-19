@@ -1,0 +1,621 @@
+{
+ "manufacturer": "Intesis (HMS Networks)",
+ "manufacturer_slug": "intesis",
+ "model": "INMBSSAM001R100 Samsung NASA AC to Modbus RTU gateway",
+ "model_slug": "inmbssam001r100",
+ "short_model": "INMBSSAM001R100 Samsung NASA",
+ "aliases": [
+  "INMBSSAM001R100",
+  "Intesis Samsung NASA Modbus"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "Samsung NASA-protocol commercial indoor units on the remote-controller bus, user's manual r1.4 (01/2024).",
+ "summary": "Newer Intesis Modbus RTU server for Samsung NASA commercial units. Holding registers cover on/off, mode, fan (incl. turbo), both vanes, setpoint, external temperature, window contact, filter status and reset, alarm and error code, return-air temperature and selection of which indoor unit on the bus is reported.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 2,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Tables give a 'protocol address' (base 0) and a 'PLC address' (base 1); the protocol address is the wire address and is used for 'documented'."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Intesis INMBSSAM001R100 (Samsung NASA) Modbus RTU (EIA-485) Interface for Samsung air conditioners - User's Manual",
+  "doc_number": "User's Manual r1.4 EN",
+  "revision_date": "2024-01",
+  "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-inmbssam001r100.pdf",
+  "pages": "pp. 8-11 (registers), pp. 12-13 (temperature notes), pp. 14-17 (DIP switches, functions)"
+ },
+ "notes": [
+  "The manual calls every register '16-bit unsigned', but it prints negative temperature ranges (temperature reference -41..38 °C) and the -32768 (0x8000) no-value marker, so temperature registers are mapped as signed INT16 here; all other registers are UINT16.",
+  "Temperatures follow SW4: x1 °C, x10 °C or °F. The register footnote calls x10 the default but the DIP-switch table marks x1 and Celsius as factory setting, so scale 1 / °C is used; with x10 set use 0.1.",
+  "The external temperature written to register 22 is passed to the remote-controller bus; the indoor unit must be set to use the remote-controller sensor for it to take effect.",
+  "FC16 is accepted only with a length of 1 register.",
+  "Error code list not reproduced; see manual section 7."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0",
+   "name": "AC unit On/Off",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1",
+   "name": "AC unit mode",
+   "description": "Available modes depend on the indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Dry",
+    "3": "Fan",
+    "4": "Cool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "AC unit fan speed",
+   "description": "Available speeds depend on the indoor unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Low",
+    "2": "Mid",
+    "3": "High",
+    "4": "Turbo"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "AC unit up/down vane",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Swing off (Auto)",
+    "10": "Swing on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4",
+   "name": "AC unit temperature setpoint",
+   "description": "Cool 18..30 °C, heat 16..30 °C. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": {
+    "-32768": "Initialisation value / no value (0x8000)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "5",
+   "name": "AC unit temperature reference",
+   "description": "-41..38 °C; control temperature. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": {
+    "-32768": "Initialisation value / no value (0x8000)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6",
+   "name": "Window contact",
+   "description": "Virtual window contact written from Modbus.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Closed",
+    "1": "Open"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Gateway disablement",
+   "description": "Non-volatile.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Gateway enabled",
+    "1": "Gateway disabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "8",
+   "name": "AC remote control disablement",
+   "description": "Non-volatile.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Remote controller enabled",
+    "1": "Remote controller disabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "9",
+   "name": "AC unit operation time",
+   "description": "Hours in On state, 0..65535. Non-volatile.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "h",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "10",
+   "name": "AC unit alarm status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No alarm",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "11",
+   "name": "Error code",
+   "description": "Samsung error code; see manual section 7.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "65535": "Gateway cannot talk to the indoor unit (-1)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "13",
+   "name": "Open Window switch-off timeout",
+   "description": "Minutes from window open to unit off, 0..30 (default 30).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "min",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "14",
+   "name": "Modbus RTU baud rate",
+   "description": "Rate set on SW3/SW4 (2400..115200, default 9600).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "15",
+   "name": "Modbus slave address",
+   "description": "Address set on SW3, 1..63.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "22",
+   "name": "External ambient temperature (from Modbus)",
+   "description": "Sent to the RC bus; 0x8000 = none. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": {
+    "-32768": "Initialisation value / no value (0x8000)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "23",
+   "name": "AC real temperature setpoint",
+   "description": "Setpoint used by the unit, 16..31 °C. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 26,
+   "documented": "26",
+   "name": "AC unit left/right vane",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Swing off (Auto)",
+    "10": "Swing on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40,
+   "documented": "40",
+   "name": "Window contact on/off disablement",
+   "description": "Shows whether the window contact is currently blocking on/off.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Not disabling on/off",
+    "1": "Disabling on/off"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 43,
+   "documented": "43",
+   "name": "Filter reset",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Filter reset"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 44,
+   "documented": "44",
+   "name": "Filter status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "OK",
+    "1": "Filter cleaning"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 49,
+   "documented": "49",
+   "name": "Device ID",
+   "description": "Reads 0x2E00.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 50,
+   "documented": "50",
+   "name": "Software version",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 66,
+   "documented": "66",
+   "name": "Return path temperature",
+   "description": "Return-air sensor. SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": {
+    "-32768": "Initialisation value / no value (0x8000)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 67,
+   "documented": "67",
+   "name": "Number of indoor units connected",
+   "description": "Units on the same RC bus.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 68,
+   "documented": "68",
+   "name": "Internal IU address",
+   "description": "Position in the gateway's sorted list of the unit whose status is shown.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 69,
+   "documented": "69",
+   "name": "IU address status reported",
+   "description": "Address of the indoor unit whose status is reported.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 97,
+   "documented": "97",
+   "name": "Block periodic sendings",
+   "description": "Blocked = only changed values are forwarded. Firmware 0.1+.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Non-blocked",
+    "1": "Blocked"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 99,
+   "documented": "99",
+   "name": "Reset / reboot device",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Reset"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Write 0-4 for control and poll 5, 10, 11, 44 and 66. With several indoor units on one RC bus, use 68/69 to see which unit's status is being reported.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "On/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Control temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 11,
+    "why": "Error code"
+   },
+   {
+    "table": "holding_register",
+    "address": 44,
+    "why": "Filter status"
+   }
+  ],
+  "enable": "No enable step; register 7 = 1 disables the gateway.",
+  "watchdog": null,
+  "quirks": [
+   "Temperature scale depends on SW4.",
+   "Temperatures can be negative; read them as signed.",
+   "FC16 only with one register."
+  ],
+  "setup": [
+   "9600 baud 8N2 default (8N1 auto-detected); baud on SW3/SW4.",
+   "Slave address 1..63 on SW3.",
+   "120 ohm terminator on SW4."
+  ],
+  "gotchas": [
+   "The external temperature only drives the unit if the Samsung unit is configured to use the remote-controller sensor."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/intesis/inmbssam001r100",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

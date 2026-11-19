@@ -1,0 +1,55 @@
+﻿# Autonics CT series programmable counter / timer (Modbus RTU) Modbus register map - easymodbus.com - source: https://cdn.automationdirect.com/static/manuals/autonics/autonicscommmanual.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,000001 (0000),00001,Reset,Write ON (FF00) with FC05 to reset.,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",1,000002 (0001),00002,OUT2 output,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",2,000003 (0002),00003,OUT1 output,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",3,000004 (0003),00004,BATCH output,BATCH-output models only.,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",4,000005 (0004),00005,BATCH reset,FC05 FF00 resets the batch counter (BATCH models).,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Discrete input,FC02 read,0,100001 (0000),10001,INA input status,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,1,100002 (0001),10002,INB input status,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,2,100003 (0002),10003,INHIBIT input status,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,3,100004 (0003),10004,RESET input status,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Discrete input,FC02 read,4,100005 (0004),10005,BATCH RESET input status,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Input register,FC04 read,100,300101 (0064),30101,Product number H,"Model ID, high word.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,101,300102 (0065),30102,Product number L,"Model ID, low word.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,102,300103 (0066),30103,Hardware version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,103,300104 (0067),30104,Software version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,104,300105-300108 (0068-006B),30105,Model name,"ASCII model text, e.g. 'CT6M-2PT'.",STRING[8],4,,1,0,,Read,
+Input register,FC04 read,1000,301001 (03E8),31001,LED display status,,BITMAP16,1,,1,0,,Read,bit 5 = BA.O; bit 6 = OUT2; bit 7 = OUT1; bit 10 = BA.S; bit 11 = LOCK; bit 12 = PRESET2; bit 13 = PRESET1; bit 14 = TMR; bit 15 = CNT
+Input register,FC04 read,1001,301002-301003 (03E9-03EA),31002,Present value of BATCH counter,0..999999. BATCH-output models.,UINT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,1003,301004-301005 (03EB-03EC),31004,Present value of counter/timer,Display count; decimal point per register 301006 / 400058.,INT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,1005,301006 (03ED),31006,Display unit,Counter: decimal point code (400058); timer: time range (400102).,UINT16,1,,1,0,,Read,
+Input register,FC04 read,1006,301007-301008 (03EE-03EF),31007,PRESET2 (PRESET) setting value,,INT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,1008,301009-301010 (03F0-03F1),31009,PRESET1 setting value,,INT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,1010,301011-301012 (03F2-03F3),31011,Setting value of BATCH counter,0..999999.,UINT32,2,CDAB,1,0,,Read,
+Input register,FC04 read,1012,301013 (03F4),31013,Checking the input logic,,UINT16,1,,1,0,,Read,0 = NPN; 1 = PNP
+Holding register,"FC03 read / FC06, FC16 write",0,400001-400002 (0000-0001),40001,PRESET2 (PRESET) setting value,Counter 0..999999 (4-digit 0..9999); timer within its range.,UINT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,400003-400004 (0002-0003),40003,PRESET1 setting value,,UINT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,400005-400006 (0004-0005),40005,BATCH counter setting value,0..999999.,UINT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50,400051 (0032),40051,Counter/Timer [C-T],,UINT16,1,,1,0,,Read/write,0 = COUN (counter); 1 = TIME (timer)
+Holding register,"FC03 read / FC06, FC16 write",51,400052 (0033),40052,Input mode [IN],,UINT16,1,,1,0,,Read/write,0 = UP; 1 = UP-1; 2 = UP-2; 3 = DN; 4 = DN-1; 5 = DN-2; 6 = UD-A; 7 = UD-B; 8 = UD-C
+Holding register,"FC03 read / FC06, FC16 write",52,400053 (0034),40053,Indication mode [DIsM],Indicator models.,UINT16,1,,1,0,,Read/write,0 = TOTAL; 1 = HOLD
+Holding register,"FC03 read / FC06, FC16 write",53,400054 (0035),40054,Output mode [OUtM],,UINT16,1,,1,0,,Read/write,0 = F; 1 = N; 2 = C; 3 = R; 4 = K; 5 = P; 6 = Q; 7 = A; 8 = S; 9 = T; 10 = D
+Holding register,"FC03 read / FC06, FC16 write",54,400055 (0036),40055,Max. counting speed [CPS],,UINT16,1,,1,0,,Read/write,0 = 1 cps; 1 = 30 cps; 2 = 1K cps; 3 = 5K cps; 4 = 10K cps
+Holding register,"FC03 read / FC06, FC16 write",55,400056 (0037),40056,OUT2 (OUT) output time,Raw 1..99 in 10 ms steps.,UINT16,1,,10,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",56,400057 (0038),40057,OUT1 output time,Raw 1..99 in 10 ms steps.,UINT16,1,,10,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57,400058 (0039),40058,Decimal point [DP],"0 = none, 1..5 = 1..5 decimals (6-digit; 4-digit 0..3).",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",58,400059 (003A),40059,Min. reset time [RST],,UINT16,1,,1,0,,Read/write,0 = 1 ms; 1 = 20 ms
+Holding register,"FC03 read / FC06, FC16 write",64,400065 (0040),40065,Memory protection [DATA] (counter),,UINT16,1,,1,0,,Read/write,0 = CLR; 1 = REC
+Holding register,"FC03 read / FC06, FC16 write",65,400066 (0041),40066,Lock key [LOCK] (counter),,UINT16,1,,1,0,,Read/write,0 = LOFF; 1 = LOC1; 2 = LOC2; 3 = LOC3
+Holding register,"FC03 read / FC06, FC16 write",100,400101 (0064),40101,Count/Timer [C-T] (timer group),,UINT16,1,,1,0,,Read/write,0 = COUN; 1 = TIME
+Holding register,"FC03 read / FC06, FC16 write",101,400102 (0065),40102,Time range [HOUR/MIN/SEC],Range code; tables differ for 4- and 6-digit models.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",102,400103 (0066),40103,Up/Down mode [U-D],,UINT16,1,,1,0,,Read/write,0 = UP; 1 = DN
+Holding register,"FC03 read / FC06, FC16 write",103,400104 (0067),40104,Timer output mode [OUTM],,UINT16,1,,1,0,,Read/write,0 = OND; 1 = ONd1; 2 = ONd2; 3 = FLK; 4 = FLk1; 5 = FLk2; 6 = INT; 7 = INt1; 8 = INt2; 9 = OFD; 10 = NFD; 11 = NFd1; 12 = INTG
+Holding register,"FC03 read / FC06, FC16 write",104,400105 (0068),40105,Timer OUT2 (OUT) output time,Raw 1..99 x 10 ms; 0 = HOLD.,UINT16,1,,10,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",105,400106 (0069),40106,Timer OUT1 output time,Raw 1..99 x 10 ms; 0 = HOLD.,UINT16,1,,10,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",106,400107 (006A),40107,Input signal time [INT],,UINT16,1,,1,0,,Read/write,0 = 1 ms; 1 = 20 ms
+Holding register,"FC03 read / FC06, FC16 write",107,400108 (006B),40108,Memory protection [DATA] (timer),,UINT16,1,,1,0,,Read/write,0 = CLR; 1 = REC
+Holding register,"FC03 read / FC06, FC16 write",108,400109 (006C),40109,Lock key [LOCK] (timer),,UINT16,1,,1,0,,Read/write,0 = LOFF; 1 = LOC1; 2 = LOC2; 3 = LOC3
+Holding register,"FC03 read / FC06, FC16 write",109,400110 (006D),40110,Indication mode [DSpM] (timer),,UINT16,1,,1,0,,Read/write,0 = TOTAL; 1 = HOLD; 2 = ONtD
+Holding register,"FC03 read / FC06, FC16 write",150,400151 (0096),40151,Comm. address [ADDR],1..127.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",151,400152 (0097),40152,Comm. speed [BPS],,UINT16,1,,1,0,,Read/write,0 = 2400 bps; 1 = 4800 bps; 2 = 9600 bps; 3 = 19200 bps; 4 = 38400 bps
+Holding register,"FC03 read / FC06, FC16 write",152,400153 (0098),40153,Comm. parity bit [PRTY],,UINT16,1,,1,0,,Read/write,0 = None; 1 = Even; 2 = Odd
+Holding register,"FC03 read / FC06, FC16 write",153,400154 (0099),40154,Comm. stop bit [STP],,UINT16,1,,1,0,,Read/write,0 = 1; 1 = 2
+Holding register,"FC03 read / FC06, FC16 write",154,400155 (009A),40155,Response waiting time [RSwT],5..99 ms.,UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",155,400156 (009B),40156,Comm. writing [COmW],,UINT16,1,,1,0,,Read/write,0 = Enabled; 1 = Disabled

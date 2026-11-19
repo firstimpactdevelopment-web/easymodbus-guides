@@ -1,0 +1,26 @@
+﻿# Lenze MCH Series HVAC drive (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.precision-elec.com/wp-content/uploads/2014/08/lenze-ac-tech-mch-series-modbus-communications-reference.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",1,#1 (4X 40002),40002,Drive control,"One bit per write: 0004h stop, 0008h start, 0200h serial select, 0002h lock.",BITMAP16,1,,1,0,,Write,bit 0 = Update buffers; bit 1 = Lock security; bit 2 = Stop drive; bit 3 = Start drive; bit 8 = Clear serial select flag; bit 9 = Set serial select flag
+Holding register,"FC03 read / FC06, FC16 write",19,#19 (4X 40020),40020,Drive family,Reads 68 (44h) for MCH.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",21,#21 (4X 40022),40022,Drive size code,HP / voltage code (table 9 of the guide).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",26,#26 (4X 40027),40027,Load (high byte) / operational status (low byte),"High byte = % of full load. Low byte = status code, see notes.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,#27 (4X 40028),40028,Actual direction (high) / control mode (low),"High: 0 fwd, 1 rev. Low: 0 off, 1 hand, 2 auto, 3 serial.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",28,#28 (4X 40029),40029,Speed source (high) / auto-hand (low),"High: speed source code (notes). Low: 0 hand, 1 auto.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,#29 (4X 40030),40030,Present fault (high) / commanded direction (low),"High byte = fault code (notes). Low: 0 fwd, 1 rev.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,#30 (4X 40031),40031,Motor voltage,"Effective output voltage to the motor, 0-999 V.",UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",32,#32 (4X 40033),40033,"Kilowatt hours, low word",Read separately; total kWh = #33 x 65536 + #32.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",33,#33 (4X 40034),40034,"Kilowatt hours, high word",Read separately; total kWh = #33 x 65536 + #32.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",36,#36 (4X 40037),40037,"Total run time, hours",,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",37,#37 (4X 40038),40038,"Total run time, minutes",,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",38,#38 (4X 40039),40039,PID setpoint,Internal units 0-32736 over the feedback device range.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",39,#39 (4X 40040),40040,PID feedback,Internal units 0-32736 over the feedback device range.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",40,#40 (4X 40041),40041,Keypad speed command,0-65000; writable after unlocking control.,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41,#41 (4X 40042),40042,Local PID command,Internal units 0-32736.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",42,#42 (4X 40043),40043,Serial speed command,Followed when the serial select flag is set.,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43,#43 (4X 40044),40044,Serial PID command,Internal units 0-32736.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",48,#48 (4X 40049),40049,Unlock commands,0 unlocks control; the password (default 19) also unlocks parameters.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",49,#49 (4X 40050),40050,Unlock parameters,Password unlocks parameter writes only.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",50,#50 (4X 40051),40051,Register version,Parameter configuration number; 148 for software 213-070 rev 00.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",81,#81 (4X 40082),40082,P30 control,,UINT16,1,,1,0,,Read/write,0 = Normal (default); 1 = Norm no hand; 2 = Serial speed; 3 = S spd / no hand; 4 = Serial auto; 5 = S auto / no hand
+Holding register,"FC03 read / FC06, FC16 write",108,#108 (4X 40109),40109,P57 serial link,,UINT16,1,,1,0,,Read/write,0 = Disable (default); 1 = With timer; 2 = Without timer
+Holding register,"FC03 read / FC06, FC16 write",109,#109 (4X 40110),40110,P58 serial address,1-247 (default 30). Must be set before using the serial link.,UINT16,1,,1,0,,Read/write,

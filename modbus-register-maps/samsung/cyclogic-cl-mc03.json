@@ -1,0 +1,286 @@
+{
+ "manufacturer": "Samsung",
+ "manufacturer_slug": "samsung",
+ "model": "CycloGic CL-MC03 Modbus interface module (Samsung DVM / CAC / RAC)",
+ "model_slug": "cyclogic-cl-mc03",
+ "short_model": "CL-MC03",
+ "aliases": [
+  "CL-MC0301C",
+  "CL-MC0308C",
+  "CL-MC0316C",
+  "CL-MC0332C",
+  "CL-MC0364C",
+  "CycloGic Modbus Interface Module"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "CycloGic CL-MC03*** series Modbus interface modules (1 to 64 indoor units) for Samsung DVM, CAC, FJM and RAC units, instruction manual Rev. 2 (Oct. 2017).",
+ "summary": "The CL-MC03 series is a CycloGic-made Modbus RTU interface that connects to the F1/F2 network of Samsung DVM, CAC, FJM or RAC indoor units and controls up to 64 of them. Each indoor unit has a 20-register block. This map covers the block for indoor unit 0: on/off, mode, set and room temperature, fan speed, louver swing and the duct-unit supply-air setpoints.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 19200,
+  "parity": "Even",
+  "data_bits": null,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The manual uses Modicon numbers: 40001-40014 for indoor unit 00, plus 20 per indoor unit (unit 01 = 40021, unit 63 = 41261). Subtract 40001 for the wire address: unit N, register 4000k is address 20*N + k - 1."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "CL-MC03*** Series Modbus Interface Module Instruction Manual",
+  "doc_number": "Document Rev. 2",
+  "revision_date": "2017-10",
+  "url": "https://cdn.komachine.com/media/product-catalog/Manual-CYCLOGIC-Modbus_Interface_Module.pdf",
+  "unofficial": true,
+  "pages": "DIP switches p. 4; rotary address p. 5; Modbus configuration and functions p. 7; readback data p. 8; control data p. 9"
+ },
+ "notes": [
+  "Source host: an unaltered copy of the CycloGic manual on a product-catalogue site; we did not find a public copy on CycloGic's or Samsung's sites.",
+  "Only FC 03 (read) and FC 06 (write single register) are supported; all values are 16-bit.",
+  "Writes to 40001 and 40009 carry two one-byte fields (on/off + mode, fan speed + louver swing). The manual does not say which byte holds which field, so those writes are not mapped; the registers are listed for reading.",
+  "Temperatures are value / 10; the manual does not state whether they are signed.",
+  "Registers 40003-40004 and 40007-40008 are not described in the manual."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "IDU on/off status",
+   "description": "Read value. Writes to this register use a packed on/off + mode format (see notes).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "IDU operation mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Auto",
+    "1": "Cooling",
+    "2": "Dry (dehumidification)",
+    "3": "Fan",
+    "4": "Heat",
+    "11": "Auto cool",
+    "12": "Auto dry",
+    "13": "Auto fan",
+    "14": "Auto heat"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40005",
+   "name": "Set temperature",
+   "description": "Value / 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40006",
+   "name": "Room temperature",
+   "description": "Value / 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40009",
+   "name": "IDU fan speed",
+   "description": "Read value. Writes use a packed fan speed + louver format (see notes).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Automatic",
+    "1": "Low",
+    "2": "Middle",
+    "3": "High",
+    "4": "Turbo"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "40010",
+   "name": "Deco panel louver swing",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Swing off",
+    "1": "Swing on: upper and lower louver",
+    "2": "Swing on: right and left louver",
+    "3": "Swing on: upper/lower and right/left louver"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "40011",
+   "name": "Supply air (discharge) temperature",
+   "description": "Duct units only; value / 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "40012",
+   "name": "Supply air temperature control",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable",
+    "1": "Enable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "40013",
+   "name": "Cooling supply air set temperature",
+   "description": "Duct units only; value / 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "40014",
+   "name": "Heating supply air set temperature",
+   "description": "Duct units only; value / 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set DIP SW2 for the Samsung product type, set the Modbus address on the two rotary switches, then poll FC 03 from address 20*N for indoor unit N. Change the set temperature with FC 06 at 20*N + 4.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Unit 0 on/off status"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Unit 0 operation mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Unit 0 set temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Unit 0 room temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 8,
+    "why": "Unit 0 fan speed"
+   }
+  ],
+  "enable": "DIP SW2 OFF for DVM/CAC (AM/AC models), ON for RAC/FJM (AR/AJ models); DIP SW1 must stay ON (firmware download disabled) in normal use. The slave address is set with RSW1 (tens) and RSW2 (ones).",
+  "watchdog": null,
+  "quirks": [
+   "Modicon numbering, 20 registers per indoor unit.",
+   "Temperatures are tenths of a degree."
+  ],
+  "setup": [
+   "19200 bps, even parity, 1 stop bit; Modbus line up to 500 m.",
+   "12 V DC supply from the indoor unit V1/V2 terminals; F1/F2 to the Samsung network."
+  ],
+  "gotchas": [
+   "DIP SW2 must match the Samsung product family: OFF for DVM/CAC, ON for RAC/FJM.",
+   "The module's dry-contact input forces units on/off and its DO closes on an error."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/samsung/cyclogic-cl-mc03",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

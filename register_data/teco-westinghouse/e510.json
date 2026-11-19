@@ -1,0 +1,333 @@
+{
+  "manufacturer": "TECO-Westinghouse",
+  "manufacturer_slug": "teco-westinghouse",
+  "model": "E510 inverter (Modbus RTU/ASCII)",
+  "model_slug": "e510",
+  "short_model": "E510",
+  "aliases": [
+    "TECO E510",
+    "E510 Communication Addendum"
+  ],
+  "equipment_type": "Variable frequency drive",
+  "applies_to": "TECO-Westinghouse E510 inverters using the built-in RS-485 port (CON2), per communication addendum DOCUMENT-TECO-E510-AC001 Ver01 (2015-03).",
+  "summary": "The E510 is TECO-Westinghouse's compact general-purpose inverter with a built-in RS-485 port speaking Modbus RTU or ASCII. Run/stop and frequency are written to hex registers 2501H/2502H, status and monitors are read from 2520H-252DH, and each parameter nn-mm has its own register (group in the high byte, number in the low byte). This map covers the command and monitor tables.",
+  "transport": [
+    "RTU",
+    "ASCII"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "Register numbers are hex and are sent unchanged: the 06H example writes start register 01 02 (0102H) and the 03H example reads 01 23 (0123H). Parameters map as group in the high byte and number in the low byte, e.g. 00-10 = 000AH, 01-12 = 010CH, 11-17 = 0B11H."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "E510 Communication Addendum Modbus RTU/ASCII",
+    "doc_number": "DOCUMENT-TECO-E510-AC001 Ver01",
+    "revision_date": "2015-03",
+    "url": "https://tecowestinghouse.com/PDF/E510_comm_addendum.pdf",
+    "pages": "pp. 1-1 to 1-4 (connection, frames, exceptions), p. 1-5 (command data), pp. 1-6 to 1-7 (monitor data), pp. 1-8 and 1-10 (examples), pp. 1-13 to 1-18 (parameter registers), p. A-1 (network)"
+  },
+  "notes": [
+    "The addendum does not name the drive parameters for node address, baud rate, parity or remote run/frequency source; set those per the E510 instruction manual.",
+    "2502H frequency command has no scale in the command table; the 06H example writes 1770H (6000) for 60.00 Hz but to register 0102H, not 2502H, so 2502H is left unscaled (read-back 2523H uses 100 = 1 Hz).",
+    "2521H is listed as a code table (0-40), not bit flags, so it is mapped as an enum.",
+    "Left out: 2529H output torque (no unit), 252BH PID input (sign not stated), 252CH/252DH AVI/ACI inputs (footnote *1 not explained).",
+    "The parameter register rule (group high byte, number low byte in hex) is described in the notes and not expanded into individual registers; Group 14-15 PLC registers are in a separate E510 PLC section."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 9473,
+      "documented": "2501H",
+      "name": "Operation signal",
+      "description": "Run/stop, direction, external fault, reset, comm inputs S1-S6, relays.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Run (0 stop)",
+        "1": "Reverse (0 forward)",
+        "2": "External fault",
+        "3": "Fault reset",
+        "6": "Comm input S1",
+        "7": "Comm input S2",
+        "8": "Comm input S3",
+        "9": "Comm input S4",
+        "10": "Comm input S5",
+        "11": "Comm input S6",
+        "12": "Relay R1 on",
+        "13": "Relay R2 on"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 9474,
+      "documented": "2502H",
+      "name": "Frequency command",
+      "description": "Scale not printed in the command table.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9504,
+      "documented": "2520H",
+      "name": "State signal",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Running (0 stopped)",
+        "1": "Reverse (0 forward)",
+        "2": "Inverter ready",
+        "3": "Fault",
+        "4": "Data setting error"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 9505,
+      "documented": "2521H",
+      "name": "Error description",
+      "description": "Active error code.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "OH",
+        "2": "OC",
+        "3": "LV",
+        "4": "OV",
+        "6": "External BB (bb)",
+        "7": "CTER",
+        "8": "PDER",
+        "9": "EPR",
+        "10": "ATER",
+        "11": "OL3",
+        "12": "OL2",
+        "13": "OL1",
+        "14": "EFO",
+        "15": "External bb (E.S.)",
+        "16": "LOC",
+        "18": "OC-C",
+        "19": "OC-A",
+        "20": "OC-D",
+        "21": "OC-S",
+        "23": "LV-C",
+        "24": "OV-C",
+        "25": "OH-C",
+        "26": "STP0",
+        "27": "STP1",
+        "28": "STP2",
+        "29": "Err1",
+        "30": "Err2",
+        "31": "Err4",
+        "32": "Err5",
+        "33": "Err6",
+        "34": "Err7",
+        "35": "Err8",
+        "38": "EPR1",
+        "39": "EPR2",
+        "40": "OVSP"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9506,
+      "documented": "2522H",
+      "name": "DI state",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Comm S1 on",
+        "1": "Comm S2 on",
+        "2": "Comm S3 on",
+        "3": "Comm S4 on",
+        "4": "Comm S5 on",
+        "5": "Comm S6 on",
+        "6": "Relay R1 on",
+        "7": "Relay R2 on"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 9507,
+      "documented": "2523H",
+      "name": "Frequency command",
+      "description": "100 = 1 Hz.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "Hz",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9508,
+      "documented": "2524H",
+      "name": "Output frequency",
+      "description": "100 = 1 Hz.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "Hz",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9509,
+      "documented": "2525H",
+      "name": "Output voltage",
+      "description": "10 = 1 V.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9510,
+      "documented": "2526H",
+      "name": "DC voltage",
+      "description": "1 = 1 V.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9511,
+      "documented": "2527H",
+      "name": "Output current",
+      "description": "10 = 1 A.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9514,
+      "documented": "252AH",
+      "name": "PID feedback",
+      "description": "10 = 1 %, 100 % = fmax.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Configure the drive's RS-485 node address and serial settings, select communication as the run and frequency source in the E510 parameters, then write 2501H (run bits) and 2502H (frequency) and poll 2520H-2527H.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 9473,
+        "why": "Run/stop, direction, reset"
+      },
+      {
+        "table": "holding_register",
+        "address": 9474,
+        "why": "Frequency command"
+      },
+      {
+        "table": "holding_register",
+        "address": 9504,
+        "why": "Run/ready/fault status"
+      },
+      {
+        "table": "holding_register",
+        "address": 9505,
+        "why": "Error code"
+      },
+      {
+        "table": "holding_register",
+        "address": 9508,
+        "why": "Output frequency"
+      },
+      {
+        "table": "holding_register",
+        "address": 9511,
+        "why": "Output current"
+      }
+    ],
+    "enable": "Set the node address and communication parameters at the keypad (parameter numbers are in the E510 manual, not this addendum) and select RS-485 communication as the run and frequency command source.",
+    "watchdog": null,
+    "quirks": [
+      "Registers are hex: 2520H is sent as 25 20.",
+      "Functions 03H, 06H, 08H and 10H; maximum frame 80 bytes.",
+      "Node addresses 01H-FEH; 00H is broadcast.",
+      "Write 0 to unused bits and never write reserved registers."
+    ],
+    "setup": [
+      "RS-485 on CON2 (RJ45): pin 1 or 3 = S+, pin 2 or 6 = S-.",
+      "Up to 31 inverters per network (Appendix A).",
+      "The addendum asks for 120 ohm terminators on p. 1-1 but 220 ohm in Appendix A; check the drive manual."
+    ],
+    "gotchas": [
+      "Exception codes: 01 function, 02 register number, 03 number, 04 data setting, 05 write mode error.",
+      "Inverter response time is about 10 ms."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

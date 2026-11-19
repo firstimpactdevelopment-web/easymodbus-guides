@@ -1,0 +1,71 @@
+﻿# Woodward DSLC-2 Digital Synchronizer and Load Control Modbus register map - easymodbus.com - source: https://www.woodward.com/products/wp-content/uploads/sites/3/2024/08/37443_J.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",7640,7640 (47641),47641,Interface power factor setpoint,-500 (capacitive) to 1000 to 500 (inductive); used when 7635 = Interface.,INT16,1,,0.001,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7641,7641 (47642),47642,Interface frequency setpoint,0-7000; used when parameter 7783 = Interface.,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7642,7642 (47643),47643,Interface active power setpoint (base load),Positive only; used when 7634 = Interface. Manual example: 1000 kW = 1000.,INT32,2,ABCD,1,0,kW,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7644,7644 (47645),47645,Discrete inputs over interface,"Bit field (bits 01-16, see notes) switching functions released by 7645.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7645,7645 (47646),47646,Release discrete inputs to interface,"Same bit list as 7644; 1 = interface controlled, 0 = hardware input.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7780,7780 (47781),47781,Interface voltage setpoint,50-650000 V; used when 7784 = Interface.,UINT32,2,ABCD,1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50000,50000,450001,Protocol ID,Reads 5200.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",50010,50010,450011,Generator frequency,,INT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",50013,50013,450014,Generator power factor,,INT16,1,,0.001,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",50023,50023,450024,Busbar frequency,,INT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",50025,50025,450026,Auxiliary busbar frequency,,INT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",50032,50032,450033,Phase Angle Generator / Busbar,,INT16,1,,0.1,0,°,Read,
+Holding register,"FC03 read / FC06, FC16 write",50033,50033,450034,Active Setpoint generator frequency,,INT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",50034,50034,450035,Active Setpoint generator voltage,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",50035,50035,450036,Active Setpoint generator load level,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",50036,50036,450037,Active Setpoint generator reactive power,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",50044,50044,450045,Battery voltage,,INT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50048,50048,450049,Speed Biasing (AO1),,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",50049,50049,450050,AVR Biasing (AO2),,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",50056,50056,450057,Sync Control State,,INT16,1,,1,0,,Read,0 = Off; 1 = Check mode active; 2 = Permissive mode active; 3 = Run mode active; 4 = Close Timer runs; 5 = Sync Timer runs; 6 = Breaker synchronized; 7 = Auto-Off position; 8 = Manual
+Holding register,"FC03 read / FC06, FC16 write",50057,50057,450058,Load Control Mode,,INT16,1,,1,0,,Read,0 = Inactive; 1 = Droop; 2 = At Unload Trip; 3 = Load sharing; 4 = Base load control; 5 = reserved; 6 = Process control; 7 = reserved; 8 = Peak load control (reserved); 9 = Zero power control (reserved); 10 = Load share (reserved); 11 = Process slave (reserved)
+Holding register,"FC03 read / FC06, FC16 write",50058,50058,450059,Reactive Load Control Mode,,INT16,1,,1,0,,Read,0 = Inactive; 1 = Off; 2 = Droop; 3 = VAR sharing; 4 = Reactive load control; 5 = reserved; 6 = reserved; 7 = Remote process control (reserved); 8 = (reserved); 9 = Zero power control (reserved); 10 = Reactive load share (reserved); 11 = Process slave (reserved)
+Holding register,"FC03 read / FC06, FC16 write",50059,50059,450060,Condition Flags 1,,BITMAP16,1,,1,0,,Read,bit 1 = Generator clock wise system is recognized; bit 2 = Generator counter clock wise system is recognized; bit 4 = Busbar is dead (in same segment); bit 5 = Aux. Busbar clock wise system is recognized; bit 6 = Aux. Busbar anti clock wise system is recognized; bit 10 = Busbar is ok (in same segment); bit 12 = Generator breaker is closed; bit 13 = Generator is OK; bit 15 = Generator is Dead
+Holding register,"FC03 read / FC06, FC16 write",50060,50060,450061,Condition Flags 2,,BITMAP16,1,,1,0,,Read,bit 8 = Reactive power load share is active; bit 9 = Active power load share is active; bit 10 = Dead busbar closure request active
+Holding register,"FC03 read / FC06, FC16 write",50061,50061,450062,Condition Flags 3,,BITMAP16,1,,1,0,,Read,bit 2 = Unloading generator is active; bit 6 = Closing GCB is active; bit 7 = Opening GCB is active; bit 8 = Synchronization GCB is active; bit 11 = GCB is closed; bit 12 = 3-Position Controller Volt./ReactPow lower; bit 13 = 3-Position Controller Volt./ReactPow raise
+Holding register,"FC03 read / FC06, FC16 write",50067,50067,450068,Interface Control Switch,,BITMAP16,1,,1,0,,Read,bit 0 = Source: Synchronization GCB check switch; bit 1 = Source: Synchronization GCB permissive switch; bit 2 = Source: Synchronization GCB run switch; bit 3 = Source: CB Aux contact switch; bit 4 = Source: Raise voltage switch; bit 5 = Source: Lower voltage switch; bit 6 = Source: Base load switch; bit 7 = Source: Load/ Unload switch; bit 8 = Source: Ramp pause switch; bit 9 = Source: Raise load switch; bit 10 = Source: Lower load switch; bit 11 = Source: Process switch; bit 12 = Source: Droop switch; bit 13 = Source: Modbus reset switch; bit 14 = Source: System update switch
+Holding register,"FC03 read / FC06, FC16 write",50071,50071,450072,Relay Outputs 1,,BITMAP16,1,,1,0,,Read,bit 0 = Alarm Relay (R1); bit 1 = Load Switch Relay (R2); bit 2 = High Limit Relay (R3); bit 3 = Low Limit Relay (R4); bit 4 = Breaker Open Relay (R5); bit 5 = Breaker Close Relay (R6); bit 6 = Centralized Alarm (R7); bit 7 = Alarm 1 (R8)/3 pos.Controller f/act. Pwr raise; bit 8 = Alarm 2 (R9)/3 pos.Controller f/act. Pwr lower; bit 9 = Alarm 3 (R10); bit 10 = Voltage Raise Relay (R11); bit 11 = Voltage Lower Relay (R12)
+Holding register,"FC03 read / FC06, FC16 write",50075,50075,450076,Alarms 1,,BITMAP16,1,,1,0,,Read,bit 0 = Synchronizer Timeout; bit 1 = GCB Close Failure; bit 2 = High Load Limit; bit 3 = Low Load Limit; bit 4 = High Process Limit; bit 5 = Low Process Limit; bit 6 = Low Voltage Limit; bit 7 = High Voltage Limit; bit 8 = Voltage Range Limit; bit 9 = Communication Error NW A; bit 10 = Low Frequency Limit; bit 11 = Missing member; bit 12 = Centralized Alarms; bit 13 = GCB Open Failure; bit 14 = Deadbus closure mismatch; bit 15 = High Frequency Limit
+Holding register,"FC03 read / FC06, FC16 write",50081,50081,450082,Discrete Inputs 1,,BITMAP16,1,,1,0,,Read,bit 0 = Synchronization Check switch is active (DI1); bit 1 = Synchronization Permissive switch is active (DI2); bit 2 = Synchronization Run switch is active (DI3); bit 3 = Circuit Breaker Aux. is closed (DI4); bit 4 = Voltage Raise Switch (DI5); bit 5 = Voltage Lower Switch (DI6); bit 6 = Base Load Control Switch (DI7); bit 7 = Load/Unload Switch (DI8) (Energized=Load); bit 8 = Ramp Pause Switch (DI9); bit 9 = Load Raise Switch (DI10); bit 10 = Load Lower Switch (DI11); bit 11 = Process Control Switch (DI12)
+Holding register,"FC03 read / FC06, FC16 write",50082,50082,450083,Digital Inputs 2,,BITMAP16,1,,1,0,,Read,bit 0 = Segment connection 12 is closed (DI13); bit 1 = Segment connection 23 is closed (DI14); bit 2 = Segment connection 34 is closed (DI15); bit 3 = Segment connection 45 is closed (DI16); bit 4 = Segment connection 56 is closed (DI17); bit 5 = Segment connection 67 is closed (DI18); bit 6 = Segment connection 78 is closed (DI19); bit 7 = Segment connection 81 is closed (DI20); bit 8 = Droop (DI21); bit 9 = Modbus reset (DI22); bit 10 = System update (DI23)
+Holding register,"FC03 read / FC06, FC16 write",50083,50083,450084,Alarms 5,,BITMAP16,1,,1,0,,Read,bit 0 = Busbar mismatch; bit 1 = Phase rotation mismatch; bit 2 = Communication Error NW B; bit 3 = Network A Error; bit 4 = Network B Error; bit 5 = Devices not matched
+Holding register,"FC03 read / FC06, FC16 write",50100,50100,450101,Total generator power,,INT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",50102,50102,450103,Total generator reactive power,,INT32,2,ABCD,1,0,var,Read,
+Holding register,"FC03 read / FC06, FC16 write",50104,50104,450105,Total generator apparent power,,INT32,2,ABCD,1,0,VA,Read,
+Holding register,"FC03 read / FC06, FC16 write",50106,50106,450107,Average generator Wye-Voltage,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50108,50108,450109,Average generator Delta-Voltage,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50110,50110,450111,Average Busbar 1 Delta-Voltage,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50112,50112,450113,Average generator Current,,INT32,2,ABCD,0.001,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",50114,50114,450115,Generator current 1,,INT32,2,ABCD,0.001,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",50116,50116,450117,Generator current 2,,INT32,2,ABCD,0.001,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",50118,50118,450119,Generator current 3,,INT32,2,ABCD,0.001,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",50120,50120,450121,Generator voltage L1-L2,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50122,50122,450123,Generator voltage L2-L3,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50124,50124,450125,Generator voltage L3-L1,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50126,50126,450127,Generator voltage L1-N,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50128,50128,450129,Generator voltage L2-N,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50130,50130,450131,Generator voltage L3-N,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50132,50132,450133,Generator active power 1-N,,INT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",50134,50134,450135,Generator active power 2-N,,INT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",50136,50136,450137,Generator active power 3-N,,INT32,2,ABCD,1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",50138,50138,450139,Busbar voltage (L1-N) L1-L2,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50140,50140,450141,Average Aux.busbar Wye-Voltage,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50142,50142,450143,Average Aux.busbar Delta-Voltage,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50144,50144,450145,Aux.busbar voltage L1-L2,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50146,50146,450147,Aux.busbar voltage L2-L3,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50148,50148,450149,Aux.busbar voltage L3-L1,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50150,50150,450151,Aux.busbar voltage L1-N,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50152,50152,450153,Aux.busbar voltage L2-N,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50154,50154,450155,Aux.busbar voltage L3-N,,INT32,2,ABCD,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",50160,50160,450161,Load reference,,INT32,2,ABCD,0.1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",50162,50162,450163,Reactive load reference,,INT32,2,ABCD,0.1,0,kvar,Read,
+Holding register,"FC03 read / FC06, FC16 write",50164,50164,450165,Process reference input,,INT32,2,ABCD,0.1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",50166,50166,450167,Process signal input,,INT32,2,ABCD,0.1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",50168,50168,450169,Process reference toolkit,,INT32,2,ABCD,0.1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",50170,50170,450171,Remote load reference input,,INT32,2,ABCD,0.1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",50174,50174,450175,Gen.pos.act.energy,,INT32,2,ABCD,0.01,0,MWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",50178,50178,450179,Gen.pos.react.energy,,INT32,2,ABCD,0.01,0,Mvarh,Read,
+Holding register,"FC03 read / FC06, FC16 write",50180,50180,450181,Gen.neg.react.energy,,INT32,2,ABCD,0.01,0,Mvarh,Read,
+Holding register,"FC03 read / FC06, FC16 write",50182,50182,450183,Hours of operation,,INT32,2,ABCD,0.01,0,h,Read,

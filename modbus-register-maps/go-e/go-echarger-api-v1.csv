@@ -1,0 +1,26 @@
+﻿# go-e go-eCharger (Modbus TCP API v1) Modbus register map - easymodbus.com - source: https://raw.githubusercontent.com/goecharger/go-eCharger-API-v1/master/go-eCharger%20Modbus%20TCP%20API%20v1%20EN.md
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,100,100,30101,CAR_STATE,Charging state as seen on the PWM pilot.,UINT16,1,,1,0,,Read,"0 = Unknown / charging station defective; 1 = Ready, no car; 2 = Car is charging; 3 = Waiting for car; 4 = Charging finished, car still connected"
+Input register,FC04 read,101,101,30102,PP_CABLE,"Type 2 cable current coding: 13-32 A, 0 = no cable.",UINT16,1,,1,0,A,Read,
+Input register,FC04 read,107,107,30108,ERROR,Error code.,UINT16,1,,1,0,,Read,"1 = RCCB (residual current breaker); 3 = Phase disturbance; 8 = No ground detected; 10 = Internal (others, default)"
+Input register,FC04 read,202,202,30203,ADAPTER_INPUT,Adapter fitted to the charger.,UINT16,1,,1,0,,Read,0 = No adapter; 1 = 16 A adapter
+Input register,FC04 read,203,203,30204,UNLOCKED_BY,Number of the RFID card that started this charge.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,205,205,30206,PHASES,Phase presence before/after the contactor.,BITMAP16,1,,1,0,,Read,bit 0 = Phase 1 after contactor; bit 1 = Phase 2 after contactor; bit 2 = Phase 3 after contactor; bit 3 = Phase 1 before contactor; bit 4 = Phase 2 before contactor; bit 5 = Phase 3 before contactor
+Holding register,"FC03 read / FC06, FC16 write",200,200,40201,ALLOW,Whether the PWM charging signal is allowed.,UINT16,1,,1,0,,Read/write,0 = No; 1 = Yes
+Holding register,"FC03 read / FC06, FC16 write",201,201,40202,ACCESS_STATE,Access control mode.,UINT16,1,,1,0,,Read/write,0 = Open; 1 = RFID / app needed; 2 = Electricity price / automatic; 3 = Scheduler
+Holding register,"FC03 read / FC06, FC16 write",204,204,40205,CABLE_LOCK_MODE,,UINT16,1,,1,0,,Read/write,0 = Lock while car is connected; 1 = Unlock automatically after charging; 2 = Always locked
+Holding register,"FC03 read / FC06, FC16 write",206,206,40207,LED_BRIGHTNESS,"0 = off, 255 = maximum.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",207,207,40208,LED_SAVE_ENERGY,LEDs switch off automatically after 10 s when on.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",208,208,40209,ELECTRICITY_PRICES_HOURS,Minimum hours to charge in electricity-price mode.,UINT16,1,,1,0,h,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",209,209,40210,ELECTRICITY_PRICES_FINISHED,Hour of day by which price-mode charging must be done.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",210,210,40211,ELECTRICITY_PRICES_ZONE,aWATTar price zone.,UINT16,1,,1,0,,Read/write,0 = Austria; 1 = Germany
+Holding register,"FC03 read / FC06, FC16 write",211,211,40212,AMPERE_MAX,Upper limit for the current setting.,UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",212,212,40213,AMPERE_L1,"Push-button current level 1: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",213,213,40214,AMPERE_L2,"Push-button current level 2: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",214,214,40215,AMPERE_L3,"Push-button current level 3: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",215,215,40216,AMPERE_L4,"Push-button current level 4: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",216,216,40217,AMPERE_L5,"Push-button current level 5: 6-32 A, 0 = skipped.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",217,217,40218,CLOUD_DISABLED,,UINT16,1,,1,0,,Read/write,0 = Cloud enabled; 1 = Cloud disabled
+Holding register,"FC03 read / FC06, FC16 write",218,218,40219,NORWAY_MODE,Disables ground detection; for IT networks only.,UINT16,1,,1,0,,Read/write,0 = Off (ground detection on); 1 = On (no ground detection)
+Holding register,"FC03 read / FC06, FC16 write",299,299,40300,AMPERE_VOLATILE,"Charge current 6-32 A, not saved; use for energy management.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",300,300,40301,AMPERE_EEPROM,"Charge current 6-32 A, saved to EEPROM (about 100,000 writes).",UINT16,1,,1,0,A,Read/write,

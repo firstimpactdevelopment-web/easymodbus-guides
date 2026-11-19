@@ -1,0 +1,45 @@
+﻿# Fujitsu General UTY-VMSX Modbus converter (one indoor unit) Modbus register map - easymodbus.com - source: https://www.fujitsu-general.com/datafiles/W9708438047-0501_IF_En_UTY-VMSX.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,30001,30001,Converter baud rate,,UINT16,1,,1,0,,Read,0 = 9600 bps; 1 = 19200 bps
+Input register,FC04 read,1,30002,30002,Converter slave address,Bits 0-7: address 1-247.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,2,30003,30003,Converter model name info,Encoded model name characters (bits 0-7 and 8-15).,UINT16,1,,1,0,,Read,
+Input register,FC04 read,6,30007,30007,Converter software version,Four 4-bit fields of the version string.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,8,30009,30009,Converter error,"Bits 8-11 error sub-code, bits 12-15 error code section.",BITMAP16,1,,1,0,,Read,bit 0 = Error (1 = error)
+Input register,FC04 read,53,30054,30054,Operation mode status,,UINT16,1,,1,0,,Read,1 = Auto; 2 = Cool; 3 = Dry; 4 = Heat; 5 = Fan
+Input register,FC04 read,54,30055,30055,On/Off status,,UINT16,1,,1,0,,Read,1 = Stop; 2 = Operation
+Input register,FC04 read,55,30056,30056,Set temperature,Bits 0-8 hold the setpoint x4 (0.25 °C steps).,UINT16,1,,0.25,0,°C,Read,
+Input register,FC04 read,56,30057,30057,Fan speed status,,UINT16,1,,1,0,,Read,1 = Auto; 2 = Quiet; 3 = Low; 4 = Med; 5 = High; 6 = Med-Low; 7 = Med-High
+Input register,FC04 read,57,30058,30058,Indoor (room) temperature,Bits 0-8 hold the temperature x4 (0.25 °C steps).,UINT16,1,,0.25,0,°C,Read,
+Input register,FC04 read,58,30059,30059,Indoor unit error,"Bits 8-11 error sub-code, bits 12-15 error code section.",BITMAP16,1,,1,0,,Read,bit 0 = Error (1 = error)
+Input register,FC04 read,59,30060,30060,Vertical louvre position,,UINT16,1,,1,0,,Read,1 = Swing; 2 = Position 1; 3 = Position 2; 4 = Position 3; 5 = Position 4
+Input register,FC04 read,60,30061,30061,Horizontal louvre position,,UINT16,1,,1,0,,Read,1 = Swing; 2 = Position 1; 3 = Position 2; 4 = Position 3; 5 = Position 4; 6 = Position 5
+Input register,FC04 read,61,30062,30062,Remote controller prohibition status,1 = that remote function is locked out.,BITMAP16,1,,1,0,,Read,bit 0 = All operations; bit 1 = Timer setting; bit 2 = Room temperature setting; bit 3 = Operation mode setting; bit 4 = Start/stop; bit 5 = Start only; bit 6 = Filter reset
+Input register,FC04 read,62,30063,30063,Filter sign,,UINT16,1,,1,0,,Read,0 = No sign; 1 = Filter sign
+Input register,FC04 read,63,30064,30064,Economy mode status,,UINT16,1,,1,0,,Read,1 = Normal operation; 2 = Save operation
+Input register,FC04 read,64,30065,30065,Antifreeze status,,UINT16,1,,1,0,,Read,1 = Normal operation; 2 = Antifreeze operation
+Input register,FC04 read,65,30066,30066,Setpoint limits status (Cool/Dry),"0 = no limit; bits 0-7 upper and bits 8-15 lower limit, each x4 in °C.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,66,30067,30067,Setpoint limits status (Heat),"0 = no limit; bits 0-7 upper and bits 8-15 lower limit, each x4 in °C.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,67,30068,30068,Setpoint limits status (Auto),"0 = no limit; bits 0-7 upper and bits 8-15 lower limit, each x4 in °C.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,68,30069,30069,Indoor unit special status,,BITMAP16,1,,1,0,,Read,bit 0 = Normal status (0 = special status); bit 1 = Defrosting; bit 2 = Oil recovery; bit 3 = Pump down
+Input register,FC04 read,69,30070,30070,External thermo-off status,,UINT16,1,,1,0,,Read,1 = Release; 2 = Thermo-off
+Input register,FC04 read,70,30071,30071,Demand status,,UINT16,1,,1,0,,Read,1 = No operation; 2 = DRM 1; 3 = DRM 2; 4 = DRM 3
+Input register,FC04 read,71,30072,30072,Human detection auto save,,UINT16,1,,1,0,,Read,0 = No operation; 1 = Operation
+Input register,FC04 read,72,30073,30073,Human detection auto save time,"Bits 0-10, set in 15-minute steps.",UINT16,1,,1,0,min,Read,
+Input register,FC04 read,73,30074,30074,Human detection auto off,,UINT16,1,,1,0,,Read,0 = No operation; 1 = Operation
+Input register,FC04 read,74,30075,30075,Human detection auto off time,"Bits 0-10, set in 60-minute steps.",UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Operation mode command,,UINT16,1,,1,0,,Read/write,0 = No change; 1 = Auto; 2 = Cool; 3 = Dry; 4 = Heat; 5 = Fan
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,On/Off command,,UINT16,1,,1,0,,Read/write,0 = No change; 1 = Stop; 2 = Operation
+Holding register,"FC03 read / FC06, FC16 write",3,40004,40004,Set temperature command,"Write (°C x 4) x 2 + 1, e.g. 20 °C = 161; 0 = no change.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Fan speed command,,UINT16,1,,1,0,,Read/write,0 = No change; 1 = Auto; 2 = Quiet; 3 = Low; 4 = Med; 5 = High; 6 = Med-Low; 7 = Med-High
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Vertical louvre command,,UINT16,1,,1,0,,Read/write,0 = No change; 1 = Swing; 2 = Position 1; 3 = Position 2; 4 = Position 3; 5 = Position 4
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,Horizontal louvre command,,UINT16,1,,1,0,,Read/write,0 = No change; 1 = Swing; 2 = Position 1; 3 = Position 2; 4 = Position 3; 5 = Position 4; 6 = Position 5
+Holding register,"FC03 read / FC06, FC16 write",7,40008,40008,Remote controller prohibition command,Bit 0 must be 1 for the other bits to apply.,BITMAP16,1,,1,0,,Read/write,bit 0 = Apply change (1 = change); bit 1 = Inhibit all operations; bit 2 = Inhibit timer setting; bit 3 = Inhibit room temperature setting; bit 4 = Inhibit operation mode setting; bit 5 = Inhibit start/stop; bit 6 = Inhibit start only; bit 7 = Inhibit filter reset
+Holding register,"FC03 read / FC06, FC16 write",8,40009,40009,Filter sign reset,,UINT16,1,,1,0,,Read/write,0 = No change; 1 = Reset
+Holding register,"FC03 read / FC06, FC16 write",9,40010,40010,Economy mode command,,UINT16,1,,1,0,,Read/write,0 = No change; 1 = Normal operation; 2 = Save operation
+Holding register,"FC03 read / FC06, FC16 write",10,40011,40011,Antifreeze command,,UINT16,1,,1,0,,Read/write,0 = No change; 1 = Release; 2 = Antifreeze operation
+Holding register,"FC03 read / FC06, FC16 write",11,40012,40012,Upper setpoint limit (Cool/Dry),"Coded like 40004: bit 0 change flag, bits 1-8 °C x4, 0 = no limit.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12,40013,40013,Lower setpoint limit (Cool/Dry),"Coded like 40004: bit 0 change flag, bits 1-8 °C x4, 0 = no limit.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",13,40014,40014,Upper setpoint limit (Heat),"Coded like 40004: bit 0 change flag, bits 1-8 °C x4, 0 = no limit.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",14,40015,40015,Lower setpoint limit (Heat),"Coded like 40004: bit 0 change flag, bits 1-8 °C x4, 0 = no limit.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",15,40016,40016,Upper setpoint limit (Auto),"Coded like 40004: bit 0 change flag, bits 1-8 °C x4, 0 = no limit.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16,40017,40017,Lower setpoint limit (Auto),"Coded like 40004: bit 0 change flag, bits 1-8 °C x4, 0 = no limit.",UINT16,1,,1,0,,Read/write,

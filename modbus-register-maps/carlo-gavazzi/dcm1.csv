@@ -1,0 +1,73 @@
+﻿# Carlo Gavazzi DCM1 DC energy meter for EV chargers (Modbus RTU / TCP) Modbus register map - easymodbus.com - source: https://www.gavazziautomation.com/fileadmin/images/PIM/OTHERSTUFF/COMPRO/DCM1_CPP.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,300001 / 0000h,30001,Voltage,,INT32,2,CDAB,0.1,0,V,Read,
+Input register,FC04 read,2,300003 / 0002h,30003,Current,,INT32,2,CDAB,0.001,0,A,Read,
+Input register,FC04 read,4,300005 / 0004h,30005,Power,Signed DC power.,INT32,2,CDAB,0.1,0,W,Read,
+Input register,FC04 read,11,300012 / 000Bh,30012,Carlo Gavazzi identification code,"Model code, e.g. 1824 = DCM1A60V10L20S1PFA; see the part-number table.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,16,300017 / 0010h,30017,kWh (+) TOT,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,18,300019 / 0012h,30019,Ah (+) TOT,,INT32,2,CDAB,0.1,0,Ah,Read,
+Input register,FC04 read,20,300021 / 0014h,30021,kWh (+) PAR,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,22,300023 / 0016h,30023,Ah (+) PAR,,INT32,2,CDAB,0.1,0,Ah,Read,
+Input register,FC04 read,32,300033 / 0020h,30033,kWh (-) TOT,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,34,300035 / 0022h,30035,Ah (-) TOT,,INT32,2,CDAB,0.1,0,Ah,Read,
+Input register,FC04 read,36,300037 / 0024h,30037,kWh (-) PAR,,INT32,2,CDAB,0.1,0,kWh,Read,
+Input register,FC04 read,38,300039 / 0026h,30039,Ah (-) PAR,,INT32,2,CDAB,0.1,0,Ah,Read,
+Input register,FC04 read,44,300045 / 002Ch,30045,Run hour meter,,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,46,300047 / 002Eh,30047,Run hour meter kWh-,Hours counted while energy flows in the negative direction.,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,48,300049 / 0030h,30049,Run hour meter ON time,Hours the meter has been powered.,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,50,300051 / 0032h,30051,Run hour meter PAR,,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,52,300053 / 0034h,30053,Run hour meter kWh- PAR,,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,54,300055 / 0036h,30055,Run hour meter ON time PAR,,INT32,2,CDAB,0.01,0,h,Read,
+Input register,FC04 read,80,300081 / 0050h,30081,T1 (shunt terminal 1 temperature),,INT32,2,CDAB,0.1,0,°C,Read,
+Input register,FC04 read,82,300083 / 0052h,30083,T2 (shunt terminal 2 temperature),,INT32,2,CDAB,0.1,0,°C,Read,
+Input register,FC04 read,770,300771 / 0302h,30771,Firmware version DCM-D (meter),"High byte: bits 0-3 minor, bits 4-7 major; low byte: revision.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,771,300772 / 0303h,30772,Firmware version DCM-D (cryptography),"High byte: bits 0-3 minor, bits 4-7 major; low byte: revision.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,772,300773 / 0304h,30773,Firmware version DCM-T (transducer),"High byte: bits 0-3 minor, bits 4-7 major; low byte: revision.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4096,304097 / 1000h,44097,Password,"0 = no password (default), up to 9999.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4355,304356 / 1103h,44356,Easy connection,,UINT16,1,,1,0,,Read/write,0 = Disabled (default); 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",4361,304362 / 1109h,44362,Quick set up at next power on,,UINT16,1,,1,0,,Read/write,0 = Menu disabled; 1 = Menu enabled (default)
+Holding register,"FC03 read / FC06, FC16 write",4363,304364 / 110Bh,44364,Start-up current of run hour counter,"Default 480 (0.48 A); A30 models 160-300000, A60 models up to 600000.",UINT32,2,CDAB,0.001,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8192,308193 / 2000h,48193,RS485 instrument address,"1-247, default 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8193,308194 / 2001h,48194,RS485 baud rate,,UINT16,1,,1,0,,Read/write,1 = 9.6 kbps (default); 2 = 19.2 kbps; 3 = 38.4 kbps; 4 = 57.6 kbps; 5 = 115.2 kbps
+Holding register,"FC03 read / FC06, FC16 write",8194,308195 / 2002h,48195,RS485 parity,,UINT16,1,,1,0,,Read/write,1 = No parity (default); 2 = Even parity
+Holding register,"FC03 read / FC06, FC16 write",8195,308196 / 2003h,48196,Stop bit,,UINT16,1,,1,0,,Read/write,1 = 1 (default); 2 = 2
+Holding register,"FC03 read / FC06, FC16 write",8196,308197 / 2004h,48197,RS485 delay on reply,"0-1000, default 0.",UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8208,308209 / 2010h,48209,Update serial communication settings,Write 1 to apply new serial settings.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8448,308449 / 2100h,48449,Stored IP address octet A,Default 192.168.1.10; used when DHCP is off.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8449,308450 / 2101h,48450,Stored IP address octet B,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8450,308451 / 2102h,48451,Stored IP address octet C,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8451,308452 / 2103h,48452,Stored IP address octet D,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8452,308453 / 2104h,48453,Stored subnet mask octet A,Default 255.255.255.0.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8453,308454 / 2105h,48454,Stored subnet mask octet B,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8454,308455 / 2106h,48455,Stored subnet mask octet C,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8455,308456 / 2107h,48456,Stored subnet mask octet D,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8456,308457 / 2108h,48457,Stored default gateway octet A,Default 192.168.1.1.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8457,308458 / 2109h,48458,Stored default gateway octet B,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8458,308459 / 210Ah,48459,Stored default gateway octet C,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8459,308460 / 210Bh,48460,Stored default gateway octet D,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8460,308461 / 210Ch,48461,Modbus TCP/IP port,"1-9999, default 502.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8461,308462 / 210Dh,48462,DHCP enabled,,UINT16,1,,1,0,,Read/write,0 = DHCP off (default); 1 = DHCP on
+Holding register,"FC03 read / FC06, FC16 write",8462,210Eh,48463,Update TCP/IP communication settings,Write 1 to apply new Ethernet settings (or power-cycle).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8480,308481 / 2120h,48481,Actual IP address octet A,Reads 0xFFFF while DHCP has not assigned an address.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8481,308482 / 2121h,48482,Actual IP address octet B,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8482,308483 / 2122h,48483,Actual IP address octet C,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8483,308484 / 2123h,48484,Actual IP address octet D,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",9471,309472 / 24FFh,49472,Signature type,,UINT16,1,,1,0,,Read,0 = 256-bit signature; 1 = 384-bit signature; 2 = No signature
+Holding register,"FC03 read / FC06, FC16 write",16387,316388 / 4003h,416388,Reset total counters,"Write 1. Non-certified: totals, Ah, run hours. Certified: Ah and run hours only.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16388,316389 / 4004h,416389,Reset partial counters,"Write 1 to clear partial energy, Ah and run-hour counters.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20498,320499 / 5012h,420499,Device state,"Bits 11-12: 00 DCM-T OK, 01 warning (over range), 11 failure.",BITMAP16,1,,1,0,,Read,"bit 0 = Voltage over range (beyond ±1150.1 V); bit 1 = Current over range (beyond ±600.1 A); bit 2 = Terminal 1 temperature below -25.1 °C; bit 3 = Terminal 1 temperature above 120.1 °C; bit 4 = Terminal 2 temperature below -25.1 °C; bit 5 = Terminal 2 temperature above 120.1 °C; bit 11 = DCM-T status, low bit; bit 12 = DCM-T status, high bit; bit 13 = Transducer disconnected; bit 14 = Invalid transducer connected; bit 15 = Internal device fault"
+Holding register,"FC03 read / FC06, FC16 write",20499,320500 / 5013h,420500,Shunt temperature position 1,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",20500,320501 / 5014h,420501,Shunt temperature position 2,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",20736,320737 / 5100h,420737,Cable loss value,Cable resistance used to correct energy; max 500.,INT32,2,CDAB,1,0,mOhm,Read,
+Holding register,"FC03 read / FC06, FC16 write",28721,328722 / 7031h,428722,Local time delta,"Offset from UTC, -1440 to 1440.",INT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28726,328727 / 7036h,428727,Display charging direction,,UINT16,1,,1,0,,Read/write,0 = Charging vehicle; 1 = Vehicle to grid; 2 = Bidirectional
+Holding register,"FC03 read / FC06, FC16 write",28736,328737 / 7040h,428737,OCMF command,"Write ASCII 'B' to begin, 'E' to end, 'A' to abort a transaction.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28741,328742 / 7045h,428742,Charging status,,UINT16,1,,1,0,,Read,0 = No charging; 1 = Charging; 2 = End of last transaction; 3 = End of last transaction with error
+Holding register,"FC03 read / FC06, FC16 write",28752,328753 / 7050h,428753,Charging session end page duration,"60-300, default 300.",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28768,328769 / 7060h,428769,Time synchronization status,,UINT16,1,,1,0,,Read,0 = Time not synchronized; 1 = Time synchronized
+Holding register,"FC03 read / FC06, FC16 write",28928,328929 / 7100h,428929,OCMF state,Write 0 after reading the OCMF file to allow a new session.,UINT16,1,,1,0,,Read/write,"0 = Ready for new transaction; 1 = Running; 2 = Session completed, OCMF file ready; 3 = Session completed with internal error, OCMF file corrupted"
+Holding register,"FC03 read / FC06, FC16 write",28929,328930 / 7101h,428930,OCMF file length,,UINT16,1,,1,0,words,Read,
+Holding register,"FC03 read / FC06, FC16 write",28930,328931 / 7102h,428931,OCMF last transaction id,,UINT32,2,CDAB,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",31232,331233 / 7A00h,431233,Session delta kWh+,Energy delivered in the current/last charging session.,UINT64,4,CDAB,1,0,Wh,Read,
+Holding register,"FC03 read / FC06, FC16 write",31236,331237 / 7A04h,431237,Session delta kWh-,,UINT64,4,CDAB,1,0,Wh,Read,
+Holding register,"FC03 read / FC06, FC16 write",31240,331241 / 7A08h,431241,Session duration,,UINT64,4,CDAB,1,0,s,Read,

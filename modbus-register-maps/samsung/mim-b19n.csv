@@ -1,0 +1,36 @@
+﻿# Samsung MIM-B19N Modbus interface module (DVM / EHS / indoor units) Modbus register map - easymodbus.com - source: https://midsummerwholesale.co.uk/pdfs/mim-b19n-manual.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,0,30001,Modbus interface module error status,,BITMAP16,1,,1,0,,Read,bit 0 = Address error; bit 1 = Communication error on R1/R2; bit 2 = Tracking error
+Input register,FC04 read,1,1,30002,Integrated outdoor unit error code,100-999 = error code.,UINT16,1,,1,0,,Read,0 = No error
+Input register,FC04 read,2,2,30003,Outdoor defrost operation,0 or 0xFF = defrost off; other values = defrost on.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,50,(50 + IU*50) + 0,30051,Communication status,Bits 0-2 all set (value 7) = unit tracked and ready for control.,BITMAP16,1,,1,0,,Read,bit 0 = Exist; bit 1 = Type OK; bit 2 = Ready; bit 3 = Communication error
+Input register,FC04 read,51,(50 + IU*50) + 1,30052,Unit type,"Low byte = model code (e.g. HE 110, ERV 100-102); high byte 10 = FCU.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,56,(50 + IU*50) + 6,30057,Filter-cleaning reminder,,UINT16,1,,1,0,,Read,0 = Filter alarm not present; 1 = Filter alarm present
+Input register,FC04 read,59,(50 + IU*50) + 9,30060,Room temperature,Celsius x10. Range -41 to 100 °C.,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,60,(50 + IU*50) + 10,30061,Discharge temperature,Celsius x10.,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,63,(50 + IU*50) + 13,30064,Integrated indoor unit error code,100-999 = error code.,UINT16,1,,1,0,,Read,0 = No error
+Input register,FC04 read,65,(50 + IU*50) + 15,30066,Water-in temperature,Celsius x10.,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,66,(50 + IU*50) + 16,30067,Water-out Temperature,Celsius x10.,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,67,(50 + IU*50) + 17,30068,MCC water-out temperature,Celsius x10.,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,75,(50 + IU*50) + 25,30076,Hot water temperature,Celsius x10.,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",3,3,40004,Buzzer on/off,,UINT16,1,,1,0,,Write,0 = Turns the buzzer on; 1 = Turns the buzzer off
+Holding register,"FC03 read / FC06, FC16 write",52,(50 + IU*50) + 2,40053,Air conditioner on/off,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",53,(50 + IU*50) + 3,40054,Air conditioner mode,,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Cool; 2 = Dry; 3 = Fan; 4 = Heat; 21 = Cool Storage; 24 = Heat Storage
+Holding register,"FC03 read / FC06, FC16 write",54,(50 + IU*50) + 4,40055,Indoor fan speed,,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Low; 2 = Middle; 3 = High
+Holding register,"FC03 read / FC06, FC16 write",55,(50 + IU*50) + 5,40056,Use of vertical air flow direction,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",57,(50 + IU*50) + 7,40058,Canceling the filter-cleaning reminder,,UINT16,1,,1,0,,Write,0 = No Clear Filter Alarm; 1 = Clear Filter Alarm
+Holding register,"FC03 read / FC06, FC16 write",58,(50 + IU*50) + 8,40059,Set temperature,Celsius x10.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",61,(50 + IU*50) + 11,40062,Cooling discharge set temperature,Celsius x10. Range 8 to 18 °C.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",62,(50 + IU*50) + 12,40063,Heating discharge set temperature,Celsius x10. Range 30 to 43 °C.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64,(50 + IU*50) + 14,40065,Restrictions on the remote control,"Read 0 = none, other = restricted; write 0x0000 to release, 0x6363 to restrict.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",68,(50 + IU*50) + 18,40069,Water-out set temperature,Celsius x10; allowed range depends on unit type.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",69,(50 + IU*50) + 19,40070,Ventilation on/off,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",70,(50 + IU*50) + 20,40071,Ventilation mode,,UINT16,1,,1,0,,Read/write,0 = Bypass; 1 = HeatEx; 2 = Auto; 6 = Sleep
+Holding register,"FC03 read / FC06, FC16 write",71,(50 + IU*50) + 21,40072,Ventilation fan speed,,UINT16,1,,1,0,,Read/write,0 = AUTO; 2 = Low; 3 = High; 4 = Turbo
+Holding register,"FC03 read / FC06, FC16 write",72,(50 + IU*50) + 22,40073,Hot water operation on/off,,UINT16,1,,1,0,,Read/write,0 = HotWater Off; 1 = HotWater On
+Holding register,"FC03 read / FC06, FC16 write",73,(50 + IU*50) + 23,40074,Hot water mode,,UINT16,1,,1,0,,Read/write,0 = Eco; 1 = Standard; 2 = Power; 3 = Force (for the EHS only)
+Holding register,"FC03 read / FC06, FC16 write",74,(50 + IU*50) + 24,40075,Hot water set temperature,Celsius x10; allowed range depends on unit type.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",78,(50 + IU*50) + 28,40079,Quiet control,,UINT16,1,,1,0,,Read/write,0 = Slience Off; 1 = Slience On
+Holding register,"FC03 read / FC06, FC16 write",79,(50 + IU*50) + 29,40080,Away function,,UINT16,1,,1,0,,Read/write,0 = Outing Off; 1 = Outing On
+Holding register,"FC03 read / FC06, FC16 write",80,(50 + IU*50) + 30,40081,Wind-Free function,,UINT16,1,,1,0,,Read/write,0 = None; 9 = WindFree
+Holding register,"FC03 read / FC06, FC16 write",81,(50 + IU*50) + 31,40082,360 air flow direction,Other values = individual control.,UINT16,1,,1,0,,Read/write,15 = Swing; 64 = Wide; 85 = Mid; 106 = Spot

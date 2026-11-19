@@ -1,0 +1,439 @@
+{
+  "manufacturer": "Radwag",
+  "manufacturer_slug": "radwag",
+  "model": "MW-01-A / MW-01-A7 mass converter",
+  "model_slug": "mw-01-a",
+  "short_model": "MW-01-A",
+  "aliases": [
+    "MW-01-A",
+    "MW-01-A7"
+  ],
+  "equipment_type": "Sensor (weighing transmitter / mass converter)",
+  "applies_to": "Radwag MW-01-A and MW-01-A7 mass converters per the November 2021 Modbus manual.",
+  "summary": "The MW-01-A mass converter serves Modbus RTU on RS-485 and Modbus TCP (and RTU over TCP) on Ethernet. Input registers return mass, tare, unit, status, thresholds and dosing/adjustment state; holding registers take zero, tare, dosing and calibration commands plus threshold writes. Floats here are low word first, unlike Radwag's PUE indicators.",
+  "transport": [
+    "RTU",
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The tables list a 0-based Offset next to a 30001/40001-style Modbus address; the offset goes on the wire (mass = offset 0 = 30001, Command = offset 256 = 40257)."
+  },
+  "default_word_order": "CDAB",
+  "firmware": null,
+  "source": {
+    "title": "Software manual MODBUS - Communication Protocol of MW-01-A Mass Converter",
+    "doc_number": "ITKP-41-01-11-21-EN",
+    "revision_date": "2021-11",
+    "url": "https://radwag.com/document/en/user-manual-modbus-communication-protocol-of-mw-01-a-mw-01-a7-mass-converter__MODBUS-MW-01-A-ITKP-41-01-11-21-EN.pdf",
+    "pages": "Functions and data structure p. 4; input registers p. 5; meanings pp. 5-7; holding registers p. 7; command bits p. 8"
+  },
+  "notes": [
+    "Floats are two registers with the low word first (CDAB): the manual's example has 30001 = 0x72B0 and 30002 = 0x3E68 giving 0.227, and its tare write example puts 0x0000 in the first register and 0x3F80 in the second.",
+    "Left out: 'Precise dosing threshold' (input offset 40, holding offset 270) and 'Adjustment weight mass' (holding offset 272), because the table lists them as float with a length of 1 register, which cannot both be right.",
+    "The manual's write examples label registers as 40000 + offset (40257 = 'command with parameter' at offset 257, tare at 40259/40260 = offsets 259-260), so they agree with the offset column on the wire; the output-mask example (40502/40507) is copied from another product and does not fit this map. This map follows the table's offset column.",
+    "Settings (address, baud, IP) are made with Radwag's MwManager PC software; the Modbus manual gives no defaults."
+  ],
+  "registers": [
+    {
+      "table": "input_register",
+      "address": 0,
+      "documented": "30001",
+      "name": "Mass",
+      "description": "Mass in the currently displayed unit.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2,
+      "documented": "30003",
+      "name": "Tare",
+      "description": "Tare in the adjustment (calibration) unit.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4,
+      "documented": "30005",
+      "name": "Unit",
+      "description": "Bit set shows the unit now displayed.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "gram [g]",
+        "1": "kilogram [kg]",
+        "2": "carat [ct]",
+        "3": "pound [lb]",
+        "4": "ounce [oz]",
+        "5": "Newton [N]"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 5,
+      "documented": "30006",
+      "name": "Status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Measurement correct (no error)",
+        "1": "Measurement stable",
+        "2": "Indicating zero",
+        "3": "Tared",
+        "4": "In weighing range II",
+        "5": "In weighing range III",
+        "6": "NULL error",
+        "7": "LH error",
+        "8": "FULL error"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 6,
+      "documented": "30007",
+      "name": "LO threshold",
+      "description": "In the adjustment unit.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 32,
+      "documented": "30033",
+      "name": "Dosing status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Process disabled",
+        "1": "Dosing in progress",
+        "2": "Process stopped",
+        "3": "Process finished"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 33,
+      "documented": "30034",
+      "name": "Input status",
+      "description": "Bitmask of converter inputs; the 8 low bits are the inputs, bit 0 = input 1.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 34,
+      "documented": "30035",
+      "name": "Min",
+      "description": "MIN threshold, adjustment unit.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 36,
+      "documented": "30037",
+      "name": "Max",
+      "description": "MAX threshold, adjustment unit.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 38,
+      "documented": "30039",
+      "name": "Fast dosing threshold",
+      "description": "Adjustment unit.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 50,
+      "documented": "30051",
+      "name": "Adjustment status",
+      "description": "State of the adjustment (calibration) process.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Process finished correctly",
+        "1": "Start mass / adjustment factor determination in progress",
+        "2": "Range exceeded",
+        "3": "Time exceeded",
+        "4": "Process aborted",
+        "5": "Awaiting data"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 256,
+      "documented": "40257",
+      "name": "Command",
+      "description": "Set a bit to run that action once; clear it before repeating.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Zero the platform",
+        "1": "Tare the platform",
+        "5": "Process start",
+        "6": "Process stop",
+        "8": "Start mass determination",
+        "9": "Adjustment factor determination",
+        "10": "Record adjustment parameters"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 257,
+      "documented": "40258",
+      "name": "Command with parameter",
+      "description": "Set a bit to apply the matching parameter register below.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Set tare value",
+        "1": "Set LO threshold",
+        "2": "Set outputs state",
+        "3": "Set MIN threshold",
+        "4": "Set MAX threshold",
+        "5": "Set fast dosing threshold",
+        "6": "Set precise dosing threshold",
+        "9": "Set adjustment weight mass"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 258,
+      "documented": "40259",
+      "name": "Platform",
+      "description": "Platform number for parameter commands (always 1).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 259,
+      "documented": "40260",
+      "name": "Tare",
+      "description": "Tare to set, adjustment unit.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 261,
+      "documented": "40262",
+      "name": "LO threshold",
+      "description": "LO threshold to set, adjustment unit.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 263,
+      "documented": "40264",
+      "name": "Output state",
+      "description": "Output mask to apply, bit 0 = output 1.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 264,
+      "documented": "40265",
+      "name": "Min",
+      "description": "MIN threshold to set.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 266,
+      "documented": "40267",
+      "name": "Max",
+      "description": "MAX threshold to set.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 268,
+      "documented": "40269",
+      "name": "Fast dosing threshold",
+      "description": "Fast dosing threshold to set.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read input registers (FC04) from offset 0: mass is a low-word-first float at offset 0 and the status bits at offset 5. Write bit 0 or 1 of the Command register (offset 256) to zero or tare, clearing it before repeating.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 0,
+        "why": "Mass"
+      },
+      {
+        "table": "input_register",
+        "address": 5,
+        "why": "Status (stable, zero, errors)"
+      },
+      {
+        "table": "input_register",
+        "address": 4,
+        "why": "Displayed unit"
+      },
+      {
+        "table": "input_register",
+        "address": 32,
+        "why": "Dosing status"
+      },
+      {
+        "table": "holding_register",
+        "address": 256,
+        "why": "Zero / tare / dosing commands"
+      }
+    ],
+    "enable": "Configure communication with the MwManager PC software under Parameters / Set Communication.",
+    "watchdog": null,
+    "quirks": [
+      "Floats are CDAB (low word first).",
+      "Commands act on a bit being set; write 0 first to repeat the same command."
+    ],
+    "setup": [
+      "Use MwManager to set the RS-485 or Ethernet parameters."
+    ],
+    "gotchas": [
+      "Do not reuse a PUE indicator template: the MW-01-A float word order and holding addresses differ."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

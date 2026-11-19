@@ -1,0 +1,311 @@
+{
+ "manufacturer": "Trafag",
+ "manufacturer_slug": "trafag",
+ "model": "8775 gas density sensor / 879x hybrid gas density monitor (legacy Modbus map)",
+ "model_slug": "8775-879x-legacy",
+ "short_model": "8775 / 879x",
+ "aliases": [
+  "8775",
+  "8791",
+  "8792",
+  "8793",
+  "879x",
+  "Trafag gas density monitor"
+ ],
+ "equipment_type": "Sensor (gas density)",
+ "applies_to": "Trafag 8775 and 879x (8791/8792/8793) running the 'Legacy' Modbus configuration of software description H73622a (10/2025).",
+ "summary": "The Trafag 8775 sensor and 879x hybrid monitor measure the density of a specified gas or gas mixture with a pair of quartz oscillators, and report it over Modbus RTU. This map is the manual's 'Legacy' configuration: scaled 16-bit density, pressure and temperature, identification, serial settings and a sensor-status discrete input.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Addresses are protocol addresses. The manual's example reads density (address 0) with start address 0x0000 and the serial number (address 5) with 0x0005."
+ },
+ "default_word_order": "ABCD",
+ "firmware": null,
+ "source": {
+  "title": "Software Instruction Sensor/Monitor - 8775 Gas Density Sensor, 879x Hybrid Gas Density Monitor",
+  "doc_number": "H73622a",
+  "revision_date": "2025-10",
+  "url": "https://media.trafag.com/instruction/H73622a_87xx_Software-Instruction-Density-Sensor_A4.pdf",
+  "pages": "Legacy input registers p. 8; legacy holding registers p. 9; discrete input p. 10"
+ },
+ "notes": [
+  "The manual describes two Modbus configurations, 'Legacy' and 'Standard', with different maps at the same addresses. This file is the Legacy map only; it does not say which units ship with which.",
+  "Left out: the Standard map (float density/pressure/temperature at 0-48, hour meter, status flag words, serial number U64), because the manual gives no word order for its floats and 32/64-bit values.",
+  "32-bit values in the Legacy map are marked big-endian; the serial-number example (0x075BCD15 split as 0x075B, 0xCD15) shows high word first.",
+  "Left out: 'Quartz frequency difference' (address 8), a fixed dummy value of 1000 from firmware V2.0, and 'Mode' (holding 6), marked non-functional.",
+  "Parity choice also fixes stop bits: none = 2 stop bits, odd/even = 1 stop bit.",
+  "Holding registers are stored in EEPROM; the manual warns that excessive writing can wear it out.",
+  "Server ID can also be changed by broadcast using the serial number (section 5.4)."
+ ],
+ "registers": [
+  {
+   "table": "discrete_input",
+   "address": 0,
+   "documented": "0",
+   "name": "Sensor status",
+   "description": "0 = working properly, 1 = sensor error.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 0,
+   "documented": "0",
+   "name": "Gas density",
+   "description": "0xFFFF when out of range.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "kg/m3",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 1,
+   "documented": "1",
+   "name": "Gas pressure (abs, @20°C)",
+   "description": "0xFFFF when out of range.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "kPa",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 2,
+   "documented": "2",
+   "name": "Gas temperature",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "K",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 3,
+   "documented": "3",
+   "name": "Gas pressure (abs, at gas temperature)",
+   "description": "0xFFFF when out of range.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "kPa",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 4,
+   "documented": "4",
+   "name": "Server ID",
+   "description": "1-247.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 5,
+   "documented": "5+6",
+   "name": "Serial number",
+   "description": "Big-endian; e.g. 0x075BCD15 = 123456-789.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Firmware release version",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "Server ID",
+   "description": "1-247.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3+4",
+   "name": "Baud rate",
+   "description": "1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 56000 or 57600.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "baud",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "5",
+   "name": "Parity",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "None (2 stop bits)",
+    "1": "Odd (1 stop bit)",
+    "2": "Even (1 stop bit)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Change to bootloader",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Enter bootloader mode for 10 s"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "8",
+   "name": "Write permissions",
+   "description": "Bit = 0 means writable, 1 means locked.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Server ID locked",
+    "1": "Baud rate locked",
+    "2": "Parity locked"
+   },
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read input registers 0-3 (function 04) for density, pressure and temperature as scaled integers, and discrete input 0 (function 02) for sensor status.",
+  "minimum_registers": [
+   {
+    "table": "input_register",
+    "address": 0,
+    "why": "Gas density, kg/m3 x 0.01"
+   },
+   {
+    "table": "input_register",
+    "address": 1,
+    "why": "Pressure @20°C, kPa x 0.1"
+   },
+   {
+    "table": "input_register",
+    "address": 2,
+    "why": "Gas temperature, K x 0.1"
+   },
+   {
+    "table": "discrete_input",
+    "address": 0,
+    "why": "Sensor error flag"
+   }
+  ],
+  "enable": "Modbus RTU is always active. Server ID, baud rate and parity are holding registers 2-5; register 8 shows which of them are write-protected.",
+  "watchdog": null,
+  "quirks": [
+   "0xFFFF in a measurement register means its range was exceeded.",
+   "Temperature is in kelvin (x 0.1)."
+  ],
+  "setup": [
+   "Terminate both bus ends with 120 Ohm (jumper J4 on hybrid units) and use 560 Ohm line polarisation."
+  ],
+  "gotchas": [
+   "Confirm the unit runs the Legacy map; the Standard map puts floats at the same addresses."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/trafag/8775-879x-legacy",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

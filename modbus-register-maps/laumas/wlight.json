@@ -1,0 +1,321 @@
+{
+ "manufacturer": "Laumas",
+ "manufacturer_slug": "laumas",
+ "model": "WLIGHT weight indicator / transmitter (Modbus RTU)",
+ "model_slug": "wlight",
+ "short_model": "WLIGHT",
+ "aliases": [
+  "WLIGHT",
+  "W LIGHT"
+ ],
+ "equipment_type": "Sensor (load-cell weight indicator)",
+ "applies_to": "Laumas WLIGHT, installation and user manual version 1.03.",
+ "summary": "The WLIGHT is a compact load-cell weight indicator with RS-485. In Modbus RTU mode it offers a small register set: identification, a command register, a status word, gross/net/peak weight as 32-bit pairs, the division and unit setting, and the sample weight used for calibration.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "Registers are printed 40001-40066; subtract 40001 for a 0-based client (the manual's own example: 40028 -> 27). The read example uses start address 0x0007 for gross weight at 40008."
+ },
+ "default_word_order": "ABCD",
+ "firmware": null,
+ "source": {
+  "title": "WLIGHT Installation and User Manual",
+  "doc_number": "version 1.03",
+  "revision_date": null,
+  "url": "https://www.massload.com/wp-content/uploads/2026/07/Laumas-WLIGHT_UserManual.pdf",
+  "unofficial": true,
+  "pages": "pp. 38-46 (Modbus RTU, register list, status register, divisions/units, commands, examples)"
+ },
+ "notes": [
+  "Host: this copy is hosted by Massload, not by Laumas; no public copy was found on laumas.com.",
+  "Word order: H/L pairs with high word first; the read example returns gross 4000 as 0x0000 0x0FA0 and the -56 calibration example is 0xFFFF 0xFFC8, so ABCD is documented.",
+  "Weights are unsigned magnitudes without decimal point; the sign is in status bits 7-9. Divisions/units register 40014: low byte = division index (0-18: 100, 50, 20, 10, 5, 2, 1 with 0 decimals; 0.5, 0.2, 0.1 with 1; 0.05, 0.02, 0.01 with 2; 0.005, 0.002, 0.001 with 3; 0.0005, 0.0002, 0.0001 with 4); high byte = unit index (0 kg, 1 g, 2 t, 3 lb, 4 N, 5 l, 6 bar, 7 atm, 8 pieces, 9 N m, 10 kg m, 11 other).",
+  "Command codes 1, 6, 20 and 98 are printed with names in display symbols that do not extract and are left out; 10-18 are reserved.",
+  "The manual's write example targets 40037-40038, which are not in this model's register list; treat it as a generic framing example."
+ ],
+ "integration": {
+  "summary": "Choose Modbus RTU in the serial menu, then read 40007-40013 with FC3 for status, gross, net and peak weight. Apply the sign bits and the division index. Write 7, 9 or 8 to 40006 for tare on, tare off and zero.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 6,
+    "why": "Status word"
+   },
+   {
+    "table": "holding_register",
+    "address": 7,
+    "why": "Gross weight"
+   },
+   {
+    "table": "holding_register",
+    "address": 9,
+    "why": "Net weight"
+   },
+   {
+    "table": "holding_register",
+    "address": 13,
+    "why": "Division index for decimals"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Command register"
+   }
+  ],
+  "enable": "Serial communication is disabled by default: select the Modbus RTU protocol in the serial menu, then address (1-99, default 1), baud (default 9600), parity (default none), stop bits (default 1).",
+  "watchdog": null,
+  "quirks": [
+   "Only FC3 and FC16 are supported.",
+   "Maximum 32 registers per request."
+  ],
+  "setup": [
+   "Broadcast writes (address 0) are executed without reply; broadcast reads are ignored."
+  ],
+  "gotchas": [
+   "Command 99 writes EEPROM, which allows about 100000 writes."
+  ]
+ },
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "Firmware version",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "Instrument type",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40003",
+   "name": "Year of manufacture",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "40004",
+   "name": "Serial number",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40005",
+   "name": "Active program",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40006",
+   "name": "Command register",
+   "description": "Write a command code to run it.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No command",
+    "7": "Semi-automatic tare on (net display)",
+    "8": "Semi-automatic zero",
+    "9": "Semi-automatic tare off (gross display)",
+    "21": "Keypad lock",
+    "22": "Keypad and display unlock",
+    "23": "Keypad and display lock",
+    "99": "Save data in EEPROM",
+    "100": "Tare weight zero setting for calibration",
+    "101": "Sample weight storage for calibration"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40007",
+   "name": "Status register",
+   "description": "Weight sign, stability and error flags.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Load cell error",
+    "1": "AD converter malfunction",
+    "2": "Maximum weight exceeded by 9 divisions",
+    "3": "Gross weight over 110% of full scale",
+    "4": "Gross weight over 999999 or under -999999",
+    "5": "Net weight over 999999 or under -999999",
+    "7": "Gross weight negative sign",
+    "8": "Net weight negative sign",
+    "9": "Peak weight negative sign",
+    "10": "Net display mode",
+    "11": "Weight stable",
+    "12": "Weight within +/- 1/4 division of zero"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "40008",
+   "name": "Gross weight",
+   "description": "Magnitude without decimal point; sign is status bit 7.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "40010",
+   "name": "Net weight",
+   "description": "Magnitude without decimal point; sign is status bit 8.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "40012",
+   "name": "Peak weight",
+   "description": "Magnitude without decimal point; sign is status bit 9.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "40014",
+   "name": "Divisions and units of measure",
+   "description": "High byte = unit index, low byte = division index.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 64,
+   "documented": "40065",
+   "name": "Sample weight for calibration",
+   "description": "Test weight in divisions; use with command 101. Reads 0 after success.",
+   "data_type": "INT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "scale_factor_ref": null,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "page": "https://easymodbus.com/modbus-register-maps/laumas/wlight",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

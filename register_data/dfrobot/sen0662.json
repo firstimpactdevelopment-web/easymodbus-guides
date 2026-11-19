@@ -1,0 +1,537 @@
+{
+  "manufacturer": "DFRobot",
+  "manufacturer_slug": "dfrobot",
+  "model": "SEN0662 Gravity BMV080 PM2.5 air quality sensor (UART Modbus RTU)",
+  "model_slug": "sen0662",
+  "short_model": "SEN0662",
+  "aliases": [
+    "SEN0662",
+    "Gravity BMV080",
+    "BMV080 PM2.5 sensor",
+    "DFRobot BMV080"
+  ],
+  "equipment_type": "Sensor (particulate matter)",
+  "applies_to": "DFRobot SEN0662 Gravity BMV080 module with its DIP switch set to UART, firmware V1.0.0 / register map version 4, per the DFRobot wiki register page.",
+  "summary": "The SEN0662 is a maker-grade particulate sensor board built on the Bosch BMV080. With its DIP switch on the UART side it acts as a Modbus RTU slave. Input registers give PM1.0, PM2.5 and PM10 as big-endian floats plus status; holding registers set the address, serial format and measurement mode and start or stop measurement.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 87,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "Registers are listed as hex protocol addresses from 0x0000 and sent unchanged; the wiki's example reads PM1.0 with start address 0x0006 on function 04."
+  },
+  "default_word_order": "ABCD",
+  "firmware": "V1.0.0 (0x1000), register map version 0x0004",
+  "source": {
+    "title": "Gravity: BMV080 PM2.5 Air Quality Sensor - Modbus Register Definitions (SEN0662 wiki)",
+    "doc_number": null,
+    "revision_date": null,
+    "url": "https://wiki.dfrobot.com/sen0662/docs/25056",
+    "pages": "Register table at the top; function and exception codes; read example (57 04 00 06 00 06)"
+  },
+  "notes": [
+    "Word order: the wiki says registers are big-endian and the high word comes first, and its example response 40 E0 00 00 decodes to 7.0 ug/m3, so floats are ABCD.",
+    "The default slave address is 0x57 (decimal 87). The board's I2C address pins do not affect it.",
+    "The sensor does not measure after power-up: write 1 to holding register 0x0003 after every power cycle before reading PM values.",
+    "The Integration Time float has no unit printed in the table; it is listed without a unit.",
+    "The wiki also documents a broadcast read of holding register 0x0000 (address scan) that only works with a single device on the bus; it is a vendor extension, not standard Modbus."
+  ],
+  "registers": [
+    {
+      "table": "input_register",
+      "address": 0,
+      "documented": "0x0000",
+      "name": "Product ID (PIDR)",
+      "description": "Reads 0x0296 for this module.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1,
+      "documented": "0x0001",
+      "name": "Vendor ID (VIDR)",
+      "description": "Reads 0x3343 (DFRobot).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2,
+      "documented": "0x0002",
+      "name": "Firmware Version",
+      "description": "0x1000 = V1.0.0.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3,
+      "documented": "0x0003",
+      "name": "Register Map Version",
+      "description": "Default 0x0004.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4,
+      "documented": "0x0004",
+      "name": "Operating Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Booting",
+        "1": "Ready, waiting for measurement",
+        "2": "Continuous measurement running",
+        "3": "Duty-cycle measurement running",
+        "4": "Stopped",
+        "5": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 5,
+      "documented": "0x0005",
+      "name": "Last Status Code",
+      "description": "Result of the last BMV080 SDK call; 0 = success.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 6,
+      "documented": "0x0006",
+      "name": "PM1.0",
+      "description": "Mass concentration, IEEE 754 float, high word first.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "µg/m³",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 8,
+      "documented": "0x0008",
+      "name": "PM2.5",
+      "description": "Mass concentration, IEEE 754 float, high word first.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "µg/m³",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 10,
+      "documented": "0x000A",
+      "name": "PM10",
+      "description": "Mass concentration, IEEE 754 float, high word first.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "µg/m³",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 12,
+      "documented": "0x000C",
+      "name": "Operating Duration",
+      "description": "Float, high word first.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 14,
+      "documented": "0x000E",
+      "name": "Status Flags",
+      "description": "Status bits; bits 10-15 reserved.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Sensor blockage",
+        "1": "PM2.5 out of range",
+        "2": "New PM data ready (cleared once data, flags and counter are read)",
+        "3": "Sensor initialisation complete",
+        "4": "Measurement in progress",
+        "5": "Parameter change pending",
+        "6": "Parameters validated",
+        "7": "Parameters being applied",
+        "8": "Reserved (always 0 with float map)",
+        "9": "A float input was NaN/Inf and was written as 0"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 15,
+      "documented": "0x000F",
+      "name": "Sample Counter",
+      "description": "Increments per sample; wraps after 65535.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 16,
+      "documented": "0x0010",
+      "name": "SDK Major Version",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 17,
+      "documented": "0x0011",
+      "name": "SDK Minor Version",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 18,
+      "documented": "0x0012",
+      "name": "SDK Patch Version",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 19,
+      "documented": "0x0013",
+      "name": "Sensor Unique ID",
+      "description": "12 ASCII characters across 6 registers, high byte first.",
+      "data_type": "STRING",
+      "length": 6,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "0x0000",
+      "name": "RTU Slave Address",
+      "description": "1-247, default 0x57; stored in non-volatile memory.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "0x0001",
+      "name": "Baud Rate",
+      "description": "Stored; applies after reboot.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "2400",
+        "2": "4800",
+        "3": "9600",
+        "4": "14400",
+        "5": "19200",
+        "6": "38400",
+        "7": "57600",
+        "8": "115200"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "0x0002",
+      "name": "Parity & Stop Bit Configuration",
+      "description": "High byte parity: 0 none, 1 even, 2 odd. Low byte stop bits: 1=1, 2=1.5, 3=2.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "0x0003",
+      "name": "Operation Command",
+      "description": "Reads back 0. Not stored.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "1": "Start measurement",
+        "2": "Stop measurement",
+        "3": "Restore default configuration"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "0x0004",
+      "name": "Measurement Mode",
+      "description": "Send a start command after changing.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Continuous",
+        "1": "Duty cycle"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "0x0005",
+      "name": "Measurement Algorithm",
+      "description": "Duty-cycle mode forces Fast Response.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "Fast Response",
+        "2": "Balanced",
+        "3": "High Precision"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "0x0006",
+      "name": "Blockage Detection Switch",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled",
+        "1": "Enabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "0x0007",
+      "name": "Vibration Filter Switch",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disabled",
+        "1": "Enabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "0x0008",
+      "name": "Integration Time",
+      "description": "Float, high word first; default 10.0.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "0x000A",
+      "name": "Duty-Cycle Period",
+      "description": "Integration time plus sleep time; default 30.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "At 9600 8N1, address 0x57: write 0x0001 to holding register 0x0003 to start measuring, then read six input registers from 0x0006 with function 04 for PM1.0, PM2.5 and PM10 as big-endian floats in ug/m3.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 3,
+        "why": "Start measurement command"
+      },
+      {
+        "table": "input_register",
+        "address": 6,
+        "why": "PM1.0"
+      },
+      {
+        "table": "input_register",
+        "address": 8,
+        "why": "PM2.5"
+      },
+      {
+        "table": "input_register",
+        "address": 10,
+        "why": "PM10"
+      },
+      {
+        "table": "input_register",
+        "address": 14,
+        "why": "Status flags"
+      },
+      {
+        "table": "input_register",
+        "address": 4,
+        "why": "Operating status"
+      }
+    ],
+    "enable": "Set the module's DIP switch to the UART side; Modbus RTU is then active at the stored address and baud rate.",
+    "watchdog": null,
+    "quirks": [
+      "Measurement must be started after every power cycle.",
+      "Baud and parity changes take effect after a reboot.",
+      "Changing the algorithm restarts measurement; blockage and vibration settings are re-applied when changed. After changing the measurement mode, send a start command."
+    ],
+    "setup": [
+      "Defaults: 9600 baud, 8 data bits, no parity, 1 stop bit, address 0x57.",
+      "The wiki wiring example connects the board R/T pins to a UART adapter (RainbowLink V2)."
+    ],
+    "gotchas": [
+      "If a PM value reads 0 or NaN, check bit 9 of status flags (0x000E).",
+      "Full-scale PM range is 1000 ug/m3; bit 1 of status flags flags PM2.5 out of range."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-17",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

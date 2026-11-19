@@ -1,0 +1,405 @@
+{
+ "manufacturer": "Vacon",
+ "manufacturer_slug": "vacon",
+ "model": "VACON 10 AC drive (built-in Modbus RTU)",
+ "model_slug": "vacon-10",
+ "short_model": "VACON 10",
+ "aliases": [
+  "VACON 10",
+  "Vacon 10",
+  "VACON0010"
+ ],
+ "equipment_type": "Variable frequency drive",
+ "applies_to": "VACON 10 micro drives on the built-in RS-485 Modbus RTU port, per complete user manual DPD00717F1 (software FW0135V010).",
+ "summary": "Danfoss/Vacon's micro AC drive with Modbus RTU built into the I/O terminals. Parameters and monitoring values are reached by their ID numbers, and IDs 2001-2011 / 2101-2111 form the fieldbus process data block with fixed output content (frequency, speed, current, torque, power, voltages, fault code). This map covers the control and status words, that output block and the Modbus and control-place settings.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": null,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The manual prints each process data item as two Modicon references (32101/42101 for ID 2101) and warns that some PLC drivers need 1 subtracted from the ID. So ID n is holding register 40000 + n, wire address n - 1 (status word 2101 -> address 2100; P2.1 ID 172 -> address 171). The same values can be read with function 04 as input registers."
+ },
+ "default_word_order": null,
+ "firmware": "FW0135V010",
+ "source": {
+  "title": "VACON 10 AC drives Complete User Manual",
+  "doc_number": "DPD00717F1",
+  "revision_date": "2014-04",
+  "url": "https://assets.danfoss.com/documents/latest/275077/AQ361182851694en-000301.pdf",
+  "pages": "9.13 Modbus RTU pp. 93-95 (printed; function codes, address area, process data tables 9.4/9.5, status and control words, speed reference/actual speed); system menu Modbus parameters IDs 808-815; P2.1/P2.5 and P3.3 parameter tables (ch. 8)"
+ },
+ "notes": [
+  "Left out: 2003 and 2103. The process data tables call them 'Reserved' (with a 0.01 % scale) while the text after the tables describes a speed reference (0-10000) and an actual speed (-10000 to 10000) in percent of the min-max range without naming their IDs. Because the manual contradicts itself, the fieldbus speed reference register is not listed.",
+  "2004/2005 input words are assigned with P15.1/P15.4 (PI setpoint / feedback) and are not listed; 2002/2102 general control/status words are left out because their bits are not described.",
+  "Up to 11 consecutive IDs can be read in one request. Supported functions: 03, 04, 06 and 16; broadcast only for writes.",
+  "The slave address parameter note gives the default frame as no parity, 1 stop bit; this manual lists no parity parameter.",
+  "Section 9.13.3 says fieldbus control is active when P2.1 = 3, but the P2.1 parameter table only allows 0 (I/O) and 1 (fieldbus); this map follows the parameter table."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 116,
+   "documented": "40117",
+   "name": "P3.3 Remote control place frequency reference",
+   "description": "3 = fieldbus frequency reference.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Preset speed 0-7",
+    "2": "Keypad",
+    "3": "Fieldbus",
+    "4": "AI1",
+    "5": "AI2",
+    "6": "PI"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 171,
+   "documented": "40172",
+   "name": "P2.1 Remote control place selection",
+   "description": "Set 1 for Modbus control.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "I/O terminals",
+    "1": "Fieldbus"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 210,
+   "documented": "40211",
+   "name": "P2.5 Local / Remote",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Remote control",
+    "1": "Local control"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 808,
+   "documented": "40809",
+   "name": "P2.2 Fieldbus protocol",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Not used",
+    "1": "Modbus used"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 809,
+   "documented": "40810",
+   "name": "P2.3 Slave address",
+   "description": "1-255, factory 1.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 810,
+   "documented": "40811",
+   "name": "P2.4 Baud rate",
+   "description": "Factory 5 = 9600.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "300",
+    "1": "600",
+    "2": "1200",
+    "3": "2400",
+    "4": "4800",
+    "5": "9600"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 813,
+   "documented": "40814",
+   "name": "P2.7 Communication time out",
+   "description": "1 = 1 s, 2 = 2 s, etc.; factory 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "s",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2000,
+   "documented": "42001",
+   "name": "FB Control word",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "Run (0 = stop)",
+    "1": "Direction (1 = counter-clockwise)",
+    "2": "Fault reset on rising edge"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2100,
+   "documented": "42101",
+   "name": "FB Status word",
+   "description": "",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "Drive ready",
+    "1": "Running",
+    "2": "Counter-clockwise",
+    "3": "Fault active",
+    "4": "Alarm active",
+    "5": "Speed reference reached",
+    "6": "Running at zero speed"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2103,
+   "documented": "42104",
+   "name": "Output frequency",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2104,
+   "documented": "42105",
+   "name": "Motor speed",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "rpm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2105,
+   "documented": "42106",
+   "name": "Motor current",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "A",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2106,
+   "documented": "42107",
+   "name": "Motor torque",
+   "description": "Percent of nominal.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2107,
+   "documented": "42108",
+   "name": "Motor power",
+   "description": "Percent of nominal.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2108,
+   "documented": "42109",
+   "name": "Motor voltage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2109,
+   "documented": "42110",
+   "name": "DC link voltage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2110,
+   "documented": "42111",
+   "name": "Active fault code",
+   "description": "Fault code per the manual's fault table; 0 = none.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set P2.2 = 1 (Modbus), address and baud in P2.3/P2.4, and P2.1 = 1. Write 2001 bit 0 = 1 to run; poll 2101 status, 2104 output frequency, 2106 current and 2111 fault code. The manual does not settle which ID carries the speed reference (see notes).",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 2000,
+    "why": "FB control word"
+   },
+   {
+    "table": "holding_register",
+    "address": 2100,
+    "why": "FB status word"
+   },
+   {
+    "table": "holding_register",
+    "address": 2103,
+    "why": "Output frequency, 0.01 Hz"
+   },
+   {
+    "table": "holding_register",
+    "address": 2105,
+    "why": "Motor current, 0.01 A"
+   },
+   {
+    "table": "holding_register",
+    "address": 2110,
+    "why": "Active fault code"
+   },
+   {
+    "table": "holding_register",
+    "address": 171,
+    "why": "P2.1 control place"
+   }
+  ],
+  "enable": "In the system menu set P2.2 Fieldbus protocol = 1 (Modbus), P2.3 slave address (factory 1) and P2.4 baud rate (factory 9600). Set P2.1 = 1 (fieldbus control place); P2.5 must be on remote. P3.3 = 3 selects a fieldbus frequency reference.",
+  "watchdog": "P2.7 Communication time out (ID 814): seconds, factory 10.",
+  "quirks": [
+   "IDs map to Modicon 4xxxx (and 3xxxx) references: wire address = ID - 1.",
+   "Multi-register reads must cover consecutive IDs, at most 11 per request."
+  ],
+  "setup": [
+   "The built-in 120 ohm termination is switched by the right-hand DIP switch above the I/O terminals (off by default)."
+  ],
+  "gotchas": [
+   "Local control (P2.5 = 1 or the keypad Loc/Rem button) overrides the fieldbus control place."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/vacon/vacon-10",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

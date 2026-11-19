@@ -1,0 +1,435 @@
+{
+ "manufacturer": "Cuby",
+ "manufacturer_slug": "cuby",
+ "model": "Cuby smart AC controller (Modbus RTU)",
+ "model_slug": "smart-ac-controller",
+ "short_model": "Cuby",
+ "aliases": [
+  "Cuby Smart",
+  "Cuby AC controller",
+  "Cuby minisplit controller"
+ ],
+ "equipment_type": "VRF / split AC gateway (IR-to-Modbus controller)",
+ "applies_to": "Cuby smart IR controllers for mini-split air conditioners with the Modbus RTU firmware described in the 2025 'MODBUS REGISTERS' sheet (fixed address 1).",
+ "summary": "Cuby makes a small controller that drives mini-split air conditioners over infrared and exposes them on Modbus RTU. The registers set power, mode, fan speed, setpoint, vanes and turbo, and report indoor temperature, humidity, occupancy and contact-open time from Cuby sensors. All values are single 16-bit registers.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The sheet prints both the protocol address (0-based, e.g. 4 for the setpoint) and the PLC address (1-based, 5). The protocol address goes on the wire. The sheet does not name function codes; the registers are listed here as holding registers because the writable rows can only be holding registers and all rows share one address list."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "MODBUS REGISTERS",
+  "doc_number": null,
+  "revision_date": "2025",
+  "url": "https://pages.cuby.mx/hubfs/Fichas%20t%C3%A9cnicas/Modbus-registers.pdf",
+  "pages": "pp. 1-2"
+ },
+ "notes": [
+  "Hosted on Cuby's own HubSpot file storage (pages.cuby.mx).",
+  "The unit address is fixed at 1 and the serial setting is 9600 8N1 in this firmware; the sheet says later firmware will make them configurable.",
+  "Indoor temperature, humidity, occupancy and open time read -32768 until a value is available; signed 16-bit is assumed for those rows because of that initial value.",
+  "Address 5 and other gaps are not listed in the source."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0 (PLC 1)",
+   "name": "AC ON/OFF",
+   "description": "Power state of the air conditioner.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1 (PLC 2)",
+   "name": "AC MODE",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Dry",
+    "3": "Fan only",
+    "4": "Cool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2 (PLC 3)",
+   "name": "FAN SPEED",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Low",
+    "2": "Med",
+    "3": "High"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3 (PLC 4)",
+   "name": "IR PROTOCOL",
+   "description": "IR protocol 0-254; other values keep the configured protocol.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4 (PLC 5)",
+   "name": "AC Temperature Setpoint",
+   "description": "Setpoint 16-31 °C, sent as °C x 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6 (PLC 7)",
+   "name": "Command Type",
+   "description": "Needed only for special commands; use 0 (power) otherwise.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Power",
+    "1": "Temperature",
+    "2": "Mode",
+    "3": "Fan speed",
+    "4": "Display",
+    "5": "Vertical vane",
+    "6": "Horizontal vane",
+    "7": "Turbo",
+    "8": "Units"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7 (PLC 8)",
+   "name": "Display",
+   "description": "On some units any write toggles the display.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "8 (PLC 9)",
+   "name": "Turbo",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "9 (PLC 10)",
+   "name": "Vertical Vane",
+   "description": "Vertical swing; positions 2-6 are model dependent.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "Auto",
+    "2": "Top",
+    "3": "Top-Center",
+    "4": "Center",
+    "5": "Bottom-Center",
+    "6": "Bottom"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "10 (PLC 11)",
+   "name": "Horizontal Vane",
+   "description": "Horizontal swing; positions 2-7 are model dependent.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "Auto",
+    "2": "Left",
+    "3": "Left-Center",
+    "4": "Center",
+    "5": "Right-Center",
+    "6": "Right",
+    "7": "Sides"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "11 (PLC 12)",
+   "name": "Temperature Units",
+   "description": "Display units on air conditioners that support it.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Celsius",
+    "1": "Fahrenheit"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "12 (PLC 13)",
+   "name": "Command Source",
+   "description": "Code 0-31 for who sent the last command (IR remote, app, Modbus, etc.).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "13 (PLC 14)",
+   "name": "Indoor Temperature",
+   "description": "-50 to 125 °C as °C x 10; -32768 until first reading.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "15 (PLC 16)",
+   "name": "Indoor Relative Humidity",
+   "description": "0-100 % as % x 10; -32768 until first reading.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 19,
+   "documented": "19 (PLC 20)",
+   "name": "Occupancy Status",
+   "description": "-32768 until first reading.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Vacant",
+    "1": "Occupied"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "22 (PLC 23)",
+   "name": "Open Time",
+   "description": "Seconds any contact sensor has been open (0-32000); resets when all close.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "s",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 40,
+   "documented": "40 (PLC 41)",
+   "name": "Force IR Command",
+   "description": "Write 1 to send the IR command now; always reads 0.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 48,
+   "documented": "48 (PLC 49)",
+   "name": "FW Version",
+   "description": "Firmware version.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Connect RS485 at 9600 8N1 to unit 1. Write power (0), mode (1), fan (2) and setpoint x10 (4); read indoor temperature (13) and humidity (15).",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Power on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Operating mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Setpoint (x10)"
+   },
+   {
+    "table": "holding_register",
+    "address": 13,
+    "why": "Indoor temperature (x10)"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Fan speed"
+   }
+  ],
+  "enable": "No enable step is described; Modbus RTU is active at fixed address 1.",
+  "watchdog": null,
+  "quirks": [
+   "Setpoint and temperatures are x10 (225 = 22.5 °C).",
+   "Special commands (display, turbo, swing, units) may need Command Type (6) set first.",
+   "Display is a toggle on some air conditioners."
+  ],
+  "setup": [
+   "Fixed address 1, 9600 baud, 8 data bits, no parity, 1 stop bit."
+  ],
+  "gotchas": [
+   "Command Source (12) shows who sent the last command (IR remote, app, Modbus, rules, HTTP API, BACnet and others).",
+   "If reads of the read-only rows fail with function 03, the sheet does not name function codes; try function 04."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/cuby/smart-ac-controller",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

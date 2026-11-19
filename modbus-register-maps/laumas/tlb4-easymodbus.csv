@@ -1,0 +1,26 @@
+Device Name,Host,Port,Unit ID,Transport,Reading Name,Table,Wire Address,Register Number,Modicon,Data Type,Word Order,Bit,Multiplier,Offset Value,Units,Value,Status,Notes
+Laumas TLB4,,502,1,TCP,Firmware version,Holding Register,0,1,40001,UINT16,,,1,0,,,,
+Laumas TLB4,,502,1,TCP,Instrument type,Holding Register,1,2,40002,UINT16,,,1,0,,,,
+Laumas TLB4,,502,1,TCP,Year of manufacture,Holding Register,2,3,40003,UINT16,,,1,0,,,,
+Laumas TLB4,,502,1,TCP,Serial number,Holding Register,3,4,40004,UINT16,,,1,0,,,,
+Laumas TLB4,,502,1,TCP,Program type,Holding Register,4,5,40005,UINT16,,,1,0,,,,BASE or LOAD program; some registers apply to one program only.
+Laumas TLB4,,502,1,TCP,Command register (CMDR),Holding Register,5,6,40006,UINT16,,,1,0,,,,Write a command code to run it; see notes for the codes. | 7 = Semi-automatic tare on (net weight); 8 = Semi-automatic zero; 9 = Tare off (back to gross); 99 = Save setpoints to EEPROM; 100 = Tare weight zero setting (calibration zero); 101 = Acquire single calibration point (sample weight in CALW); 104 = Cancel real calibration; 106 = Acquire one of multiple calibration points; 130 = Activate preset tare (value in PT)
+Laumas TLB4,,502,1,TCP,Status register (SR1),Holding Register,6,7,40007,UINT16,,,1,0,,,,"Weight sign, stability and error flags. | bit 0 = Load cell error; bit 1 = AD converter malfunction; bit 2 = Maximum weight exceeded by 9 divisions; bit 3 = Gross weight over 110% of full scale; bit 4 = Gross weight over 999999 or under -999999; bit 5 = Net weight over 999999 or under -999999; bit 7 = Gross weight negative sign; bit 8 = Net weight negative sign; bit 9 = Peak weight negative sign; bit 10 = Net display mode; bit 11 = Weight stable; bit 12 = Weight within +/- 1/4 division of zero; bit 15 = Load cell references not connected"
+Laumas TLB4,,502,1,TCP,Gross weight (GW),Holding Register,7,8,40008,UINT32,ABCD,,1,0,,,,Magnitude without decimal point; sign is SR1 bit 7.
+Laumas TLB4,,502,1,TCP,Net weight (NW),Holding Register,9,10,40010,UINT32,ABCD,,1,0,,,,Magnitude without decimal point; sign is SR1 bit 8.
+Laumas TLB4,,502,1,TCP,Peak weight (PW),Holding Register,11,12,40012,UINT32,ABCD,,1,0,,,,Magnitude without decimal point; sign is SR1 bit 9. BASE program.
+Laumas TLB4,,502,1,TCP,Divisions and units of measure (DU),Holding Register,13,14,40014,UINT16,,,1,0,,,,"High byte = unit index, low byte = division index (decimals)."
+Laumas TLB4,,502,1,TCP,Display coefficient (COF),Holding Register,14,15,40015,UINT32,ABCD,,0.0001,0,,,,Coefficient x 10000 (BASE program).
+Laumas TLB4,,502,1,TCP,Digital inputs (INS),Holding Register,16,17,40017,UINT16,,,1,0,,,,bit 0 = Input 1 high; bit 1 = Input 2 high
+Laumas TLB4,,502,1,TCP,Digital outputs (OUTS),Holding Register,17,18,40018,UINT16,,,1,0,,,,bit 0 = Output 1 closed; bit 1 = Output 2 closed; bit 2 = Output 3 closed
+Laumas TLB4,,502,1,TCP,Setpoint 1 (SP1),Holding Register,18,19,40019,INT32,ABCD,,1,0,,,,Weight value without decimal point. RAM only until command 99.
+Laumas TLB4,,502,1,TCP,Setpoint 2 (SP2),Holding Register,20,21,40021,INT32,ABCD,,1,0,,,,Weight value without decimal point. RAM only until command 99.
+Laumas TLB4,,502,1,TCP,Setpoint 3 (SP3),Holding Register,22,23,40023,INT32,ABCD,,1,0,,,,Weight value without decimal point. RAM only until command 99.
+Laumas TLB4,,502,1,TCP,Hysteresis 1 (HYS1),Holding Register,38,39,40039,INT32,ABCD,,1,0,,,,Weight value without decimal point.
+Laumas TLB4,,502,1,TCP,Hysteresis 2 (HYS2),Holding Register,40,41,40041,INT32,ABCD,,1,0,,,,Weight value without decimal point.
+Laumas TLB4,,502,1,TCP,Hysteresis 3 (HYS3),Holding Register,42,43,40043,INT32,ABCD,,1,0,,,,Weight value without decimal point.
+Laumas TLB4,,502,1,TCP,Instrument status (IS),Holding Register,49,50,40050,UINT16,,,1,0,,,,LOAD program only: batching state code. | 0 = Idle (weight display); 1 = Formulas display; 2 = Batching constants display; 3 = Consumption display; 4 = System parameters display; 5 = Setting formula number and cycles; 6 = Batching; 12 = Batching waiting phase; 13 = Batching paused; 14 = Batching cycle end phase; 20 = Weight not stable
+Laumas TLB4,,502,1,TCP,Sample weight for calibration (CALW),Holding Register,64,65,40065,INT32,ABCD,,1,0,,,,"Write the loaded test weight, then command 101 or 106; reads back 0 when OK."
+Laumas TLB4,,502,1,TCP,Analog output zero weight (ANA0),Holding Register,66,67,40067,INT32,ABCD,,1,0,,,,Weight giving analog zero; saved to EEPROM.
+Laumas TLB4,,502,1,TCP,Analog output full-scale weight (ANAFS),Holding Register,68,69,40069,INT32,ABCD,,1,0,,,,Weight giving analog full scale; saved to EEPROM.
+Laumas TLB4,,502,1,TCP,Preset tare (PT),Holding Register,72,73,40073,INT32,ABCD,,1,0,,,,"Write the tare, then command 130 to apply it."

@@ -1,0 +1,20 @@
+﻿# Dwyer Series RHPX communicating humidity/temperature transmitter Modbus register map - easymodbus.com - source: https://assets.dwyeromega.com/manuals-do/AQ_RHPX_C.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,0,0001-0002,30001,Relative humidity,,FLOAT32,2,ABCD,1,0,%RH,Read,
+Input register,FC04 read,2,0003-0004,30003,Dew point (°F),,FLOAT32,2,ABCD,1,0,°F,Read,
+Input register,FC04 read,4,0005-0006,30005,Dew point (°C),,FLOAT32,2,ABCD,1,0,°C,Read,
+Input register,FC04 read,6,0007-0008,30007,Enthalpy (BTU/lb),,FLOAT32,2,ABCD,1,0,BTU/lb,Read,
+Input register,FC04 read,8,0009-0010,30009,Enthalpy (kJ/kg),,FLOAT32,2,ABCD,1,0,kJ/kg,Read,
+Input register,FC04 read,10,0011-0012,30011,Absolute humidity (g/m3),,FLOAT32,2,ABCD,1,0,g/m3,Read,
+Input register,FC04 read,12,0013-0014,30013,Absolute humidity (lb/million ft3),,FLOAT32,2,ABCD,1,0,lb/MMCF,Read,
+Input register,FC04 read,14,0015-0016,30015,Temperature (°F),,FLOAT32,2,ABCD,1,0,°F,Read,
+Input register,FC04 read,16,0017-0018,30017,Temperature (°C),,FLOAT32,2,ABCD,1,0,°C,Read,
+Input register,FC04 read,18,0019-0020,30019,Error flags,Bit-coded errors (bits 0-7 used).,UINT32,2,ABCD,1,0,,Read,bit 0 = Invalid address; bit 1 = Sensor range exceeded; bit 2 = Sensor error; bit 3 = No sensor; bit 4 = User settings invalid; bit 5 = Factory settings invalid; bit 6 = External memory failure; bit 7 = Internal memory failure
+Input register,FC04 read,8000,8001-8016,38001,Model number,"ASCII, 32 characters, e.g. 'RHPX-XXX'.",STRING[32],16,,1,0,,Read,
+Input register,FC04 read,8016,8017-8020,38017,Serial number,"ASCII, 8 characters.",STRING[8],4,,1,0,,Read,
+Input register,FC04 read,8020,8021-8028,38021,Firmware version,"ASCII, 16 characters.",STRING[16],8,,1,0,,Read,
+Input register,FC04 read,8028,8029-8032,38029,Date code,"ASCII, 8 characters.",STRING[8],4,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,0001-0002,40001,Humidity offset,-3.5 to +3.5 %RH.,FLOAT32,2,ABCD,1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,0003-0004,40003,Temperature offset,-5.0 to +5.0 °F.,FLOAT32,2,ABCD,1,0,°F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,0005,40005,Humidity display unit,,UINT16,1,,1,0,,Read/write,0 = Dew point (°F); 1 = Dew point (°C); 2 = Relative humidity (%RH); 3 = Enthalpy (BTU/lb); 4 = Enthalpy (lb/million ft3); 5 = Absolute humidity (kJ/kg); 6 = Absolute humidity (g/m3)
+Holding register,"FC03 read / FC06, FC16 write",5,0006,40006,Temperature display unit,,UINT16,1,,1,0,,Read/write,0 = °F; 1 = °C
