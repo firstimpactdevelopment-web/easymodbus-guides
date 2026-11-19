@@ -414,6 +414,9 @@ def breadcrumb_ld(crumbs, last_url):
 
 ORG = {"@type": "Organization", "@id": BASE_URL + "/#org", "name": "Easy Modbus",
        "url": BASE_URL + "/", "logo": BASE_URL + "/icon.svg"}
+# Inline organisation for Dataset creator/publisher: Google's Dataset validator wants a
+# typed, named object there, not a bare @id reference.
+ORG_REF = {"@type": "Organization", "name": "Easy Modbus", "url": BASE_URL + "/"}
 
 
 # ---------------------------------------------------------------------------
@@ -874,13 +877,12 @@ Register numbers, types, scaling and units are reproduced as published; descript
         "description": ((m.get("summary") or "") + " " + desc).strip(),
         "url": url, "keywords": keywords, "isAccessibleForFree": True,
         "license": BASE_URL + "/terms",
-        "creator": {"@id": ORG["@id"]}, "publisher": {"@id": ORG["@id"]},
+        "creator": ORG_REF, "publisher": ORG_REF,
         "dateModified": m["_date"],
         "isBasedOn": {"@type": "CreativeWork", "name": s.get("title") or "", "url": s["url"],
                       "author": {"@type": "Organization", "name": m["manufacturer"]}},
-        "about": {"@type": "Product", "name": "%s %s" % (m["manufacturer"], m["model"]),
-                  "brand": {"@type": "Brand", "name": m["manufacturer"]},
-                  "category": m.get("equipment_type") or ""},
+        "about": {"@type": "Thing", "name": "%s %s" % (m["manufacturer"], m["model"]),
+                  "description": m.get("equipment_type") or ""},
         "variableMeasured": ["Register table", "Wire address (0-based)", "Documented address", "Register name",
                              "Data type", "Word order", "Scale", "Engineering units", "Access",
                              "Enumeration / bit meanings"],
@@ -888,7 +890,8 @@ Register numbers, types, scaling and units are reproduced as published; descript
             {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": BASE_URL + base + ".csv"},
             {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": BASE_URL + base + ".json"},
         ],
-        "includedInDataCatalog": {"@id": clean(hub_path()) + "#catalog"},
+        "includedInDataCatalog": {"@type": "DataCatalog", "name": "Easy Modbus register-map library",
+                                  "url": clean(hub_path())},
     }
     faq_ld = {"@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": ans}} for q, ans in faq]}
@@ -1059,8 +1062,7 @@ document, with CSV and JSON downloads.</p>
        "ccards": "".join(cat_card(c, ms) for c, ms in group_by_category(models)),
        "cards": "".join(card(m) for m in models)}
     catalog = {"@type": "DataCatalog", "@id": url + "#catalog", "name": "Easy Modbus register-map library",
-               "url": url, "description": desc, "publisher": {"@id": ORG["@id"]},
-               "dataset": [{"@id": clean(model_path(m)) + "#dataset"} for m in models]}
+               "url": url, "description": desc, "publisher": ORG_REF}
     item_list = {"@type": "ItemList", "itemListElement": [
         {"@type": "ListItem", "position": i, "url": clean(mfr_path(s)),
          "name": "%s Modbus register maps" % g[0]["manufacturer"]}

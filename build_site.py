@@ -2216,9 +2216,8 @@ def tool_page(slug, title, question, description, intro_html, tool_html, related
         rel = ('\n  <nav class="more">\n    <h2>Related</h2>\n    <ul>\n' + items +
                '\n    </ul>\n  </nav>')
     jsonld = ('{"@context":"https://schema.org","@graph":['
-              '{"@type":"SoftwareApplication","name":' + jstr(question) +
-              ',"applicationCategory":"UtilitiesApplication","operatingSystem":"Any (web browser)"'
-              ',"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}'
+              '{"@type":"WebPage","name":' + jstr(question) +
+              ',"isAccessibleForFree":true'
               ',"description":' + jstr(description) + '},'
               '{"@type":"BreadcrumbList","itemListElement":['
               '{"@type":"ListItem","position":1,"name":"Home","item":"' + BASE_URL + '/index.html"},'
