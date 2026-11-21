@@ -1,0 +1,344 @@
+{
+ "manufacturer": "Northern Design",
+ "manufacturer_slug": "northern-design",
+ "model": "Cube 300 panel kWh meter (Modbus RTU option)",
+ "model_slug": "cube-300",
+ "short_model": "Cube 300",
+ "aliases": [
+  "Cube300",
+  "ND Cube 300",
+  "Northern Design Cube300"
+ ],
+ "equipment_type": "Energy meter",
+ "applies_to": "Cube300 meters fitted with the RS-485 Modbus option, per the October 2005 Modbus Communications manual.",
+ "summary": "The Cube300 is a panel kWh meter; the Modbus option adds an RS-485 Modbus RTU port. It exposes a small set of holding registers: a 32-bit kWh count (plus a second-tariff count), instantaneous kW as a signed count, decimal-exponent scale registers and the meter setup values.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "Each table prints a 0-based data address next to the Modicon register number (512 = 40513). The data address is what goes on the wire: request 512 to read 40513."
+ },
+ "default_word_order": "ABCD",
+ "firmware": null,
+ "source": {
+  "title": "Cube300 Modbus Communications",
+  "doc_number": null,
+  "revision_date": "2005-10",
+  "url": "https://res.cloudinary.com/fastron-electronics/image/upload/v1533451092/Northern%20Design/Cube_300_Modbus_Comms_Manual_2005.10.pdf",
+  "pages": "p. 4 (functions, exceptions); pp. 6-8 (data formats, energy, eScale, instantaneous kW); p. 9 (meter setup); pp. 10-11 (copied table); p. 12 (specification)",
+  "unofficial": true
+ },
+ "notes": [
+  "Northern Design does not host this manual publicly; the link is a copy on a distributor's file host (the same host used for the Cube 350 and multicube manuals).",
+  "32-bit values are a high word at the lower address followed by the low word (LONG = 65536 x high + low), so ABCD.",
+  "Energy registers hold the displayed digits without a decimal point. kWh = raw x 10^(eScale-6) and Wh = raw x 10^(eScale-3), with eScale read from 513 (40514). The manual's formula and worked example both name 40513 (the eScale high word) as the energy value, but the paragraph before them puts the energy count at 40515-40516, so the formula is applied to 514-515.",
+  "Instantaneous kW is a signed count of the displayed digits: kW = raw x 10^(pScale-6), W = raw x 10^(pScale-3), with pScale at 2817. Both are listed with scale 1 and no unit.",
+  "Left out: the read-only copied data table 7680-7699, which repeats the registers above in one block so they can be read with a single function 03 request.",
+  "Supported functions: 03, 04, 06, 08 (sub-function 00 loop-back only) and 16. A request returns at most 20 words."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 512,
+   "documented": "40513",
+   "name": "eScale (high word)",
+   "description": "Always reads 0.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 513,
+   "documented": "40514",
+   "name": "eScale",
+   "description": "Energy decimal exponent; fixed by the CT primary and nominal volts settings.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 514,
+   "documented": "40515",
+   "name": "kWh",
+   "description": "Raw display count; kWh = raw x 10^(eScale-6).",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 516,
+   "documented": "40517",
+   "name": "T2 kWh",
+   "description": "Second-tariff count; reads 0 without the dual tariff option.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2816,
+   "documented": "42817",
+   "name": "Instantaneous kW",
+   "description": "Signed raw display count; negative = export. kW = raw x 10^(pScale-6).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2817,
+   "documented": "42818",
+   "name": "pScale",
+   "description": "Power decimal exponent for register 2816.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3584,
+   "documented": "43585",
+   "name": "CT Primary",
+   "description": "10 to 25,000.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "A",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3585,
+   "documented": "43586",
+   "name": "Nominal Volts",
+   "description": "10 to 55,000.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "V",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3586,
+   "documented": "43587",
+   "name": "Pulse Rate",
+   "description": "Energy register increments per output pulse, 1-1000.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3587,
+   "documented": "43588",
+   "name": "Pulse ON Time x10",
+   "description": "1-100, meaning 0.1 to 10 s.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "s",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3588,
+   "documented": "43589",
+   "name": "Baud",
+   "description": "4800, 9600 or 19200.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3589,
+   "documented": "43590",
+   "name": "Modbus ID",
+   "description": "1-247.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3590,
+   "documented": "43591",
+   "name": "Meter Model",
+   "description": "Reads 300 on a Cube300.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3591,
+   "documented": "43592",
+   "name": "Meter Type",
+   "description": "Variant code; basic Cube300 = 1.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3592,
+   "documented": "43593",
+   "name": "Meter Version",
+   "description": "Firmware issue, e.g. 101 = version 1.01.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read eScale (513) and pScale (2817) once after commissioning, then poll kWh at 514-515 and instantaneous kW at 2816 with function 03. Apply 10^(eScale-6) to the energy count and 10^(pScale-6) to the power count to get kWh and kW.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 513,
+    "why": "Energy exponent eScale"
+   },
+   {
+    "table": "holding_register",
+    "address": 514,
+    "why": "kWh counter"
+   },
+   {
+    "table": "holding_register",
+    "address": 2816,
+    "why": "Instantaneous kW (raw)"
+   },
+   {
+    "table": "holding_register",
+    "address": 2817,
+    "why": "Power exponent pScale"
+   },
+   {
+    "table": "holding_register",
+    "address": 3584,
+    "why": "CT primary"
+   },
+   {
+    "table": "holding_register",
+    "address": 3590,
+    "why": "Meter model check (300)"
+   }
+  ],
+  "enable": "Modbus is a fitted option. Two extra steps in the front-panel programming menu set the baud rate and the unique Modbus address.",
+  "watchdog": null,
+  "quirks": [
+   "Scale registers are exponents offset by 3 or 6 (raw x 10^(eScale-6) for kWh), not plain power-of-ten multipliers.",
+   "Maximum 20 words per request.",
+   "Allow at least 10 ms after each reply before the next request; replies can take up to 250 ms."
+  ],
+  "setup": [
+   "RS-485 half duplex, two wires plus 0 V. Baud 4800, 9600 or 19200; address 1-247, both set on the front panel or over Modbus.",
+   "Fit 120 ohm terminators at the host and at the farthest meter; loop in and out of the meter terminals rather than using spurs.",
+   "Ground the cable shield at the host only and do not use it as the 0 V conductor."
+  ],
+  "gotchas": [
+   "The kWh registers are writable; a careless write changes the billing count.",
+   "The copied data table (7680 onward) is read-only; functions 06 and 16 are refused there."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/northern-design/cube-300",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

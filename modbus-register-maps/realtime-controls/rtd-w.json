@@ -1,0 +1,757 @@
+{
+ "manufacturer": "Realtime Control Systems",
+ "manufacturer_slug": "realtime-controls",
+ "model": "RTD-W Modbus interface for Daikin Altherma HT hydrobox and small inverter chillers",
+ "model_slug": "rtd-w",
+ "short_model": "RTD-W",
+ "aliases": [
+  "RTD-W",
+  "Daikin RTD-W"
+ ],
+ "equipment_type": "Heat pump / chiller Modbus interface",
+ "applies_to": "RTD-W on the P1/P2 bus with a BRC21 controller as main: Daikin Altherma HT hydroboxes, small inverter chillers EWA/YQ16..64 and the heating-only VRV hydrobox; up to 16 units as one group. Instructions 20670-1.07.12.",
+ "summary": "Small Modbus RTU slave that joins the P1/P2 bus of Daikin Altherma HT hydroboxes and small inverter chillers. Holding registers set leaving-water and room setpoints, mode, on/off, domestic hot water and quiet mode; input registers return group status, temperatures x100, pump and compressor state, run hours and per-PCB data.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": null,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The manual states register base 0 and writes H0010 / I0010 for holding / input register 10, so the number after H or I is the wire address. Per-PCB input registers are numbered xx00..xx99 with xx = PCB 01..16; this file lists PCB 01 (I0122..I0147)."
+ },
+ "default_word_order": "ABCD",
+ "firmware": null,
+ "source": {
+  "title": "Instructions pour l'installation de RTD-W (RTD-W Installation Instructions, French)",
+  "doc_number": "20670-1.07.12",
+  "revision_date": null,
+  "url": "https://res.cloudinary.com/sonepar-fr/raw/upload/s--ayUiJ1AJ--/v1/documents/121/RTD-W_Installation_Instructions_20670-1.07_FR.pdf",
+  "pages": "pp. 8-11 (Modbus configuration, data types, control and read-back registers)",
+  "unofficial": true
+ },
+ "notes": [
+  "The source is the French edition of the Realtime Control Systems installation instructions, from a Sonepar (distributor) file host. The maker's own site (realtime-controls.co.uk) was offline and no Daikin-hosted copy was found, so the link is marked unofficial.",
+  "All values are 16-bit unless stated. Temperatures marked 'x100' are signed: raw 2150 = 21.50 °C, raw 65036 = -5.00 °C. Holding-register setpoints are printed in whole °C with no x100 marking and are listed at scale 1.",
+  "Fault codes are in the 'RTD ASCII' format described in the RTD-NET instructions (two characters packed high byte / low byte).",
+  "Supported function codes: 03 and 04 (1..10 registers), 06, and 16 (1..10 registers).",
+  "Only PCB 01 of the per-PCB block is listed. For PCB xx add (xx-1) x 100 (PCB 02 leaving water = I0223).",
+  "The pump run-hour counter is 32-bit unsigned: the manual's data-type table says R holds the high word and R+1 the low word.",
+  "Control fields that the connected unit does not support read 32767 and ignore writes.",
+  "Sensor-input mirror registers I10001..I10006 are left out: their printed range (0..1) and values (0 / 100) disagree.",
+  "The Modbus address is 0..63 on SW1.3..SW1.8. Baud and parity can be changed from the defaults if needed."
+ ],
+ "registers": [
+  {
+   "table": "input_register",
+   "address": 20,
+   "documented": "I0020",
+   "name": "P1P2 PCB count",
+   "description": "Units found, 0..16.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 21,
+   "documented": "I0021",
+   "name": "Group error",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 22,
+   "documented": "I0022",
+   "name": "Group error code",
+   "description": "RTD ASCII format.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 23,
+   "documented": "I0023",
+   "name": "Group average leaving water temperature",
+   "description": "Signed °C x 100.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 36,
+   "documented": "I0036",
+   "name": "Group error sub-code",
+   "description": "0..99.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 50,
+   "documented": "I0050",
+   "name": "Remote controller room temperature",
+   "description": "Signed °C x 100.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 70,
+   "documented": "I0070",
+   "name": "Space heating/cooling on/off",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 71,
+   "documented": "I0071",
+   "name": "Circulation pump running",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 72,
+   "documented": "I0072",
+   "name": "Compressor running",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 74,
+   "documented": "I0074",
+   "name": "Disinfection operation",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Idle",
+    "1": "Busy"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 75,
+   "documented": "I0075",
+   "name": "Setback operation",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Idle",
+    "1": "Busy"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 76,
+   "documented": "I0076",
+   "name": "Defrost / start-up mode",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Idle",
+    "1": "Busy"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 77,
+   "documented": "I0077",
+   "name": "DHW reheat",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Idle",
+    "1": "Busy"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 78,
+   "documented": "I0078",
+   "name": "DHW storage",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Idle",
+    "1": "Busy"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 80,
+   "documented": "I0080 / I0081",
+   "name": "Accumulated pump run hours",
+   "description": "I0080 high word, I0081 low word. Non-volatile.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "h",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 122,
+   "documented": "I0122",
+   "name": "PCB 01 error code",
+   "description": "RTD ASCII format. Per-PCB block; see notes.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 123,
+   "documented": "I0123",
+   "name": "PCB 01 leaving water temperature",
+   "description": "Signed °C x 100.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 131,
+   "documented": "I0131",
+   "name": "PCB 01 return water temperature",
+   "description": "Signed °C x 100.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 132,
+   "documented": "I0132",
+   "name": "PCB 01 DHW tank temperature",
+   "description": "Signed °C x 100. Only if fitted.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 133,
+   "documented": "I0133",
+   "name": "PCB 01 outdoor temperature",
+   "description": "Signed °C x 100.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 136,
+   "documented": "I0136",
+   "name": "PCB 01 error sub-code",
+   "description": "0..99.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 144,
+   "documented": "I0144",
+   "name": "PCB 01 system code",
+   "description": "ASCII character.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 145,
+   "documented": "I0145",
+   "name": "PCB 01 type code",
+   "description": "ASCII character.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 146,
+   "documented": "I0146",
+   "name": "PCB 01 series code",
+   "description": "ASCII character.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 147,
+   "documented": "I0147",
+   "name": "PCB 01 capacity code",
+   "description": "0..251.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "H0001",
+   "name": "Leaving water setpoint, heating",
+   "description": "Whole °C: 25..80 HT hydrobox, 25..50 inverter chiller.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "H0002",
+   "name": "Leaving water setpoint, cooling",
+   "description": "Whole °C: 5..20 HT hydrobox, -10..20 inverter chiller.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "H0003",
+   "name": "Operating mode",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Heating",
+    "2": "Cooling"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "H0004",
+   "name": "Space heating/cooling Modbus on/off",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "H0005",
+   "name": "Room temperature setpoint",
+   "description": "Whole °C, 16..32.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "H0006",
+   "name": "DHW reheat Modbus on/off",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "H0007",
+   "name": "DHW storage start",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Inactive",
+    "1": "Start"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "H0008",
+   "name": "Control source for mode and on/off",
+   "description": "External = Modbus and S inputs only; Local = remote controller only.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "External",
+    "2": "Local",
+    "3": "Changeover (default)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "H0009",
+   "name": "Quiet mode operation",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable",
+    "1": "Enable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "H0010",
+   "name": "Weather-dependent setpoint operation",
+   "description": "",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable",
+    "1": "Enable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "H0011",
+   "name": "Weather-dependent leaving water setpoint offset",
+   "description": "-5..+5 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "H0012",
+   "name": "Pump run-hour counter reset",
+   "description": "Write 55555 to reset (raw value above the signed 16-bit range).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "55555": "Reset"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set the Modbus address on SW1, wire DB/DA/GND, set H0008 to External or Changeover, then write H0001-H0006 for setpoints, mode and on/off and poll I0020-I0078 for status.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Space heating/cooling on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Heating or cooling"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Heating leaving water setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 8,
+    "why": "Who may switch the unit"
+   },
+   {
+    "table": "input_register",
+    "address": 23,
+    "why": "Leaving water temperature (x100)"
+   },
+   {
+    "table": "input_register",
+    "address": 21,
+    "why": "Group error"
+   },
+   {
+    "table": "input_register",
+    "address": 22,
+    "why": "Error code"
+   },
+   {
+    "table": "input_register",
+    "address": 20,
+    "why": "Units found on P1/P2"
+   }
+  ],
+  "enable": "H0008 = 1 (External) or 3 (Changeover, default) lets Modbus switch the unit; 2 (Local) ignores Modbus on/off.",
+  "watchdog": "If P1/P2 communication is lost for one minute the RTD raises an alarm on the fault relay R2; an RS485 communication timeout is also shown on the LEDs.",
+  "quirks": [
+   "Temperatures in input registers are x100 and signed; setpoints in holding registers are whole °C.",
+   "Read at most 10 registers per request."
+  ],
+  "setup": [
+   "RS485 D-Bus: DB(+), DA(-) and common GND, daisy chain only, up to 500 m without repeaters.",
+   "Factory serial settings 9600 baud, no parity, 1 stop bit.",
+   "Power 15..24 V DC, e.g. from X9A on the A3P board."
+  ],
+  "gotchas": [
+   "The RTD-W works as a SUB controller: a BRC21 must be configured as MAIN on the P1/P2 bus."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/realtime-controls/rtd-w",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

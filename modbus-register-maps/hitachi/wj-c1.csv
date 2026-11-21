@@ -1,0 +1,77 @@
+﻿# Hitachi WJ-C1 series inverter (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.hitachi-iesa.com/sites/default/files/supportingdocs/WJ-C1_UsersGuide_NT361X.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,Coil 0001h,00001,RUN command,Works when [A002] = 03.,BIT,1,,1,0,,Read/write,0 = Stop; 1 = Run
+Coil,"FC01 read / FC05, FC15 write",1,Coil 0002h,00002,Rotation direction command,Works when [A002] = 03.,BIT,1,,1,0,,Read/write,0 = Forward; 1 = Reverse
+Coil,"FC01 read / FC05, FC15 write",2,Coil 0003h,00003,External trip (EXT),,BIT,1,,1,0,,Read/write,1 = Trip
+Coil,"FC01 read / FC05, FC15 write",3,Coil 0004h,00004,Reset (RS),,BIT,1,,1,0,,Read/write,1 = Reset
+Coil,"FC01 read / FC05, FC15 write",6,Coil 0007h,00007,Intelligent input terminal 1,OR-ed with the physical terminal.,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",7,Coil 0008h,00008,Intelligent input terminal 2,,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",8,Coil 0009h,00009,Intelligent input terminal 3,,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",9,Coil 000Ah,00010,Intelligent input terminal 4,,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",10,Coil 000Bh,00011,Intelligent input terminal 5,,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",11,Coil 000Ch,00012,Intelligent input terminal 6,,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",12,Coil 000Dh,00013,Intelligent input terminal 7,,BIT,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",14,Coil 000Fh,00015,Operation status,,BIT,1,,1,0,,Read,0 = Stop; 1 = Run
+Coil,"FC01 read / FC05, FC15 write",15,Coil 0010h,00016,Rotation direction,,BIT,1,,1,0,,Read,0 = Forward; 1 = Reverse
+Coil,"FC01 read / FC05, FC15 write",16,Coil 0011h,00017,Inverter ready,,BIT,1,,1,0,,Read,0 = Not ready; 1 = Ready
+Coil,"FC01 read / FC05, FC15 write",18,Coil 0013h,00019,RUN (running),,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",19,Coil 0014h,00020,FA1 constant-frequency reached,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",21,Coil 0016h,00022,OL overload warning,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",23,Coil 0018h,00024,AL alarm,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",27,Coil 001Ch,00028,UV undervoltage,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",31,Coil 0020h,00032,THM motor electronic thermal alarm,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",50,Coil 0033h,00051,NDc communication line disconnection,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",57,Coil 003Ah,00058,WAC capacitor life warning,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",58,Coil 003Bh,00059,WAF cooling-fan life warning,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",60,Coil 003Dh,00061,OHF cooling fin overheat warning,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",71,Coil 0048h,00072,MJA major failure,,BIT,1,,1,0,,Read,0 = OFF; 1 = ON
+Coil,"FC01 read / FC05, FC15 write",73,Coil 004Ah,00074,CRC error,Latched until an error reset.,BIT,1,,1,0,,Read,0 = No error; 1 = With error
+Coil,"FC01 read / FC05, FC15 write",83,Coil 0054h,00084,FREF frequency reference by keypad,,BIT,1,,1,0,,Read,0 = Other than keypad; 1 = Keypad
+Coil,"FC01 read / FC05, FC15 write",84,Coil 0055h,00085,REF RUN command by keypad,,BIT,1,,1,0,,Read,0 = Other than keypad; 1 = Keypad
+Holding register,"FC03 read / FC06, FC16 write",0,0001h (High) / 0002h (Low),40001,Output frequency setting / monitor [F001],Frequency command; 0.00 to max frequency (or PID % when PID on).,UINT32,2,ABCD,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,0003h,40003,Inverter state A,,UINT16,1,,1,0,,Read,0 = Initial state; 2 = Stop; 3 = Running; 4 = Free run stop; 5 = Jogging; 6 = DC braking; 7 = Retry; 8 = Trip; 9 = Undervoltage
+Holding register,"FC03 read / FC06, FC16 write",3,0004h,40004,Inverter status B,,UINT16,1,,1,0,,Read,0 = Stop; 1 = Running; 2 = Trip
+Holding register,"FC03 read / FC06, FC16 write",4,0005h,40005,Inverter status C,,UINT16,1,,1,0,,Read,0 = ---; 1 = Stop; 2 = Decelerating; 3 = Constant speed; 4 = Accelerating; 5 = Forward; 6 = Reverse; 7 = Forward to reverse; 8 = Reverse to forward; 9 = Forward start; 10 = Reverse start
+Holding register,"FC03 read / FC06, FC16 write",5,0006h,40006,PID feedback,"PID feedback written over Modbus, 0-100.00 %.",UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16,0011h,40017,Trip count monitor [d080],"Number of trips, 0-65535.",UINT16,1,,1,0,times,Read,
+Holding register,"FC03 read / FC06, FC16 write",17,0012h,40018,Trip monitor 1: trip code [d081],Latest trip code E01-E99.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",18,0013h,40019,Trip monitor 1: inverter status at trip,Status digit n (0-9) shown after the trip code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",19,0014h (High) / 0015h (Low),40020,Trip monitor 1: output frequency at trip,,UINT32,2,ABCD,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",21,0016h,40022,Trip monitor 1: output current at trip,,UINT16,1,,0.01,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,0017h,40023,Trip monitor 1: DC bus voltage at trip,,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",77,004Eh,40078,Warning monitor [d090],Current warning code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2303,0900h,42304,Write EEPROM,"0 = recalculate motor constants, 1 = store set values in EEPROM.",UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",4096,1001h (High) / 1002h (Low),44097,Output frequency monitor [d001],0.00-590.00 Hz.,UINT32,2,ABCD,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",4098,1003h,44099,Output current monitor [d002],0.00-655.35 A.,UINT16,1,,0.01,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",4099,1004h,44100,Rotation direction monitor [d003],"Codes 0-2; guide shows only keypad symbols F / o / r, not the mapping.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4100,1005h (High) / 1006h (Low),44101,PID feedback value monitor [d004],,UINT32,2,ABCD,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",4102,1007h,44103,Input terminal monitor [d005],Bit per input terminal 1-8.,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4103,1008h,44104,Output terminal monitor [d006],"Bits for outputs 11, 12 and relay.",BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4106,100Bh (High) / 100Ch (Low),44107,Detect speed monitor [d008],-590.00 to +590.00 Hz.,INT32,2,ABCD,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",4108,100Dh,44109,Torque reference monitor [d009],,INT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",4111,1010h,44112,Output torque monitor [d012],,INT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",4112,1011h,44113,Output voltage monitor [d013],,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",4113,1012h,44114,Input power monitor [d014],,UINT16,1,,0.1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",4114,1013h (High) / 1014h (Low),44115,Accumulated input power monitor [d015],Unit is 1 kWh times the [b079] gain.,UINT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4116,1015h (High) / 1016h (Low),44117,Accumulated RUN time monitor [d016],,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",4118,1017h (High) / 1018h (Low),44119,Accumulated power-on time monitor [d017],,UINT32,2,ABCD,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",4120,1019h,44121,Cooling fin temperature monitor [d018],-20.0 to 150.0.,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",4133,1026h,44134,DC bus voltage monitor [d102],,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",4134,1027h,44135,BRD load ratio monitor [d103],Braking resistor duty.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",4135,1028h,44136,Electronic thermal load ratio monitor (motor) [d104],,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",4184,1059h,44185,Frequency input source monitor [d062],,UINT16,1,,1,0,,Read,0 = Keypad (multi-speed 0); 1 = Multi-speed 1; 2 = Multi-speed 2; 3 = Multi-speed 3; 4 = Multi-speed 4; 5 = Multi-speed 5; 6 = Multi-speed 6; 7 = Multi-speed 7; 8 = Multi-speed 8; 9 = Multi-speed 9; 10 = Multi-speed 10; 11 = Multi-speed 11; 12 = Multi-speed 12; 13 = Multi-speed 13; 14 = Multi-speed 14; 15 = Multi-speed 15; 16 = Jogging; 18 = Modbus communication; 19 = Option; 21 = External POT; 22 = Pulse input; 23 = Calculation function result; 24 = EzSQ; 25 = [Ai1] input; 26 = [Ai2] input; 27 = [Ai1] + [Ai2] input
+Holding register,"FC03 read / FC06, FC16 write",4185,105Ah,44186,RUN command input source monitor [d063],,UINT16,1,,1,0,,Read,1 = Control terminal; 2 = Keypad (RUN key); 3 = Modbus communication; 4 = Option
+Holding register,"FC03 read / FC06, FC16 write",4237,108Eh,44238,Analog input [Ai1] monitor [d130],Raw 0-1023.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4238,108Fh,44239,Analog input [Ai2] monitor [d131],Raw 0-1023.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4354,1103h (High) / 1104h (Low),44355,"Acceleration time 1, 1st motor [F002]",0.00-3600.00 s.,UINT32,2,ABCD,0.01,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4356,1105h (High) / 1106h (Low),44357,"Deceleration time 1, 1st motor [F003]",0.00-3600.00 s.,UINT32,2,ABCD,0.01,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4358,1107h,44359,RUN-key rotation direction [F004],,UINT16,1,,1,0,,Read/write,0 = Forward; 1 = Reverse
+Holding register,"FC03 read / FC06, FC16 write",4608,1201h,44609,"Frequency input source, 1st motor [A001]",Set 03 to take the frequency from Modbus.,UINT16,1,,1,0,,Read/write,0 = External operator POT; 1 = Control terminal; 2 = Parameter setting; 3 = Modbus communication; 4 = Option; 6 = Pulse input; 7 = Program function (EzSQ); 10 = Calculation function result
+Holding register,"FC03 read / FC06, FC16 write",4609,1202h,44610,"RUN command source, 1st motor [A002]",Set 03 to run/stop from Modbus.,UINT16,1,,1,0,,Read/write,1 = Control terminal; 2 = Keypad (RUN key); 3 = Modbus communication; 4 = Option
+Holding register,"FC03 read / FC06, FC16 write",5194,144Bh,45195,RS485 baud rate [C071],,UINT16,1,,1,0,,Read/write,3 = 2400 bps; 4 = 4800 bps; 5 = 9600 bps; 6 = 19.2 kbps; 7 = 38.4 kbps; 8 = 57.6 kbps; 9 = 76.8 kbps; 10 = 115.2 kbps
+Holding register,"FC03 read / FC06, FC16 write",5195,144Ch,45196,RS485 node address [C072],1-247.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5197,144Eh,45198,RS485 parity [C074],,UINT16,1,,1,0,,Read/write,0 = No parity; 1 = Even parity; 2 = Odd parity
+Holding register,"FC03 read / FC06, FC16 write",5198,144Fh,45199,RS485 stop bits [C075],,UINT16,1,,1,0,,Read/write,1 = 1 bit; 2 = 2 bits
+Holding register,"FC03 read / FC06, FC16 write",5199,1450h,45200,RS485 communication error action [C076],,UINT16,1,,1,0,,Read/write,0 = Trip; 1 = Trip after deceleration stop; 2 = Ignore; 3 = Free run stop; 4 = Deceleration stop
+Holding register,"FC03 read / FC06, FC16 write",5200,1451h,45201,RS485 communication timeout [C077],"0.00 = disabled, 0.01-99.99 s.",UINT16,1,,0.01,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5201,1452h,45202,RS485 communication wait time [C078],Extra reply delay.,UINT16,1,,1,0,ms,Read/write,

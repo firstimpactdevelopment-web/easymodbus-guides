@@ -1,0 +1,171 @@
+{
+  "manufacturer": "JUMO",
+  "manufacturer_slug": "jumo",
+  "model": "ecoLine NTU digital turbidity sensor (Modbus RTU)",
+  "model_slug": "ecoline-ntu",
+  "short_model": "ecoLine NTU",
+  "aliases": [
+    "202670",
+    "JUMO ecoLine NTU",
+    "ecoLine NTU type 202670"
+  ],
+  "equipment_type": "Sensor (turbidity)",
+  "applies_to": "JUMO ecoLine NTU type 202670 with RS-485 Modbus RTU (interface description V1.01).",
+  "summary": "The JUMO ecoLine NTU is an optical turbidity sensor with a built-in RS-485 Modbus RTU interface. Measurements are started by the master. This map covers the start command, the measurement status word, temperature and turbidity in NTU and FNU.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "Tables list the Modbus PDU address in decimal and hex; the value goes into the request unchanged (the example reads the temperature at start address 0x0053)."
+  },
+  "default_word_order": "ABCD",
+  "firmware": null,
+  "source": {
+    "title": "JUMO ecoLine O-DO/NTU - Digital sensors for turbidity and oxygen measurement - Modbus interface description",
+    "doc_number": "20261300T92Z003K000 V1.01/EN/00692386",
+    "revision_date": null,
+    "url": "https://www.jumo.net/attachments/JUMO/attachmentdownload?id=494310",
+    "pages": "Data types and float example ch. 2.5-2.6 (pp. 10-13); serial settings ch. 5.1 (p. 21); O-DO tables pp. 25-27; NTU tables pp. 29-30"
+  },
+  "notes": [
+    "Floats are IEEE 754 sent high word first (ABCD); the worked example returns 41 CA 66 66 = 25.3 °C for start address 0x0053.",
+    "Measurements are triggered: write a start command to register 1, wait at least 300 ms without any Modbus traffic, poll the status word at 82 until no field reads 7, then read the values.",
+    "Integers are unsigned 16-bit, high byte first.",
+    "Each 3-bit field: 0 OK, 1 OK but outside sensor spec, 2 OK with reduced accuracy, 3 OK (reserved), 4 failed outside spec, 5 failed (too much extraneous light), 6 failed (reserved), 7 not yet complete.",
+    "The status table names the third field FTU while the value table uses FNU; both refer to the formazin nephelometric reading.",
+    "The NTU step-by-step text mentions a start value of 31, but the address table lists only 1, 3 and 5; this map follows the table.",
+    "The document gives the address range 1-247 but does not state a factory default address."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "1 (0x0001)",
+      "name": "Start measuring operation",
+      "description": "Starts one measurement cycle.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "1": "Temperature only",
+        "3": "Temperature + turbidity NTU",
+        "5": "Temperature + turbidity FNU"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 82,
+      "documented": "82 (0x0052)",
+      "name": "Measuring operation status",
+      "description": "Bits 0-2 temp, 3-5 NTU, 6-8 FNU; field value 7 = not done.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 83,
+      "documented": "83 (0x0053)",
+      "name": "Temperature",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 85,
+      "documented": "85 (0x0055)",
+      "name": "Turbidity",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "NTU",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 87,
+      "documented": "87 (0x0057)",
+      "name": "Turbidity",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "units": "FNU",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Write 3 (NTU) or 5 (FNU) to register 1, wait 300 ms, poll register 82 until no 3-bit field equals 7, then read 83-88 as ABCD floats.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Start a measurement"
+      },
+      {
+        "table": "holding_register",
+        "address": 82,
+        "why": "Measurement status"
+      },
+      {
+        "table": "holding_register",
+        "address": 83,
+        "why": "Temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 85,
+        "why": "Turbidity NTU"
+      }
+    ],
+    "enable": "Modbus RTU is the sensor's native interface; set the address with JUMO DSM software.",
+    "watchdog": null,
+    "quirks": [
+      "Floats are high word first (ABCD).",
+      "No Modbus requests are allowed for 300 ms after a start command."
+    ],
+    "setup": [
+      "9600 baud, 8 data bits, no parity, 1 stop bit; address 1-247.",
+      "Wire A/B on M12 pins 5/4; the sensor needs +5 V on pin 1."
+    ],
+    "gotchas": [
+      "Strong ambient light makes readings fail (status 5) or lose accuracy (status 2)."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

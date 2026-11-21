@@ -1,0 +1,72 @@
+﻿# Mitsubishi Electric Procon MelcoRETAIL MINI controller for Air-To-Air split units Modbus register map - easymodbus.com - source: https://library.mitsubishielectric.co.uk/pdf/download_full/3632
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,00001,00001,Drive On/Off,Same as holding register 7.,BIT,1,,1,0,,Read/write,0 = Drive off; 1 = Drive on
+Discrete input,FC02 read,0,10001,10001,Force ON input state,,BIT,1,,1,0,,Read,0 = Input off (open); 1 = Input on (closed)
+Discrete input,FC02 read,1,10002,10002,Force OFF input state,,BIT,1,,1,0,,Read,0 = Input off (open); 1 = Input on (closed)
+Discrete input,FC02 read,2,10003,10003,Lock/Auto input state,,BIT,1,,1,0,,Read,0 = Input off (open); 1 = Input on (closed)
+Discrete input,FC02 read,3,10004,10004,External fault input state,,BIT,1,,1,0,,Read,0 = Input off (open); 1 = Input on (closed)
+Discrete input,FC02 read,4,10005,10005,Running status relay state,,BIT,1,,1,0,,Read,0 = Relay de-energised; 1 = Relay energised
+Discrete input,FC02 read,5,10006,10006,Heating status relay state,,BIT,1,,1,0,,Read,0 = Relay de-energised; 1 = Relay energised
+Discrete input,FC02 read,6,10007,10007,Cooling status relay state,,BIT,1,,1,0,,Read,0 = Relay de-energised; 1 = Relay energised
+Discrete input,FC02 read,7,10008,10008,Fault relay state,,BIT,1,,1,0,,Read,0 = Relay de-energised; 1 = Relay energised
+Discrete input,FC02 read,8,10009,10009,Comms settings switch (DIP 1-6),Reports the switch position; the table's meaning text is the reverse of the DIP section.,BIT,1,,1,0,,Read,0 = DIP 1-6 OFF; 1 = DIP 1-6 ON
+Discrete input,FC02 read,9,9 / 10000,10010,Protocol selection switch (DIP 1-7),Modicon number printed as 10000 in the manual.,BIT,1,,1,0,,Read,0 = Reserved; 1 = Modbus RTU
+Discrete input,FC02 read,10,10011,10011,Auto/Lock mode selection switch (DIP 1-8),,BIT,1,,1,0,,Read,0 = Auto mode; 1 = Lock mode
+Discrete input,FC02 read,11,10012,10012,Deadband switch (DIP 2-1),,BIT,1,,1,0,,Read,0 = Disabled; 1 = Enabled
+Discrete input,FC02 read,12,10013,10013,Setpoint limiting switch (DIP 2-2),,BIT,1,,1,0,,Read,0 = Disabled; 1 = Enabled
+Discrete input,FC02 read,13,10014,10014,Timeout switch (DIP 2-3),,BIT,1,,1,0,,Read,0 = Disabled; 1 = Enabled
+Discrete input,FC02 read,14,10015,10015,Analogue input type switch (DIP 2-4),,BIT,1,,1,0,,Read,0 = Voltage; 1 = Resistance
+Input register,FC04 read,0,30001,30001,Room temperature,,UINT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,1,30002,30002,Fault code (hex),"0x8000 = no error, 0x6999 = no comms with indoor unit.",UINT16,1,,1,0,,Read,27033 = Bad communication with indoor unit; 32768 = No error
+Input register,FC04 read,3,30004,30004,Firmware version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,5,30006,30006,Modbus comms counter,Counts valid Modbus commands; wraps after 65535.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,8,30009,30009,Fault code (decimal),,UINT16,1,,1,0,,Read,6999 = Bad communication with indoor unit; 8000 = No error
+Input register,FC04 read,10,30011,30011,Current DIP switch values,Raw DIP switch value (bit layout not given).,UINT16,1,,1,0,,Read,
+Input register,FC04 read,11,30012 / 30013,30012,Occupancy mode input value,mV (voltage inputs) or ohm (resistance inputs).,UINT32,2,CDAB,1,0,mV / ohm,Read,
+Input register,FC04 read,13,30014 / 30015,30014,Fan speed input value,mV (voltage inputs) or ohm (resistance inputs).,UINT32,2,CDAB,1,0,mV / ohm,Read,
+Input register,FC04 read,15,30016 / 30017,30016,Mode input value,mV (voltage inputs) or ohm (resistance inputs).,UINT32,2,CDAB,1,0,mV / ohm,Read,
+Input register,FC04 read,17,30018 / 30019,30018,Setpoint input value,mV (voltage inputs) or ohm (resistance inputs).,UINT32,2,CDAB,1,0,mV / ohm,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Drive mode,i-see codes are read only.,UINT16,1,,1,0,,Read/write,1 = Heating; 2 = Humidity reduction; 3 = Cooling; 7 = Ventilation / clean air; 8 = Auto; 9 = i-see heating (read only); 10 = i-see humidity reduction (read only); 11 = i-see cooling (read only)
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Temperature setpoint,,UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Fan speed,,UINT16,1,,1,0,,Read/write,0 = Auto; 2 = Quiet; 3 = Weak; 5 = Strong; 6 = Very strong (SH i)
+Holding register,"FC03 read / FC06, FC16 write",3,40004,40004,Air direction,,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Position 1; 2 = Position 2; 3 = Position 3; 4 = Position 4; 5 = Position 5; 7 = Swing
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Modbus slave ID,1-247; used when DIP 1-1 to 1-5 are all ON.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,RS-485 baud rate,Used when DIP 1-6 is OFF.,UINT16,1,,1,0,,Read/write,0 = 9600; 1 = 1200; 2 = 2400; 3 = 4800; 4 = 9600; 5 = 14400; 6 = 19200; 7 = 28800; 8 = 38400; 9 = 56000; 10 = 57600; 11 = 115200
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,RS-485 parity,Used when DIP 1-6 is OFF.,UINT16,1,,1,0,,Read/write,0 = None; 1 = Even; 2 = Odd
+Holding register,"FC03 read / FC06, FC16 write",7,40008,40008,Drive On/Off,,UINT16,1,,1,0,,Read/write,0 = Drive off; 1 = Drive on
+Holding register,"FC03 read / FC06, FC16 write",8,40009,40009,Room temperature,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,40010,40010,Fault code (hex),0x8000 = no error.,UINT16,1,,1,0,,Read,27033 = Bad communication with indoor unit; 32768 = No error
+Holding register,"FC03 read / FC06, FC16 write",10,40011,40011,Firmware version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",11,40012,40012,Modbus comms counter,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,40013,40013,Fault code (decimal),,UINT16,1,,1,0,,Read,6999 = Bad communication with indoor unit; 8000 = No error
+Holding register,"FC03 read / FC06, FC16 write",13,40014,40014,System type detected,,UINT16,1,,1,0,,Read,0 = Air-to-air; 1 = Air-to-water
+Holding register,"FC03 read / FC06, FC16 write",14,40015,40015,Deadband enabled state,Value text in the manual says 'DIP switch 8'; deadband is DIP 2-1 on this unit.,UINT16,1,,1,0,,Read,0 = Disabled; 1 = Enabled
+Holding register,"FC03 read / FC06, FC16 write",15,40016,40016,BMS room temperature (signed),Room reading from the BMS for the setpoint offset feature.,INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",16,40017,40017,BMS room temperature,"Unsigned version, 0-50 °C.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17,40018,40018,BMS virtual setpoint,Whole degrees.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",18,40019,40019,Deadband heating setpoint,At least 2 °C below the deadband cooling setpoint. Default 19 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",19,40020,40020,Deadband cooling setpoint,At least 2 °C above the deadband heating setpoint. Default 23 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32,40033,40033,Auto mode setpoint high limit,Default 30 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",33,40034,40034,Auto mode setpoint low limit,Default 16 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",34,40035,40035,Cooling mode setpoint high limit,Default 30 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",35,40036,40036,Cooling mode setpoint low limit,Default 16 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",36,40037,40037,Heating mode setpoint high limit,Default 30 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",37,40038,40038,Heating mode setpoint low limit,Default 16 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",38,40039,40039,In-occupancy cooling setpoint,Occupancy mode. Default 23 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",39,40040,40040,In-occupancy heating setpoint,Occupancy mode. Default 21 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40,40041,40041,Staff-in cooling setpoint,Occupancy mode. Default 24 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41,40042,40042,Staff-in heating setpoint,Occupancy mode. Default 18 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",42,40043,40043,Unoccupied cooling setpoint,Occupancy mode. Default 26 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43,40044,40044,Unoccupied heating setpoint,Occupancy mode. Default 16 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",44,40045,40045,Deadband cooling setpoint (2),Second deadband cooling row in the manual. Default 23 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",45,40046,40046,Deadband heating setpoint (2),Second deadband heating row in the manual. Default 19 °C.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",46,40047,40047,Auto mode timeout,Time in auto mode before the unit drops to fan mode. Default 300 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",51,40052,40052,Relay manual override start/stop,1 = allow override via 52-55; times out after 20 minutes.,UINT16,1,,1,0,,Read/write,0 = End override; 1 = Start override
+Holding register,"FC03 read / FC06, FC16 write",52,40053,40053,Relay 1 override (ON/OFF),,UINT16,1,,1,0,,Read/write,0 = De-energise relay; 1 = Energise relay
+Holding register,"FC03 read / FC06, FC16 write",53,40054,40054,Relay 2 override (HEATING),,UINT16,1,,1,0,,Read/write,0 = De-energise relay; 1 = Energise relay
+Holding register,"FC03 read / FC06, FC16 write",54,40055,40055,Relay 3 override (COOLING),,UINT16,1,,1,0,,Read/write,0 = De-energise relay; 1 = Energise relay
+Holding register,"FC03 read / FC06, FC16 write",55,40056,40056,Relay 4 override (FAULT),,UINT16,1,,1,0,,Read/write,0 = De-energise relay; 1 = Energise relay
+Holding register,"FC03 read / FC06, FC16 write",56,40057,40057,Auto mode timeout override,Write a number of seconds to shorten the current Auto Mode run.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57,40058,40058,Heating relay temperature offset,Drop below setpoint before the heating relay energises.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",58,40059,40059,Cooling relay temperature offset,Rise above setpoint before the cooling relay energises.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",59,40060,40060,Relay switching delay,"Delay before the on/off, heating and cooling relays change.",UINT16,1,,1,0,s,Read/write,

@@ -1,0 +1,53 @@
+﻿"# Mitsubishi Electric FR-A800 inverter (RS-485 terminals, Modbus RTU) Modbus register map - easymodbus.com - source: https://dl.mitsubishielectric.com/dl/fa/document/manual/inv/ib0600503eng/ib0600503engp.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Inverter reset,Write any value to reset the inverter.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Parameter clear,Write H965A to clear parameters.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",3,40004,40004,All parameter clear,Write H99AA to clear all parameters.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Parameter clear (keep comm settings),Write H5A96; communication parameters are not cleared.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,All parameter clear (keep comm settings),Write HAA99; communication parameters are not cleared.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",8,40009,40009,Control input command / inverter status,"Write = control input command, read = inverter status.",BITMAP16,1,,1,0,,Read/write,bit 0 = Write: stop command / Read: RUN (inverter running); bit 1 = Write: forward rotation command / Read: forward rotation output; bit 2 = Write: reverse rotation command / Read: reverse rotation output; bit 3 = Write: RH (high speed) / Read: SU (up to frequency); bit 4 = Write: RM (middle speed) / Read: OL (overload warning); bit 5 = Write: RL (low speed) / Read: IPF (instantaneous power failure / undervoltage); bit 6 = Write: JOG / Read: FU (frequency detection); bit 7 = Write: RT (second function) / Read: ABC1 (fault); bit 8 = Write: AU (terminal 4 input selection) / Read: ABC2; bit 9 = Write: CS (automatic restart / flying start selection) / Read: safety monitor output; bit 10 = Write: MRS (output stop) / Read: 0; bit 11 = Write: STP (start self-holding) / Read: 0; bit 12 = Write: RES (reset) / Read: 0; bit 15 = Read: fault occurrence
+Holding register,"FC03 read / FC06, FC16 write",9,40010,40010,Operation mode / inverter setting,"Read returns the current mode; write H0010 EXT, H0011 PU, H0014 NET.",UINT16,1,,1,0,,Read/write,0 = Read: EXT; 1 = Read: PU; 2 = Read: EXT JOG; 3 = Read: PU JOG; 4 = Read: NET; 5 = Read: PU + EXT; 16 = Write: EXT (H0010); 17 = Write: PU (H0011); 20 = Write: NET (H0014)
+Holding register,"FC03 read / FC06, FC16 write",13,40014,40014,Set frequency (RAM),"Frequency command, not stored in EEPROM.",UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",14,40015,40015,Set frequency (EEPROM),"Frequency command, also stored in EEPROM.",UINT16,1,,0.01,0,Hz,Write,
+Holding register,"FC03 read / FC06, FC16 write",200,40201,40201,Output frequency,,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",202,40203,40203,Output voltage,,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",204,40205,40205,Set frequency,,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",205,40206,40206,Operation speed,Motor speed per Pr.37/Pr.144.,UINT16,1,,1,0,r/min,Read,
+Holding register,"FC03 read / FC06, FC16 write",207,40208,40208,Converter output voltage,DC bus voltage.,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",208,40209,40209,Regenerative brake duty,Brake duty set in Pr.70 (standard model).,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",209,40210,40210,Electronic thermal O/L relay load factor,"Motor thermal accumulation, 100% = trip level.",UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",211,40212,40212,Converter output voltage peak,DC bus peak since power-up.,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",214,40215,40215,Input terminal status,1 = terminal on.,BITMAP16,1,,1,0,,Read,bit 0 = STF; bit 1 = STR; bit 2 = AU; bit 3 = RT; bit 4 = RL; bit 5 = RM; bit 6 = RH; bit 7 = JOG; bit 8 = MRS; bit 9 = STP (STOP); bit 10 = RES; bit 11 = CS; bit 14 = S2; bit 15 = S1
+Holding register,"FC03 read / FC06, FC16 write",215,40216,40216,Output terminal status,1 = terminal on.,BITMAP16,1,,1,0,,Read,bit 0 = RUN; bit 1 = SU; bit 2 = IPF; bit 3 = OL; bit 4 = FU; bit 5 = ABC1; bit 6 = ABC2; bit 7 = So (SO)
+Holding register,"FC03 read / FC06, FC16 write",216,40217,40217,Load meter,Torque current as % of Pr.56.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",219,40220,40220,Cumulative energization time,Wraps at 65535 h.,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",222,40223,40223,Actual operation time,Wraps at 65535 h; reset with Pr.171.,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",223,40224,40224,Motor load factor,Output current as % of inverter rated current.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",236,40237,40237,Heat sink temperature,Monitor range 0-130 °C.,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",251,40252,40252,PID set point,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",252,40253,40253,PID measured value,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",260,40261,40261,Motor thermal load factor,E.THM trips at 100%.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",261,40262,40262,Inverter thermal load factor,E.THT trips at 100%.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",266,40267,40267,PID measured value 2,Shown whenever PID is enabled.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",291,40292,40292,Second PID set point,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",292,40293,40293,Second PID measured value,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",500,40501,40501,Fault record 1,Low byte = error code. Write any value to 40501 to clear history.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",501,40502,40502,Fault record 2,Low byte = error code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",502,40503,40503,Fault record 3,Low byte = error code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",503,40504,40504,Fault record 4,Low byte = error code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",504,40505,40505,Fault record 5,Low byte = error code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",505,40506,40506,Fault record 6,Low byte = error code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",506,40507,40507,Fault record 7,Low byte = error code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",507,40508,40508,Fault record 8,Low byte = error code.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1000,41001,41001,Pr.1 Maximum frequency,,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1001,41002,41002,Pr.2 Minimum frequency,,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1003,41004,41004,Pr.4 Multi-speed setting (high speed),,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1004,41005,41005,Pr.5 Multi-speed setting (middle speed),,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1005,41006,41006,Pr.6 Multi-speed setting (low speed),,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1078,41079,41079,Pr.79 Operation mode selection,,UINT16,1,,1,0,,Read/write,0 = External/PU switchover (External at power-on); 1 = Fixed PU operation; 2 = Fixed External operation (NET switchable); 3 = External/PU combined mode 1; 4 = External/PU combined mode 2; 6 = Switchover during operation; 7 = External operation (PU interlock)
+Holding register,"FC03 read / FC06, FC16 write",1330,41331,41331,Pr.331 RS-485 communication station number,0 = broadcast; 1-247 under Modbus RTU.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1331,41332,41332,Pr.332 RS-485 communication speed,Setting x 100 = bps (96 = 9600).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1333,41334,41334,Pr.334 RS-485 communication parity check selection,Under Modbus RTU this also sets the stop bits.,UINT16,1,,1,0,,Read/write,"0 = No parity (stop bits per Pr.333); 1 = Odd parity, 1 stop bit; 2 = Even parity, 1 stop bit"
+Holding register,"FC03 read / FC06, FC16 write",1342,41343,41343,Pr.343 Communication error count,Modbus RTU error count.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1538,41539,41539,Pr.539 MODBUS RTU communication check time interval,0 = Modbus allowed but output shut off in NET mode; 9999 = no check.,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1548,41549,41549,Pr.549 Protocol selection,,UINT16,1,,1,0,,Read/write,0 = Mitsubishi inverter protocol (computer link); 1 = MODBUS RTU

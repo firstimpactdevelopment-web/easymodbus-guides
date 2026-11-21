@@ -1,0 +1,1731 @@
+{
+ "manufacturer": "Bosch",
+ "manufacturer_slug": "bosch",
+ "model": "Control Air 5600 water-to-air heat pump controller (Modbus RTU, standard software)",
+ "model_slug": "control-air-5600-water-to-air",
+ "short_model": "Control Air 5600 WtA",
+ "aliases": [
+  "Control Air 5600",
+  "IPL WAZ",
+  "IPL_WAZ_1_03",
+  "Bosch water-to-air DDC controller",
+  "BTC 761601101"
+ ],
+ "equipment_type": "Heat pump (water-to-air heat pump controller)",
+ "applies_to": "Bosch commercial water-to-air heat pumps fitted with the Control Air 5600 DDC controller running the water-to-air standard software (integration points list version 1.03).",
+ "summary": "The Bosch Control Air 5600 is a BACnet-native DDC controller for water-to-air heat pumps whose EIA-485 port can also run Modbus RTU or N2. The integration points list gives each point a BACnet object and a Modbus register. This map holds the binary commands, alarm and status bits and the mode registers; the floating-point temperatures and setpoints are left out.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "Registers are printed Modicon style: coils 00001 up, discrete inputs 10001 up, input registers 30001 up, holding registers 40001 up. Subtract the base (and 1) for the wire address, e.g. discrete input 10013 = wire 12."
+ },
+ "default_word_order": null,
+ "firmware": "Water-to-air standard software, IPL version 1.03",
+ "source": {
+  "title": "IPL_WAZ_1_03 (Control Air 5600 integration points list, water-to-air; the sheet prints no title)",
+  "doc_number": "IPL_WAZ_1_03 (2025-06-05)",
+  "revision_date": "2025-06",
+  "url": "https://www.bosch-homecomfort.com/us/media/country_pool/service/technical_guides/ipl_waz_1_03_10-25.pdf",
+  "pages": "pp. 1-5 (one table)"
+ },
+ "notes": [
+  "Left out: every point typed 'Holding Register (Float)' or 'Input Register (Float)' (setpoints, temperatures, configuration values, demand percentages). They are IEEE floats over two registers, and neither the points list nor the Control Air 5600 Applications Manual states the word order.",
+  "Also left out: row 39 'Cooling Demand Percentage' (type cell cut to 'Holding', probably float) and rows 18-19 (Equipment Touch selections with no register).",
+  "The 'Signed' multi-state registers are treated as one 16-bit signed register each.",
+  "Row 91 (Compressor 1 Runtime, discrete input 10006) carries the fan-mode text in the source; its states are not given here. Compressor 2 runtime (10007) is 1 = run-time timer expired.",
+  "Some state texts are printed the opposite way to their neighbours (10015 economizer cooling 0 = On, 10005 circulation pump 0 = running); they are copied as printed.",
+  "The same register list appears as section 13 of the Control Air 5600 Applications Manual BTC 761601101 C (01.2026), which also covers the DIP switches and rotary address: https://www.bosch-homecomfort.com/us/media/country_pool/documents/application-manual/controls/control_air_5600_applications_manual_01.2026.pdf"
+ ],
+ "registers": [
+  {
+   "table": "coil",
+   "address": 0,
+   "documented": "1",
+   "name": "Occupancy Command (BAS)",
+   "description": "BV:1",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Unoccupied",
+    "1": "Occupied (Enables Unit Operation)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 1,
+   "documented": "00002",
+   "name": "Compressor 1 Runtime Reset",
+   "description": "BV:13; momentary: write 1 then 0",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Reset Off",
+    "1": "Reset On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 2,
+   "documented": "00003",
+   "name": "Compressor 2 Runtime Reset",
+   "description": "BV:14; momentary: write 1 then 0",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Reset Off",
+    "1": "Reset On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 3,
+   "documented": "00004",
+   "name": "Fan Response for Comp Lockout",
+   "description": "BV:7",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Do not lock fan upon compressor lockout",
+    "1": "Lock fan upon compressor lockout"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 5,
+   "documented": "00006",
+   "name": "BAS Loop Enable/Disable",
+   "description": "BV:23",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable Heat/Cool",
+    "1": "Allow Heat/Cool Operation"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 6,
+   "documented": "00007",
+   "name": "Reset Fan Runtime",
+   "description": "BV:19; momentary: write 1 then 0",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Reset Off",
+    "1": "Reset On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8,
+   "documented": "00009",
+   "name": "UPM Reset",
+   "description": "BV:25; momentary: write 1 then 0",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Reset Off",
+    "1": "Reset On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 9,
+   "documented": "00010",
+   "name": "Sensor Override Enable/Disable",
+   "description": "BV:95",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "ZS Sensor Override NOT Allowed",
+    "1": "ZS Sensor Override Allowed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 10,
+   "documented": "00011",
+   "name": "Enable/Disable Fan Status Switch in IEM",
+   "description": "BV:67",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "FSS on IEM disabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 11,
+   "documented": "00012",
+   "name": "Enable/Disable Valve Switch in IEM",
+   "description": "BV:69",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "VES on IEM disabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 12,
+   "documented": "00013",
+   "name": "BAS Smoke Input / Emergency Shutdown",
+   "description": "BV:75",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Normal"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 13,
+   "documented": "00014",
+   "name": "Smoke Alarm Enable/Disable",
+   "description": "BV:71",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "SDS on IEM disabled",
+    "1": "SDS on IEM Enabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 0,
+   "documented": "10001",
+   "name": "Duplicate Input 1&2 Alarm",
+   "description": "BV:2",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm (Check input configuration for conflicts)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 1,
+   "documented": "10002",
+   "name": "Alarm Status",
+   "description": "BV:24",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "System Normal",
+    "1": "System in Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 2,
+   "documented": "10003",
+   "name": "Aux Heat Output Cmd",
+   "description": "BV:20",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Aux Heat Off",
+    "1": "Aux Heat On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 3,
+   "documented": "10004",
+   "name": "UPM Safety - Brownout Alarm",
+   "description": "BV:10",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Brownout Alarm (UPM-I code = 5; UPM-II code = 7)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 4,
+   "documented": "10005",
+   "name": "Circulation Pump Output Command",
+   "description": "BV:3",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Pump Running",
+    "1": "Pump Off"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 5,
+   "documented": "10006",
+   "name": "Compressor 1 Runtime",
+   "description": "BV:35; the source prints the fan-mode text in this row, so states are not given",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 6,
+   "documented": "10007",
+   "name": "Compressor 2 Runtime",
+   "description": "BV:36",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Timer Has Expired"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 7,
+   "documented": "10008",
+   "name": "Comp Stage1 Output Cmd",
+   "description": "BV:11",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Compressor 1 Off",
+    "1": "Compressor 1 On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 8,
+   "documented": "10009",
+   "name": "Comp Stage2 Output Cmd",
+   "description": "BV:12",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Compressor 2 Off",
+    "1": "Compressor 2 On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 9,
+   "documented": "10010",
+   "name": "UPM Safety - High Condensate Alarm",
+   "description": "BV:9",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Condensate Overflow Alarm(UPM-I code = 4; UPM-II code = 6)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 10,
+   "documented": "10011",
+   "name": "Fan Output Cmd",
+   "description": "BV:17",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Fan Output Off",
+    "1": "Fan Output On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 11,
+   "documented": "10012",
+   "name": "Secondary Condensate Pump Alarm",
+   "description": "BV:50",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm Active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 12,
+   "documented": "10013",
+   "name": "Night Setback (NSB) Status",
+   "description": "BV:22",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Night Setback disabled",
+    "1": "Night Setback enabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 13,
+   "documented": "10014",
+   "name": "Occupancy Status",
+   "description": "BV:21",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Unoccupied",
+    "1": "Occupied"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 14,
+   "documented": "10015",
+   "name": "Economizer Cooling Command",
+   "description": "BV:92",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "On",
+    "1": "Off"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 15,
+   "documented": "10016",
+   "name": "High Cooling Supply Air Temperature in DAC",
+   "description": "BV:86",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm Active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 16,
+   "documented": "10017",
+   "name": "Condenser Water Valve Output",
+   "description": "BV:79",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Open"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 17,
+   "documented": "10018",
+   "name": "Discharge Air Temperature Sensor",
+   "description": "BV:31",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Sensor Normal",
+    "1": "Sensor Failure Alarm (Check Sensor Hardware Configuration)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 18,
+   "documented": "10019",
+   "name": "Damper End Switch",
+   "description": "BV:93",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Damper Closed",
+    "1": "Damper Open"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 19,
+   "documented": "10020",
+   "name": "Damper Command",
+   "description": "BV:49",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Open"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 20,
+   "documented": "10021",
+   "name": "High Discharge Air Temperature",
+   "description": "BV:29",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 21,
+   "documented": "10022",
+   "name": "Discharge Air Temperature Alarm",
+   "description": "BV:30",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Low DAT Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 22,
+   "documented": "10023",
+   "name": "Digital Override Lock Alarm",
+   "description": "BV:37",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Digital Override Enabled Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 23,
+   "documented": "10024",
+   "name": "Differential Pressure Switch (DPS) Alarm",
+   "description": "BV:77",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 24,
+   "documented": "10025",
+   "name": "Hot Gas ReHeat Valve Status",
+   "description": "BV:44",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Valve Off",
+    "1": "Valve On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 25,
+   "documented": "10026",
+   "name": "Entering Water Temperature Sensor Alarm",
+   "description": "BV:80",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure Alarm (Check Hardware)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 26,
+   "documented": "10027",
+   "name": "Fan Hand Mode Alarm",
+   "description": "BV:83; fan running but not commanded by the controller",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 27,
+   "documented": "10028",
+   "name": "Fan Running Status",
+   "description": "BV:66",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On - Fan Running"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 28,
+   "documented": "10029",
+   "name": "Filter Service Alarm",
+   "description": "BV:40",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "Service Filter Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 29,
+   "documented": "10030",
+   "name": "UPM Safety - Condenser Coil Freeze Alarm",
+   "description": "BV:8",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Condenser Freeze Alarm(UPM-I code = 3; UPM-II codes = 5,9)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 30,
+   "documented": "10031",
+   "name": "UPM Safety - Evaporator Coil Freeze Alarm",
+   "description": "BV:90",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Evaporator Freeze Alarm (UPM-I code = 6; UPM-II codes = 8,10"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 31,
+   "documented": "10032",
+   "name": "Air Economizer Status",
+   "description": "BV:6",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Inactive",
+    "1": "Active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 33,
+   "documented": "10034",
+   "name": "Boilerless Status",
+   "description": "BV:91",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On (Electric Heating)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 34,
+   "documented": "10035",
+   "name": "UPM Safety - High Pressure Alarm",
+   "description": "BV:5",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "High Pressure Alarm (UPM-I code = 1; UPM-II codes = 1,3)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 36,
+   "documented": "10037",
+   "name": "Low Heating Supply Air Temperature in DAC",
+   "description": "BV:149",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 37,
+   "documented": "10038",
+   "name": "Inputs Override Status",
+   "description": "BV:38",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Software Lock Enabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 38,
+   "documented": "10039",
+   "name": "UPM Safety - Low Pressure Alarm",
+   "description": "BV:4",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Low Pressure Alarm (UPM-I code = 2; UPM-II codes = 2,4)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 40,
+   "documented": "10041",
+   "name": "High Leaving Water Temperature",
+   "description": "BV:32",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 41,
+   "documented": "10042",
+   "name": "Low Leaving Water Temperature",
+   "description": "BV:33",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 42,
+   "documented": "10043",
+   "name": "Leaving Water Temperature Sensor Failure",
+   "description": "BV:34",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure (Check Sensor Hardware"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 43,
+   "documented": "10044",
+   "name": "Low Mixed Air Temperature",
+   "description": "BV:89",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 44,
+   "documented": "10045",
+   "name": "Mix Air Temperature Sensor Failure",
+   "description": "BV:88",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure (Check Sensor Hardware"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 45,
+   "documented": "10046",
+   "name": "Outside Air Temperature Sensor Failure",
+   "description": "BV:87",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure (Check Sensor Hardware"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 46,
+   "documented": "10047",
+   "name": "Circulation Pump Switch Failure Alarm",
+   "description": "BV:56",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 47,
+   "documented": "10048",
+   "name": "Pump Switch Status",
+   "description": "BV:57",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "Pump Switch Detected"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 48,
+   "documented": "10049",
+   "name": "Circulation Pump Switch In Hand Alarm",
+   "description": "BV:58; pump running but not commanded by the controller",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 49,
+   "documented": "10050",
+   "name": "Reversing Valve Output Status",
+   "description": "BV:15",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Reversing Valve De-energized",
+    "1": "Reversing Valve Energized"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 50,
+   "documented": "10051",
+   "name": "Static Air Pressure Sensor Hardware Alarm",
+   "description": "BV:65",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure (Check Static Pressure Hardware Configuration"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 51,
+   "documented": "10052",
+   "name": "Supply Air Fan Switch Failure",
+   "description": "BV:82",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm (Check Fan Hardware)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 52,
+   "documented": "10053",
+   "name": "High Static Pressure Alarm",
+   "description": "BV:64",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "High Static Pressure"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 53,
+   "documented": "10054",
+   "name": "Smoke Event Alarm Notification",
+   "description": "BV:81",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 54,
+   "documented": "10055",
+   "name": "Smoke Event Status",
+   "description": "BV:70",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Smoke Detector Active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 55,
+   "documented": "10056",
+   "name": "CO2 Hardware Failure Alarm",
+   "description": "BV:51",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure (Check CO2 Hardware Configuration)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 56,
+   "documented": "10057",
+   "name": "High CO2 Alarm",
+   "description": "BV:48",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "High CO2 Level"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 57,
+   "documented": "10058",
+   "name": "ZS Zone Sensor Hardware Failure Alarm",
+   "description": "BV:28",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure (Check: ZS Sensor Hardware)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 58,
+   "documented": "10059",
+   "name": "Remote Temperature Sensor Hardware Failure Alarm",
+   "description": "BV:43",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure (Check Remote Sensor Hardware)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 59,
+   "documented": "10060",
+   "name": "High Remote Temperature Alarm",
+   "description": "BV:41",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "High Zone Temperature"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 60,
+   "documented": "10061",
+   "name": "Low Remote Temperature Alarm",
+   "description": "BV:42",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Low Zone Temperature"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 61,
+   "documented": "10062",
+   "name": "High ZS Zone Sensor Temperature Alarm",
+   "description": "BV:26",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "High Zone Temperature"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 62,
+   "documented": "10063",
+   "name": "Low ZS Zone Sensor Temperature Alarm",
+   "description": "BV:27",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Low Zone Temperature"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 63,
+   "documented": "10064",
+   "name": "UPM Input Alarm",
+   "description": "BV:39",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "UPM Connected",
+    "1": "UPM Connection Failure(Check Alarm Hardware Configuration)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 64,
+   "documented": "10065",
+   "name": "Valve End Switch Status",
+   "description": "BV:68",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "Valve End Switch Detected"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 65,
+   "documented": "10066",
+   "name": "Valve Switch Hand",
+   "description": "BV:150; valve engaged but not commanded by the controller",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 66,
+   "documented": "10067",
+   "name": "Valve End Switch Alarm",
+   "description": "BV:151",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 67,
+   "documented": "10068",
+   "name": "High Humidity Alarm",
+   "description": "BV:45",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "High Humidity"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 68,
+   "documented": "10069",
+   "name": "Low Humidity Alarm",
+   "description": "BV:46",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Low Humidity"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 69,
+   "documented": "10070",
+   "name": "Humidity Sensor Hardware Failure Alarm",
+   "description": "BV:47",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Sensor Failure (Check RH Sensor Hardware Configuration)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 71,
+   "documented": "10072",
+   "name": "Override Status",
+   "description": "BV:94",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "ZS Sensor in Override Mode"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 103,
+   "documented": "10104",
+   "name": "UPM Safety - A2L Alarm",
+   "description": "BV:104",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "A2L Alarm (UPM-I code = 7; UPM-II codes = 11)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 105,
+   "documented": "10106",
+   "name": "UPM Safety - Communication Alarm",
+   "description": "BV:106",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Communication Alarm (UPM-II codes = 12)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 58,
+   "documented": "30059",
+   "name": "Fan Mode Status",
+   "description": "MSV:1",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Auto (Cycel with Compressor)",
+    "4": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 59,
+   "documented": "30060",
+   "name": "Zone Mode Status",
+   "description": "MSV:4",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Auto",
+    "2": "Heat",
+    "3": "Cool",
+    "5": "Off"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 122,
+   "documented": "40123",
+   "name": "Set Fan Mode",
+   "description": "MSV:2",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Auto (Cycel with Compressor)",
+    "4": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 123,
+   "documented": "40124",
+   "name": "Set Zone Mode",
+   "description": "MSV:3",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Auto",
+    "2": "Heat",
+    "3": "Cool",
+    "5": "Off"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set the BAS port to Modbus and EIA-485, address the controller with the rotary dials, then poll discrete input 10002 (unit in alarm) and the UPM alarm bits, read the mode registers (30059/30060) and command occupancy with coil 00001.",
+  "minimum_registers": [
+   {
+    "table": "coil",
+    "address": 0,
+    "why": "BAS occupancy command"
+   },
+   {
+    "table": "discrete_input",
+    "address": 1,
+    "why": "Unit in alarm"
+   },
+   {
+    "table": "discrete_input",
+    "address": 7,
+    "why": "Compressor stage 1 output"
+   },
+   {
+    "table": "discrete_input",
+    "address": 34,
+    "why": "UPM high-pressure alarm"
+   },
+   {
+    "table": "input_register",
+    "address": 59,
+    "why": "Zone mode status"
+   },
+   {
+    "table": "holding_register",
+    "address": 123,
+    "why": "Set zone mode"
+   },
+   {
+    "table": "coil",
+    "address": 5,
+    "why": "BAS loop enable (heat/cool allowed)"
+   }
+  ],
+  "enable": "Communications jumper in the top (EIA-485) position; BAS Port Settings DIP switches SW3/SW4 select Modbus and SW1/SW2 the baud (9.6, 19.2, 38.4 or 76.8 kbps). The Applications Manual gives the switch table.",
+  "watchdog": null,
+  "quirks": [
+   "All analog values are floats with an unstated word order, so only the binary and signed points are listed here.",
+   "Runtime and UPM reset coils are momentary: write 1, then 0."
+  ],
+  "setup": [
+   "Rotary dials (tens/ones) set the address up to 99; the controller only reads them at power-up.",
+   "Parity, stop bits and default address are not stated in the documents."
+  ],
+  "gotchas": [
+   "Occupancy command (coil 00001) defaults to unoccupied, which keeps the unit off until the BAS sets it.",
+   "Coil 00006 (BAS loop enable) must be 1 for heating/cooling."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/bosch/control-air-5600-water-to-air",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

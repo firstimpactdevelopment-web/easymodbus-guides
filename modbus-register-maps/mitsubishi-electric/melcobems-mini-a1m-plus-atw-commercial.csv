@@ -1,0 +1,133 @@
+﻿# Mitsubishi Electric MelcoBEMS MINI (A1M+) gateway for CAHV / CRHV / QAHV heat pumps and EAHV / EACV e-series chillers Modbus register map - easymodbus.com - source: https://library.mitsubishielectric.co.uk/pdf/download_full/5537
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Modbus slave ID,"1-247. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Modbus RS-485 baud rate,"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read/write,0 = 9600; 1 = 1200; 2 = 2400; 3 = 4800; 4 = 9600; 5 = 14400; 6 = 19200; 7 = 28800; 8 = 38400; 9 = 56000; 10 = 57600; 11 = 115200
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,RS-485 parity,"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read/write,0 = None; 1 = Even; 2 = Odd
+Holding register,"FC03 read / FC06, FC16 write",9,40010,40010,Fault code (hex),"For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,,Read,27033 = Bad communication with unit; 32768 = No error
+Holding register,"FC03 read / FC06, FC16 write",10,40011,40011,A1M+ firmware version,"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",11,40012,40012,Modbus comms counter,"Wraps after 65535. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,40013,40013,Fault code (decimal),"For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,,Read,6999 = Bad communication with unit; 8000 = No error
+Holding register,"FC03 read / FC06, FC16 write",13,40014,40014,System type detected,"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,0 = ATA unit; 1 = ATW system; 2 = Lossnay system; 255 = Undetermined
+Holding register,"FC03 read / FC06, FC16 write",25,40026,40026,System on/off,"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s; read only on slaves.",UINT16,1,,1,0,,Read/write,0 = System off; 1 = System on; 2 = Emergency run (read only); 3 = Test run (read only)
+Holding register,"FC03 read / FC06, FC16 write",26,40027,40027,Operating mode,"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s; read only on slaves.",UINT16,1,,1,0,,Read/write,0 = Stop; 1 = Hot water; 2 = Heating; 3 = Cooling; 4 = No-voltage contact input (hot water storage); 5 = Freeze stat; 6 = Legionella; 7 = Heating-Eco; 8 = Mode 1; 9 = Mode 2; 10 = Mode 3; 11 = No-voltage contact input (heating up)
+Holding register,"FC03 read / FC06, FC16 write",30,40031,40031,Thermo-off temperature (signed),Same address as the FTC tank setpoint. For: QAHV.,INT16,1,,0.01,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",36,40037,40037,MRC prohibit,"Do not write to Shizuoka-designed models. For: CAHV, CRHV, QAHV, EAHV/EACV.",BITMAP16,1,,1,0,,Read/write,bit 0 = System on/off (1 = prohibit); bit 1 = Running mode (1 = prohibit); bit 2 = Setting temperature (1 = prohibit); bit 4 = Function setting (1 = function setting)
+Holding register,"FC03 read / FC06, FC16 write",45,40046,40046,Capacity mode,"For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,,Read/write,0 = COP priority; 1 = Capacity priority
+Holding register,"FC03 read / FC06, FC16 write",46,40047,40047,Capacity control ratio,"0-100 %. For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",47,40048,40048,Fan mode,"For: CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,,Read/write,0 = Ordinary; 1 = Coercion
+Holding register,"FC03 read / FC06, FC16 write",48,40049,40049,Current hour,"0-23. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s; read only on slaves.",UINT16,1,,1,0,h,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",49,40050,40050,Current minute,"0-59. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s; read only on slaves.",UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50,40051,40051,Outdoor temperature by BMS (signed),"x10; -30 to +50 °C on CAHV/CRHV/EAHV. For: CAHV, CRHV, EAHV/EACV.",INT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",52,40053,40053,Setting water temperature (signed),"Water setpoint x100; range depends on model (see notes). For: CAHV, CRHV, QAHV, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",66,40067,40067,Own refrigerant address,"0-32. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",67,40068,40068,Defrost,"For: CAHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,0 = Normal; 1 = Standby; 2 = Defrost; 3 = Waiting restart
+Holding register,"FC03 read / FC06, FC16 write",69,40070,40070,Refrigerant error info,"For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,,Read,0 = Normal; 1 = Error (system); 2 = Error (startup); 3 = Maintenance error
+Holding register,"FC03 read / FC06, FC16 write",73,40074,40074,Heat pump frequency - master,"0-255 Hz. For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",74,40075,40075,Heat pump frequency - slave 1,"0-255 Hz. For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",75,40076,40076,Heat pump frequency - slave 2,"0-255 Hz. For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",76,40077,40077,Heat pump frequency - slave 3,"0-255 Hz. For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",77,40078,40078,Heat pump frequency - slave 4,"0-255 Hz. For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",78,40079,40079,Heat pump frequency - slave 5,"0-255 Hz. For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",79,40080,40080,Heat pump frequency - slave 6,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",85,40086,40086,Flow temperature setpoint - zone 1 (signed),"For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",99,40100,40100,Outdoor ambient temperature (signed),"x10. For: CAHV, CRHV m/s, QAHV, EAHV/EACV m/s.",INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",101,40102,40102,Water outlet temperature (signed),"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",103,40104,40104,Water inlet temperature (signed),"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",107,40108,40108,External water temperature 1 (signed),"For: CAHV, CRHV, QAHV, EAHV/EACV.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",109,40110,40110,External water temperature 3 (signed),For: QAHV.,INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",111,40112,40112,External water temperature 2 / 4 (signed),"Ext. water temp 2 on CAHV/CRHV, 4 on QAHV. For: CAHV, CRHV, QAHV.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",127,40128,40128,Heat pump master on/off,"For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",128,40129,40129,Heat pump slave 1 on/off,"Address 2 on CAHV/CRHV. For: CAHV, CRHV, QAHV, EAHV/EACV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",129,40130,40130,Heat pump slave 2 on/off,"Address 3 on CAHV/CRHV. For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",130,40131,40131,Heat pump slave 3 on/off,"Address 4 on CAHV/CRHV. For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",131,40132,40132,Heat pump slave 4 on/off,"Address 5 on CAHV/CRHV. For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",132,40133,40133,Heat pump slave 5 on/off,"Address 6 on CAHV/CRHV. For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",133,40134,40134,Heat pump slave 6 on/off,"Address 7 on CAHV/CRHV. For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",134,40135,40135,Heat pump slave 7 on/off,"Address 8 on CAHV/CRHV. For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",135,40136,40136,Heat pump slave 8 on/off,"Address 9 on CAHV/CRHV. For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",136,40137,40137,Heat pump run time (hours),"Units part, 0-99 h. For: CAHV, CRHV.",UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",137,40138,40138,Heat pump run time (hours x100),"Hundreds part; add to 40137. For: CAHV, CRHV.",UINT16,1,,100,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",144,40145,40145,Boiler / external heater operation 1,"Boiler on EAHV/EACV; external heater 1 on CAHV/CRHV. For: CAHV, CRHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",149,40150,40150,Water pump 1 on/off,"For: CAHV, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",150,40151,40151,Water pump 2 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",151,40152,40152,Water pump 3 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",167,40168,40168,Heat pump frequency - slave 7,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",168,40169,40169,Heat pump frequency - slave 8,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",169,40170,40170,Heat pump frequency - slave 9,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",170,40171,40171,Heat pump frequency - slave 10,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",171,40172,40172,Heat pump frequency - slave 11,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",172,40173,40173,Heat pump frequency - slave 12,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",173,40174,40174,Heat pump frequency - slave 13,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",174,40175,40175,Heat pump frequency - slave 14,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",175,40176,40176,Heat pump frequency - slave 15,"0-255 Hz. For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",176,40177,40177,Heat pump 10 on/off,"For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",177,40178,40178,Heat pump 11 on/off,"For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",178,40179,40179,Heat pump 12 on/off,"For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",179,40180,40180,Heat pump 13 on/off,"For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",180,40181,40181,Heat pump 14 on/off,"For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",181,40182,40182,Heat pump 15 on/off,"For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",182,40183,40183,Heat pump 16 on/off,"For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",183,40184,40184,Heat pump 17 on/off,"For: CAHV, CRHV, QAHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",184,40185,40185,Heat pump 18 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",185,40186,40186,Heat pump 19 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",186,40187,40187,Heat pump 20 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",187,40188,40188,Heat pump 21 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",188,40189,40189,Heat pump 22 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",189,40190,40190,Heat pump 23 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",190,40191,40191,Heat pump 24 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",191,40192,40192,Heat pump 25 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",192,40193,40193,Heat pump 26 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",193,40194,40194,Heat pump 27 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",194,40195,40195,Heat pump 28 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",195,40196,40196,Heat pump 29 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",196,40197,40197,Heat pump 30 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",197,40198,40198,Heat pump 31 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",198,40199,40199,Heat pump 32 on/off,"For: CAHV, CRHV.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",215,40216,40216,External heater on/off,For: CRHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",216,40217,40217,Water pump 4 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",217,40218,40218,Water pump 5 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",218,40219,40219,Water pump 6 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",219,40220,40220,Water pump 7 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",220,40221,40221,Water pump 8 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",221,40222,40222,Water pump 9 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",222,40223,40223,Water pump 10 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",223,40224,40224,Water pump 11 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",224,40225,40225,Water pump 12 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",225,40226,40226,Water pump 13 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",226,40227,40227,Water pump 14 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",227,40228,40228,Water pump 15 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",228,40229,40229,Water pump 16 on/off,For: CAHV.,UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",229,40230,40230,Drain pan heater / antifreeze piping heater,"Drain pan heater on CRHV/EAHV; antifreeze piping heater on QAHV. For: CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,0 = Stop; 1 = Run
+Holding register,"FC03 read / FC06, FC16 write",230,40231,40231,Evaporating temperature (signed),"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",232,40233,40233,Condensing temperature (signed),"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",234,40235,40235,Electric energy 1,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",235,40236,40236,Electric energy 2,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",236,40237,40237,Electric energy 3,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",237,40238,40238,Electric energy 4,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",238,40239,40239,Electric energy 5,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",239,40240,40240,Electric energy 6,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",240,40241,40241,Electric energy 7,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",241,40242,40242,Electric energy 8,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",242,40243,40243,Electric energy 9,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",243,40244,40244,Electric energy 10,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",244,40245,40245,Electric energy 11,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",245,40246,40246,Electric energy 12,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",246,40247,40247,Electric energy 13,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",247,40248,40248,Electric energy 14,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",248,40249,40249,Electric energy 15,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",249,40250,40250,Electric energy 16,"0-655.35 kWh. Reads 0 on CAHV/CRHV 2013 models. For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",UINT16,1,,0.01,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",250,40251,40251,Brine inlet temperature (signed),For: CRHV m/s.,INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",252,40253,40253,Brine outlet temperature 1 (signed),For: CRHV m/s.,INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",254,40255,40255,Brine outlet temperature 2 (signed),For: CRHV m/s.,INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",256,40257,40257,Condensing temperature 2 (signed),"For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",258,40259,40259,Water outlet temperature 2 (signed),"For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",260,40261,40261,Evaporating temperature 2 (signed),"For: CAHV m/s, CRHV m/s, EAHV/EACV m/s.",INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",262,40263,40263,Water pump 1 PWM duty,0-100 %. For: QAHV.,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",264,40265,40265,3-way valve 1,"For: CAHV, QAHV.",UINT16,1,,1,0,,Read,0 = Off (stop); 1 = On (run)
+Holding register,"FC03 read / FC06, FC16 write",265,40266,40266,Protocol version (upper),"BCD; V3.01 = 3 upper, 1 lower. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",266,40267,40267,Protocol version (lower),"BCD. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",267,40268,40268,Model version (upper),"BCD; V2.00 = 2 upper, 0 lower. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",268,40269,40269,Model version (lower),"BCD. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",269,40270,40270,Capacity of supplying electricity,"0-25.5 W. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,0.1,0,W,Read,
+Holding register,"FC03 read / FC06, FC16 write",270,40271,40271,Model profile 1,"For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,0 = FTC2B; 1 = FTC4; 2 = FTC5; 3 = FTC6; 128 = CAHV1A; 129 = CAHV1B; 130 = CRHV1A; 131 = CRHV1B; 132 = EAHV1A; 133 = EAHV1B; 134 = QAHV1A; 135 = QAHV1B; 144 = PWFY1
+Holding register,"FC03 read / FC06, FC16 write",271,40272,40272,Model profile 2 (refrigerant address),"0-255. For: CAHV m/s, CRHV m/s, QAHV, EAHV/EACV m/s.",UINT16,1,,1,0,,Read,

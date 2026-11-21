@@ -1,0 +1,48 @@
+﻿# Invertek Drives Optidrive Coolvert compressor drive (built-in Modbus RTU) Modbus register map - easymodbus.com - source: https://www.invertekdrives.com/downloads/Optidrive%20Coolvert%20User%20Guide%20V2.01.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Drive control word,"Run, coast stop, fault reset, relay and crankcase heating commands.",BITMAP16,1,,1,0,,Read/write,bit 0 = Run (1) / stop (0); bit 2 = Coast stop request; bit 3 = Fault reset request (return to 0 after reset); bit 4 = User relay control (P3-05 = 6); bit 5 = Activate crankcase heating
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Speed set point,600 = 60.0 rps. Negative values only if enabled by parameter.,INT16,1,,0.1,0,rps,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,4,40004,Modbus user ramp time,3000 = 300.0 s; used only when P6-06 = 1.,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,Speed reference (IDL format),Printed scaling: 3000 = 50.0 Hz.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,7,40007,Output frequency (compressor speed),600 = 60.0 rps (P0-60).,UINT16,1,,0.1,0,rps,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,8,40008,Output current,100 = 10.0 A.,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,9,40009,Trip code,Active trip code; 0 when healthy.,UINT16,1,,1,0,,Read,0 = No trip; 3 = O-I over current; 5 = PS-trp power stage trip; 6 = O-Volt over voltage; 7 = U-Volt under voltage; 10 = P-DEF load default parameters; 11 = E-Trip external trip (STO opened while running); 12 = SC-OBS Optibus serial comms fault; 13 = Flt-DC excessive DC bus ripple; 14 = P-Loss input phase loss; 15 = h O-I hardware over current; 17 = DATA-F I/O processor data error; 18 = 4-20F 4-20 mA signal out of range; 19 = DATA-E motor control processor data error; 20 = U-DEF user parameters default; 21 = F-PTC motor PTC overheat; 22 = FAN-F drive cooling fan fault; 23 = O-hEAt ambient temperature too high; 26 = Out-F drive output fault; 29 = STO-F fault in STO circuit; 40 = AtF-01 stator resistance unbalance; 41 = AtF-02 stator resistance too large; 42 = AtF-03 motor inductance too low; 43 = AtF-04 motor inductance too large; 44 = AtF-05 parameters not convergent; 49 = Out-Ph motor output phase loss; 50 = SC-F01 Modbus comms fault; 81 = OI-U phase U over current; 82 = OI-V phase V over current; 83 = OI-W phase W over current; 88 = Out-U phase U output fault; 89 = Out-V phase V output fault; 90 = Out-W phase W output fault; 97 = SC-Los IO-PS comms loss; 98 = DATA-03 wrong VDo3 checksum; 101 = STO-R STO opened at drive running; 102 = ML-Run mains loss at running; 103 = FW-Err PS firmware is changed; 107 = Stall compressor is stalled; 253 = HW-ID hardware ID not supported; 254 = Type-E drive ID not supported
+Holding register,"FC03 read / FC06, FC16 write",9,10,40010,Output power,1000 = 10.00 kW.,UINT16,1,,0.01,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,11,40011,Digital input status,Bit 0 = digital input 1 (P0-03).,BITMAP16,1,,1,0,,Read,bit 0 = Digital input 1
+Holding register,"FC03 read / FC06, FC16 write",11,12,40012,Rating ID,Frame size and input voltage code (P0-29).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,13,40013,Power rating,P0-29 entry 2.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,14,40014,Voltage rating,P0-29 entry 3.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,15,40015,IO processor software version,100 = 1.00.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",15,16,40016,Compressor control processor software version,100 = 1.00.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,17,40017,Drive type,P0-29 entry 4 (drive ID).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",19,20,40020,Analogue input signal level,"1000 = 100.0 % (P0-01, range -100.0 to 100.0 %).",INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",21,22,40022,Pre-ramp speed reference,600 = 60.0 rps.,INT16,1,,0.1,0,rps,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,23,40023,DC bus voltage,600 = 600 V (P0-20).,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,24,40024,Drive temperature,"Heatsink temperature, 40 = 40 °C (P0-21).",INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",24,25,40025,Drive serial number 4,Serial number part (P0-30).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",25,26,40026,Drive serial number 3,Serial number part (P0-30).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",26,27,40027,Drive serial number 2,Serial number part (P0-30).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,28,40028,Drive serial number 1,Serial number part (P0-30).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",28,29,40029,Relay output status,,UINT16,1,,1,0,,Read,0 = Open; 1 = Closed
+Holding register,"FC03 read / FC06, FC16 write",29,30,40030,Last two faults,"Two trip codes, one per byte (P0-13).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,31,40031,Previous two faults,"Two older trip codes, one per byte (P0-13).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",31,32,40032,kWh meter,100 = 10.0 kWh; rolls into the MWh meter at 999.9 (P0-26).,UINT16,1,,0.1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",32,33,40033,MWh meter,100 = 100 MWh (P0-27).,UINT16,1,,1,0,MWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",33,34,40034,Running time - hours,Hours run since manufacture (P0-31).,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",34,35,40035,Running time - min/sec,Minutes and seconds part of P0-31; packing not stated.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",35,36,40036,Run time since enable - hours,P0-34.,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",36,37,40037,Run time since enable - min/sec,Minutes and seconds part of P0-34; packing not stated.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",38,39,40039,Room (control PCB) temperature,40 = 40 °C (P0-05).,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",39,40,40040,Speed reference value,Printed scaling: 3000 = 50 Hz.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",41,42,40042,Compressor speed (IDL format),Printed scaling: 3000 = 50 Hz.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",42,43,40043,Compressor output voltage,100 = 100 V AC (P0-11).,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",43,44,40044,Indirect parameter access index,Parameter to access through register 45.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",44,45,40045,Indirect parameter access value,Value of the parameter chosen in register 44.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",110,111,40111,P1-11 Primary command source,Set 0 for Modbus control.,UINT16,1,,1,0,,Read/write,"0 = Modbus control; 1 = Terminal mode; 2 = Terminal mode, start when AI1 > 10 %; 3 = User PI mode; 4 = Slave mode"
+Holding register,"FC03 read / FC06, FC16 write",600,601,40601,P6-01 Fieldbus drive address,"1-63, default 1; Modbus address unless P6-08 is set.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",602,603,40603,P6-03 Modbus data format,,UINT16,1,,1,0,,Read/write,"0 = No parity, 1 stop bit (default); 1 = No parity, 2 stop bits; 2 = Odd parity, 1 stop bit; 3 = Even parity, 1 stop bit"
+Holding register,"FC03 read / FC06, FC16 write",603,604,40604,P6-04 Communications loss timeout,"0-60 s, default 5.",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",604,605,40605,P6-05 Communications loss action,,UINT16,1,,1,0,,Read/write,0 = Trip; 1 = Ramp to stop then trip; 2 = Ramp to stop (no trip); 3 = Run at signal loss speed P3-11
+Holding register,"FC03 read / FC06, FC16 write",605,606,40606,P6-06 Fieldbus ramp control enable,1 = ramps come from register 4.,UINT16,1,,1,0,,Read/write,0 = Disabled (internal ramps); 1 = Enabled (ramps from fieldbus)
+Holding register,"FC03 read / FC06, FC16 write",606,607,40607,P6-07 Modbus response delay,"Extra characters of delay, 0-16.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",607,608,40608,P6-08 Modbus address,0-200; 0 = use P6-01 for Modbus too.,UINT16,1,,1,0,,Read/write,

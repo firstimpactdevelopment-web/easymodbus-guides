@@ -1,0 +1,38 @@
+﻿"# ABB SACE PR122/P, PR123/P, PR332/P, PR333/P trip units with PR120/D-M or PR330/D-M (Modbus RTU) Modbus register map - easymodbus.com - source: https://library.e.abb.com/public/89aa30f1720540cfaf50e2e1da987829/1SDH000556R0001.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,5,30006 (rel. 5),30006,Contact wear,"0-65000, 65000 = 100 %.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,6,30007 (rel. 6),30007,Total trip protection number,Includes failed trips.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,7,30008 (rel. 7),30008,Total operation number,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,101,30102 (rel. 101),30102,State 2 - flags,Breaker position and remote/local.,BITMAP16,1,,1,0,,Read,bit 0 = Any alarm / timing / warning; bit 1 = Any trip (latched); bit 2 = CB tripped; bit 3 = CB connected (0 = isolated); bit 4 = CB closed (0 = open); bit 5 = CB undefined; bit 6 = No communication on local bus; bit 7 = Springs charged; bit 8 = Trip command fail; bit 9 = Remote mode (0 = local); bit 10 = Programming OK; bit 11 = Programming failed; bit 12 = Internal bus programming session; bit 13 = Test bus programming session; bit 14 = Local bus programming session; bit 15 = System bus programming session
+Input register,FC04 read,103,30104 (rel. 103),30104,State 4 - alarms,,BITMAP16,1,,1,0,,Read,bit 0 = Harmonic distortion > 2.1; bit 1 = Contact wear pre-alarm; bit 2 = Contact wear alarm; bit 3 = L pre-alarm; bit 4 = L timing; bit 5 = S timing; bit 6 = S2 timing; bit 7 = G timing; bit 8 = G alarm (trip blocked); bit 9 = G ext timing; bit 10 = G ext alarm (trip blocked); bit 11 = T pre-alarm; bit 12 = T alarm; bit 13 = T alarm (trip blocked); bit 14 = D timing; bit 15 = U timing
+Input register,FC04 read,107,30108 (rel. 107),30108,State 8 - latched trips,Cleared by CB reset or trip reset.,BITMAP16,1,,1,0,,Read,bit 0 = L tripped; bit 1 = S tripped; bit 2 = S2 tripped; bit 3 = I tripped (or MCR); bit 4 = Iinst tripped; bit 5 = G tripped; bit 6 = G ext tripped; bit 7 = T tripped; bit 8 = D tripped; bit 9 = UN tripped; bit 10 = UV tripped; bit 11 = OV tripped; bit 12 = RV tripped; bit 13 = RP tripped; bit 14 = UF tripped; bit 15 = OF tripped
+Input register,FC04 read,200,30201-30202 (rel. 200),30201,Maximum current,2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,202,30203 (rel. 202),30203,Maximum current phase,,UINT16,1,,1,0,,Read,0 = Not available; 1 = L1; 2 = L2; 3 = L3; 4 = Ne
+Input register,FC04 read,203,30204-30205 (rel. 203),30204,L1 current,2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,205,30206-30207 (rel. 205),30206,L2 current,2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,207,30208-30209 (rel. 207),30208,L3 current,2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,209,30210-30211 (rel. 209),30210,Neutral current,2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,211,30212-30213 (rel. 211),30212,Internal ground current,G versions. 2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,213,30214-30215 (rel. 213),30214,External ground current,"G versions, 0.01 A units. 2^32-1 = not available.",UINT32,2,CDAB,0.01,0,A,Read,
+Input register,FC04 read,215,30216 (rel. 215),30216,V1 line-to-neutral voltage,65535 = not available.,UINT16,1,,0.1,0,V,Read,
+Input register,FC04 read,216,30217 (rel. 216),30217,V2 line-to-neutral voltage,,UINT16,1,,0.1,0,V,Read,
+Input register,FC04 read,217,30218 (rel. 217),30218,V3 line-to-neutral voltage,,UINT16,1,,0.1,0,V,Read,
+Input register,FC04 read,219,30220 (rel. 219),30220,V12 line-to-line voltage,,UINT16,1,,0.1,0,V,Read,
+Input register,FC04 read,220,30221 (rel. 220),30221,V23 line-to-line voltage,,UINT16,1,,0.1,0,V,Read,
+Input register,FC04 read,221,30222 (rel. 221),30222,V31 line-to-line voltage,,UINT16,1,,0.1,0,V,Read,
+Input register,FC04 read,222,30223-30224 (rel. 222),30223,L1 active power,,INT32,2,CDAB,0.1,0,kW,Read,
+Input register,FC04 read,224,30225-30226 (rel. 224),30225,L2 active power,,INT32,2,CDAB,0.1,0,kW,Read,
+Input register,FC04 read,226,30227-30228 (rel. 226),30227,L3 active power,,INT32,2,CDAB,0.1,0,kW,Read,
+Input register,FC04 read,228,30229-30230 (rel. 228),30229,Total active power,2^31-1 = not available.,INT32,2,CDAB,0.1,0,kW,Read,
+Input register,FC04 read,236,30237-30238 (rel. 236),30237,Total reactive power,,INT32,2,CDAB,0.1,0,kVAR,Read,
+Input register,FC04 read,244,30245-30246 (rel. 244),30245,Total apparent power,,INT32,2,CDAB,0.1,0,kVA,Read,
+Input register,FC04 read,246,30247 (rel. 246),30247,Total power factor,"Signed, 0.01 steps.",INT16,1,,0.01,0,,Read,
+Input register,FC04 read,247,30248 (rel. 247),30248,Frequency,,UINT16,1,,0.1,0,Hz,Read,
+Input register,FC04 read,252,30253-30254 (rel. 252),30253,Positive active energy,,INT32,2,CDAB,1,0,kWh,Read,
+Input register,FC04 read,254,30255-30256 (rel. 254),30255,Negative active energy,,INT32,2,CDAB,1,0,kWh,Read,
+Input register,FC04 read,256,30257-30258 (rel. 256),30257,Total active energy,,INT32,2,CDAB,1,0,kWh,Read,
+Input register,FC04 read,262,30263-30264 (rel. 262),30263,Total reactive energy,,INT32,2,CDAB,1,0,kVARh,Read,
+Input register,FC04 read,264,30265-30266 (rel. 264),30265,Total apparent energy,,INT32,2,CDAB,1,0,kVAh,Read,
+Input register,FC04 read,704,30705 (rel. 704),30705,Rated current In,100-6300 A.,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,40001 (rel. 0),40001,Command type,Write with the parameter in one function-16 request.,UINT16,1,,1,0,,Write,0 = Dummy; 1 = Trip reset; 2 = Signalling reset; 3 = Communication statistics reset; 4 = Log events reset; 5 = Start programming session; 6 = Abort programming session; 7 = Stop programming session; 8 = CB open; 9 = CB close; 10 = CB reset; 11 = Wink toggle; 12 = History measure reset; 13 = Energy counters reset; 14 = Data logger trigger restart; 15 = Data logger stop; 16 = Waveform + harmonics acquisition start; 17 = Waveform + harmonics acquisition stop
+Holding register,"FC03 read / FC06, FC16 write",1,40002 (rel. 1),40002,Command parameter,0 when the command needs none.,UINT16,1,,1,0,,Write,

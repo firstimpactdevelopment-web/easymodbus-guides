@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marvair CommStat 4 Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="Marvair CommStat 4 Modbus register map: 107 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Marvair CommStat 4 Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="Marvair CommStat 4 Modbus register map: 107 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Marvair CommStat 4 Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="Marvair CommStat 4 Modbus register map: 107 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter",
+   "url": "https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter",
+   "name": "Marvair CommStat 4 Modbus Register List & Map | Easy Modbus",
+   "description": "Marvair CommStat 4 Modbus register map: 107 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-19",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter#dataset",
+   "name": "Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus register map",
+   "description": "The CommStat 4 is a Marvair HVAC controller for equipment shelters; a master controller and an optional slave controller each run two HVAC units in lead/lag. A separate Marvair adapter plugs into a CommStat 4 master communications port and acts as a Modbus TCP and Modbus RTU slave. The map gives the controller settings, inputs, unit outputs, lockouts and stage, plus a second register block used to push new settings. Marvair CommStat 4 Modbus register map: 107 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter",
+   "keywords": [
+    "Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus register map",
+    "Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus registers",
+    "Marvair Modbus map",
+    "CommStat 4 Modbus register map",
+    "CommStat4 Modbus register map",
+    "CommStat 4 Modbus Interface Adapter Modbus register map",
+    "P/03272 Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "dateModified": "2026-11-19",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "CommStat 4 Modbus Interface Adapter Installation and Operation Manual",
+    "url": "https://marvair.com/doc/121/CommStat%204%20Modbus%20Adapter%20Manual",
+    "author": {
+     "@type": "Organization",
+     "name": "Marvair"
+    }
+   },
+   "about": {
+    "@type": "Thing",
+    "name": "Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter",
+    "description": "Thermostat (shelter HVAC lead/lag controller)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "Easy Modbus register-map library",
+    "url": "https://easymodbus.com/modbus-register-maps/"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 107 registers: 107 holding registers. 43 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Registers are printed as 40001-40068 (read) and 40101-40143 (write), Modicon holding-register style. Request 40001 as wire address 0 and 40101 as wire address 100."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 56 Current temperature (Current temperature); HR 55 Current stage (Current heating/cooling stage); HR 54 Master controller lockout status (Master lockout flags); HR 43 Master controller inputs (Smoke / hydrogen / generator alarms); HR 46 Master unit #1 outputs (Master unit 1 outputs); HR 40 Lead unit (Lead unit); HR 100 Write control (Write handshake)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Install the Marvair Modbus Interface Adapter and plug its RJ11 cable into one of the master communication ports on the CommStat 4 board. Set the adapter IP through its web page."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is CommStat 4 Modbus Interface Adapter Installation and Operation Manual (P/03272 rev. 5), revision 2021-12, published free by Marvair at https://marvair.com/doc/121/CommStat%204%20Modbus%20Adapter%20Manual."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Marvair",
+     "item": "https://easymodbus.com/modbus-register-maps/marvair/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "CommStat 4 lead/lag controller via Modbus Interface Adapter",
+     "item": "https://easymodbus.com/modbus-register-maps/marvair/commstat-4-modbus-adapter"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/marvair/">Marvair</a></li><li aria-current="page">CommStat 4 lead/lag controller via Modbus Interface Adapter</li></ol>
+<p class="eyebrow">Thermostat (shelter HVAC lead/lag controller) &middot; Modbus register map</p><h1><span class="mfr">Marvair</span> CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus register map</h1><p class="updated">Updated 19 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>The CommStat 4 is a Marvair HVAC controller for equipment shelters; a master controller and an optional slave controller each run two HVAC units in lead/lag. A separate Marvair adapter plugs into a CommStat 4 master communications port and acts as a Modbus TCP and Modbus RTU slave. The map gives the controller settings, inputs, unit outputs, lockouts and stage, plus a second register block used to push new settings.</p>
+<p>This page lists <strong>107 Modbus registers</strong> for the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter &mdash; 43 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Marvair&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/marvair/">Marvair</a></dd></div><div><dt>Model</dt><dd>CommStat 4 lead/lag controller via Modbus Interface Adapter</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/hvac/">Thermostat (shelter HVAC lead/lag controller)</a></dd></div><div><dt>Registers</dt><dd>107 (43 writable)</dd></div><div><dt>Transport</dt><dd>Modbus TCP, Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>9600 baud, 8N1</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>Firmware</dt><dd>CommStat 4 protocol 3+, software rev 67+</dd></div><div><dt>Also known as</dt><dd>CommStat 4, CommStat4, CommStat 4 Modbus Interface Adapter, P/03272</dd></div><div><dt>Source document</dt><dd><a href="https://marvair.com/doc/121/CommStat%204%20Modbus%20Adapter%20Manual" rel="nofollow noopener" target="_blank">CommStat 4 Modbus Interface Adapter Installation and Operation Manual &middot; P/03272 rev. 5 &middot; rev. 2021-12</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/marvair/commstat-4-modbus-adapter.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/marvair/commstat-4-modbus-adapter.json">JSON</a>
+  <a class="btn" href="https://marvair.com/doc/121/CommStat%204%20Modbus%20Adapter%20Manual" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter</h2>
+<div class="answer"><b>Integration in brief</b><p>Poll 40001-40068 over TCP port 502 (or RTU 9600 8N1): 40057 temperature, 40056 stage, 40055/40068 lockouts, 40044 alarms and 40047/40048 unit outputs. Change settings only through the 40101 handshake.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-56">HR 56</a></td><td class="n">Current temperature</td><td class="f">UINT16</td><td>Current temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-55">HR 55</a></td><td class="n">Current stage</td><td class="f">UINT16</td><td>Current heating/cooling stage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-54">HR 54</a></td><td class="n">Master controller lockout status</td><td class="f">BITMAP16</td><td>Master lockout flags</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-43">HR 43</a></td><td class="n">Master controller inputs</td><td class="f">BITMAP16</td><td>Smoke / hydrogen / generator alarms</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-46">HR 46</a></td><td class="n">Master unit #1 outputs</td><td class="f">BITMAP16</td><td>Master unit 1 outputs</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-40">HR 40</a></td><td class="n">Lead unit</td><td class="f">UINT16</td><td>Lead unit</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-100">HR 100</a></td><td class="n">Write control</td><td class="f">UINT16</td><td>Write handshake</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Install the Marvair Modbus Interface Adapter and plug its RJ11 cable into one of the master communication ports on the CommStat 4 board. Set the adapter IP through its web page.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Writes go to a separate block (40101 up) and only take effect after the 40101 handshake.</li><li>Current temperature 240 means sensor fault; slave sensor value 0 means sensor fault.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Default IP 192.168.1.19 (static); browse to it to set DHCP or a new static address, then the adapter reboots in about 60 s.</li><li>A reset button on the adapter board restores the default IP.</li><li>RTU terminal: RS-485 A/B, 9600 N 8 1.</li><li>The adapter needs 24-60 V DC and must be mounted inside the shelter.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Only CommStat 4 protocol version 3+ with software revision 67+ is supported.</li><li>In a two-controller shelter one master port may already carry the master/slave link.</li></ul>
+</section>
+<h2 id="registers">Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>107</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">107 of 107 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-0"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">0<small>doc 40001</small></td><td class="n">Master firmware revision</td><td class="d">Below 255</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1<small>doc 40002</small></td><td class="n">Protocol version number</td><td class="d">3 or 4</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2<small>doc 40003</small></td><td class="n">Setting #2: F/C</td><td class="d">Display temperature unit</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Celsius; 1 = Fahrenheit</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3<small>doc 40004</small></td><td class="n">Setting #3: Changeover days</td><td class="d">Lead/lag changeover interval in half days (1-14)</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4<small>doc 40005</small></td><td class="n">Setting #4: Cool set point</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-5"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">5<small>doc 40006</small></td><td class="n">Setting #5: Heat set point</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6<small>doc 40007</small></td><td class="n">Setting #6: High building temp 1 set point</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7<small>doc 40008</small></td><td class="n">Setting #7: High building temp 2 set point</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8<small>doc 40009</small></td><td class="n">Setting #8: Low building temp set point</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9<small>doc 40010</small></td><td class="n">Setting #9: Blower on</td><td class="d">Continuous blower</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10<small>doc 40011</small></td><td class="n">Setting #10: High voltage input enable / alarm output enable</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11<small>doc 40012</small></td><td class="n">Setting #11: Anti-short cycle timer</td><td class="d">Number of minutes (see the CommStat 4 manual)</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>min</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12<small>doc 40013</small></td><td class="n">Setting #12: Stage 1 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-13"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">13<small>doc 40014</small></td><td class="n">Setting #13: Stage 2 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-14"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">14<small>doc 40015</small></td><td class="n">Setting #14: Off differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15<small>doc 40016</small></td><td class="n">Setting #15: Blower off time delay</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16<small>doc 40017</small></td><td class="n">Setting #16: Operational units when generator is used</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-17"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">17<small>doc 40018</small></td><td class="n">Setting #17: Smoke auto reset</td><td class="d">0 = manual reset; 3 to 10 = minutes until automatic reset</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Manual reset</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-18"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">18<small>doc 40019</small></td><td class="n">Setting #18: Smoke relay</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Normally open; 1 = Normally closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-19"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">19<small>doc 40020</small></td><td class="n">Setting #19: ECON mode enable</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes; 2 = Verizon special setting</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-20"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">20<small>doc 40021</small></td><td class="n">Setting #20: Multiple sensors</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-21"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">21<small>doc 40022</small></td><td class="n">Setting #21: Aux 1 relay</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Normally open; 1 = Normally closed; 2 = Off</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-22"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">22<small>doc 40023</small></td><td class="n">Setting #22: Aux 2 relay</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Normally open; 1 = Normally closed; 2 = Off</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-23"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">23<small>doc 40024</small></td><td class="n">Setting #23: Excessive cycle</td><td class="d">0 = off; otherwise cycles allowed per 2-hour period</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-24"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">24<small>doc 40025</small></td><td class="n">Setting #24: Language</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = English; 1 = Spanish; 2 = French</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-25"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">25<small>doc 40026</small></td><td class="n">Setting #25: AC / HP system</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Heat pump; 1 = One AC; 2 = Two AC</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-26"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">26<small>doc 40027</small></td><td class="n">Setting #26: Master/slave</td><td class="d">Role of this controller</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Slave; 1 = Master</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-27"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">27<small>doc 40028</small></td><td class="n">Setting #27: Stage 3 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-28"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">28<small>doc 40029</small></td><td class="n">Setting #28: Stage 4 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-29"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">29<small>doc 40030</small></td><td class="n">Setting #29: Stage 5 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-30"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">30<small>doc 40031</small></td><td class="n">Setting #30: Stage 6 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-31"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">31<small>doc 40032</small></td><td class="n">Setting #31: Stage 7 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32<small>doc 40033</small></td><td class="n">Setting #32: Stage 8 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-33"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">33<small>doc 40034</small></td><td class="n">Setting #33: Stage 9 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-34"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">34<small>doc 40035</small></td><td class="n">Setting #34: Stage 10 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-35"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">35<small>doc 40036</small></td><td class="n">Setting #35: Stage 11 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-36"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">36<small>doc 40037</small></td><td class="n">Setting #36: Stage 12 differential</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-37"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">37<small>doc 40038</small></td><td class="n">Setting #37: Total number of units</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-38"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">38<small>doc 40039</small></td><td class="n">Setting #38: Stage 2 differential in econ cooling mode</td><td class="d">Raw setting; the adapter guide refers to the CommStat 4 manual</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-39"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">39<small>doc 40040</small></td><td class="n">Controller on/off</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-40"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">40<small>doc 40041</small></td><td class="n">Lead unit</td><td class="d">Which unit currently leads</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Master #1; 1 = Master #2; 2 = Slave #1; 3 = Slave #2</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-41"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">41<small>doc 40042</small></td><td class="n">Password #1</td><td class="d">Password = (password #1 x 4) + password #2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-42"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">42<small>doc 40043</small></td><td class="n">Password #2</td><td class="d">Password = (password #1 x 4) + password #2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-43"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">43<small>doc 40044</small></td><td class="n">Master controller inputs</td><td class="d">Smoke, hydrogen, generator and aux inputs at the master</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Aux 2 signal present; bit 1 = Aux 1 signal present; bit 2 = Generator in use; bit 3 = High hydrogen level; bit 4 = Smoke detected</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-44"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">44<small>doc 40045</small></td><td class="n">Master unit #1 inputs</td><td class="d">Voltage, lockout and economizer state of master unit 1</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Running in economizer mode; bit 1 = Running in AC mode; bit 2 = Unit locked out; bit 3 = 230 V present; bit 4 = 24 V present</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-45"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">45<small>doc 40046</small></td><td class="n">Master unit #2 inputs</td><td class="d">Voltage, lockout and economizer state of master unit 2</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Running in economizer mode; bit 1 = Running in AC mode; bit 2 = Unit locked out; bit 3 = 230 V present; bit 4 = 24 V present</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-46"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">46<small>doc 40047</small></td><td class="n">Master unit #1 outputs</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = DCAMR output on; bit 1 = MAR output on; bit 2 = G output on; bit 3 = W output on; bit 4 = O output on; bit 5 = 2 output on; bit 6 = Y output on</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-47"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">47<small>doc 40048</small></td><td class="n">Master unit #2 outputs</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = DCAMR output on; bit 1 = MAR output on; bit 2 = G output on; bit 3 = W output on; bit 4 = O output on; bit 5 = 2 output on; bit 6 = Y output on</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-48"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">48<small>doc 40049</small></td><td class="n">Output command master to slave unit #1</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = DCAMR output on; bit 1 = MAR output on; bit 2 = G output on; bit 3 = W output on; bit 4 = O output on; bit 5 = 2 output on; bit 6 = Y output on</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-49"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">49<small>doc 40050</small></td><td class="n">Output command master to slave unit #2</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = DCAMR output on; bit 1 = MAR output on; bit 2 = G output on; bit 3 = W output on; bit 4 = O output on; bit 5 = 2 output on; bit 6 = Y output on</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-54"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">54<small>doc 40055</small></td><td class="n">Master controller lockout status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Master unit 1 locked out; bit 1 = Master unit 2 locked out; bit 2 = Slave unit 1 locked out; bit 3 = Slave unit 2 locked out; bit 4 = Master in smoke alarm lockout; bit 5 = Master in low building temp lockout; bit 6 = Master in high building temp 1 lockout; bit 7 = Master in high building temp 2 lockout</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-55"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">55<small>doc 40056</small></td><td class="n">Current stage</td><td class="d">Cooling/heating stage now active</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Stage 12 cooling; 1 = Stage 11 cooling; 2 = Stage 10 cooling; 3 = Stage 9 cooling; 4 = Stage 8 cooling; 5 = Stage 7 cooling; 6 = Stage 6 cooling; 7 = Stage 5 cooling; 8 = Stage 4 cooling; 9 = Stage 3 cooling; 10 = Stage 2 cooling; 11 = Stage 1 cooling; 12 = Stage 0 (idle); 13 = Stage 1 heating; 14 = Stage 2 heating; 15 = Stage 3 heating; 16 = Stage 4 heating</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-56"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">56<small>doc 40057</small></td><td class="n">Current temperature</td><td class="d">240 = sensor fault; below 240 = temperature (unit not stated in the adapter guide)</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">240 = Sensor fault</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-57"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">57<small>doc 40058</small></td><td class="n">Comfort mode time left</td><td class="d">Minutes left in comfort mode divided by 3</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-58"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">58<small>doc 40059</small></td><td class="n">Slave firmware revision</td><td class="d">Below 255</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-59"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">59<small>doc 40060</small></td><td class="n">Slave controller inputs</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Aux 2 signal present; bit 1 = Aux 1 signal present; bit 2 = Generator in use; bit 3 = High hydrogen level; bit 4 = Smoke detected</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-60"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">60<small>doc 40061</small></td><td class="n">Slave unit #1 inputs</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Running in economizer mode; bit 1 = Running in AC mode; bit 2 = Unit locked out; bit 3 = 230 V present; bit 4 = 24 V present</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-61"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">61<small>doc 40062</small></td><td class="n">Slave unit #2 inputs</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Running in economizer mode; bit 1 = Running in AC mode; bit 2 = Unit locked out; bit 3 = 230 V present; bit 4 = 24 V present</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-62"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">62<small>doc 40063</small></td><td class="n">Slave temp sensor #1</td><td class="d">0 = sensor fault; 30-150 = temperature</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>°F</td><td><span class="acc R">Read</span></td><td class="s">0 = Sensor fault</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-63"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">63<small>doc 40064</small></td><td class="n">Slave temp sensor #2</td><td class="d">0 = sensor fault; 30-150 = temperature</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>°F</td><td><span class="acc R">Read</span></td><td class="s">0 = Sensor fault</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-64"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">64<small>doc 40065</small></td><td class="n">Slave temp sensor #3</td><td class="d">0 = sensor fault; 30-150 = temperature</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>°F</td><td><span class="acc R">Read</span></td><td class="s">0 = Sensor fault</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-65"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">65<small>doc 40066</small></td><td class="n">Slave unit #1 output status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = DCAMR output on; bit 1 = MAR output on; bit 2 = G output on; bit 3 = W output on; bit 4 = O output on; bit 5 = 2 output on; bit 6 = Y output on</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-66"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">66<small>doc 40067</small></td><td class="n">Slave unit #2 output status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = DCAMR output on; bit 1 = MAR output on; bit 2 = G output on; bit 3 = W output on; bit 4 = O output on; bit 5 = 2 output on; bit 6 = Y output on</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-67"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">67<small>doc 40068</small></td><td class="n">Slave controller lockout status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Master unit 1 locked out; bit 1 = Master unit 2 locked out; bit 2 = Slave unit 1 locked out; bit 3 = Slave unit 2 locked out; bit 4 = Slave in smoke alarm lockout; bit 5 = Slave in low building temp lockout; bit 6 = Slave in high building temp 1 lockout; bit 7 = Slave in high building temp 2 lockout</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-100"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">100<small>doc 40101</small></td><td class="n">Write control</td><td class="d">Handshake for pushing new settings; see notes</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Normal / write complete (adapter); 1 = Client: hold new-value registers for editing; 2 = Client: send new values to CommStat 4; 3 = Adapter: write accepted, waiting for cycle</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-101"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">101<small>doc 40102</small></td><td class="n">New setting #2: F/C</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Celsius; 1 = Fahrenheit</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-102"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">102<small>doc 40103</small></td><td class="n">New setting #3: Changeover days</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-103"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">103<small>doc 40104</small></td><td class="n">New setting #4: Cool set point</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-104"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">104<small>doc 40105</small></td><td class="n">New setting #5: Heat set point</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-105"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">105<small>doc 40106</small></td><td class="n">New setting #6: High building temp 1 set point</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-106"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">106<small>doc 40107</small></td><td class="n">New setting #7: High building temp 2 set point</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-107"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">107<small>doc 40108</small></td><td class="n">New setting #8: Low building temp set point</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-108"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">108<small>doc 40109</small></td><td class="n">New setting #9: Blower on</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-109"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">109<small>doc 40110</small></td><td class="n">New setting #10: High voltage input enable / alarm output enable</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-110"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">110<small>doc 40111</small></td><td class="n">New setting #11: Anti-short cycle timer</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>min</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-111"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">111<small>doc 40112</small></td><td class="n">New setting #12: Stage 1 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-112"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">112<small>doc 40113</small></td><td class="n">New setting #13: Stage 2 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-113"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">113<small>doc 40114</small></td><td class="n">New setting #14: Off differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-114"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">114<small>doc 40115</small></td><td class="n">New setting #15: Blower off time delay</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-115"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">115<small>doc 40116</small></td><td class="n">New setting #16: Operational units when generator is used</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-116"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">116<small>doc 40117</small></td><td class="n">New setting #17: Smoke auto reset</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Manual reset</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-117"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">117<small>doc 40118</small></td><td class="n">New setting #18: Smoke relay</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Normally open; 1 = Normally closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-118"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">118<small>doc 40119</small></td><td class="n">New setting #19: ECON mode enable</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No; 1 = Yes; 2 = Verizon special setting</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-119"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">119<small>doc 40120</small></td><td class="n">New setting #20: Multiple sensors</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-120"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">120<small>doc 40121</small></td><td class="n">New setting #21: Aux 1 relay</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Normally open; 1 = Normally closed; 2 = Off</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-121"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">121<small>doc 40122</small></td><td class="n">New setting #22: Aux 2 relay</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Normally open; 1 = Normally closed; 2 = Off</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-122"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">122<small>doc 40123</small></td><td class="n">New setting #23: Excessive cycle</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-123"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">123<small>doc 40124</small></td><td class="n">New setting #24: Language</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = English; 1 = Spanish; 2 = French</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-124"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">124<small>doc 40125</small></td><td class="n">New setting #25: AC / HP system</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Heat pump; 1 = One AC; 2 = Two AC</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-125"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">125<small>doc 40126</small></td><td class="n">New setting #26: Master/slave</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Slave; 1 = Master</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-126"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">126<small>doc 40127</small></td><td class="n">New setting #27: Stage 3 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-127"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">127<small>doc 40128</small></td><td class="n">New setting #28: Stage 4 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-128"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">128<small>doc 40129</small></td><td class="n">New setting #29: Stage 5 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-129"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">129<small>doc 40130</small></td><td class="n">New setting #30: Stage 6 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-130"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">130<small>doc 40131</small></td><td class="n">New setting #31: Stage 7 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-131"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">131<small>doc 40132</small></td><td class="n">New setting #32: Stage 8 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-132"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">132<small>doc 40133</small></td><td class="n">New setting #33: Stage 9 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-133"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">133<small>doc 40134</small></td><td class="n">New setting #34: Stage 10 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-134"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">134<small>doc 40135</small></td><td class="n">New setting #35: Stage 11 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-135"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">135<small>doc 40136</small></td><td class="n">New setting #36: Stage 12 differential</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-136"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">136<small>doc 40137</small></td><td class="n">New setting #37: Total number of units</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-137"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">137<small>doc 40138</small></td><td class="n">New setting #38: Stage 2 differential in econ cooling mode</td><td class="d">New value, sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-138"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">138<small>doc 40139</small></td><td class="n">New controller on/off</td><td class="d">Sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-139"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">139<small>doc 40140</small></td><td class="n">New lead unit</td><td class="d">Sent when 40101 = 2</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Master #1; 1 = Master #2; 2 = Slave #1; 3 = Slave #2</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-140"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">140<small>doc 40141</small></td><td class="n">New password #1</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-141"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">141<small>doc 40142</small></td><td class="n">New password #2</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-142"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">142<small>doc 40143</small></td><td class="n">Function code</td><td class="d">Purpose of this write (codes not listed in the guide)</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>All values are single registers. The bit notes only define bits 0-7.</li><li>The adapter guide gives no units or scaling for the set points and differentials; it only says to see the CommStat 4 manual. They are listed here as raw values. Only the slave sensor readings 40063-40065 are labelled °F.</li><li>Registers 40051-40054 (saved output values) are marked internal use and are left out.</li><li>Write procedure: write 1 to 40101 so the adapter stops refreshing the new-value block, write the new values to 40102-40143, then write 2 to 40101. The adapter shows 3 while waiting and returns to 0 when the CommStat 4 has taken the values.</li><li>The guide does not list the function-code values for 40143 or the value meanings of settings #10 and #16.</li><li>The guide states a default Modbus RTU setting of 9600 N 8 1 but no RTU slave address.</li><li>The guide does not name the read function code; by the usual Modicon convention, 4xxxx numbers are holding registers (function 03).</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter</h2><div class="faq"><details open><summary>What Modbus registers does the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter have?</summary><p>This map lists 107 registers: 107 holding registers. 43 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Registers are printed as 40001-40068 (read) and 40101-40143 (write), Modicon holding-register style. Request 40001 as wire address 0 and 40101 as wire address 100.</p></details><details><summary>What are the minimum Modbus registers to integrate the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter?</summary><p>Start with HR 56 Current temperature (Current temperature); HR 55 Current stage (Current heating/cooling stage); HR 54 Master controller lockout status (Master lockout flags); HR 43 Master controller inputs (Smoke / hydrogen / generator alarms); HR 46 Master unit #1 outputs (Master unit 1 outputs); HR 40 Lead unit (Lead unit); HR 100 Write control (Write handshake).</p></details><details><summary>How do I enable Modbus control of the Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter?</summary><p>Install the Marvair Modbus Interface Adapter and plug its RJ11 cable into one of the master communication ports on the CommStat 4 board. Set the adapter IP through its web page.</p></details><details><summary>Where is the official Marvair CommStat 4 lead/lag controller via Modbus Interface Adapter Modbus documentation?</summary><p>The source is CommStat 4 Modbus Interface Adapter Installation and Operation Manual (P/03272 rev. 5), revision 2021-12, published free by Marvair at https://marvair.com/doc/121/CommStat%204%20Modbus%20Adapter%20Manual.</p></details></div>
+<h2>More Marvair Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/marvair/mah-mgh-wall-mount-ac-control-board" data-row><span class="k">Rooftop unit / packaged wall-mount air conditioner</span><h3>Marvair MAH / MGH wall-mount air conditioner control board (Modbus RTU)</h3><p>Marvair MAH1018A-1060A, MGH1072A, MAH2024A-2060A and MGH2072A wall-mount air conditioners with the electronic control board (I&amp;O manual rev. 7).</p><div class="meta">72 registers &middot; 35 writable &middot; RTU</div><span class="sr-only"> Also known as: MAH1018A, MAH1024A, MAH1030A, MAH1036A, MAH1042A, MAH1048A, MAH1060A, MGH1072A, MAH2024A, MAH2030A, MAH2036A, MAH2042A, MAH2048A, MAH2060A, MGH2072A, Marvair MAH, Marvair MGH</span></a></li><li><a class="card" href="/modbus-register-maps/marvair/mah-heat-pump-vanguard-control-board" data-row><span class="k">Heat pump (packaged wall-mount / classroom unit)</span><h3>Marvair MAH heat pump and VAH/VDH Vanguard control board (Modbus RTU)</h3><p>Marvair MAH1020H-1060H and MAH2024H-2060H wall-mount heat pumps (I&amp;O manual rev. 6); the GAH1024-1060 gas-heat AC manual (rev. 5) and the VAH/VDH Vanguard classroom unit appendices (08/2026) print the same table.</p><div class="meta">69 registers &middot; 32 writable &middot; RTU</div><span class="sr-only"> Also known as: MAH1020H, MAH1024H, MAH1030H, MAH1036H, MAH1042H, MAH1048H, MAH1060H, MAH2024H, MAH2030H, MAH2036H, MAH2042H, MAH2048H, MAH2060H, Vanguard VAH, Vanguard VDH, VAH2030, VDH2060, GAH1024, GAH1030, GAH1036, GAH1042, GAH1048, GAH1060, Marvair GAH, Scholar 2 VAH/VDH, Scholar QR VAH/VDH</span></a></li></ul><h2>Other hvac equipment register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/neptronic/efcb-oe1-fan-coil-controller" data-row><span class="k">Thermostat / fan coil controller</span><h3>Neptronic EFCB-OE1 Series networkable fan coil controller (Modbus RTU)</h3><p>Neptronic EFCB-OE1 Series fan coil controllers (24 or 240 Vac; 0, 2 or 4 relays), guide EFCB1x-OE1-Modbus Guide (V2.16)-260626.</p><div class="meta">172 registers &middot; 136 writable &middot; RTU</div><span class="sr-only"> Also known as: EFCB10T-OE1, EFCB12T-OE1, EFCB10TU2-OE1, EFCB10TU4-OE1, EFCB12TU2-OE1, EFCB12TU4-OE1, EFCB1x-OE1</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/tsub-wall-mount-controller" data-row><span class="k">Thermostat / fan coil and unitary controller</span><h3>Neptronic TSUB Series universal wall-mount controller (Modbus RTU)</h3><p>Neptronic TSUB Series universal wall-mount controllers with Modbus, guide TSUB-Modbus Guide-250829 (V1.13).</p><div class="meta">157 registers &middot; 126 writable &middot; RTU</div><span class="sr-only"> Also known as: TSUB Series, TSUB universal wall-mount controller</span></a></li><li><a class="card" href="/modbus-register-maps/swegon/conductor-w3" data-row><span class="k">Thermostat / room controller (chilled beam with supply and extract air dampers)</span><h3>Swegon CONDUCTOR W3 room controller (air and water, Modbus RTU)</h3><p>Swegon CONDUCTOR W3 room controller, software 1.38 and later (technical manual updated 2015-06-15).</p><div class="meta">122 registers &middot; 46 writable &middot; RTU</div><span class="sr-only"> Also known as: CONDUCTOR RE W3, Conductor W3</span></a></li><li><a class="card" href="/modbus-register-maps/vertiv/liebert-crv-icom" data-row><span class="k">Air handler (in-row computer room cooling unit)</span><h3>Vertiv Liebert CRV in-row cooling unit with iCOM v4 (IntelliSlot Modbus)</h3><p>Liebert CRV row-based cooling units (DX and chilled water) on the iCOM v4 controller with a Liebert IntelliSlot Modbus 485 or Modbus IP card.</p><div class="meta">176 registers &middot; 41 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: Liebert CRV, CRV, Liebert CRV iCOM</span></a></li><li><a class="card" href="/modbus-register-maps/apc/inrow-acsc100" data-row><span class="k">Air handler (in-row self-contained DX cooling unit)</span><h3>APC (Schneider Electric) InRow ACSC 100 Series self-contained DX cooling unit</h3><p>APC by Schneider Electric InRow SC (ACSC 100 series) self-contained cooling units, per register map part number 990-3027D.</p><div class="meta">119 registers &middot; 32 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: ACSC100, InRow SC, InRow ACSC</span></a></li><li><a class="card" href="/modbus-register-maps/daikin-applied/rebel-applied-microtech-4" data-row><span class="k">Rooftop unit</span><h3>Daikin Applied Rebel / Rebel Applied rooftop (MicroTech 4 controller)</h3><p>Daikin Applied Rebel Applied (DPSA, R-410A/R-32) and Rebel (DPS, R-32) packaged rooftops with MicroTech 4 controller and Modbus RTU module, per ED 19133-2 (Oct 2025).</p><div class="meta">112 registers &middot; 35 writable &middot; RTU</div><span class="sr-only"> Also known as: DPSA, DPS, Rebel Applied, Rebel, MicroTech 4 rooftop, ED 19133-2</span></a></li></ul><p><a href="https://easymodbus.com/modbus-register-maps/equipment/hvac/">All hvac equipment Modbus register maps &rarr;</a></p>
+<p class="updated">Source: <a href="https://marvair.com/doc/121/CommStat%204%20Modbus%20Adapter%20Manual" rel="nofollow noopener" target="_blank">CommStat 4 Modbus Interface Adapter Installation and Operation Manual &middot; P/03272 rev. 5 &middot; rev. 2021-12</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuji Electric FRENIC-HVAC / AQUA Modbus Register Map</title>
+<meta name="description" content="Fuji Electric FRENIC-HVAC / AQUA Modbus register map: 53 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Fuji Electric FRENIC-HVAC / AQUA Modbus Register Map">
+<meta property="og:description" content="Fuji Electric FRENIC-HVAC / AQUA Modbus register map: 53 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fuji Electric FRENIC-HVAC / AQUA Modbus Register Map">
+<meta name="twitter:description" content="Fuji Electric FRENIC-HVAC / AQUA Modbus register map: 53 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua",
+   "url": "https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua",
+   "name": "Fuji Electric FRENIC-HVAC / AQUA Modbus Register Map",
+   "description": "Fuji Electric FRENIC-HVAC / AQUA Modbus register map: 53 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-19",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua#dataset",
+   "name": "Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus register map",
+   "description": "FRENIC-HVAC and FRENIC-AQUA drives for fans and pumps speak Modbus RTU on their RS-485 port. Every function code (F, E, H, y, S, M ...) is a holding register found by a fixed group/number rule; the S codes carry frequency, run and PID commands and the M codes carry monitors, status words and alarm history. This map lists the communication command and monitor codes and the link settings. Fuji Electric FRENIC-HVAC / AQUA Modbus register map: 53 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua",
+   "keywords": [
+    "Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus register map",
+    "Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus registers",
+    "Fuji Electric Modbus map",
+    "FRENIC-HVAC Modbus register map",
+    "FRENIC-AQUA Modbus register map",
+    "FRN-AR Modbus register map",
+    "FRN-AQ Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "dateModified": "2026-11-19",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "RS-485 Communication User's Manual (FRENIC-HVAC / FRENIC-AQUA)",
+    "url": "https://americas.fujielectric.com/files/24A7-E-0021b.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Fuji Electric"
+    }
+   },
+   "about": {
+    "@type": "Thing",
+    "name": "Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)",
+    "description": "Variable frequency drive (HVAC / pump)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "Easy Modbus register-map library",
+    "url": "https://easymodbus.com/modbus-register-maps/"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 53 registers: 53 holding registers. 17 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers derived from parameter numbers. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each function code is a holding register at 40000 + group code x 256 + number (manual Table 3.2: F=0, E=1, H=4, S=7, M=8, y=14). In the frame the high byte is the group code and the low byte the number, so the wire address is group x 256 + number; the manual's examples send 08 06 for M06 and 07 01 for S01."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 1797 Frequency reference (0.01 Hz) (S05 frequency command); HR 1798 Operation command (S06 run command); HR 1806 Alarm reset command (S14 alarm reset); HR 2057 Output frequency (M09 output frequency); HR 2059 Output current (effective) (M11 output current); HR 2062 Operation status (M14 status); HR 2064 Latest alarm code (M16 latest alarm); HR 1054 Communications link function (mode selection) (H30 link mode)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Select Modbus RTU with y10 = 0 and set H30 (communications link function) so the frequency and/or run command come from RS-485 (3 = both from the RJ-45 port). If a digital input is assigned to LE (enable communications link), it must be ON."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What happens when the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) loses Modbus communication?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "y08 sets a no-response detection time (0 = off, 1-60 s); y02/y03 choose whether the drive trips at once, after a timer, or keeps running."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is RS-485 Communication User's Manual (FRENIC-HVAC / FRENIC-AQUA) (24A7-E-0021b), published free by Fuji Electric at https://americas.fujielectric.com/files/24A7-E-0021b.pdf."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Fuji Electric",
+     "item": "https://easymodbus.com/modbus-register-maps/fuji-electric/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)",
+     "item": "https://easymodbus.com/modbus-register-maps/fuji-electric/frenic-hvac-aqua"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/fuji-electric/">Fuji Electric</a></li><li aria-current="page">FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)</li></ol>
+<p class="eyebrow">Variable frequency drive (HVAC / pump) &middot; Modbus register map</p><h1><span class="mfr">Fuji Electric</span> FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus register map</h1><p class="updated">Updated 19 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>FRENIC-HVAC and FRENIC-AQUA drives for fans and pumps speak Modbus RTU on their RS-485 port. Every function code (F, E, H, y, S, M ...) is a holding register found by a fixed group/number rule; the S codes carry frequency, run and PID commands and the M codes carry monitors, status words and alarm history. This map lists the communication command and monitor codes and the link settings.</p>
+<p>This page lists <strong>53 Modbus registers</strong> for the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) &mdash; 17 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Fuji Electric&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/fuji-electric/">Fuji Electric</a></dd></div><div><dt>Model</dt><dd>FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/vfds/">Variable frequency drive (HVAC / pump)</a></dd></div><div><dt>Registers</dt><dd>53 (17 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>derived from parameter numbers</dd></div><div><dt>Also known as</dt><dd>FRENIC-HVAC, FRENIC-AQUA, FRN-AR, FRN-AQ</dd></div><div><dt>Source document</dt><dd><a href="https://americas.fujielectric.com/files/24A7-E-0021b.pdf" rel="nofollow noopener" target="_blank">RS-485 Communication User&#x27;s Manual (FRENIC-HVAC / FRENIC-AQUA) &middot; 24A7-E-0021b</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/fuji-electric/frenic-hvac-aqua.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/fuji-electric/frenic-hvac-aqua.json">JSON</a>
+  <a class="btn" href="https://americas.fujielectric.com/files/24A7-E-0021b.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)</h2>
+<div class="answer"><b>Integration in brief</b><p>Set y10 = 0 (Modbus RTU), y01 address and y04/y06 serial settings, and H30 = 3 so frequency and run commands come from RS-485. Write S05 (Hz) or S01 (p.u.) for speed and S06 bit 0/1 for run forward/reverse; poll M09, M11, M14 and M16.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-1797">HR 1797</a></td><td class="n">Frequency reference (0.01 Hz)</td><td class="f">UINT16</td><td>S05 frequency command</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1798">HR 1798</a></td><td class="n">Operation command</td><td class="f">BITMAP16</td><td>S06 run command</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-1806">HR 1806</a></td><td class="n">Alarm reset command</td><td class="f">UINT16</td><td>S14 alarm reset</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-2057">HR 2057</a></td><td class="n">Output frequency</td><td class="f">UINT16</td><td>M09 output frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2059">HR 2059</a></td><td class="n">Output current (effective)</td><td class="f">UINT16</td><td>M11 output current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2062">HR 2062</a></td><td class="n">Operation status</td><td class="f">BITMAP16</td><td>M14 status</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2064">HR 2064</a></td><td class="n">Latest alarm code</td><td class="f">UINT16</td><td>M16 latest alarm</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-1054">HR 1054</a></td><td class="n">Communications link function (mode selection)</td><td class="f">UINT16</td><td>H30 link mode</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Select Modbus RTU with y10 = 0 and set H30 (communications link function) so the frequency and/or run command come from RS-485 (3 = both from the RJ-45 port). If a digital input is assigned to LE (enable communications link), it must be ON.</p></div><div class="ib"><h3>Communication loss &amp; watchdog</h3><p>y08 sets a no-response detection time (0 = off, 1-60 s); y02/y03 choose whether the drive trips at once, after a timer, or keeps running.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Addresses are function-code based: wire address = group code x 256 + number (for example H30 = 4 x 256 + 30 = 1054).</li><li>Reads are limited to 50 words and do not cross a function code group; unused codes read as 0.</li><li>Reading S codes returns the last value written over comms, not the live command; read the M codes for the live value.</li><li>Alarm reset through S06 needs bit 15 set then cleared; S14 = 1 resets in one write.</li><li>S14 = 1 resets an alarm even when H30, y98, y99 or the LE terminal block the link; S06 bit 15 only works when the link is enabled.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>y01 station address 1-247, y04 baud (0-4 = 2400-38400 bps), y06 parity (stop bits follow parity in Modbus RTU), data length fixed at 8 bits.</li><li>y09 adds a response interval (0.00-1.00 s) for slow masters.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>If S01 is not 0 it overrides S05; write 0 to S01 when using S05.</li><li>Writing an alarm reset while a run command is still set restarts the drive immediately.</li></ul>
+</section>
+<h2 id="registers">Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>53</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">53 of 53 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-1054"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1054<small>doc H30</small></td><td class="n">Communications link function (mode selection)</td><td class="d">Selects frequency and run command sources when the link is enabled.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Freq: inverter / Run: inverter; 1 = Freq: RS-485 (RJ-45) / Run: inverter; 2 = Freq: inverter / Run: RS-485 (RJ-45); 3 = Freq: RS-485 (RJ-45) / Run: RS-485 (RJ-45); 4 = Freq: RS-485 port 2 / Run: inverter; 5 = Freq: RS-485 port 2 / Run: RS-485 (RJ-45); 6 = Freq: inverter / Run: RS-485 port 2; 7 = Freq: RS-485 (RJ-45) / Run: RS-485 port 2; 8 = Freq: RS-485 port 2 / Run: RS-485 port 2</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1793"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1793<small>doc S01</small></td><td class="n">Frequency reference (p.u.)</td><td class="d">+/-20000 = maximum frequency. Takes priority over S05 when not 0.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1797"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1797<small>doc S05</small></td><td class="n">Frequency reference (0.01 Hz)</td><td class="d">Frequency command in 0.01 Hz steps.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>Hz</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1798"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1798<small>doc S06</small></td><td class="n">Operation command</td><td class="d">Run, direction, X terminals and reset (format 14).</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">bit 0 = FWD run forward; bit 1 = REV run reverse; bit 2 = X1; bit 3 = X2; bit 4 = X3; bit 5 = X4; bit 6 = X5; bit 7 = X6; bit 8 = X7; bit 11 = EN; bit 13 = XF (FWD terminal function); bit 14 = XR (REV terminal function); bit 15 = RST alarm reset</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1799"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1799<small>doc S07</small></td><td class="n">Universal DO</td><td class="d">Command to DO terminals assigned as universal DO.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1804"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1804<small>doc S12</small></td><td class="n">Universal AO</td><td class="d">+/-20000 = full scale.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1805"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1805<small>doc S13</small></td><td class="n">PID command</td><td class="d">+/-20000 = +/-100 %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1806"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1806<small>doc S14</small></td><td class="n">Alarm reset command</td><td class="d">Write 1 to reset; always reads 0.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No action; 1 = Reset</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1811"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1811<small>doc S19</small></td><td class="n">Speed command</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>rpm</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1823"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1823<small>doc S31</small></td><td class="n">External PID command 1</td><td class="d">+/-20000 = +/-100 %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2049"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2049<small>doc M01</small></td><td class="n">Frequency reference, final (p.u.)</td><td class="d">+/-20000 = maximum frequency.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2053"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2053<small>doc M05</small></td><td class="n">Frequency reference, final (0.01 Hz)</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2054"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2054<small>doc M06</small></td><td class="n">Output frequency 1 (p.u.)</td><td class="d">+/-20000 = maximum frequency, before slip compensation.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2055"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2055<small>doc M07</small></td><td class="n">Torque real value</td><td class="d">% of motor rated torque.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2057"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2057<small>doc M09</small></td><td class="n">Output frequency</td><td class="d">0.00-655.35 Hz over Modbus RTU (unsigned).</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2058"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2058<small>doc M10</small></td><td class="n">Input power</td><td class="d">% of nominal applicable motor output.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2059"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2059<small>doc M11</small></td><td class="n">Output current (effective)</td><td class="d">% of inverter rated current.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2060"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2060<small>doc M12</small></td><td class="n">Output voltage (effective)</td><td class="d">Resolution 1 V in practice.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2061"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2061<small>doc M13</small></td><td class="n">Operation command, final</td><td class="d">Combined keypad/terminal/comms command, format 14.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = FWD run forward; bit 1 = REV run reverse; bit 2 = X1; bit 3 = X2; bit 4 = X3; bit 5 = X4; bit 6 = X5; bit 7 = X6; bit 8 = X7; bit 11 = EN; bit 13 = XF (FWD terminal function); bit 14 = XR (REV terminal function); bit 15 = RST alarm reset</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2062"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2062<small>doc M14</small></td><td class="n">Operation status</td><td class="d">Format 16.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = FWD during forward rotation; bit 1 = REV during reverse rotation; bit 2 = EXT during DC braking / pre-exciting; bit 3 = INT inverter shut down; bit 4 = BRK during braking; bit 5 = NUV DC link voltage established (0 = undervoltage); bit 7 = VL during voltage limiting; bit 8 = IL during current limiting; bit 9 = ACC during acceleration; bit 10 = DEC during deceleration; bit 11 = ALM alarm relay (any fault); bit 12 = RL communications effective; bit 15 = BUSY writing function code data</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2063"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2063<small>doc M15</small></td><td class="n">General-purpose output terminals</td><td class="d">Format 15.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Y1; bit 1 = Y2; bit 2 = Y3; bit 3 = Y4; bit 4 = Y5; bit 8 = 30 (alarm relay)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2064"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2064<small>doc M16</small></td><td class="n">Latest alarm code</td><td class="d">Alarm code 0-254.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2065"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2065<small>doc M17</small></td><td class="n">Last alarm code</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2066"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2066<small>doc M18</small></td><td class="n">Second last alarm code</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2067"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2067<small>doc M19</small></td><td class="n">Third last alarm code</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2068"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2068<small>doc M20</small></td><td class="n">Cumulative operation time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2069"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2069<small>doc M21</small></td><td class="n">DC link bus voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2071"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2071<small>doc M23</small></td><td class="n">Model code</td><td class="d">Series, generation, destination and supply in four hex digits.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2072"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2072<small>doc M24</small></td><td class="n">Capacity code</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2073"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2073<small>doc M25</small></td><td class="n">ROM version</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2074"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2074<small>doc M26</small></td><td class="n">Transmission error code</td><td class="d">RS-485 communications error code, 0-127.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2092"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2092<small>doc M44</small></td><td class="n">Inverter internal air temperature on alarm</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2093"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2093<small>doc M45</small></td><td class="n">Heat sink temperature on alarm</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2094"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2094<small>doc M46</small></td><td class="n">Life of main circuit capacitor</td><td class="d">Remaining capacity, 0.0-100.0 %.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2095"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2095<small>doc M47</small></td><td class="n">Life of PC board capacitor</td><td class="d">Cumulative run time in 10 h steps.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2096"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2096<small>doc M48</small></td><td class="n">Life of heat sink cooling fan</td><td class="d">Cumulative run time in 10 h steps.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 10</td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2109"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2109<small>doc M61</small></td><td class="n">Inverter internal air temperature</td><td class="d">Current value.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2110"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2110<small>doc M62</small></td><td class="n">Heat sink temperature</td><td class="d">Current value.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2111"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2111<small>doc M63</small></td><td class="n">Load factor</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2112"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2112<small>doc M64</small></td><td class="n">Motor output</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2116"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2116<small>doc M68</small></td><td class="n">PID final command</td><td class="d">+/-20000 = +/-100 %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2120"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2120<small>doc M72</small></td><td class="n">PID feedback value</td><td class="d">+/-20000 = +/-100 %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2121"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2121<small>doc M73</small></td><td class="n">PID output</td><td class="d">+/-20000 = +/-100 %.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2126"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2126<small>doc M78</small></td><td class="n">Rotation speed command</td><td class="d">Speed command in rpm (min-1).</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>rpm</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2127"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2127<small>doc M79</small></td><td class="n">Rotation speed</td><td class="d">Output rotation speed in rpm (min-1).</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>rpm</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2134"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2134<small>doc M86</small></td><td class="n">Latest light alarm code</td><td class="d">Low byte = light alarm code, high byte = consecutive repeat count (format 41).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3585"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3585<small>doc y01</small></td><td class="n">RS-485 port 1 station address</td><td class="d">1-247 for Modbus RTU.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3586"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3586<small>doc y02</small></td><td class="n">RS-485 port 1 communications error processing</td><td class="d">What the drive does on a comms error while running from the link.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Trip Er8 at once; 1 = Run for the y03 time, then trip Er8; 2 = Run for the y03 time; trip Er8 only if comms not restored; 3 = Keep running</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3587"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3587<small>doc y03</small></td><td class="n">RS-485 port 1 error processing timer</td><td class="d">Timer used by y02 settings 1 and 2, 0.0-60.0 s.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3588"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3588<small>doc y04</small></td><td class="n">RS-485 port 1 baud rate</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 2400 bps; 1 = 4800 bps; 2 = 9600 bps; 3 = 19200 bps; 4 = 38400 bps</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3590"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3590<small>doc y06</small></td><td class="n">RS-485 port 1 parity</td><td class="d">In Modbus RTU the stop bits follow the parity choice.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No parity (2 stop bits); 1 = Even parity (1 stop bit); 2 = Odd parity (1 stop bit); 3 = No parity (1 stop bit)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3592"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3592<small>doc y08</small></td><td class="n">RS-485 port 1 no-response error detection time</td><td class="d">0 = disabled, 1-60 s.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3594"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3594<small>doc y10</small></td><td class="n">RS-485 port 1 protocol selection</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Modbus RTU; 1 = Loader commands; 2 = Fuji general-purpose inverter protocol; 3 = Metasys N2; 5 = BACnet</td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>All function code data are single 16-bit words; no 32-bit values are used in this map.</li><li>Per-unit values (S01, S12, S13, M01, M06, M68, M72, M73) use +/-20000 = 100 % or maximum frequency; convert with the drive&#x27;s maximum frequency (F03).</li><li>M09 output frequency is unsigned over Modbus RTU (0.00-655.35 Hz); the signed range in the table applies to the Fuji general-purpose inverter protocol.</li><li>Codes marked not supported on HVAC/AQUA in the manual (torque and flux commands, motor temperature M22) are left out.</li><li>Accel/decel times (F07/F08, S08/S09) use Fuji&#x27;s packed floating-point format [12] and are not listed.</li><li>M14 bit 6 (TL, torque limiting) is left out: the bit table lists it, but the bit diagram of format 16 shows bit 6 as unused (0).</li><li>M86 uses alarm-history format 41: the low byte is the light alarm code and the high byte counts consecutive repeats of the same alarm.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) have?</summary><p>This map lists 53 registers: 53 holding registers. 17 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers derived from parameter numbers. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each function code is a holding register at 40000 + group code x 256 + number (manual Table 3.2: F=0, E=1, H=4, S=7, M=8, y=14). In the frame the high byte is the group code and the low byte the number, so the wire address is group x 256 + number; the manual&#x27;s examples send 08 06 for M06 and 07 01 for S01.</p></details><details><summary>What are the minimum Modbus registers to integrate the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)?</summary><p>Start with HR 1797 Frequency reference (0.01 Hz) (S05 frequency command); HR 1798 Operation command (S06 run command); HR 1806 Alarm reset command (S14 alarm reset); HR 2057 Output frequency (M09 output frequency); HR 2059 Output current (effective) (M11 output current); HR 2062 Operation status (M14 status); HR 2064 Latest alarm code (M16 latest alarm); HR 1054 Communications link function (mode selection) (H30 link mode).</p></details><details><summary>How do I enable Modbus control of the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU)?</summary><p>Select Modbus RTU with y10 = 0 and set H30 (communications link function) so the frequency and/or run command come from RS-485 (3 = both from the RJ-45 port). If a digital input is assigned to LE (enable communications link), it must be ON.</p></details><details><summary>What happens when the Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) loses Modbus communication?</summary><p>y08 sets a no-response detection time (0 = off, 1-60 s); y02/y03 choose whether the drive trips at once, after a timer, or keeps running.</p></details><details><summary>Where is the official Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus documentation?</summary><p>The source is RS-485 Communication User&#x27;s Manual (FRENIC-HVAC / FRENIC-AQUA) (24A7-E-0021b), published free by Fuji Electric at https://americas.fujielectric.com/files/24A7-E-0021b.pdf.</p></details></div>
+<h2>More Fuji Electric Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/fuji-electric/pxh" data-row><span class="k">Sensor (digital process controller)</span><h3>Fuji Electric PXH digital controller (Modbus RTU, monitoring map)</h3><p>Fuji Electric PXH digital controllers on the RS-485 Modbus port; read-only monitoring registers from manual INP-TN514207c-E.</p><div class="meta">35 registers &middot; 0 writable &middot; RTU</div><span class="sr-only"> Also known as: PXH</span></a></li><li><a class="card" href="/modbus-register-maps/fuji-electric/pxr" data-row><span class="k">Sensor (digital temperature controller)</span><h3>Fuji Electric PXR micro controller X (RS-485 Modbus option)</h3><p>Fuji Electric PXR series controllers with the RS-485 Modbus communication option; manual INP-TN512642d-E.</p><div class="meta">103 registers &middot; 82 writable &middot; RTU</div><span class="sr-only"> Also known as: PXR3, PXR4, PXR5, PXR9</span></a></li></ul><h2>Other variable frequency drives register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/invertek-drives/optidrive-coolvert" data-row><span class="k">Variable frequency drive</span><h3>Invertek Drives Optidrive Coolvert compressor drive (built-in Modbus RTU)</h3><p>Invertek Optidrive Coolvert HVAC compressor drives on the terminal or RJ45 Modbus RTU port, per user guide version 2.01.</p><div class="meta">46 registers &middot; 14 writable &middot; RTU</div><span class="sr-only"> Also known as: Optidrive CoolVert, Coolvert</span></a></li><li><a class="card" href="/modbus-register-maps/invt/goodrive200a-gd200a" data-row><span class="k">Variable frequency drive</span><h3>INVT Goodrive200A (GD200A) general-purpose VFD</h3><p>INVT Goodrive200A drives using the built-in RS-485 Modbus port, per the GD200A manual V3.1 (chapter 9).</p><div class="meta">46 registers &middot; 25 writable &middot; RTU/ASCII</div><span class="sr-only"> Also known as: GD200A, Goodrive200A, GD200A general VFD</span></a></li><li><a class="card" href="/modbus-register-maps/lenze/i510" data-row><span class="k">Variable frequency drive</span><h3>Lenze i510 cabinet inverter 0.25-2.2 kW (Modbus RTU)</h3><p>Lenze i510 cabinet inverters 0.25-2.2 kW with the Modbus/CANopen control unit, selector set to Modbus, firmware 01.01.01.00 as documented in the commissioning manual.</p><div class="meta">17 registers &middot; 6 writable &middot; RTU</div><span class="sr-only"> Also known as: i500 series, i510 Cabinet, I51AE</span></a></li><li><a class="card" href="/modbus-register-maps/mitsubishi-electric/fr-a700" data-row><span class="k">Variable frequency drive</span><h3>Mitsubishi Electric FR-A700 inverter (RS-485 terminals, Modbus RTU)</h3><p>FR-A700 series inverters (FR-A720-0.4K to 90K, FR-A740-0.4K to 500K) using the RS-485 terminals with Pr.549 = 1 (Modbus-RTU); Instruction Manual (Applied) revision E.</p><div class="meta">46 registers &middot; 21 writable &middot; RTU</div><span class="sr-only"> Also known as: FR-A720, FR-A740, FR-A700 series</span></a></li><li><a class="card" href="/modbus-register-maps/schneider-electric/atv320" data-row><span class="k">Variable frequency drive</span><h3>Schneider Electric Altivar Machine ATV320 (embedded Modbus RTU)</h3><p>ATV320 Book (ATV320...B) and Compact (ATV320...C) drives on the built-in RJ45 Modbus serial port; register map per Communication Parameters file NVE41316 V3.5.</p><div class="meta">68 registers &middot; 31 writable &middot; RTU</div><span class="sr-only"> Also known as: ATV320, Altivar 320, ATV320U, ATV320D, ATV320 Book, ATV320 Compact</span></a></li><li><a class="card" href="/modbus-register-maps/sew-eurodrive/movitrac-ltp-b" data-row><span class="k">Variable frequency drive</span><h3>SEW-EURODRIVE MOVITRAC LTP-B standard inverter (built-in Modbus RTU)</h3><p>SEW-EURODRIVE MOVITRAC LTP-B inverters on the RJ45 Modbus RTU port (no communication or encoder option card fitted), per product manual 31554814/EN edition 10/2023.</p><div class="meta">24 registers &middot; 17 writable &middot; RTU</div><span class="sr-only"> Also known as: MOVITRAC LTP-B, LTP-B, MC LTP B</span></a></li></ul><p><a href="https://easymodbus.com/modbus-register-maps/equipment/vfds/">All variable frequency drives Modbus register maps &rarr;</a></p>
+<p class="updated">Source: <a href="https://americas.fujielectric.com/files/24A7-E-0021b.pdf" rel="nofollow noopener" target="_blank">RS-485 Communication User&#x27;s Manual (FRENIC-HVAC / FRENIC-AQUA) &middot; 24A7-E-0021b</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

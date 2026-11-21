@@ -1,0 +1,1427 @@
+{
+  "manufacturer": "APC (Schneider Electric)",
+  "manufacturer_slug": "apc",
+  "model": "InRow RD direct-expansion cooling unit (Modbus register map 990-3576B)",
+  "model_slug": "inrow-rd-990-3576",
+  "short_model": "InRow RD",
+  "aliases": [
+    "InRow RD",
+    "990-3576B",
+    "Schneider Electric InRow RD"
+  ],
+  "equipment_type": "Air handler (in-row data-centre DX cooling unit)",
+  "applies_to": "APC / Schneider Electric InRow RD cooling units, register map part number 990-3576B (08/2015).",
+  "summary": "The InRow RD is an in-row direct-expansion cooling unit for data-centre rows and contained aisles. Its controller serves Modbus RTU and Modbus TCP with everything in holding registers. This page covers the single-register points: group configuration and fan-speed settings, unit operating mode and type, compressor and I/O states, and about 50 alarm flags.",
+  "transport": [
+    "RTU",
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "The map prints the 'Absolute Starting Register Number' in hex and in decimal. Note 11 says absolute register 0 equals Modicon 40001 and is address zero on the wire, so the decimal number is the wire address (e.g. SUPPLY_TEMP 149 = 0x0095 = Modicon 40150)."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Modbus Register Map: InRow RD",
+    "doc_number": "990-3576B",
+    "revision_date": "2015-08",
+    "url": "https://download.se.com/files?p_Doc_Ref=SPD_JBOR-7NZSGZ_EN",
+    "pages": "pp. 1-4 (notes at the top of every page; group data p. 1, unit data pp. 2-3, alarms pp. 3-4, logging registers p. 4)"
+  },
+  "notes": [
+    "The download is a ZIP holding JBOR-7NZSGZ_R2_EN.pdf (and an identical _SRC copy).",
+    "All two-register points (setpoints, deadband, temperatures, cooling output and demand, airflow, fan speed, pressures, PID terms, run hours, thresholds and the Modbus diagnostic counters) are typed \"LONG\" in the map, a type its own data-type list does not define, so they are left out here: signedness for LONG is not stated. The baud-rate register at 65534 is typed \"INTEGER\", also undefined, and is left out too.",
+    "Every point kept here is ENUM, which the map defines as an unsigned 16-bit value with a list of states.",
+    "Reads use function code 3 or 4; writes use function code 16, or 6 for single-register points.",
+    "Text registers (unit name, location, model, serial number, firmware and hardware revision, date of manufacture at 65-140) are left out; reserved rows are left out.",
+    "Some alarm names are cut off in the printed cells (0x0124, 0x0133 and 0x0131); 0x0124 and 0x0133 are completed here as PERSISTENT_HIGH_DISCHARGE_PRESSURE and ACTIVE_FLOW_CONTROLLER_SENSOR_FAULT. 0x0131 shows NUM_OF_ACTIVE_FLOW_CONTROLLERS (the end of the name is hidden) with Clear/Alarm values, kept as printed.",
+    "Single-register reads of reserved or undefined registers return an exception; a block read starting on a valid register returns zeros for undefined ones."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "6 (0x0006)",
+      "name": "CONFIGURATION_TYPE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "RACS",
+        "1": "Spot",
+        "2": "In-Row",
+        "3": "HACS",
+        "4": "CACS"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "7 (0x0007)",
+      "name": "FAN_SPEED_PREFERENCE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Low",
+        "1": "Med-Low",
+        "2": "Med",
+        "3": "Med-High",
+        "4": "High"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "8 (0x0008)",
+      "name": "CAPACITY_CTRL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Discrete (Disc)",
+        "1": "Proportional (Prop)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "9 (0x0009)",
+      "name": "FAN_SPEED_CTRL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Automatic",
+        "1": "Manual"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 34,
+      "documented": "34 (0x0022)",
+      "name": "RUNTIME_BALANCING_ENABLE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Enable"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 35,
+      "documented": "35 (0x0023)",
+      "name": "LOAD_ASSIST_ENABLE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Enable"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 40,
+      "documented": "40 (0x0028)",
+      "name": "ACTIVE_FLOW_CONTROL_BIAS",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Positive",
+        "1": "Slightly Positive",
+        "2": "Zero",
+        "3": "Slightly Neg",
+        "4": "Negative"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 41,
+      "documented": "41 (0x0029)",
+      "name": "ACTIVE_FLOW_CONTROL_STATUS",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Under",
+        "1": "Okay",
+        "2": "Over",
+        "3": "N/A"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 42,
+      "documented": "42 (0x002A)",
+      "name": "ACTIVE_FLOW_CONTROL_LAMP_TEST",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Enable"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 64,
+      "documented": "64 (0x0040)",
+      "name": "OVERALL_STATUS",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No Alarm",
+        "2": "Informational",
+        "4": "Warning",
+        "8": "Critical"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 141,
+      "documented": "141 (0x008D)",
+      "name": "OPERATE_MODE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Standby",
+        "1": "On",
+        "2": "Idle",
+        "4": "Service",
+        "5": "Backup",
+        "6": "Assist"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 142,
+      "documented": "142 (0x008E)",
+      "name": "UNIT_TYPE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not Configured",
+        "1": "Fluid Cooled",
+        "2": "Air Cooled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 193,
+      "documented": "193 (0x00C1)",
+      "name": "AIR_FILTER_SERV_INT_ALARM",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Enable"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 202,
+      "documented": "202 (0x00CA)",
+      "name": "IDLE_ON_LEAK",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 203,
+      "documented": "203 (0x00CB)",
+      "name": "INPUT_NORMAL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 204,
+      "documented": "204 (0x00CC)",
+      "name": "INPUT_STATE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 205,
+      "documented": "205 (0x00CD)",
+      "name": "OUTPUT_NORMAL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 206,
+      "documented": "206 (0x00CE)",
+      "name": "OUTPUT_STATE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 207,
+      "documented": "207 (0x00CF)",
+      "name": "OUTPUT_SOURCE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Any Alarm",
+        "1": "Only Critical Alarms"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 208,
+      "documented": "208 (0x00D0)",
+      "name": "OHE_INPUT_NORMAL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 209,
+      "documented": "209 (0x00D1)",
+      "name": "OHE_INPUT_STATE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 210,
+      "documented": "210 (0x00D2)",
+      "name": "OHE_OUTPUT_STATE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 211,
+      "documented": "211 (0x00D3)",
+      "name": "COMPRESSOR_STATE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 216,
+      "documented": "216 (0x00D8)",
+      "name": "UNIT_ROLE_OVERRIDE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Automatic",
+        "1": "Forced On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 217,
+      "documented": "217 (0x00D9)",
+      "name": "IDLE_ON_COOL_FAIL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 256,
+      "documented": "256 (0x0100)",
+      "name": "INTERNAL_COMM_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 257,
+      "documented": "257 (0x0101)",
+      "name": "ALINK_ISOLATION_RELAY_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 258,
+      "documented": "258 (0x0102)",
+      "name": "EXTERNAL_COMMUNICATION_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 259,
+      "documented": "259 (0x0103)",
+      "name": "COOL_FAIL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 260,
+      "documented": "260 (0x0104)",
+      "name": "RACK_TEMP_HIGH_VIOLATION",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 261,
+      "documented": "261 (0x0105)",
+      "name": "AIR_FILTER_CLOGGED",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 262,
+      "documented": "262 (0x0106)",
+      "name": "UPPER_RTN_AIR_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 264,
+      "documented": "264 (0x0108)",
+      "name": "LOWER_RTN_AIR_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 265,
+      "documented": "265 (0x0109)",
+      "name": "UPPER_SPLY_AIR_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 266,
+      "documented": "266 (0x010A)",
+      "name": "MIDDLE_SPLY_AIR_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 267,
+      "documented": "267 (0x010B)",
+      "name": "LOWER_SPLY_AIR_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 268,
+      "documented": "268 (0x010C)",
+      "name": "RACK_TEMP_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 269,
+      "documented": "269 (0x010D)",
+      "name": "CONDENSOR_FLUID_ACUATOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 270,
+      "documented": "270 (0x010E)",
+      "name": "HIGH_DISCHARGE_PRESSURE_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 271,
+      "documented": "271 (0x010F)",
+      "name": "LOW_SUCTION_PRESSURE_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 272,
+      "documented": "272 (0x0110)",
+      "name": "EVAPORATOR_FAN_1_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 273,
+      "documented": "273 (0x0111)",
+      "name": "EVAPORATOR_FAN_2_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 274,
+      "documented": "274 (0x0112)",
+      "name": "EVAPORATOR_FAN_3_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 275,
+      "documented": "275 (0x0113)",
+      "name": "EVAPORATOR_FAN_4_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 276,
+      "documented": "276 (0x0114)",
+      "name": "EVAPORATOR_FAN_5_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 277,
+      "documented": "277 (0x0115)",
+      "name": "EVAPORATOR_FAN_6_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 278,
+      "documented": "278 (0x0116)",
+      "name": "WATER_DETECTED",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 279,
+      "documented": "279 (0x0117)",
+      "name": "CHECK_CONDENSATE_SYSTEM",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 280,
+      "documented": "280 (0x0118)",
+      "name": "CONDENSATE_PAN_FULL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 281,
+      "documented": "281 (0x0119)",
+      "name": "TOP_FAN_PWRSP_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 282,
+      "documented": "282 (0x011A)",
+      "name": "BOTTOM_FAN_PWRSP_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 283,
+      "documented": "283 (0x011B)",
+      "name": "AIR_FILTER_RUNHOUR_VIOLATION",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 284,
+      "documented": "284 (0x011C)",
+      "name": "GROUP_COMM_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 285,
+      "documented": "285 (0x011D)",
+      "name": "SUPPLY_HIGH_TEMP_VIOLATION",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 286,
+      "documented": "286 (0x011E)",
+      "name": "RETURN_HIGH_TEMP_VIOLATION",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 287,
+      "documented": "287 (0x011F)",
+      "name": "FILTER_DP_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 288,
+      "documented": "288 (0x0120)",
+      "name": "SUCTION_TEMP_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 289,
+      "documented": "289 (0x0121)",
+      "name": "SUCTION_PRESSURE_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 290,
+      "documented": "290 (0x0122)",
+      "name": "DISCHARGE_PRESS_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 291,
+      "documented": "291 (0x0123)",
+      "name": "DISCRETE_INPUT_ABNORMAL",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 292,
+      "documented": "292 (0x0124)",
+      "name": "PERSISTENT_HIGH_DISCHARGE_PRESSURE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 293,
+      "documented": "293 (0x0125)",
+      "name": "PERSISTENT_LOW_SUCTION_PRESSURE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 297,
+      "documented": "297 (0x0129)",
+      "name": "OUTSIDE_HEAT_EXCHANGE_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 299,
+      "documented": "299 (0x012B)",
+      "name": "UNIT_TYPE_CONFLICT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 300,
+      "documented": "300 (0x012C)",
+      "name": "LIQUID_REFRIGERANT_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 301,
+      "documented": "301 (0x012D)",
+      "name": "EXCESSIVE_COMP_CYCLING_ALARM",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 302,
+      "documented": "302 (0x012E)",
+      "name": "NO_BACKUP_UNITS_AVAILABLE",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 303,
+      "documented": "303 (0x012F)",
+      "name": "COMPRESSOR_DID_NOT_START_ALARM",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 304,
+      "documented": "304 (0x0130)",
+      "name": "ECOAISLE_DOOR_OPEN_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 305,
+      "documented": "305 (0x0131)",
+      "name": "NUM_OF_ACTIVE_FLOW_CONTROLLERS",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 306,
+      "documented": "306 (0x0132)",
+      "name": "INSUFFICIENT_AIRFLOW_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 307,
+      "documented": "307 (0x0133)",
+      "name": "ACTIVE_FLOW_CONTROLLER_SENSOR_FAULT",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Clear",
+        "1": "Alarm"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read OPERATE_MODE (141), UNIT_TYPE (142) and OVERALL_STATUS (64) for the unit state, then the individual alarm flags from 256 up. Group settings such as fan speed preference (7) can be written with function code 6.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 141,
+        "why": "Operating mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 64,
+        "why": "Overall alarm status"
+      },
+      {
+        "table": "holding_register",
+        "address": 142,
+        "why": "Unit type"
+      },
+      {
+        "table": "holding_register",
+        "address": 211,
+        "why": "Compressor on/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 259,
+        "why": "Cooling failure alarm"
+      },
+      {
+        "table": "holding_register",
+        "address": 278,
+        "why": "Water detected alarm"
+      },
+      {
+        "table": "holding_register",
+        "address": 7,
+        "why": "Group fan speed preference"
+      },
+      {
+        "table": "holding_register",
+        "address": 6,
+        "why": "Group configuration type"
+      }
+    ],
+    "enable": "Not described in the register map.",
+    "watchdog": null,
+    "quirks": [
+      "The decimal absolute register number is the wire address; Modicon numbering adds 40001.",
+      "Points shown on unsupported units read as 0 rather than returning an error."
+    ],
+    "setup": [
+      "Modbus RTU (serial) and Modbus TCP are both supported per the map; serial settings and unit ID are not given in this document."
+    ],
+    "gotchas": [
+      "A large block read can take 2 s or more; read fewer registers or raise the timeout if requests time out.",
+      "Reading before the controller has data returns an invalid-address error."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

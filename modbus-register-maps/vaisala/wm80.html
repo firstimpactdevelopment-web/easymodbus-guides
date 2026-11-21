@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vaisala WM80 Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="Vaisala WM80 Modbus register map: 47 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/vaisala/wm80">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Vaisala WM80 Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="Vaisala WM80 Modbus register map: 47 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/vaisala/wm80">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vaisala WM80 Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="Vaisala WM80 Modbus register map: 47 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/vaisala/wm80",
+   "url": "https://easymodbus.com/modbus-register-maps/vaisala/wm80",
+   "name": "Vaisala WM80 Modbus Register List & Map | Easy Modbus",
+   "description": "Vaisala WM80 Modbus register map: 47 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-19",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/vaisala/wm80#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/vaisala/wm80#dataset",
+   "name": "Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus register map",
+   "description": "The Vaisala WM80 is a heated ultrasonic wind sensor aimed at uses that need continuous wind data, such as wind turbine control, ship navigation and dynamic positioning. On RS-485 it serves Modbus RTU or an ASCII/NMEA message. This map covers wind speed and direction (sample, instant, average, gust, lull, U/V components), sonic temperature, averaging and heating settings, serial settings, status words, monitoring values and test registers. Vaisala WM80 Modbus register map: 47 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/vaisala/wm80",
+   "keywords": [
+    "Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus register map",
+    "Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus registers",
+    "Vaisala Modbus map",
+    "WM80 Modbus register map",
+    "Vaisala WM80 Modbus register map",
+    "Ultrasonic Wind Sensor WM80 Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "dateModified": "2026-11-19",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "WM80 User Guide",
+    "url": "https://docs.vaisala.com/r/M212995EN-F/en-US",
+    "author": {
+     "@type": "Organization",
+     "name": "Vaisala"
+    }
+   },
+   "about": {
+    "@type": "Thing",
+    "name": "Vaisala WM80 ultrasonic wind sensor (Modbus RTU)",
+    "description": "Sensor (ultrasonic wind)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/vaisala/wm80.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/vaisala/wm80.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "Easy Modbus register-map library",
+    "url": "https://easymodbus.com/modbus-register-maps/"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Vaisala WM80 ultrasonic wind sensor (Modbus RTU) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 47 registers: 47 holding registers. 15 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The guide prints each register as a hex address with its decimal value (used on the wire) plus a 'register number' equal to the address + 1. Wind speed sample is at address 0x0000 (register number 1)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What byte order does the Vaisala WM80 ultrasonic wind sensor (Modbus RTU) use for 32-bit values?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Vaisala WM80 ultrasonic wind sensor (Modbus RTU)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 4 Wind speed, instant (Instant wind speed); HR 6 Wind direction, instant (Instant wind direction); HR 8 Wind speed, average (Average wind speed); HR 14 Wind speed, gust (Gust); HR 512 Device status (Device status); HR 521 Wind measurement status (Wind measurement status)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Vaisala WM80 ultrasonic wind sensor (Modbus RTU)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Order the sensor with the Modbus RTU communication profile (option C), or in Vaisala Insight PC software select Communication, set Interface mode to Modbus RTU, save, then power-cycle the sensor. Interface mode is also register 0x0605."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is WM80 User Guide (M212995EN-F), revision 2025-12, published free by Vaisala at https://docs.vaisala.com/r/M212995EN-F/en-US."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Vaisala",
+     "item": "https://easymodbus.com/modbus-register-maps/vaisala/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "WM80 ultrasonic wind sensor (Modbus RTU)",
+     "item": "https://easymodbus.com/modbus-register-maps/vaisala/wm80"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/vaisala/">Vaisala</a></li><li aria-current="page">WM80 ultrasonic wind sensor (Modbus RTU)</li></ol>
+<p class="eyebrow">Sensor (ultrasonic wind) &middot; Modbus register map</p><h1><span class="mfr">Vaisala</span> WM80 ultrasonic wind sensor (Modbus RTU) Modbus register map</h1><p class="updated">Updated 19 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>The Vaisala WM80 is a heated ultrasonic wind sensor aimed at uses that need continuous wind data, such as wind turbine control, ship navigation and dynamic positioning. On RS-485 it serves Modbus RTU or an ASCII/NMEA message. This map covers wind speed and direction (sample, instant, average, gust, lull, U/V components), sonic temperature, averaging and heating settings, serial settings, status words, monitoring values and test registers.</p>
+<p>This page lists <strong>47 Modbus registers</strong> for the Vaisala WM80 ultrasonic wind sensor (Modbus RTU) &mdash; 15 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Vaisala&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/vaisala/">Vaisala</a></dd></div><div><dt>Model</dt><dd>WM80 ultrasonic wind sensor (Modbus RTU)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/valves-actuators-sensors/">Sensor (ultrasonic wind)</a></dd></div><div><dt>Registers</dt><dd>47 (15 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>240</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8N2</dd></div><div><dt>Documented addressing</dt><dd>hexadecimal, 0-based</dd></div><div><dt>32-bit word order</dt><dd>CDAB <small class="count">low word first (word-swapped)</small></dd></div><div><dt>Also known as</dt><dd>WM80, Vaisala WM80, Ultrasonic Wind Sensor WM80</dd></div><div><dt>Source document</dt><dd><a href="https://docs.vaisala.com/r/M212995EN-F/en-US" rel="nofollow noopener" target="_blank">WM80 User Guide &middot; M212995EN-F &middot; rev. 2025-12</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/vaisala/wm80.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/vaisala/wm80.json">JSON</a>
+  <a class="btn" href="https://docs.vaisala.com/r/M212995EN-F/en-US" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: Vaisala WM80 ultrasonic wind sensor (Modbus RTU)</h2>
+<div class="answer"><b>Integration in brief</b><p>Read holding registers 0x0000-0x0015 in one request for speed, direction, gust, lull and sonic temperature as low-word-first floats, and check the status words at 0x0200-0x0209.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-4">HR 4</a></td><td class="n">Wind speed, instant</td><td class="f">FLOAT32 CDAB</td><td>Instant wind speed</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-6">HR 6</a></td><td class="n">Wind direction, instant</td><td class="f">FLOAT32 CDAB</td><td>Instant wind direction</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-8">HR 8</a></td><td class="n">Wind speed, average</td><td class="f">FLOAT32 CDAB</td><td>Average wind speed</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-14">HR 14</a></td><td class="n">Wind speed, gust</td><td class="f">FLOAT32 CDAB</td><td>Gust</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-512">HR 512</a></td><td class="n">Device status</td><td class="f">BITMAP16</td><td>Device status</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-521">HR 521</a></td><td class="n">Wind measurement status</td><td class="f">BITMAP16</td><td>Wind measurement status</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Order the sensor with the Modbus RTU communication profile (option C), or in Vaisala Insight PC software select Communication, set Interface mode to Modbus RTU, save, then power-cycle the sensor. Interface mode is also register 0x0605.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Floats and int32 are low word first (CDAB).</li><li>Default framing is 8 data bits, no parity, 2 stop bits.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Defaults: address 240, 19200 baud, N82.</li><li>Serial defaults in the register table apply unless the ordered configuration specifies otherwise; check the configuration code with Insight if unsure.</li><li>If the Modbus client runs on the same PC as Insight, close Insight first; restart the sensor after changing settings.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Read the test registers 0x1F00-0x1F02 first to confirm addressing and word order.</li></ul>
+</section>
+<h2 id="registers">Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>47</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">47 of 47 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-0"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">0<small>doc 0x0000 (0)</small></td><td class="n">Wind speed, sample</td><td class="d">10 Hz sample.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2<small>doc 0x0002 (2)</small></td><td class="n">Wind direction, sample</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>deg</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4<small>doc 0x0004 (4)</small></td><td class="n">Wind speed, instant</td><td class="d">Moving average over the instant averaging period.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6<small>doc 0x0006 (6)</small></td><td class="n">Wind direction, instant</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>deg</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8<small>doc 0x0008 (8)</small></td><td class="n">Wind speed, average</td><td class="d">Moving average over the statistics period.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10<small>doc 0x000a (10)</small></td><td class="n">Wind direction, average</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>deg</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12<small>doc 0x000c (12)</small></td><td class="n">Wind speed, lull</td><td class="d">Minimum instant speed over the statistics period.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-14"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">14<small>doc 0x000e (14)</small></td><td class="n">Wind speed, gust</td><td class="d">Maximum instant speed over the statistics period.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16<small>doc 0x0010 (16)</small></td><td class="n">Wind direction, lull</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>deg</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-18"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">18<small>doc 0x0012 (18)</small></td><td class="n">Wind direction, gust</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>deg</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-20"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">20<small>doc 0x0014 (20)</small></td><td class="n">Sonic temperature</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-22"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">22<small>doc 0x0016 (22)</small></td><td class="n">Wind speed U, sample</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-24"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">24<small>doc 0x0018 (24)</small></td><td class="n">Wind speed V, sample</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-26"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">26<small>doc 0x001a (26)</small></td><td class="n">Wind speed U, instant</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-28"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">28<small>doc 0x001c (28)</small></td><td class="n">Wind speed V, instant</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-30"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">30<small>doc 0x001e (30)</small></td><td class="n">Wind speed U, average</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32<small>doc 0x0020 (32)</small></td><td class="n">Wind speed V, average</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-512"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">512<small>doc 0x0200 (512)</small></td><td class="n">Device status</td><td class="d">0 = device OK.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 2 = Warning (W)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-515"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">515<small>doc 0x0203 (515)</small></td><td class="n">Operating voltage status</td><td class="d">0 = operating voltage OK.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 2 = Operating voltage too low (U); bit 3 = Operating voltage too high (O)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-518"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">518<small>doc 0x0206 (518)</small></td><td class="n">Heating status</td><td class="d">0 = heating OK.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Failure (F); bit 2 = Warning (W); bit 3 = Information (I)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-521"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">521<small>doc 0x0209 (521)</small></td><td class="n">Wind measurement status</td><td class="d">0 = wind measurement OK.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Measurement volume blocked (S)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-768"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">768<small>doc 0x0300 (768)</small></td><td class="n">Wind averaging method</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Scalar averaging; 1 = Vector averaging</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-771"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">771<small>doc 0x0303 (771)</small></td><td class="n">Wind instant averaging period</td><td class="d">0.1-10 s, default 3.0.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-773"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">773<small>doc 0x0305 (773)</small></td><td class="n">Wind statistics period</td><td class="d">0.1-3600 s, default 600.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-775"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">775<small>doc 0x0307 (775)</small></td><td class="n">Invalidation delay</td><td class="d">0-20 s, default 4.0.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-777"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">777<small>doc 0x0309 (777)</small></td><td class="n">Wind direction offset</td><td class="d">-180 to 180, default 0.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>deg</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-779"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">779<small>doc 0x030b (779)</small></td><td class="n">Calm wind threshold</td><td class="d">0.2-100, default 0.2.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>m/s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-783"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">783<small>doc 0x030f (783)</small></td><td class="n">Heating maximum current</td><td class="d">0-10 A, default 10.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>A</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-785"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">785<small>doc 0x0311 (785)</small></td><td class="n">Heating temperature setpoint</td><td class="d">0-55 °C, default 45.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>°C</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1280"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1280<small>doc 0x0500 (1280)</small></td><td class="n">Heating enabled</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Disabled; 1 = Enabled</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1536"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1536<small>doc 0x0600 (1536)</small></td><td class="n">Restart device</td><td class="d">Write 1 to restart.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1538"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1538<small>doc 0x0602 (1538)</small></td><td class="n">Bit rate</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 1200; 1 = 2400; 2 = 4800; 3 = 9600; 4 = 19200; 5 = 38400; 6 = 57600; 7 = 115200</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1539"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1539<small>doc 0x0603 (1539)</small></td><td class="n">Parity, data, stop bits</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = N81; 1 = N82; 2 = E81; 3 = E82; 4 = O81; 5 = O82; 6 = N71; 7 = N72; 8 = E71; 9 = E72; 10 = O71; 11 = O72</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1541"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1541<small>doc 0x0605 (1541)</small></td><td class="n">Interface mode</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Modbus; 1 = ASCII/NMEA</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1542"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1542<small>doc 0x0606 (1542)</small></td><td class="n">Modbus address</td><td class="d">1-247, default 240.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7424"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7424<small>doc 0x1d00 (7424)</small></td><td class="n">Vendor name</td><td class="d"></td><td class="f">STRING[16]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7432"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7432<small>doc 0x1d08 (7432)</small></td><td class="n">Product code</td><td class="d"></td><td class="f">STRING[16]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7440"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7440<small>doc 0x1d10 (7440)</small></td><td class="n">Product serial number</td><td class="d"></td><td class="f">STRING[16]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7680"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7680<small>doc 0x1e00 (7680)</small></td><td class="n">Restore factory default settings</td><td class="d">Write 1 to restore.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7936"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7936<small>doc 0x1f00 (7936)</small></td><td class="n">Signed integer test</td><td class="d">Always reads -12345.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7937"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7937<small>doc 0x1f01 (7937)</small></td><td class="n">Floating point test</td><td class="d">Always reads -123.45.</td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32768"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32768<small>doc 0x8000 (32768)</small></td><td class="n">Uptime</td><td class="d"></td><td class="f">INT32</td><td class="f">CDAB</td><td class="f"></td><td>s</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32770"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32770<small>doc 0x8002 (32770)</small></td><td class="n">Operating voltage</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32778"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32778<small>doc 0x800a (32778)</small></td><td class="n">Heating current</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32780"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32780<small>doc 0x800c (32780)</small></td><td class="n">Transducer 1 temperature</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32782"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32782<small>doc 0x800e (32782)</small></td><td class="n">Transducer 2 temperature</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32784"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32784<small>doc 0x8010 (32784)</small></td><td class="n">Transducer 3 temperature</td><td class="d"></td><td class="f">FLOAT32</td><td class="f">CDAB</td><td class="f"></td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>All registers are holding registers: read with function 03, write with function 16; function 43 (0x2B) reads device ID.</li><li>int32 and float values are two registers in little-endian word order (least significant word first, CDAB), as the guide&#x27;s data-type table states. Bytes inside each register are big-endian.</li><li>Ordering option C ships as Modbus RTU, 19200 bps, N, 8, 2, address 240; the register table also lists 19200 and N82 as defaults.</li><li>Left out: the analog output 1/2 settings (Tables 57-58), the diagnostic code int32 registers (reserved for Vaisala diagnostics), product order code, manufacturing date and product name.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Vaisala WM80 ultrasonic wind sensor (Modbus RTU)</h2><div class="faq"><details open><summary>What Modbus registers does the Vaisala WM80 ultrasonic wind sensor (Modbus RTU) have?</summary><p>This map lists 47 registers: 47 holding registers. 15 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers hexadecimal, 0-based. Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The guide prints each register as a hex address with its decimal value (used on the wire) plus a &#x27;register number&#x27; equal to the address + 1. Wind speed sample is at address 0x0000 (register number 1).</p></details><details><summary>What byte order does the Vaisala WM80 ultrasonic wind sensor (Modbus RTU) use for 32-bit values?</summary><p>Multi-register values in this map use CDAB (low word first (word-swapped)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the Vaisala WM80 ultrasonic wind sensor (Modbus RTU)?</summary><p>Start with HR 4 Wind speed, instant (Instant wind speed); HR 6 Wind direction, instant (Instant wind direction); HR 8 Wind speed, average (Average wind speed); HR 14 Wind speed, gust (Gust); HR 512 Device status (Device status); HR 521 Wind measurement status (Wind measurement status).</p></details><details><summary>How do I enable Modbus control of the Vaisala WM80 ultrasonic wind sensor (Modbus RTU)?</summary><p>Order the sensor with the Modbus RTU communication profile (option C), or in Vaisala Insight PC software select Communication, set Interface mode to Modbus RTU, save, then power-cycle the sensor. Interface mode is also register 0x0605.</p></details><details><summary>Where is the official Vaisala WM80 ultrasonic wind sensor (Modbus RTU) Modbus documentation?</summary><p>The source is WM80 User Guide (M212995EN-F), revision 2025-12, published free by Vaisala at https://docs.vaisala.com/r/M212995EN-F/en-US.</p></details></div>
+<h2>More Vaisala Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/vaisala/dmp-series" data-row><span class="k">Sensor (dew point probe)</span><h3>Vaisala DMP Series dew point probes (DMP5, DMP6, DMP7, DMP8) (Modbus RTU)</h3><p>Vaisala DMP5, DMP6, DMP7 and DMP8 dew point and temperature probes, Modbus RTU interface (user guide M212357EN-F).</p><div class="meta">58 registers &middot; 13 writable &middot; RTU</div><span class="sr-only"> Also known as: DMP5, DMP6, DMP7, DMP8, DRYCAP DMP series</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/dmt143" data-row><span class="k">Sensor (dew point transmitter)</span><h3>Vaisala DMT143 miniature dew point transmitter (Modbus RTU)</h3><p>DMT143 dew point transmitters ordered with the Modbus RTU option (user guide M211435EN-L).</p><div class="meta">26 registers &middot; 13 writable &middot; RTU</div><span class="sr-only"> Also known as: DMT143, DRYCAP DMT143</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/dmt153" data-row><span class="k">Sensor (dew point transmitter)</span><h3>Vaisala DMT153 dew point transmitter (Modbus RTU)</h3><p>DMT153 trace-moisture dew point transmitter, Modbus RTU interface (user guide M213149EN-B).</p><div class="meta">57 registers &middot; 40 writable &middot; RTU</div><span class="sr-only"> Also known as: DMT153, DRYCAP DMT153</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/gmd110" data-row><span class="k">Sensor (CO2 duct transmitter)</span><h3>Vaisala GMD110 duct CO2 transmitter (Modbus RTU)</h3><p>GMD110 duct-mount CO2 transmitter, Modbus RTU interface (user guide M212885EN-B).</p><div class="meta">12 registers &middot; 5 writable &middot; RTU</div><span class="sr-only"> Also known as: GMD110, CARBOCAP GMD110</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/gmp251" data-row><span class="k">Sensor (CO2 probe)</span><h3>Vaisala GMP251 CARBOCAP carbon dioxide probe (Modbus RTU)</h3><p>GMP251 probe in Modbus RTU mode, user guide M211799EN-N.</p><div class="meta">25 registers &middot; 17 writable &middot; RTU</div><span class="sr-only"> Also known as: GMP251, CARBOCAP GMP251, Vaisala GMP251</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/gmp252" data-row><span class="k">Sensor (CO2 probe)</span><h3>Vaisala GMP252 CARBOCAP carbon dioxide probe (Modbus RTU)</h3><p>GMP252 probe in Modbus RTU mode, user guide M211897EN-G.</p><div class="meta">25 registers &middot; 17 writable &middot; RTU</div><span class="sr-only"> Also known as: GMP252, CARBOCAP GMP252, Vaisala GMP252</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/gmw87" data-row><span class="k">Sensor (CO2 wall transmitter)</span><h3>Vaisala GMW87 CO2 and temperature wall transmitter (Modbus RTU)</h3><p>GMW87, the RS-485 Modbus RTU model of the GMW80 series (user guide M211748EN-H).</p><div class="meta">9 registers &middot; 0 writable &middot; RTU</div><span class="sr-only"> Also known as: GMW87, GMW80 series Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/hmdw110" data-row><span class="k">Sensor (humidity and temperature transmitter)</span><h3>Vaisala HMDW110 series humidity and temperature transmitters with TMI110 (Modbus RTU)</h3><p>HMDW110-series duct, wall and outdoor transmitters and TMI110 ordered with the Modbus RTU option (user guide M211726EN-L).</p><div class="meta">16 registers &middot; 7 writable &middot; RTU</div><span class="sr-only"> Also known as: HMD110, HMD112, HMW110, HMW112, HMW112D, HMS110, HMS112, TMW110, TMW112, TMW112D, TMI110</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/hmm170" data-row><span class="k">Sensor (humidity and temperature module)</span><h3>Vaisala HMM170 humidity module (Modbus RTU)</h3><p>HMM170 OEM humidity and temperature module with the Modbus RTU interface (user guide M212259EN-D).</p><div class="meta">66 registers &middot; 14 writable &middot; RTU</div><span class="sr-only"> Also known as: HMM170, HUMICAP HMM170</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/hmp-series-hmp1-hmp9" data-row><span class="k">Sensor (humidity and temperature probe)</span><h3>Vaisala HMP Series (HMP1-HMP9) with MMP8 and TMP1 probes (Modbus RTU)</h3><p>Vaisala HMP1/3/4/5/7/8/9, TMP1 and MMP8 probes with the Modbus RTU interface (user guide M212022EN-M).</p><div class="meta">67 registers &middot; 14 writable &middot; RTU</div><span class="sr-only"> Also known as: HMP1, HMP3, HMP4, HMP5, HMP7, HMP8, HMP9, TMP1, MMP8</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/hmp60-hmp110" data-row><span class="k">Sensor (humidity and temperature probe)</span><h3>Vaisala HMP60 / HMP110 series humidity and temperature probes (Modbus RTU)</h3><p>HMP60/HMP110-series probes ordered with the Modbus RTU option (user guide M211060EN-N).</p><div class="meta">27 registers &middot; 7 writable &middot; RTU</div><span class="sr-only"> Also known as: HMP110, HMP113, HMP115, TMP115, HMP60, HMP63, HUMICAP HMP110, HMP110T, HMP63T, HMP115T</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/hmw87" data-row><span class="k">Sensor (humidity and temperature transmitter)</span><h3>Vaisala HMW87 / HMW87D wall humidity and temperature transmitters (Modbus RTU)</h3><p>HMW87 and HMW87D wall transmitters of the HMDW80 series (the Modbus models in user guide M211510EN-J).</p><div class="meta">27 registers &middot; 9 writable &middot; RTU</div><span class="sr-only"> Also known as: HMW87, HMW87D, HMDW80 Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/hpp271" data-row><span class="k">Sensor (H2O2 probe)</span><h3>Vaisala HPP271 hydrogen peroxide probe (Modbus RTU)</h3><p>HPP271 vaporized hydrogen peroxide probe, Modbus RTU interface (user guide M211888EN-E).</p><div class="meta">44 registers &middot; 28 writable &middot; RTU</div><span class="sr-only"> Also known as: HPP271, PEROXCAP HPP271</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/hpp272" data-row><span class="k">Sensor (H2O2 / humidity probe)</span><h3>Vaisala HPP272 hydrogen peroxide, humidity and temperature probe (Modbus RTU)</h3><p>HPP272 vaporized hydrogen peroxide probe, Modbus RTU interface (user guide M211972EN-G).</p><div class="meta">68 registers &middot; 31 writable &middot; RTU</div><span class="sr-only"> Also known as: HPP272, PEROXCAP HPP272</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/indigo510-indigo520" data-row><span class="k">Sensor transmitter (host for Vaisala probes)</span><h3>Vaisala Indigo510 / Indigo520 transmitters (Modbus TCP)</h3><p>Indigo510 and Indigo520 transmitter registers (unit ID 240) over Modbus TCP (user guide M212287EN-AJ).</p><div class="meta">65 registers &middot; 49 writable &middot; TCP</div><span class="sr-only"> Also known as: Indigo510, Indigo520, Indigo500 series</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/mht410" data-row><span class="k">Sensor (transformer oil monitor)</span><h3>Vaisala MHT410 moisture, hydrogen and temperature transmitter for transformer oil (Modbus RTU)</h3><p>MHT410 transformer oil monitor, Modbus RTU on the RS-485 screw terminals (user guide M211737EN-J).</p><div class="meta">25 registers &middot; 0 writable &middot; RTU</div><span class="sr-only"> Also known as: MHT410</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/mmt143" data-row><span class="k">Sensor (moisture in oil transmitter)</span><h3>Vaisala MMT143 moisture in oil transmitter (Modbus RTU)</h3><p>MMT143 moisture-in-oil transmitter ordered with the Modbus RTU option (user guide M213308EN-B).</p><div class="meta">23 registers &middot; 11 writable &middot; RTU</div><span class="sr-only"> Also known as: MMT143</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/origo10" data-row><span class="k">Sensor (HVAC humidity, temperature and CO2 transmitter)</span><h3>Vaisala Origo10 transmitters for HVAC (Origo10A, Modbus RTU)</h3><p>Origo10A duct and wall transmitters ordered with the Modbus RTU output (user guide M213293EN-B). Origo10L has no Modbus.</p><div class="meta">43 registers &middot; 5 writable &middot; RTU</div><span class="sr-only"> Also known as: Origo10, Origo10A, Origo 10, Vaisala Origo10 duct transmitter, Vaisala Origo10 wall transmitter</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/rm60" data-row><span class="k">Sensor (precipitation)</span><h3>Vaisala RM60 PRECICAP radar precipitation sensor (Modbus RTU)</h3><p>RM60 sensors ordered with communication option 1 (RS-485 Modbus RTU) or switched to Modbus, per user guide M213218EN-B.</p><div class="meta">37 registers &middot; 9 writable &middot; RTU</div><span class="sr-only"> Also known as: RM60, PRECICAP RM60, Vaisala RM60</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/wxt530" data-row><span class="k">Sensor (weather transmitter)</span><h3>Vaisala WXT530 series weather transmitters (Modbus RTU)</h3><p>WXT531-WXT536 weather transmitters with firmware 3.85 or later in Modbus RTU mode (user guide M211840EN-G).</p><div class="meta">96 registers &middot; 11 writable &middot; RTU</div><span class="sr-only"> Also known as: WXT531, WXT532, WXT533, WXT534, WXT535, WXT536</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/xmp10" data-row><span class="k">Sensor (humidity and temperature probe)</span><h3>Vaisala XMP10 humidity and temperature probe (Modbus RTU)</h3><p>XMP10 probes ordered with (or switched to) Modbus RTU output, user guide M213279EN-A.</p><div class="meta">26 registers &middot; 7 writable &middot; RTU</div><span class="sr-only"> Also known as: XMP10, HUMICAP XMP10, Vaisala XMP10</span></a></li><li><a class="card" href="/modbus-register-maps/vaisala/xmw85" data-row><span class="k">Sensor (CO2/humidity wall transmitter)</span><h3>Vaisala XMW85 CO2, humidity and temperature wall transmitter (Modbus RTU)</h3><p>XMW85 wall transmitter, Modbus RTU interface (user guide M213257EN-B).</p><div class="meta">18 registers &middot; 0 writable &middot; RTU</div><span class="sr-only"> Also known as: XMW85</span></a></li></ul><h2>Other valves, actuators &amp; sensors register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/walchem/w900" data-row><span class="k">Water treatment controller (Sensor / controller)</span><h3>Walchem W900 water treatment controller (Modbus/TCP)</h3><p>Walchem W900 controllers (software 3.01 and up) with the Modbus/TCP feature, per Modbus manual 180676.K. W600, Intuition-6 and Intuition-9 use the same type maps but different block start addresses.</p><div class="meta">138 registers &middot; 17 writable &middot; TCP</div><span class="sr-only"> Also known as: W900 series</span></a></li><li><a class="card" href="/modbus-register-maps/acromag/xt1531" data-row><span class="k">Sensor (Ethernet analog output module)</span><h3>Acromag BusWorks XT1531-000 4-channel current output + 4 digital I/O (Modbus TCP)</h3><p>BusWorks XT1531-000 per its user&#x27;s manual (file revision H, 18 Nov 2022).</p><div class="meta">15 registers &middot; 9 writable &middot; TCP</div><span class="sr-only"> Also known as: XT1531-000, XT1531, BusWorks XT1531</span></a></li><li><a class="card" href="/modbus-register-maps/dwyer/rhpx" data-row><span class="k">Sensor (humidity / temperature transmitter)</span><h3>Dwyer Series RHPX communicating humidity/temperature transmitter</h3><p>Dwyer Series RHPX humidity and temperature transmitters with the BACnet MS/TP / Modbus RTU communication board, set to Modbus with DIP switch 9 (bulletin AQ-RHPX-C).</p><div class="meta">18 registers &middot; 4 writable &middot; RTU</div><span class="sr-only"> Also known as: RHPX, Dwyer RHPX BACnet/Modbus, 607xxx</span></a></li><li><a class="card" href="/modbus-register-maps/jumo/ecoline-ntu" data-row><span class="k">Sensor (turbidity)</span><h3>JUMO ecoLine NTU digital turbidity sensor (Modbus RTU)</h3><p>JUMO ecoLine NTU type 202670 with RS-485 Modbus RTU (interface description V1.01).</p><div class="meta">5 registers &middot; 1 writable &middot; RTU</div><span class="sr-only"> Also known as: 202670, JUMO ecoLine NTU, ecoLine NTU type 202670</span></a></li><li><a class="card" href="/modbus-register-maps/machine-saver/trivibe" data-row><span class="k">Sensor (vibration / temperature)</span><h3>Machine Saver TriVibe vibration and temperature sensor (Modbus RTU)</h3><p>Machine Saver TriVibe triaxial vibration sensors on RS-485 Modbus RTU, per the &#x27;Modbus Registers Map&#x27; page of the Machine Saver online library (revision #12).</p><div class="meta">78 registers &middot; 27 writable &middot; RTU</div><span class="sr-only"> Also known as: TriVibe, Machine Saver TriVibe</span></a></li><li><a class="card" href="/modbus-register-maps/shinko-technos/aer-102-ech" data-row><span class="k">Sensor (conductivity controller)</span><h3>Shinko Technos AER-102-ECH conductivity indicating controller (C5 option)</h3><p>Shinko AER-102-ECH electrical conductivity controller with the C5 RS-485 option; manual No. AER11CECE5.</p><div class="meta">164 registers &middot; 156 writable &middot; RTU/ASCII</div><span class="sr-only"> Also known as: AER-102-ECH</span></a></li></ul><p><a href="https://easymodbus.com/modbus-register-maps/equipment/valves-actuators-sensors/">All valves, actuators &amp; sensors Modbus register maps &rarr;</a></p>
+<p class="updated">Source: <a href="https://docs.vaisala.com/r/M212995EN-F/en-US" rel="nofollow noopener" target="_blank">WM80 User Guide &middot; M212995EN-F &middot; rev. 2025-12</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

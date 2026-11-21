@@ -1,0 +1,1036 @@
+{
+ "manufacturer": "Neptronic",
+ "manufacturer_slug": "neptronic",
+ "model": "SKRO reverse osmosis water treatment unit (Modbus communication module)",
+ "model_slug": "skro-reverse-osmosis-unit",
+ "short_model": "SKRO",
+ "aliases": [
+  "SKRO",
+  "SKRO Water Treatment Unit",
+  "Neptronic SKRO Modbus"
+ ],
+ "equipment_type": "Pump / water treatment unit (reverse osmosis for humidifiers)",
+ "applies_to": "Neptronic SKRO reverse osmosis water treatment units with the Modbus communication module, guide SKRO-Modbus Guide-250913 (V1.0).",
+ "summary": "The SKRO is Neptronic's reverse osmosis unit that feeds purified water to its humidifiers. The Modbus RTU module exposes holding registers for inlet, permeate and concentrate pressures, the TDS reading, flow settings, motor and valve states, level floats, warnings, the operating state and an enumerated system alarm, plus a power on/off and request register.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": "None",
+  "data_bits": null,
+  "stop_bits": 2,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The guide states addresses follow the Protocol Address (base 0, add 1 for a PLC) and prints the convention notation (base 400001) next to each, e.g. 6000 / 406001. The protocol address is the wire address."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "SKRO Reverse Osmosis Water Treatment Unit - Modbus Communication Module User Guide",
+  "doc_number": "SKRO-Modbus Guide-250913 (V1.0)",
+  "revision_date": "2025-09-13",
+  "url": "https://www.neptronic.com/Humidifiers/PDF/2025/SKRO-Modbus%20Guide-250913%20(V1.0).pdf",
+  "pages": "p. 1 (requirements), pp. 2-10 (Modbus registers table)"
+ },
+ "notes": [
+  "Only function codes 03, 06 and 16 are supported; binary points are 16-bit holding registers holding 0 or 1.",
+  "A 'Scale N' data type with 'Value x N' means raw = engineering value x N; this map stores the multiplier 1/N.",
+  "Units follow Modbus Server Units (15002): 0 metric, 1 imperial.",
+  "Left out because they span two registers with no stated word order: Modbus TCP keep-alive (6016/6017), Network Timeout Delay (6030/6031), Run Time (6265/6266) and On Time (6267/6268).",
+  "Left out because the scale column and the 'Value x' text disagree: Regulator Pressure 6269 (Scale 1 vs x100), Pump On Fast Flush Delay 6270 (Scale 1 vs x10) and Idle Drain Time 6271 (Scale 1 vs x11).",
+  "Product name (3-6) and database version (16000-16015) ASCII registers are left out; 12000-12002 and 12027-12062 are printed as reserved ranges."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0 / 400001",
+   "name": "Modbus Address and Product Type",
+   "description": "High byte = product type (read only); low byte = Modbus address 1-247 (writable).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1 / 400002",
+   "name": "Device Baud Rate",
+   "description": "Baud / 100 (e.g. 384 = 38400); 0 = auto-detect.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 100,
+   "units": "baud",
+   "access": "RW",
+   "values": {
+    "0": "Auto baud rate detection"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2 / 400003",
+   "name": "Modbus Slave Communication Port Configuration",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No parity, 2 stop bits",
+    "1": "Even parity, 1 stop bit",
+    "2": "Odd parity, 1 stop bit"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7 / 400008",
+   "name": "Product Actual Firmware Version (in Integer x100)",
+   "description": "Firmware version x100 (e.g. 100 = 1.00).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "8 / 400009",
+   "name": "Product Actual EEPROM Version (in Integer x100)",
+   "description": "EEPROM version x100.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2000,
+   "documented": "2000 / 402001",
+   "name": "Inlet Signal",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.001,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2001,
+   "documented": "2001 / 402002",
+   "name": "Permeate Signal",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.001,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2002,
+   "documented": "2002 / 402003",
+   "name": "Concentrate Signal",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.001,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2003,
+   "documented": "2003 / 402004",
+   "name": "Permeate Pulse",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2004,
+   "documented": "2004 / 402005",
+   "name": "Concentrate Pulse",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6000,
+   "documented": "6000 / 406001",
+   "name": "Inlet Pressure",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "psi",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6001,
+   "documented": "6001 / 406002",
+   "name": "Permeate Pressure",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "psi",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6002,
+   "documented": "6002 / 406003",
+   "name": "Concentrate Pressure",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "psi",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6003,
+   "documented": "6003 / 406004",
+   "name": "TDS Sensor",
+   "description": "Total dissolved solids reading.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "PPM",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6272,
+   "documented": "6272 / 406273",
+   "name": "Damaged Membrane Delay",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "s",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6273,
+   "documented": "6273 / 406274",
+   "name": "Permeate Flow",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "l/min",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6274,
+   "documented": "6274 / 406275",
+   "name": "Concentrate Flow",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "l/min",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11000,
+   "documented": "11000 / 411001",
+   "name": "Motor",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11001,
+   "documented": "11001 / 411002",
+   "name": "Inlet Valve",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Open"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11002,
+   "documented": "11002 / 411003",
+   "name": "Fast Flush Valve",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Closed",
+    "1": "Open"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11003,
+   "documented": "11003 / 411004",
+   "name": "Alarm",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11004,
+   "documented": "11004 / 411005",
+   "name": "Work Signal",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11005,
+   "documented": "11005 / 411006",
+   "name": "Alarm LED",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11006,
+   "documented": "11006 / 411007",
+   "name": "Power LED",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12003,
+   "documented": "12003 / 412004",
+   "name": "High Level Float",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12004,
+   "documented": "12004 / 412005",
+   "name": "Low Level Float",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12005,
+   "documented": "12005 / 412006",
+   "name": "Alarm Level Float",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12006,
+   "documented": "12006 / 412007",
+   "name": "Interlock",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Open",
+    "1": "Closed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12021,
+   "documented": "12021 / 412022",
+   "name": "AI8 Polarity",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Direct",
+    "1": "Reverse"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12022,
+   "documented": "12022 / 412023",
+   "name": "Notify Alarm",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12023,
+   "documented": "12023 / 412024",
+   "name": "Notify Warning",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12024,
+   "documented": "12024 / 412025",
+   "name": "Notify App Msg",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12025,
+   "documented": "12025 / 412026",
+   "name": "Network Timeout Failsafe",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "OK",
+    "1": "Timeout"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12026,
+   "documented": "12026 / 412027",
+   "name": "Modbus Network Timeout",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12063,
+   "documented": "12063 / 412064",
+   "name": "Memory Status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Ok",
+    "1": "Fail"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12064,
+   "documented": "12064 / 412065",
+   "name": "Inlet Low Pressure Warning",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12065,
+   "documented": "12065 / 412066",
+   "name": "Fast Flush Blocked Warning",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12066,
+   "documented": "12066 / 412067",
+   "name": "Inlet Valve Open Warning",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12067,
+   "documented": "12067 / 412068",
+   "name": "Insufficient Osmosis Warning",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12068,
+   "documented": "12068 / 412069",
+   "name": "Clogged Membrane Service Warning",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12069,
+   "documented": "12069 / 412070",
+   "name": "TDS Sensor Fail Warning",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12070,
+   "documented": "12070 / 412071",
+   "name": "Over Usage Warning",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12071,
+   "documented": "12071 / 412072",
+   "name": "RO Tank Profile",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Atmospheric",
+    "1": "Pressurized"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15000,
+   "documented": "15000 / 415001",
+   "name": "System Power State",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15001,
+   "documented": "15001 / 415002",
+   "name": "SystemLogVerboseLevel",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "None",
+    "1": "Emergency",
+    "2": "Alert",
+    "3": "Critical",
+    "4": "Error",
+    "5": "Warning",
+    "6": "Notice",
+    "7": "Info",
+    "8": "Debug"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15002,
+   "documented": "15002 / 415003",
+   "name": "Modbus Server Units",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Metric",
+    "1": "Imperial"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15059,
+   "documented": "15059 / 415060",
+   "name": "Update Process Status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Ok",
+    "1": "CRC",
+    "2": "Device",
+    "3": "Failed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15060,
+   "documented": "15060 / 415061",
+   "name": "Request",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "None",
+    "1": "ResetAlarms",
+    "2": "FastFlush",
+    "3": "ResetService"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15061,
+   "documented": "15061 / 415062",
+   "name": "State",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "Idle",
+    "2": "Purifying",
+    "3": "FastFlush",
+    "4": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15062,
+   "documented": "15062 / 415063",
+   "name": "System Alarm",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "InHiPress",
+    "2": "DmgMembrane",
+    "3": "BlocMembrane",
+    "4": "ConcOpen",
+    "5": "LoPumpPress",
+    "6": "InletClog",
+    "7": "PressReg",
+    "8": "NoPureWater",
+    "9": "TankClosed",
+    "10": "FloatOff",
+    "11": "InletSensor",
+    "12": "PermeatSensor",
+    "13": "ConcentSensor"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read State (15061), System Alarm (15062), the three pressures (6000-6002) and TDS (6003); switch the unit with System Power State (15000) and send resets or a fast flush through Request (15060).",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 15061,
+    "why": "Operating state"
+   },
+   {
+    "table": "holding_register",
+    "address": 15062,
+    "why": "System alarm"
+   },
+   {
+    "table": "holding_register",
+    "address": 15000,
+    "why": "Power on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 6000,
+    "why": "Inlet pressure"
+   },
+   {
+    "table": "holding_register",
+    "address": 6001,
+    "why": "Permeate pressure"
+   },
+   {
+    "table": "holding_register",
+    "address": 6003,
+    "why": "TDS"
+   },
+   {
+    "table": "holding_register",
+    "address": 15060,
+    "why": "Reset / fast flush request"
+   }
+  ],
+  "enable": "Fit the Modbus communication module and set the address from the device menu or register 0.",
+  "watchdog": "Network Timeout Failsafe (12025) reads 0 = OK / 1 = Timeout and Modbus Network Timeout (12026) is an Off/On setting; the timeout delay itself (6030/6031, 30-600 s) spans two registers and is not listed. The guide does not describe what the unit does on timeout.",
+  "quirks": [
+   "All points are holding registers (FC03/06/16 only).",
+   "Auto baud detection is the default."
+  ],
+  "setup": [
+   "RS-485 two-wire, RTU mode, 9600-57600 baud or auto.",
+   "Parity / stop bits via register 2 (default no parity, 2 stop bits)."
+  ],
+  "gotchas": [
+   "Warnings 12064-12070 are separate 0/1 registers; the System Alarm code in 15062 is the main fault."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/neptronic/skro-reverse-osmosis-unit",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

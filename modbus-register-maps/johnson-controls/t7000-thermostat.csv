@@ -1,0 +1,47 @@
+﻿# Johnson Controls T7000 series fan coil thermostat (Modbus RTU) Modbus register map - easymodbus.com - source: https://docs.johnsoncontrols.com/bas/api/khub/documents/hw6JWFAKzTKFpujvU7eW7g/content
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,1,00001,Relay 4,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",1,2,00002,Relay 5,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",2,3,00003,Relay 1,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",3,4,00004,Relay 2,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",4,5,00005,Relay 3,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,0,1,30001,Model + application,"High byte = model number, low byte = application.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,1,2,30002,Room temperature,Temperature x10 (26.5 °C = 265).,UINT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,2,3,30003,Occupancy status,,UINT16,1,,1,0,,Read,0 = Unoccupied; 1 = Occupied
+Input register,FC04 read,3,4,30004,Error,,UINT16,1,,1,0,,Read,1 = Internal sensor shorted; 2 = Internal sensor open; 3 = High temperature (room above 55 °C); 4 = Low temperature (room below 0 °C); 5 = Remote sensor shorted; 6 = Remote sensor open; 7 = Dew risk
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Model + application,"High byte = model number, low byte = application.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Room temperature,Temperature x10 (26.5 °C = 265).,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,3,40003,Occupancy status,,UINT16,1,,1,0,,Read,0 = Unoccupied; 1 = Occupied
+Holding register,"FC03 read / FC06, FC16 write",3,4,40004,Error,,UINT16,1,,1,0,,Read,1 = Internal sensor shorted; 2 = Internal sensor open; 3 = High temperature (room above 55 °C); 4 = Low temperature (room below 0 °C); 5 = Remote sensor shorted; 6 = Remote sensor open; 7 = Dew risk
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,Power,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",5,6,40006,Mode,,UINT16,1,,1,0,,Read/write,0 = Cooling; 1 = Heating; 2 = Ventilation
+Holding register,"FC03 read / FC06, FC16 write",6,7,40007,Setpoint,"Range 0-40 °C, x10.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7,8,40008,Fan speed,Not on T7600-TB21-..JA0.,UINT16,1,,1,0,,Read/write,0 = Low; 1 = Medium; 2 = High; 3 = Auto
+Holding register,"FC03 read / FC06, FC16 write",8,9,40009,Upper setpoint limit,"Range 2-40 °C, x10.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9,10,40010,Lower setpoint limit,"Range 0-38 °C, x10.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",10,11,40011,Unoccupied cooling setpoint,"Range 22-32 °C, x10. Not on T7603.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",11,12,40012,Unoccupied heating setpoint,"Range 10-21 °C, x10.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12,13,40013,Frost protection,Note the inverted coding: 0 = on.,UINT16,1,,1,0,,Read/write,0 = On; 1 = Off
+Holding register,"FC03 read / FC06, FC16 write",13,14,40014,Frost protection setpoint,"Range 0-20 °C, x10.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",14,15,40015,Fan in deadband,Not on T7603.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = Low
+Holding register,"FC03 read / FC06, FC16 write",15,16,40016,Unoccupied fan speed,Not on T7603.,UINT16,1,,1,0,,Read/write,0 = Low; 1 = Set speed
+Holding register,"FC03 read / FC06, FC16 write",16,17,40017,Power recovery after restart,,UINT16,1,,1,0,,Read/write,0 = Keep last status; 1 = On; 2 = Off
+Holding register,"FC03 read / FC06, FC16 write",17,18,40018,Key lock,,UINT16,1,,1,0,,Read/write,0 = No lock; 1 = Lock all keys; 2 = Lock all but fan speed and temperature keys; 3 = Lock the ON/OFF and clock keys; 4 = Lock all but the ON/OFF key
+Holding register,"FC03 read / FC06, FC16 write",18,19,40019,Screen display,,UINT16,1,,1,0,,Read/write,0 = Room temperature; 1 = Setpoint
+Holding register,"FC03 read / FC06, FC16 write",19,20,40020,BI function,Meaning of the binary input contact.,UINT16,1,,1,0,,Read/write,"0 = Key card, open = occupied; 1 = Key card, closed = occupied; 2 = Dew point risk when closed; 3 = Dew point risk when open; 4 = Open = occupied; closed = unoccupied, fan and valve off; 5 = Filter alarm when closed; 6 = Filter alarm when open"
+Holding register,"FC03 read / FC06, FC16 write",20,21,40021,Temperature unit,,UINT16,1,,1,0,,Read/write,0 = Celsius; 1 = Fahrenheit
+Holding register,"FC03 read / FC06, FC16 write",22,23,40023,Fan speed limit,Not on T7603.,UINT16,1,,1,0,,Read/write,0 = 3 speed; 1 = 2 speed; 2 = 1 speed; 3 = No fan
+Holding register,"FC03 read / FC06, FC16 write",23,24,40024,Language,,UINT16,1,,1,0,,Read/write,0 = Chinese; 1 = English
+Holding register,"FC03 read / FC06, FC16 write",24,25,40025,Mode selection,Not on T7603.,UINT16,1,,1,0,,Read/write,0 = Cooling/heating/ventilation; 1 = Cooling only; 2 = Heating only
+Holding register,"FC03 read / FC06, FC16 write",25,26,40026,LCD backlight time,Backlight turns off after this many idle seconds (5-60).,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",27,28,40028,Remote sensor type,,UINT16,1,,1,0,,Read/write,0 = China market 10K NTC; 1 = JCI type II 10K NTC
+Holding register,"FC03 read / FC06, FC16 write",28,29,40029,Deadband,"Range 0-10 °C, x10.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",29,30,40030,Auto changeover,Not on T7603.,UINT16,1,,1,0,,Read/write,0 = Disable; 1 = Enable
+Holding register,"FC03 read / FC06, FC16 write",30,31,40031,ECM fan minimum voltage,"T7601-TF20 only. 0-10 V in 0.5 V steps, x10.",UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",31,32,40032,ECM fan maximum voltage,"T7601-TF20 only. 0-10 V, x10.",UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32,33,40033,ECM relay,T7601-TF20 only.,UINT16,1,,1,0,,Read/write,0 = Disable; 1 = Enable
+Holding register,"FC03 read / FC06, FC16 write",36,37,40037,Floor heater inter-stage difference,"T7600-TF20 / T7601-TF20 only. 0-10 °C, x10.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",37,38,40038,Floor heater heating stages,T7600-TF20 / T7601-TF20 only.,UINT16,1,,1,0,,Read/write,0 = Two stage; 1 = One stage
+Holding register,"FC03 read / FC06, FC16 write",38,39,40039,TiO2/ESP control,T7600-TF20 / T7601-TF20 only.,UINT16,1,,1,0,,Read/write,0 = Controlled separately; 1 = Runs with the FCU
+Holding register,"FC03 read / FC06, FC16 write",42,43,40043,TiO2/ESP relay,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",43,44,40044,AO1 output,"PWM duty 0-100 %. T7600-TF21, T7601-TF20, T7600-TB21 only.",UINT16,1,,1,0,%,Read,

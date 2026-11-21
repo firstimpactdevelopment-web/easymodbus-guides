@@ -1,0 +1,1013 @@
+{
+  "manufacturer": "Mitsubishi Electric",
+  "manufacturer_slug": "mitsubishi-electric",
+  "model": "MelcoBEMS MINI (A1M+ / A1M) gateway for Lossnay heat recovery ventilators (LGH and VL series)",
+  "model_slug": "melcobems-mini-lossnay",
+  "short_model": "A1M+ Lossnay",
+  "aliases": [
+    "A1M+ Lossnay",
+    "MelcoBEMS MINI Lossnay",
+    "Procon A1M+",
+    "Procon A1M",
+    "A1M",
+    "Lossnay LGH-RVX Modbus",
+    "LGH-15RVX-E1",
+    "LGH-200RVX-E1",
+    "LGH-150RVXT-E1",
+    "LGH-250RVXT-E1",
+    "VL-250CZPVU-R-E",
+    "VL-500CZPVU-L-E",
+    "Lossnay VL Vertical"
+  ],
+  "equipment_type": "Air handler (heat recovery ventilation unit)",
+  "applies_to": "Procon MelcoBEMS MINI A1M+ (manual v1.0.3, firmware 4.1.1) on Lossnay LGH-15..200RVX-E1, LGH-150..250RVXT-E1 and VL-250..500CZPVU-R/L-E; the older A1M (manual v1.1.11) prints the identical Lossnay table.",
+  "summary": "Small Procon protocol converter that plugs into a Mitsubishi Electric Lossnay energy-recovery ventilator and serves Modbus RTU on RS-485 or Modbus TCP. For Lossnay units it gives on/off, ventilation mode (heat recovery / bypass / auto) and fan speed control, plus outdoor and room temperature, filter and maintenance signs, fault code, energy use and actual fan speeds.",
+  "transport": [
+    "RTU",
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": 502
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Every row prints a 0-based 'Addr' next to its Modicon number (40001 = holding 0, 30001 = input 0, 10001 = discrete input 0, 00001 = coil 0). The 0-based Addr is the wire address."
+  },
+  "default_word_order": null,
+  "firmware": "4.1.1",
+  "source": {
+    "title": "Procon MelcoBEMS MINI (A1M+) Installation Manual",
+    "doc_number": "Manual version 1.0.3",
+    "revision_date": "2025-09-18",
+    "url": "https://library.mitsubishielectric.co.uk/pdf/download_full/5538",
+    "pages": "pp. 15-17 (protocols, DIP switches), p. 52 (Modbus TCP), pp. 116-128 (Lossnay Modbus tables), p. 135 (Appendix C compatible Lossnay units)"
+  },
+  "notes": [
+    "Only rows the manual ticks for the Lossnay LGH and/or VL series are listed. Every listed row is ticked for both series.",
+    "Rows printed with no tick for either series are left out: operating mode (40302), temperature setpoint (40305), supply air temperature (40306 / 30175), CO2 level (40310 / 30179), thermo on/off, actual operation mode, auto fan speed availability, the 0.5 °C step / heat-cool / auto availability flags, the min/max setpoint limits, the temperature-control-unit flags and the supply-air and CO2 sensor flags.",
+    "All input registers, discrete inputs and the coil are mirrored as read-only holding registers (power on/off is writable on both holding 300 and coil 3).",
+    "Outdoor temperature comes twice: signed (two's complement, down to -56.0 °C) and an unsigned twin for BMSs that cannot handle negative values.",
+    "Fan speed value 0 (Auto) is marked not supported on LGH and VL units.",
+    "The older MelcoBEMS MINI (A1M) manual v1.1.11, section 13 (https://library.mitsubishielectric.co.uk/pdf/download_full/5186, pp. 37-49), prints the same Lossnay table, addresses and ticks; the A1M is RS-485 only (no Modbus TCP).",
+    "DIP switches: 1-5 node address (all OFF = 1, all ON = holding 4), 6 ON = 9600 baud no parity (OFF = holding 5/6), 7 ON = Modbus RTU (OFF = BACnet). Data bits 8 and stop bits 1 are fixed."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "40005",
+      "name": "Modbus slave ID",
+      "description": "Used when DIP 1-5 are all ON; 1-247.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "40006",
+      "name": "RS-485 baud rate",
+      "description": "Used when DIP 6 is OFF.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "9600",
+        "1": "1200",
+        "2": "2400",
+        "3": "4800",
+        "4": "9600",
+        "5": "14400",
+        "6": "19200",
+        "7": "28800",
+        "8": "38400",
+        "9": "56000",
+        "10": "57600",
+        "11": "115200"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "40007",
+      "name": "RS-485 parity",
+      "description": "Used when DIP 6 is OFF.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "None",
+        "1": "Even",
+        "2": "Odd"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "40010",
+      "name": "Fault code (hex)",
+      "description": "Read-only; other codes are in the Lossnay documentation.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "32768": "No error (0x8000)",
+        "26985": "No communication with the unit (0x6999)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "40011",
+      "name": "Gateway firmware version",
+      "description": "Read-only copy of input register 3.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "40012",
+      "name": "Modbus comms counter",
+      "description": "Counts valid Modbus commands; wraps to 0 after 65535.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 13,
+      "documented": "40014",
+      "name": "System type detected",
+      "description": "Read-only copy of input register 9.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Air-To-Air unit",
+        "1": "Air-To-Water system",
+        "2": "Lossnay system",
+        "255": "Undetermined (no unit detected yet)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 300,
+      "documented": "40301",
+      "name": "Power on/off",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 302,
+      "documented": "40303",
+      "name": "Ventilation mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Lossnay (heat recovery) mode",
+        "1": "Bypass mode",
+        "2": "Auto mode"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 303,
+      "documented": "40304",
+      "name": "Fan speed",
+      "description": "Auto (0) is not supported on LGH or VL units.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Speed 1",
+        "2": "Speed 2",
+        "3": "Speed 3",
+        "4": "Speed 4"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 306,
+      "documented": "40307",
+      "name": "Outdoor temperature (signed)",
+      "description": "Signed °C x 10 (0xFDD0 = -56.0). 0x7FFE detecting, 0x7FFF no thermistor.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 307,
+      "documented": "40308",
+      "name": "Outdoor temperature (unsigned)",
+      "description": "Unsigned twin of outdoor temperature, °C x 10. 0x7FFE detecting, 0x7FFF no thermistor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 308,
+      "documented": "40309",
+      "name": "Room temperature",
+      "description": "Return-air (room) temperature, °C x 10. Needs the return-air sensor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 310,
+      "documented": "40311",
+      "name": "Fault code (hex)",
+      "description": "Lossnay fault code in hex form.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "32768": "No error (0x8000)",
+        "26985": "No communication with the unit (0x6999)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 311,
+      "documented": "40312",
+      "name": "Fault code (decimal)",
+      "description": "Same fault code shown as decimal digits.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "8000": "No error",
+        "6999": "No communication with the unit"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 313,
+      "documented": "40314",
+      "name": "Energy consumption",
+      "description": "kWh x 10 (0-6553.5 kWh).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "kWh",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 316,
+      "documented": "40317",
+      "name": "Night purge",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal operation",
+        "1": "Night purge running"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 317,
+      "documented": "40318",
+      "name": "Maintenance sign",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 318,
+      "documented": "40319",
+      "name": "Filter sign",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 319,
+      "documented": "40320",
+      "name": "Actual ventilation mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Lossnay ventilation",
+        "1": "Bypass ventilation"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 320,
+      "documented": "40321",
+      "name": "Actual supply fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Stop",
+        "1": "Speed 1",
+        "2": "Speed 2",
+        "3": "Speed 3",
+        "4": "Speed 4"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 321,
+      "documented": "40322",
+      "name": "Actual extract fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Stop",
+        "1": "Speed 1",
+        "2": "Speed 2",
+        "3": "Speed 3",
+        "4": "Speed 4"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 332,
+      "documented": "40333",
+      "name": "Energy consumption data available",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not available",
+        "1": "Available"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 333,
+      "documented": "40334",
+      "name": "Number of fan speeds",
+      "description": "1-4.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 334,
+      "documented": "40335",
+      "name": "Bypass damper available",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not available",
+        "1": "Available"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 335,
+      "documented": "40336",
+      "name": "Auto ventilation mode available",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not available",
+        "1": "Available"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 338,
+      "documented": "40339",
+      "name": "Outdoor temperature sensor",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not equipped",
+        "1": "Equipped"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 339,
+      "documented": "40340",
+      "name": "Return air temperature sensor",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not equipped",
+        "1": "Equipped"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3,
+      "documented": "30004",
+      "name": "Gateway firmware version",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 5,
+      "documented": "30006",
+      "name": "Modbus comms counter",
+      "description": "Counts valid Modbus commands; wraps to 0 after 65535.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 9,
+      "documented": "30010",
+      "name": "System type detected",
+      "description": "2 means a Lossnay is connected.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Air-To-Air unit",
+        "1": "Air-To-Water system",
+        "2": "Lossnay system",
+        "255": "Undetermined (no unit detected yet)"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 175,
+      "documented": "30176",
+      "name": "Outdoor temperature (signed)",
+      "description": "Signed °C x 10 (0xFDD0 = -56.0). 0x7FFE detecting, 0x7FFF no thermistor.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 176,
+      "documented": "30177",
+      "name": "Outdoor temperature (unsigned)",
+      "description": "Unsigned twin of outdoor temperature, °C x 10. 0x7FFE detecting, 0x7FFF no thermistor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 177,
+      "documented": "30178",
+      "name": "Room temperature",
+      "description": "Return-air (room) temperature, °C x 10. Needs the return-air sensor.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 179,
+      "documented": "30180",
+      "name": "Fault code (hex)",
+      "description": "Lossnay fault code in hex form.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "32768": "No error (0x8000)",
+        "26985": "No communication with the unit (0x6999)"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 180,
+      "documented": "30181",
+      "name": "Fault code (decimal)",
+      "description": "Same fault code shown as decimal digits.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "8000": "No error",
+        "6999": "No communication with the unit"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 181,
+      "documented": "30182",
+      "name": "Energy consumption",
+      "description": "kWh x 10 (0-6553.5 kWh).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "kWh",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 183,
+      "documented": "30184",
+      "name": "Actual supply fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Stop",
+        "1": "Speed 1",
+        "2": "Speed 2",
+        "3": "Speed 3",
+        "4": "Speed 4"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 184,
+      "documented": "30185",
+      "name": "Actual extract fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Stop",
+        "1": "Speed 1",
+        "2": "Speed 2",
+        "3": "Speed 3",
+        "4": "Speed 4"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 191,
+      "documented": "30192",
+      "name": "Number of fan speeds",
+      "description": "1-4.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 3,
+      "documented": "00004",
+      "name": "Power on/off",
+      "description": "Same as holding 300.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 82,
+      "documented": "10083",
+      "name": "Night purge",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal operation",
+        "1": "Night purge running"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 83,
+      "documented": "10084",
+      "name": "Maintenance sign",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 84,
+      "documented": "10085",
+      "name": "Filter sign",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 85,
+      "documented": "10086",
+      "name": "Actual ventilation mode",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Lossnay ventilation",
+        "1": "Bypass ventilation"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 90,
+      "documented": "10091",
+      "name": "Energy consumption data available",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not available",
+        "1": "Available"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 91,
+      "documented": "10092",
+      "name": "Bypass damper available",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not available",
+        "1": "Available"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 92,
+      "documented": "10093",
+      "name": "Auto ventilation mode available",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not available",
+        "1": "Available"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 94,
+      "documented": "10095",
+      "name": "Outdoor temperature sensor",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not equipped",
+        "1": "Equipped"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 95,
+      "documented": "10096",
+      "name": "Return air temperature sensor",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not equipped",
+        "1": "Equipped"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set DIP 7 ON for Modbus RTU, set the node address on DIP 1-5 and DIP 6 ON for 9600 / no parity (or use Modbus TCP on port 502). Check input 9 reads 2, then switch the unit with holding 300, pick the ventilation mode at 302 and fan speed at 303, and poll the temperatures, filter sign and fault code.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 9,
+        "why": "Confirms a Lossnay is detected (2)"
+      },
+      {
+        "table": "holding_register",
+        "address": 300,
+        "why": "Power on/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 302,
+        "why": "Ventilation mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 303,
+        "why": "Fan speed (1-4)"
+      },
+      {
+        "table": "input_register",
+        "address": 175,
+        "why": "Outdoor temperature (signed, x10)"
+      },
+      {
+        "table": "input_register",
+        "address": 177,
+        "why": "Room temperature (x10)"
+      },
+      {
+        "table": "discrete_input",
+        "address": 84,
+        "why": "Filter sign"
+      },
+      {
+        "table": "input_register",
+        "address": 179,
+        "why": "Fault code (0x8000 = none)"
+      }
+    ],
+    "enable": "DIP switch 7 ON selects Modbus RTU on RS-485 (OFF = BACnet MS/TP and BACnet IP). The Ethernet port serves Modbus TCP on port 502.",
+    "watchdog": null,
+    "quirks": [
+      "Fault code 0x8000 (decimal register: 8000) means no fault; 0x6999 / 6999 means the gateway cannot talk to the Lossnay.",
+      "Temperatures read 0x7FFE while the sensor is being detected and 0x7FFF when no thermistor is fitted.",
+      "Write fan speed 1-4 only; Auto (0) is not supported on LGH and VL units.",
+      "Check holding 334 / 335 before writing bypass or auto ventilation mode: they say whether the unit has a bypass damper and auto mode."
+    ],
+    "setup": [
+      "RS-485 A, B and GND must all be connected; shielded cable, daisy chain only.",
+      "Factory IP address 192.168.92.114, Modbus TCP port 502.",
+      "Node address 1-30 on DIP 1-5 in binary; each converter on the bus needs its own address."
+    ],
+    "gotchas": [
+      "The gateway detects ATA, ATW or Lossnay by itself; the Lossnay map applies only when the system type reads 2.",
+      "Outdoor and room temperatures only read correctly when the matching sensor flag (338 / 339) reads 1 (equipped)."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

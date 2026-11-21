@@ -1,0 +1,20 @@
+﻿"# Swegon REACT damper / VAV actuator (Modbus RTU, 2018 sheet) Modbus register map - easymodbus.com - source: https://www.swegon.com/siteassets/_products-documents-archive/flow-control/demand-controlled-ventilation/_en/reacta_modbus-m.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0,40001,Set point,"Damper / flow set point, 0-10000 = 0-100 %. Read-only when register 122 = 0.",UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,1,40002,Override control,,UINT16,1,,1,0,,Read/write,0 = Override control not available; 1 = Open; 2 = Close; 3 = Min; 4 = Max
+Holding register,"FC03 read / FC06, FC16 write",2,2,40003,Command,,UINT16,1,,1,0,,Read/write,1 = Adaption; 4 = Controller reset
+Holding register,"FC03 read / FC06, FC16 write",3,3,40004,Device ID,Actuator type.,UINT16,1,,1,0,,Read,1 = Standard actuator; 2 = VAV; 3 = Fire damper
+Holding register,"FC03 read / FC06, FC16 write",4,4,40005,Relative position,0-10000 = 0-100 %; 65535 = not supported.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,5,40006,Absolute position,0-65000 = 0-650.00 degrees; 65535 = not supported.,UINT16,1,,0.01,0,°,Read,
+Holding register,"FC03 read / FC06, FC16 write",6,6,40007,Relative flow,"VAV flow, 0-10000 = 0-100 %.",UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,7,40008,Absolute flow,VAV flow in m³/h or l/s (unit per register 201).,UINT16,1,,1,0,m³/h / l/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,10,40011,Analog output,"Optional analog output, 0-10000 mV; see register 122.",UINT16,1,,1,0,mV,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",103,103,40104,Software version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",105,105,40106,Min value relative,"Minimum flow, % of nominal (0-10000 = 0-100 %).",UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",106,106,40107,Max value relative,"Maximum flow, % of nominal (0-10000 = 0-100 %).",UINT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",108,108,40109,Bus fail position,Action on loss of bus (120 s timeout).,UINT16,1,,1,0,,Read/write,0 = No bus monitoring; 1 = Close at timeout; 2 = Open at timeout
+Holding register,"FC03 read / FC06, FC16 write",120,120,40121,Min value absolute,Minimum flow in m³/h or l/s.,UINT16,1,,1,0,m³/h / l/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",121,121,40122,Max value absolute,Maximum flow in m³/h or l/s.,UINT16,1,,1,0,m³/h / l/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",122,122,40123,Mode signal set point analog output,Where the set point comes from and what the analog output shows.,UINT16,1,,1,0,,Read/write,0 = Set point from analog in 1; output = absolute position; 1 = Set point via Modbus register 0; output = absolute position; 2 = Register 0 scaled min-max flow; output = register 10; 3 = Set point from analog in 1; output = register 10
+Holding register,"FC03 read / FC06, FC16 write",130,130,40131,Modbus address,Slave address 1-247.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",201,201,40202,Vnom unit/function,Unit for absolute flow values.,UINT16,1,,1,0,,Read/write,0 = l/s; 1 = m³/h

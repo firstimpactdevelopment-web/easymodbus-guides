@@ -1,0 +1,55 @@
+﻿# Fuji Electric FRENIC-HVAC / FRENIC-AQUA inverters (RS-485 Modbus RTU) Modbus register map - easymodbus.com - source: https://americas.fujielectric.com/files/24A7-E-0021b.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",1054,H30,41055,Communications link function (mode selection),Selects frequency and run command sources when the link is enabled.,UINT16,1,,1,0,,Read/write,0 = Freq: inverter / Run: inverter; 1 = Freq: RS-485 (RJ-45) / Run: inverter; 2 = Freq: inverter / Run: RS-485 (RJ-45); 3 = Freq: RS-485 (RJ-45) / Run: RS-485 (RJ-45); 4 = Freq: RS-485 port 2 / Run: inverter; 5 = Freq: RS-485 port 2 / Run: RS-485 (RJ-45); 6 = Freq: inverter / Run: RS-485 port 2; 7 = Freq: RS-485 (RJ-45) / Run: RS-485 port 2; 8 = Freq: RS-485 port 2 / Run: RS-485 port 2
+Holding register,"FC03 read / FC06, FC16 write",1793,S01,41794,Frequency reference (p.u.),+/-20000 = maximum frequency. Takes priority over S05 when not 0.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1797,S05,41798,Frequency reference (0.01 Hz),Frequency command in 0.01 Hz steps.,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1798,S06,41799,Operation command,"Run, direction, X terminals and reset (format 14).",BITMAP16,1,,1,0,,Read/write,bit 0 = FWD run forward; bit 1 = REV run reverse; bit 2 = X1; bit 3 = X2; bit 4 = X3; bit 5 = X4; bit 6 = X5; bit 7 = X6; bit 8 = X7; bit 11 = EN; bit 13 = XF (FWD terminal function); bit 14 = XR (REV terminal function); bit 15 = RST alarm reset
+Holding register,"FC03 read / FC06, FC16 write",1799,S07,41800,Universal DO,Command to DO terminals assigned as universal DO.,BITMAP16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1804,S12,41805,Universal AO,+/-20000 = full scale.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1805,S13,41806,PID command,+/-20000 = +/-100 %.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1806,S14,41807,Alarm reset command,Write 1 to reset; always reads 0.,UINT16,1,,1,0,,Read/write,0 = No action; 1 = Reset
+Holding register,"FC03 read / FC06, FC16 write",1811,S19,41812,Speed command,,INT16,1,,1,0,rpm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1823,S31,41824,External PID command 1,+/-20000 = +/-100 %.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2049,M01,42050,"Frequency reference, final (p.u.)",+/-20000 = maximum frequency.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2053,M05,42054,"Frequency reference, final (0.01 Hz)",,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",2054,M06,42055,Output frequency 1 (p.u.),"+/-20000 = maximum frequency, before slip compensation.",INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2055,M07,42056,Torque real value,% of motor rated torque.,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2057,M09,42058,Output frequency,0.00-655.35 Hz over Modbus RTU (unsigned).,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",2058,M10,42059,Input power,% of nominal applicable motor output.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2059,M11,42060,Output current (effective),% of inverter rated current.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2060,M12,42061,Output voltage (effective),Resolution 1 V in practice.,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2061,M13,42062,"Operation command, final","Combined keypad/terminal/comms command, format 14.",BITMAP16,1,,1,0,,Read,bit 0 = FWD run forward; bit 1 = REV run reverse; bit 2 = X1; bit 3 = X2; bit 4 = X3; bit 5 = X4; bit 6 = X5; bit 7 = X6; bit 8 = X7; bit 11 = EN; bit 13 = XF (FWD terminal function); bit 14 = XR (REV terminal function); bit 15 = RST alarm reset
+Holding register,"FC03 read / FC06, FC16 write",2062,M14,42063,Operation status,Format 16.,BITMAP16,1,,1,0,,Read,bit 0 = FWD during forward rotation; bit 1 = REV during reverse rotation; bit 2 = EXT during DC braking / pre-exciting; bit 3 = INT inverter shut down; bit 4 = BRK during braking; bit 5 = NUV DC link voltage established (0 = undervoltage); bit 7 = VL during voltage limiting; bit 8 = IL during current limiting; bit 9 = ACC during acceleration; bit 10 = DEC during deceleration; bit 11 = ALM alarm relay (any fault); bit 12 = RL communications effective; bit 15 = BUSY writing function code data
+Holding register,"FC03 read / FC06, FC16 write",2063,M15,42064,General-purpose output terminals,Format 15.,BITMAP16,1,,1,0,,Read,bit 0 = Y1; bit 1 = Y2; bit 2 = Y3; bit 3 = Y4; bit 4 = Y5; bit 8 = 30 (alarm relay)
+Holding register,"FC03 read / FC06, FC16 write",2064,M16,42065,Latest alarm code,Alarm code 0-254.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2065,M17,42066,Last alarm code,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2066,M18,42067,Second last alarm code,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2067,M19,42068,Third last alarm code,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2068,M20,42069,Cumulative operation time,,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",2069,M21,42070,DC link bus voltage,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",2071,M23,42072,Model code,"Series, generation, destination and supply in four hex digits.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2072,M24,42073,Capacity code,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2073,M25,42074,ROM version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2074,M26,42075,Transmission error code,"RS-485 communications error code, 0-127.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2092,M44,42093,Inverter internal air temperature on alarm,,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2093,M45,42094,Heat sink temperature on alarm,,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2094,M46,42095,Life of main circuit capacitor,"Remaining capacity, 0.0-100.0 %.",UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2095,M47,42096,Life of PC board capacitor,Cumulative run time in 10 h steps.,UINT16,1,,10,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",2096,M48,42097,Life of heat sink cooling fan,Cumulative run time in 10 h steps.,UINT16,1,,10,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",2109,M61,42110,Inverter internal air temperature,Current value.,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2110,M62,42111,Heat sink temperature,Current value.,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2111,M63,42112,Load factor,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2112,M64,42113,Motor output,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2116,M68,42117,PID final command,+/-20000 = +/-100 %.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2120,M72,42121,PID feedback value,+/-20000 = +/-100 %.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2121,M73,42122,PID output,+/-20000 = +/-100 %.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2126,M78,42127,Rotation speed command,Speed command in rpm (min-1).,INT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",2127,M79,42128,Rotation speed,Output rotation speed in rpm (min-1).,INT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",2134,M86,42135,Latest light alarm code,"Low byte = light alarm code, high byte = consecutive repeat count (format 41).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3585,y01,43586,RS-485 port 1 station address,1-247 for Modbus RTU.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3586,y02,43587,RS-485 port 1 communications error processing,What the drive does on a comms error while running from the link.,UINT16,1,,1,0,,Read/write,"0 = Trip Er8 at once; 1 = Run for the y03 time, then trip Er8; 2 = Run for the y03 time; trip Er8 only if comms not restored; 3 = Keep running"
+Holding register,"FC03 read / FC06, FC16 write",3587,y03,43588,RS-485 port 1 error processing timer,"Timer used by y02 settings 1 and 2, 0.0-60.0 s.",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3588,y04,43589,RS-485 port 1 baud rate,,UINT16,1,,1,0,,Read/write,0 = 2400 bps; 1 = 4800 bps; 2 = 9600 bps; 3 = 19200 bps; 4 = 38400 bps
+Holding register,"FC03 read / FC06, FC16 write",3590,y06,43591,RS-485 port 1 parity,In Modbus RTU the stop bits follow the parity choice.,UINT16,1,,1,0,,Read/write,0 = No parity (2 stop bits); 1 = Even parity (1 stop bit); 2 = Odd parity (1 stop bit); 3 = No parity (1 stop bit)
+Holding register,"FC03 read / FC06, FC16 write",3592,y08,43593,RS-485 port 1 no-response error detection time,"0 = disabled, 1-60 s.",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3594,y10,43595,RS-485 port 1 protocol selection,,UINT16,1,,1,0,,Read/write,0 = Modbus RTU; 1 = Loader commands; 2 = Fuji general-purpose inverter protocol; 3 = Metasys N2; 5 = BACnet

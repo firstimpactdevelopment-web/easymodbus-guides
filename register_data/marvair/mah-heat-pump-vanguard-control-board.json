@@ -1,0 +1,1295 @@
+{
+  "manufacturer": "Marvair",
+  "manufacturer_slug": "marvair",
+  "model": "MAH heat pump and VAH/VDH Vanguard control board (Modbus RTU)",
+  "model_slug": "mah-heat-pump-vanguard-control-board",
+  "short_model": "MAH heat pump / Vanguard",
+  "aliases": [
+    "MAH1020H",
+    "MAH1024H",
+    "MAH1030H",
+    "MAH1036H",
+    "MAH1042H",
+    "MAH1048H",
+    "MAH1060H",
+    "MAH2024H",
+    "MAH2030H",
+    "MAH2036H",
+    "MAH2042H",
+    "MAH2048H",
+    "MAH2060H",
+    "Vanguard VAH",
+    "Vanguard VDH",
+    "VAH2030",
+    "VDH2060",
+    "GAH1024",
+    "GAH1030",
+    "GAH1036",
+    "GAH1042",
+    "GAH1048",
+    "GAH1060",
+    "Marvair GAH",
+    "Scholar 2 VAH/VDH",
+    "Scholar QR VAH/VDH"
+  ],
+  "equipment_type": "Heat pump (packaged wall-mount / classroom unit)",
+  "applies_to": "Marvair MAH1020H-1060H and MAH2024H-2060H wall-mount heat pumps (I&O manual rev. 6); the GAH1024-1060 gas-heat AC manual (rev. 5) and the VAH/VDH Vanguard classroom unit appendices (08/2026) print the same table.",
+  "summary": "Marvair MAH wall-mount heat pumps and the VAH/VDH Vanguard classroom units use an electronic control board with two RJ11 Modbus RTU ports. Over Modbus the board accepts thermostat and reversing-valve calls, reports switch, relay and sensor states and an alarm word, and exposes fan, economizer and calibration settings.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 19200,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "The map prints a zero-based packet ID next to a reference ID (coils 1-30, registers 40001-40039). The zero-based ID is the wire address."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "MAH1020H-1060H & MAH2024H-2060H Wall Mount Heat Pump Installation & Operation Manual",
+    "doc_number": "Rev. 6",
+    "revision_date": "2026-05",
+    "url": "https://marvair.com/doc/39/MAH1020H-1060H%20%20MAH2024H-2060H%20Wall%20Mount%20Heat%20Pump%20Manual%20Rev%206",
+    "pages": "Appendix A, pp. 59-61"
+  },
+  "notes": [
+    "The manual prints two columns: a zero-based 'packet register ID' (used as the address here) and a one-based reference ID. Coils and registers each start at zero-based ID 0.",
+    "Bit points: the board reads all of them with function 02 and writes the RW ones with function 05 (single coil only, no function 15). Coils and discrete inputs share one address space. RW bits are listed as coils, read-only bits as discrete inputs.",
+    "Registers: the board reads them with function 04 and writes RW ones with function 06 (single register only, no function 16). RW registers are listed as holding registers so they can be written; the manual only documents reading them with function 04 at the same address. Whether function 01/03 reads work is not stated.",
+    "Writes to read-only points return an error.",
+    "Calibration registers hold 0-18 with 9 = no correction; the applied correction is the value minus 9.",
+    "Heat and cool set points (registers 0-1) are writable but marked 'not currently used, for future use'.",
+    "Anti-short-cycle timers count in 0.5 s steps (scale 0.5).",
+    "The same table (zero-based IDs 0-38, reference IDs 40001-40039) is printed in the VDH-VAH Vanguard Classroom Unit I&O Manual Appendices (08/2026), Appendix G, pp. 80-82: https://marvair.com/doc/193/VDH-VAH%20Vanguard%20Classroom%20Unit%20IO%20Manual%20Appendices",
+    "In this table IFM Y1/Y2 set speeds are 0-1023 and alarm bit 0 is 'flat circuit fault'. Registers 39-41 of the MAH air conditioner manual are not in this table.",
+    "The Scholar 2 (VDH/VAH, I+S manual rev. 5) and Scholar QR (VDH-VAH, I+S manual rev. 4) classroom unit manuals print the same table: https://marvair.com/doc/113/Marvair%20VDHVAH%20Scholar%202%20IS%20Manual%20Rev%205 and https://marvair.com/doc/129/Marvair%20VDH-VAH%20Scholar%20QR%20IS%20Manual%20Rev%204",
+    "The Marvair GAH1024-1060 A/C with gas heat I&O manual (rev. 5, 10/2025, Appendix A, PDF pp. 73-75) prints the same table: https://marvair.com/doc/28/GAH1024-1060%20AC%20wGas%20Heat%20Manual%20Rev%205"
+  ],
+  "registers": [
+    {
+      "table": "coil",
+      "address": 0,
+      "documented": "0",
+      "name": "Y1 compressor call",
+      "description": "Stage 1 cooling request",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No call",
+        "1": "Call"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 1,
+      "documented": "1",
+      "name": "Y2 compressor call",
+      "description": "Stage 2 cooling request",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No call",
+        "1": "Call"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 2,
+      "documented": "2",
+      "name": "Humidity call",
+      "description": "Dehumidification request",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No call",
+        "1": "Call"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 3,
+      "documented": "3",
+      "name": "G fan call",
+      "description": "Fan-only request",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No call",
+        "1": "Call"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 4,
+      "documented": "4",
+      "name": "W2 electric heat call",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No call",
+        "1": "Call"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 5,
+      "documented": "5",
+      "name": "FCC call",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No call",
+        "1": "Call"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 6,
+      "documented": "6",
+      "name": "High pressure switch 1",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 7,
+      "documented": "7",
+      "name": "High pressure switch 2",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 8,
+      "documented": "8",
+      "name": "Low pressure switch 1",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 9,
+      "documented": "9",
+      "name": "Low pressure switch 2",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Open",
+        "1": "Closed"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 10,
+      "documented": "10",
+      "name": "OFM mode selection",
+      "description": "Outdoor fan motor signal type",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "PWM",
+        "1": "0-10 V"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 11,
+      "documented": "11",
+      "name": "IFM mode selection",
+      "description": "Indoor fan motor signal type",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "PWM",
+        "1": "0-10 V"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 12,
+      "documented": "12",
+      "name": "Technician speedup test mode",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Test mode"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 13,
+      "documented": "13",
+      "name": "Compressor 1 relay output",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Energized"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 14,
+      "documented": "14",
+      "name": "Compressor 2 relay output",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Energized"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 15,
+      "documented": "15",
+      "name": "RH relay output",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Energized"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 16,
+      "documented": "16",
+      "name": "W2 relay output",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Energized"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 17,
+      "documented": "17",
+      "name": "Communicating thermostat mode",
+      "description": "Same as parameter P22: take calls from Modbus instead of hardware inputs",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Hardware calls (H)",
+        "1": "Comm/Modbus calls (C)"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 18,
+      "documented": "18",
+      "name": "Read hardware call inputs",
+      "description": "1 = still read hardware thermostat inputs while P22 = C",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Normal (per P22)",
+        "1": "Read hardware calls"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 19,
+      "documented": "19",
+      "name": "AC / HP",
+      "description": "Unit type",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "AC",
+        "1": "Heat pump"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 20,
+      "documented": "20",
+      "name": "EHDD",
+      "description": "EHDD option setting",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 21,
+      "documented": "21",
+      "name": "SCKT",
+      "description": "SCKT option setting",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 22,
+      "documented": "22",
+      "name": "Economizer enabled",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 23,
+      "documented": "23",
+      "name": "Economizer sensor type",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Dry bulb",
+        "1": "Enthalpy"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 24,
+      "documented": "24",
+      "name": "O reversing valve request",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No call",
+        "1": "Call"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 25,
+      "documented": "25",
+      "name": "RV output",
+      "description": "Reversing valve output",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "Energized"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 26,
+      "documented": "26",
+      "name": "Emergency ventilation request",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 27,
+      "documented": "27",
+      "name": "Pulse reheat",
+      "description": "Default on",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 28,
+      "documented": "28",
+      "name": "Emergency ventilation status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 29,
+      "documented": "29",
+      "name": "EC relay output",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "0",
+      "name": "Heat set point",
+      "description": "Reserved for future use; 45-100 °F",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "1",
+      "name": "Cool set point",
+      "description": "Reserved for future use; 45-100 °F",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "2",
+      "name": "Temperature calibration",
+      "description": "0-18, default 9; correction = value - 9",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "3",
+      "name": "W2 speed multiplier",
+      "description": "Percent of Y2 fan speed, 0-100, default 80",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "4",
+      "name": "Dehumidification speed multiplier",
+      "description": "Percent of Y2 fan speed, 0-100, default 80",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "5",
+      "name": "OFM set speed",
+      "description": "Outdoor fan speed, 0-1023",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "6",
+      "name": "IFM Y1 set speed",
+      "description": "Indoor fan speed for Y1, 0-1023",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7,
+      "documented": "7",
+      "name": "IFM Y2 set speed",
+      "description": "Indoor fan speed for Y2, 0-1023",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "8",
+      "name": "Modbus timeout",
+      "description": "Minutes without Modbus before reverting to hardware calls; 1-60, default 10",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 9,
+      "documented": "9",
+      "name": "Current OFM speed",
+      "description": "0-1023",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 10,
+      "documented": "10",
+      "name": "Current IFM speed",
+      "description": "0-1023",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 11,
+      "documented": "11",
+      "name": "Anti-short-cycle compressor 1",
+      "description": "0-360 counts of 0.5 s",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 12,
+      "documented": "12",
+      "name": "Anti-short-cycle compressor 2",
+      "description": "0-360 counts of 0.5 s",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.5,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 13,
+      "documented": "13",
+      "name": "Voltage reading",
+      "description": "0-1023; 1023 = above 20 V, 965 = 18 V cutoff",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 14,
+      "documented": "14",
+      "name": "P1 temperature",
+      "description": "0-160 °F; 255 = no sensor",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": {
+        "255": "No sensor"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 15,
+      "documented": "15",
+      "name": "P2 temperature",
+      "description": "0-160 °F; 255 = no sensor",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": {
+        "255": "No sensor"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 16,
+      "documented": "16",
+      "name": "Freeze sensor 1 temperature",
+      "description": "0-160 °F; 255 = no sensor",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": {
+        "255": "No sensor"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 17,
+      "documented": "17",
+      "name": "Freeze sensor 2 temperature",
+      "description": "0-160 °F; 255 = no sensor",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": {
+        "255": "No sensor"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 18,
+      "documented": "18",
+      "name": "Alarm status",
+      "description": "0 = no fault",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Flat circuit fault",
+        "1": "HPS1 fault",
+        "2": "Low voltage",
+        "6": "LPS1 fault",
+        "14": "Y1 locked out",
+        "15": "Y2 locked out"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 19,
+      "documented": "19",
+      "name": "Minimum position",
+      "description": "Economizer minimum position: 20 = minimum, 20-100 = open %",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 20,
+      "documented": "20",
+      "name": "Economizer dry bulb set point",
+      "description": "20-105 °F, default 70",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 21,
+      "documented": "21",
+      "name": "ODS set",
+      "description": "0-70, default 50",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 22,
+      "documented": "22",
+      "name": "Fan purge",
+      "description": "0 = no, 10-90 s, default 90",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "s",
+      "access": "RW",
+      "values": {
+        "0": "No purge"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "23",
+      "name": "Defrost timer",
+      "description": "30, 60 or 90 min (default 30)",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 24,
+      "documented": "24",
+      "name": "Software version",
+      "description": "Decimal",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 25,
+      "documented": "25",
+      "name": "Supply / mixed air temperature",
+      "description": "0-160 °F",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 26,
+      "documented": "26",
+      "name": "SAS/MAS calibration",
+      "description": "0-18, default 9; correction = value - 9",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 27,
+      "documented": "27",
+      "name": "Outdoor temperature",
+      "description": "0-160 °F",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 28,
+      "documented": "28",
+      "name": "ODS calibration",
+      "description": "0-18, default 9; correction = value - 9",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 29,
+      "documented": "29",
+      "name": "Suction line temperature (LPS1)",
+      "description": "0-160 °F; 255 = open or shorted sensor",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": {
+        "255": "Sensor open/shorted"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 30,
+      "documented": "30",
+      "name": "Suction line temp calibration",
+      "description": "0-18, default 9; correction = value - 9",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 31,
+      "documented": "31",
+      "name": "Liquid line temperature (FCC1)",
+      "description": "0-160 °F; 255 = open or shorted sensor",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": {
+        "255": "Sensor open/shorted"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 32,
+      "documented": "32",
+      "name": "Liquid line temp calibration",
+      "description": "0-18, default 9; correction = value - 9",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 33,
+      "documented": "33",
+      "name": "Defrost sensor temperature",
+      "description": "0-160 °F",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 34,
+      "documented": "34",
+      "name": "DS calibration",
+      "description": "0-18, default 9; correction = value - 9",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 35,
+      "documented": "35",
+      "name": "Dehumidifier set point",
+      "description": "70-75 °F, default 72",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 36,
+      "documented": "36",
+      "name": "Pulse reheat differential",
+      "description": "5-10 °F, default 5",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°F",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 37,
+      "documented": "37",
+      "name": "Economizer enthalpy set point",
+      "description": "Modes A..E as 0..4, default 3 (D)",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "A",
+        "1": "B",
+        "2": "C",
+        "3": "D",
+        "4": "E"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 38,
+      "documented": "38",
+      "name": "Economizer output",
+      "description": "0 = off, 20-100",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set coil 17 = 1 (communicating mode; the map says it mirrors parameter P22), then drive the unit with the Y1/Y2/G/W2/humidity/O call coils (0-4, 24). Read temperatures, relay states, pressure switches and the alarm word (input register 18) to monitor it.",
+    "minimum_registers": [
+      {
+        "table": "coil",
+        "address": 17,
+        "why": "Communicating (Modbus) thermostat mode"
+      },
+      {
+        "table": "coil",
+        "address": 0,
+        "why": "Y1 cooling call"
+      },
+      {
+        "table": "coil",
+        "address": 3,
+        "why": "G fan call"
+      },
+      {
+        "table": "discrete_input",
+        "address": 13,
+        "why": "Compressor 1 relay state"
+      },
+      {
+        "table": "input_register",
+        "address": 18,
+        "why": "Alarm status bits"
+      },
+      {
+        "table": "input_register",
+        "address": 14,
+        "why": "P1 temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 27,
+        "why": "Outdoor temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 8,
+        "why": "Modbus timeout (minutes)"
+      }
+    ],
+    "enable": "In the source manual's configuration menu set item 23 (T'STAT Select; item numbers may differ in the other manuals that share this table) to C for a communicating thermostat via Modbus, or write coil 17 = 1 (the Modbus map says coil 17 reads and changes 'P22', the thermostat-type setting). The Modbus ID (item 24, 1-99, default 1) and baud (item 25: 9.6 or 19 = 9600/19200) are set in the board configuration menu.",
+    "watchdog": "Register 8 / configuration item 26 sets the Modbus timeout (1-60 min, default 10). After that long without Modbus traffic the board falls back to hardware thermostat calls.",
+    "quirks": [
+      "Only single-coil (05) and single-register (06) writes are accepted.",
+      "Register reads are documented with function 04 only, including the writable ones.",
+      "Temperature value 255 means no sensor or a failed sensor."
+    ],
+    "setup": [
+      "Default slave ID 1, 19200 baud, 8 data bits, no parity, 1 stop bit.",
+      "The board has two RJ11 Modbus ports wired in parallel; both carry the same bus."
+    ],
+    "gotchas": [
+      "Until the thermostat type is C (menu item 23, or coil 17 = 1) the board keeps following its hardwired thermostat inputs.",
+      "After the Modbus timeout with no traffic the board switches back to its hardware thermostat inputs, so poll faster than the timeout."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

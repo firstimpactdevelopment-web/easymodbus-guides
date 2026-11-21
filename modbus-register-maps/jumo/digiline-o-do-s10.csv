@@ -1,0 +1,31 @@
+﻿# JUMO digiLine O-DO S10 optical oxygen sensor (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.onetemp.com.au/wp-content/uploads/2024/02/digiLine-O-DO-S10-Digital-DO-Sensor-Modbus-Interface-Description.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0 (0x0000),40001,Device name,"ASCII, zero-terminated.",STRING[10],5,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,5 (0x0005),40006,Software version,"ASCII, zero-terminated.",STRING[12],6,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",256,256 (0x0100),40257,Serial number,"ASCII, zero-terminated.",STRING[20],10,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",266,266 (0x010A),40267,Sensor type,,UINT16,1,,1,0,,Read,1 = digiLine pH/ORP/T; 2 = digiLine CR/Ci; 4 = digiLine O-DO S10
+Holding register,"FC03 read / FC06, FC16 write",267,267 (0x010B),40268,Oxygen sensor sub-type,,UINT16,1,,1,0,,Read,0 = digiLine O-DO S10
+Holding register,"FC03 read / FC06, FC16 write",768,768 (0x0300),40769,Device address,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",769,769 (0x0301),40770,Baud rate,,UINT16,1,,1,0,,Read/write,0 = 9600; 1 = 19200; 2 = 38400
+Holding register,"FC03 read / FC06, FC16 write",770,770 (0x0302),40771,Data format,,UINT16,1,,1,0,,Read/write,0 = 8-1 no parity; 1 = 8-1 odd parity; 2 = 8-1 even parity; 3 = 8-2 no parity
+Holding register,"FC03 read / FC06, FC16 write",773,773 (0x0305),40774,Minimum response time,0-500 ms delay before the sensor answers.,UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",775,775 (0x0307),40776,Float value format,Word/byte order of all floats.,UINT16,1,,1,0,,Read/write,0 = Standard Modbus format; 1 = IEEE 754 Little Endian; 2 = IEEE 754 Big Endian
+Holding register,"FC03 read / FC06, FC16 write",1026,1026 (0x0402),41027,Sensor replacement counter,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1289,1289 (0x0509),41290,Lowest temperature value,Drag indicator.,FLOAT32,2,CDAB,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1291,1291 (0x050B),41292,Highest temperature value,Drag indicator.,FLOAT32,2,CDAB,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",8769,8769 (0x2241),48770,Analog output function,,UINT16,1,,1,0,,Read/write,0 = Inactive; 1 = Fixed value; 2 = Standard signal 4-20 mA
+Holding register,"FC03 read / FC06, FC16 write",8770,8770 (0x2242),48771,Analog output scaling start,Measured value at 4 mA.,FLOAT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8772,8772 (0x2244),48773,Analog output scaling end,Measured value at 20 mA.,FLOAT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8776,8776 (0x2248),48777,Analog output fixed value,Used when function = 1.,FLOAT32,2,CDAB,1,0,mA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8780,8780 (0x224C),48781,Analog output warning value,3.5-21.5 mA.,FLOAT32,2,CDAB,1,0,mA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8782,8782 (0x224E),48783,Analog output error value,3.5-21.5 mA.,FLOAT32,2,CDAB,1,0,mA,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9520,9520 (0x2530),49521,Oxygen measurement unit,,UINT16,1,,1,0,,Read/write,0 = % vol; 1 = % SAT; 3 = ppm; 4 = mbar (partial pressure)
+Holding register,"FC03 read / FC06, FC16 write",9600,9600 (0x2580),49601,Fixed compensation salt content,Stored in flash; do not write cyclically.,FLOAT32,2,CDAB,1,0,mS/cm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9602,9602 (0x2582),49603,Fixed ambient pressure,Stored in flash; do not write cyclically.,FLOAT32,2,CDAB,1,0,hPa,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9647,9647 (0x25AF),49648,Compensation control byte,Low byte selects compensation sources.,BITMAP16,1,,1,0,,Read/write,bit 0 = Use RAM compensation temperature (else internal sensor); bit 1 = Use RAM salt content (else flash value); bit 2 = Use RAM ambient pressure (else flash value)
+Holding register,"FC03 read / FC06, FC16 write",9648,9648 (0x25B0),49649,RAM compensation temperature,May be written cyclically.,FLOAT32,2,CDAB,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9650,9650 (0x25B2),49651,RAM compensation salt content,May be written cyclically.,FLOAT32,2,CDAB,1,0,mS/cm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9652,9652 (0x25B4),49653,RAM ambient pressure,May be written cyclically.,FLOAT32,2,CDAB,1,0,hPa,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9728,9728 (0x2600),49729,Measured oxygen value,Unit per register 9520; error codes 1.0E37-9.0E37.,FLOAT32,2,CDAB,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",9760,9760 (0x2620),49761,Measured temperature,,FLOAT32,2,CDAB,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",9792,9792 (0x2640),49793,Status word,,BITMAP16,1,,1,0,,Read,bit 0 = Invalid oxygen value (warning); bit 1 = Invalid temperature value (warning); bit 2 = Sensor cap missing (alarm); bit 8 = Oxygen outside measuring range (warning); bit 9 = Temperature outside measuring range (warning); bit 10 = Cap replacement recommended (warning)

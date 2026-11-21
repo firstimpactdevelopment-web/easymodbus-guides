@@ -1,0 +1,26 @@
+﻿# Eaton PowerXL DA1 variable frequency drive (Modbus RTU) Modbus register map - easymodbus.com - source: https://es-assets.eaton.com/DOCUMENTATION/AWB_MANUALS/MN040018_EN.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,ID 1,40001,Fieldbus command,"Control word: run, direction, reset, coast, quick stop.",BITMAP16,1,,1,0,,Read/write,"bit 0 = 0 = stop, 1 = run (operational); bit 1 = 0 = forward (clockwise), 1 = reverse; bit 2 = 1 = reset fault; bit 3 = 1 = coast to stop; bit 5 = 1 = quick stop (ramp 2); bit 6 = 1 = run at fixed frequency FF1; bit 7 = 1 = force the setpoint to 0"
+Holding register,"FC03 read / FC06, FC16 write",1,ID 2,40002,Fieldbus speed reference,"Setpoint frequency, limited to the min/max frequency parameters.",UINT16,1,,0.1,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,ID 3,40003,Torque reference,DA1 only; 0-2000 (1000 = 100 %).,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,ID 4,40004,Modbus ramp time,"Ramp time sent over Modbus, 0-60000.",UINT16,1,,0.01,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,ID 6,40006,Status and fault word,"Low byte = status bits, high byte = fault number.",BITMAP16,1,,1,0,,Read,"bit 0 = 1 = ready (READY); bit 1 = 1 = running (RUN); bit 2 = 0 = forward, 1 = reverse; bit 3 = 1 = fault (FAULT); bit 4 = 1 = actual frequency equals setpoint (0 = ramping); bit 5 = 1 = zero speed; bit 6 = 1 = speed control active; bit 7 = DA1: 0 = STO inhibit, 1 = STO ready; bit 8-15 = Fault word: the fault number (see notes), 0 = no fault"
+Holding register,"FC03 read / FC06, FC16 write",6,ID 7,40007,Actual speed,Output frequency.,UINT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,ID 8,40008,Motor current,,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,ID 9,40009,Torque,"Motor torque, 1000 = 100 %.",UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,ID 11,40011,Digital inputs,Input states; the lowest bit is DI1.,BITMAP16,1,,1,0,,Read,bit 0 = DI1; bit 1 = DI2
+Holding register,"FC03 read / FC06, FC16 write",11,ID 12,40012,Drive type code,"Part-number code: frame size, voltage class, phases and power index as hex digits.",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,ID 15,40015,Control section software version,Two implied decimals.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",15,ID 16,40016,Power section software version,Two implied decimals.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,ID 17,40017,Drive recognition,Fixed family code; DA1 reads 5632.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,23 (P0-20),40023,DC-link voltage,600 = 600 V.,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,30 (P0-26),40030,kWh meter,100 = 10.0 kWh.,UINT16,1,,0.1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",106,107 (P1-07),40107,Motor rated voltage,,UINT16,1,,1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",107,108 (P1-08),40108,Motor rated current,1 = 0.1 A.,UINT16,1,,0.1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",111,112 (P1-12),40112,Local process data source,Selects where run commands and the speed reference come from.,UINT16,1,,1,0,,Read/write,"0 = Terminal control; 1 = Digital reference, forward only; 2 = Digital reference, forward and reverse; 3 = PID controller; 4 = Fieldbus control (Modbus RTU if no fieldbus option); 5 = Server mode (follows a drive in client mode); 6 = CANopen control; 9 = SmartWire-DT control and speed reference; 10 = SmartWire-DT control, terminal speed reference; 11 = Terminal control, SmartWire-DT speed reference; 13 = SmartWire-DT control and reference, digital input enables"
+Holding register,"FC03 read / FC06, FC16 write",500,501 (P5-01),40501,Drive address,"1-63 (0 is broadcast), default 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",502,503 (P5-03),40503,RS-485 baud rate,,UINT16,1,,1,0,,Read/write,0 = 9.6 kbit/s; 1 = 19.2 kbit/s; 2 = 38.4 kbit/s; 3 = 57.6 kbit/s; 4 = 115.2 kbit/s
+Holding register,"FC03 read / FC06, FC16 write",503,504 (P5-04),40504,RS-485 parity type,,UINT16,1,,1,0,,Read/write,"0 = No parity, 1 stop bit; 1 = No parity, 2 stop bits; 2 = Odd parity, 1 stop bit; 3 = Even parity, 1 stop bit"
+Holding register,"FC03 read / FC06, FC16 write",504,505 (P5-05),40505,Modbus comms timeout,Time without a valid telegram before P5-06 acts.,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",505,506 (P5-06),40506,Action on Modbus fault,,UINT16,1,,1,0,,Read/write,"0 = Switch off (trip); 1 = Ramp to stop, then switch off; 2 = Ramp to stop, no fault; 3 = Run at fixed frequency 8 (P2-08)"
+Holding register,"FC03 read / FC06, FC16 write",506,507 (P5-07),40507,Fieldbus ramp control,,UINT16,1,,1,0,,Read/write,0 = Ramps from drive parameters; 1 = Ramps from fieldbus

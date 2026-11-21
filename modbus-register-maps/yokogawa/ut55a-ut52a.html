@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yokogawa UT55A/UT52A Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="Yokogawa UT55A/UT52A Modbus register map: 63 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Yokogawa UT55A/UT52A Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="Yokogawa UT55A/UT52A Modbus register map: 63 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Yokogawa UT55A/UT52A Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="Yokogawa UT55A/UT52A Modbus register map: 63 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a",
+   "url": "https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a",
+   "name": "Yokogawa UT55A/UT52A Modbus Register List & Map | Easy Modbus",
+   "description": "Yokogawa UT55A/UT52A Modbus register map: 63 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-19",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a#dataset",
+   "name": "Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus register map",
+   "description": "The UT55A and UT52A are UTAdvanced PID controllers with up to two loops, heater-break and valve-position functions. Their data live in D registers that map one-to-one onto Modbus holding registers over RS-485 (Modbus RTU/ASCII) or Modbus/TCP on Ethernet models. This map covers the process data block, the current SP/PID group for both loops and the operation-mode switches. Yokogawa UT55A/UT52A Modbus register map: 63 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a",
+   "keywords": [
+    "Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus register map",
+    "Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus registers",
+    "Yokogawa Modbus map",
+    "UT55A Modbus register map",
+    "UT52A Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "dateModified": "2026-11-19",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "UTAdvanced Series Communication Interface (RS-485, Ethernet) User's Manual",
+    "url": "https://web-material3.yokogawa.com/IM05P07A01-01EN.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Yokogawa"
+    }
+   },
+   "about": {
+    "@type": "Thing",
+    "name": "Yokogawa UTAdvanced UT55A / UT52A digital indicating controller",
+    "description": "Sensor (digital indicating temperature controller)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "Easy Modbus register-map library",
+    "url": "https://easymodbus.com/modbus-register-maps/"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 63 registers: 63 holding registers. 32 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The manual lists D register numbers (D2003). The Modbus reference number replaces the D with 4 (42003) and the wire address is that minus 40001, printed in the table's H No. column (D2003 = 07D2H)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 2002 PV_L1 loop-1 measured value (Loop-1 PV (D2003)); HR 2003 CSP_L1 loop-1 control setpoint (Loop-1 control setpoint (D2004)); HR 2004 OUT_L1 loop-1 control output (Loop-1 output (D2005)); HR 2007 MOD_L1 loop-1 operation mode status (UT55A/UT52A) (Operation mode status (D2008)); HR 2010 ALM_L1 loop-1 alarm 1-8 status (Loop-1 alarm status (D2011)); HR 2100 SP_L1 loop-1 target setpoint (Loop-1 target setpoint (D2101)); HR 2300 A.M AUTO/MAN switch (AUTO/MAN (D2301)); HR 2303 S.R STOP/RUN switch (RUN/STOP (D2304))."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Set the communication setup parameters (protocol MBRTU or MBASC, baud, parity, stop bits, data length, address) on the keypad. Ethernet models use Modbus/TCP on port 502 by default."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is UTAdvanced Series Communication Interface (RS-485, Ethernet) User's Manual (IM 05P07A01-01EN 13th Edition), revision 2026-03, published free by Yokogawa at https://web-material3.yokogawa.com/IM05P07A01-01EN.pdf."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Yokogawa",
+     "item": "https://easymodbus.com/modbus-register-maps/yokogawa/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "UTAdvanced UT55A / UT52A digital indicating controller",
+     "item": "https://easymodbus.com/modbus-register-maps/yokogawa/ut55a-ut52a"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/yokogawa/">Yokogawa</a></li><li aria-current="page">UTAdvanced UT55A / UT52A digital indicating controller</li></ol>
+<p class="eyebrow">Sensor (digital indicating temperature controller) &middot; Modbus register map</p><h1><span class="mfr">Yokogawa</span> UTAdvanced UT55A / UT52A digital indicating controller Modbus register map</h1><p class="updated">Updated 19 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>The UT55A and UT52A are UTAdvanced PID controllers with up to two loops, heater-break and valve-position functions. Their data live in D registers that map one-to-one onto Modbus holding registers over RS-485 (Modbus RTU/ASCII) or Modbus/TCP on Ethernet models. This map covers the process data block, the current SP/PID group for both loops and the operation-mode switches.</p>
+<p>This page lists <strong>63 Modbus registers</strong> for the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller &mdash; 32 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Yokogawa&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/yokogawa/">Yokogawa</a></dd></div><div><dt>Model</dt><dd>UTAdvanced UT55A / UT52A digital indicating controller</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/temperature-process-controllers/">Sensor (digital indicating temperature controller)</a></dd></div><div><dt>Registers</dt><dd>63 (32 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus ASCII, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>1</dd></div><div><dt>Default serial</dt><dd>19200 baud, 8E1</dd></div><div><dt>TCP port</dt><dd>502</dd></div><div><dt>Documented addressing</dt><dd>1-based (subtract 1 for the wire address)</dd></div><div><dt>Also known as</dt><dd>UT55A, UT52A</dd></div><div><dt>Source document</dt><dd><a href="https://web-material3.yokogawa.com/IM05P07A01-01EN.pdf" rel="nofollow noopener" target="_blank">UTAdvanced Series Communication Interface (RS-485, Ethernet) User&#x27;s Manual &middot; IM 05P07A01-01EN 13th Edition &middot; rev. 2026-03</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/yokogawa/ut55a-ut52a.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/yokogawa/ut55a-ut52a.json">JSON</a>
+  <a class="btn" href="https://web-material3.yokogawa.com/IM05P07A01-01EN.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: Yokogawa UTAdvanced UT55A / UT52A digital indicating controller</h2>
+<div class="answer"><b>Integration in brief</b><p>Read D2001-D2013 in one block for errors, PV, SP, output and alarms; write the target setpoint to D2101 (loop 2: D2151) and switch AUTO/MAN, RUN/STOP and REMOTE/LOCAL with D2301, D2304 and D2306.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-2002">HR 2002</a></td><td class="n">PV_L1 loop-1 measured value</td><td class="f">INT16</td><td>Loop-1 PV (D2003)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2003">HR 2003</a></td><td class="n">CSP_L1 loop-1 control setpoint</td><td class="f">INT16</td><td>Loop-1 control setpoint (D2004)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2004">HR 2004</a></td><td class="n">OUT_L1 loop-1 control output</td><td class="f">INT16</td><td>Loop-1 output (D2005)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2007">HR 2007</a></td><td class="n">MOD_L1 loop-1 operation mode status (UT55A/UT52A)</td><td class="f">BITMAP16</td><td>Operation mode status (D2008)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2010">HR 2010</a></td><td class="n">ALM_L1 loop-1 alarm 1-8 status</td><td class="f">BITMAP16</td><td>Loop-1 alarm status (D2011)</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-2100">HR 2100</a></td><td class="n">SP_L1 loop-1 target setpoint</td><td class="f">INT16</td><td>Loop-1 target setpoint (D2101)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-2300">HR 2300</a></td><td class="n">A.M AUTO/MAN switch</td><td class="f">UINT16</td><td>AUTO/MAN (D2301)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-2303">HR 2303</a></td><td class="n">S.R STOP/RUN switch</td><td class="f">UINT16</td><td>RUN/STOP (D2304)</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Set the communication setup parameters (protocol MBRTU or MBASC, baud, parity, stop bits, data length, address) on the keypad. Ethernet models use Modbus/TCP on port 502 by default.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Address D register n at wire address n-1 (D2101 = 0834H).</li><li>Write values without the decimal point (50.0 with one decimal place = 500).</li><li>To take the setpoint from communication, put the loop in REMOTE (D2306 = 1) with the remote source set to communication, then write D2331.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Factory defaults: Modbus RTU, 19200 bps, even parity, 1 stop bit, 8 data bits, address 1.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Available registers depend on the suffix code (single/dual loop, options) and parameter settings; blank addresses must not be read or written.</li></ul>
+</section>
+<h2 id="registers">Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>63</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">63 of 63 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-2000"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2000<small>doc D2001</small></td><td class="n">AD1.E A/D converter error status 1</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = PV input A/D converter error; bit 1 = RSP input (E1) A/D converter error; bit 2 = AIN2 input (E2) A/D converter error; bit 4 = AIN4 input (E4) A/D converter error; bit 5 = PV input RJC error; bit 6 = RSP input RJC error; bit 8 = PV input burnout error; bit 9 = RSP input (E1) burnout error; bit 10 = AIN2 input (E2) burnout error; bit 12 = AIN4 input (E4) burnout error</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2001"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2001<small>doc D2002</small></td><td class="n">PV1.E_L1 loop-1 PV input error status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Loop-1 PV input burnout; bit 1 = Loop-1 RSP input burnout; bit 2 = Burnout of RSP input used for control; bit 4 = Loop-1 PV over-scale; bit 5 = Loop-1 PV under-scale; bit 14 = Loop-1 auto-tuning timeout error</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2002"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2002<small>doc D2003</small></td><td class="n">PV_L1 loop-1 measured value</td><td class="d">Engineering value without decimal point; position set by the PV input decimal point.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2003"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2003<small>doc D2004</small></td><td class="n">CSP_L1 loop-1 control setpoint</td><td class="d">Engineering value without decimal point; position set by the PV input decimal point.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2004"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2004<small>doc D2005</small></td><td class="n">OUT_L1 loop-1 control output</td><td class="d">-5.0 to 105.0 %; valve opening in position-proportional control.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2005"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2005<small>doc D2006</small></td><td class="n">H.OUT_L1 heating-side output</td><td class="d">Heating/cooling control.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2006"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2006<small>doc D2007</small></td><td class="n">C.OUT_L1 cooling-side output</td><td class="d">0.0 to 105.0 %.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2007"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2007<small>doc D2008</small></td><td class="n">MOD_L1 loop-1 operation mode status (UT55A/UT52A)</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = A.M (0 AUTO, 1 MAN); bit 1 = R.L (0 local, 1 remote); bit 2 = S.R (0 run, 1 stop); bit 4 = CAS (cascade modes); bit 5 = AUTO (cascade modes); bit 6 = MAN (cascade modes); bit 8 = Output tracking; bit 14 = Auto-tuning ON</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2008"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2008<small>doc D2009</small></td><td class="n">PID_L1 current PID number (loop 1)</td><td class="d">Bits 0-3 hold the PID number; reads 0 for reference PID.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2009"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2009<small>doc D2010</small></td><td class="n">CSPNO. current control setpoint number</td><td class="d">Bits 0-3 hold the SP number.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2010"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2010<small>doc D2011</small></td><td class="n">ALM_L1 loop-1 alarm 1-8 status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Alarm 1 ON (loop 1); bit 1 = Alarm 2 ON; bit 2 = Alarm 3 ON; bit 4 = Alarm 4 ON; bit 5 = Alarm 5 ON; bit 6 = Alarm 6 ON; bit 8 = Alarm 7 ON; bit 9 = Alarm 8 ON</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2011"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2011<small>doc D2012</small></td><td class="n">LA.ER ladder error status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Corrupted ladder program; bit 1 = Ladder calculation overflow; bit 2 = Ladder program error; bit 4 = Load factor over 100 %; bit 5 = Load factor over 200 % (forced end)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2012"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2012<small>doc D2013</small></td><td class="n">ALM_L2 loop-2 alarm 1-8 status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Alarm 1 ON (loop 2); bit 1 = Alarm 2 ON; bit 2 = Alarm 3 ON; bit 4 = Alarm 4 ON; bit 5 = Alarm 5 ON; bit 6 = Alarm 6 ON; bit 8 = Alarm 7 ON; bit 9 = Alarm 8 ON</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2017"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2017<small>doc D2018</small></td><td class="n">PV2.E_L2 loop-2 PV input error status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Loop-2 PV input burnout; bit 1 = Loop-2 RSP input burnout; bit 2 = Burnout of loop-2 RSP input used for control; bit 4 = Loop-2 PV over-scale; bit 5 = Loop-2 PV under-scale; bit 14 = Loop-2 auto-tuning timeout error</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2018"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2018<small>doc D2019</small></td><td class="n">PV_L2 loop-2 measured value</td><td class="d">Engineering value without decimal point; position set by the PV input decimal point.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2019"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2019<small>doc D2020</small></td><td class="n">CSP_L2 loop-2 control setpoint</td><td class="d">Engineering value without decimal point; position set by the PV input decimal point.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2020"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2020<small>doc D2021</small></td><td class="n">OUT_L2 loop-2 control output</td><td class="d">-5.0 to 105.0 %.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2021"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2021<small>doc D2022</small></td><td class="n">H.OUT_L2 loop-2 heating-side output</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2022"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2022<small>doc D2023</small></td><td class="n">C.OUT_L2 loop-2 cooling-side output</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2023"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2023<small>doc D2024</small></td><td class="n">MOD_L2 loop-2 operation mode status (UT55A/UT52A)</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 1 = R.L_L2 (0 local, 1 remote); bit 14 = Loop-2 auto-tuning ON</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2034"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2034<small>doc D2035</small></td><td class="n">DEV_L1 loop-1 deviation</td><td class="d">-105.0 to 105.0 % of span, sent as engineering value without decimal point.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2035"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2035<small>doc D2036</small></td><td class="n">DEV_L2 loop-2 deviation</td><td class="d">Same format as DEV_L1.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2036"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2036<small>doc D2037</small></td><td class="n">ALO_L1 loop-1 alarm output 1-8 status</td><td class="d">1 = relay contact closed.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Alarm output 1 contact closed (loop 1); bit 1 = Alarm output 2 contact closed; bit 2 = Alarm output 3 contact closed; bit 4 = Alarm output 4 contact closed; bit 5 = Alarm output 5 contact closed; bit 6 = Alarm output 6 contact closed; bit 8 = Alarm output 7 contact closed; bit 9 = Alarm output 8 contact closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2037"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2037<small>doc D2038</small></td><td class="n">ALO_L2 loop-2 alarm output 1-8 status</td><td class="d">1 = relay contact closed.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Alarm output 1 contact closed (loop 2); bit 1 = Alarm output 2 contact closed; bit 2 = Alarm output 3 contact closed; bit 4 = Alarm output 4 contact closed; bit 5 = Alarm output 5 contact closed; bit 6 = Alarm output 6 contact closed; bit 8 = Alarm output 7 contact closed; bit 9 = Alarm output 8 contact closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2060"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2060<small>doc D2061</small></td><td class="n">HC1 heater break alarm-1 current</td><td class="d">0.0-360.0 A rms.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2061"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2061<small>doc D2062</small></td><td class="n">HC2 heater break alarm-2 current</td><td class="d">0.0-360.0 A rms.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2062"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2062<small>doc D2063</small></td><td class="n">CT_AL heater break alarm status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Heater break alarm 1 ON; bit 1 = Heater break alarm 2 ON</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2063"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2063<small>doc D2064</small></td><td class="n">VALV valve status</td><td class="d">Position-proportional control.</td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Estimating-type operation (0 = feedback input); bit 1 = Open output on; bit 2 = Close output on; bit 3 = Automatic valve position adjustment running</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2064"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2064<small>doc D2065</small></td><td class="n">AD2.E A/D converter error status 2</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = Feedback input resistor/current burnout; bit 1 = Valve position automatic adjustment error</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2067"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2067<small>doc D2068</small></td><td class="n">PA.ER parameter error status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = System data error; bit 1 = Calibration value error; bit 2 = User default value error; bit 4 = Setup parameter error; bit 5 = Operation parameter error; bit 8 = Faulty FRAM; bit 10 = Control parameter error</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2069"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2069<small>doc D2070</small></td><td class="n">OP.ER option error status</td><td class="d"></td><td class="f">BITMAP16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">bit 0 = E1 terminal hardware not responding; bit 1 = E2 terminal hardware not responding; bit 2 = E3 terminal hardware not responding; bit 4 = E4 terminal hardware not responding; bit 8 = E1 communication error (UT52A); bit 10 = E3 communication error (UT55A); bit 12 = E4 communication error (UT55A)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2100"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2100<small>doc D2101</small></td><td class="n">SP_L1 loop-1 target setpoint</td><td class="d">Current SP group. Engineering value without decimal point; position set by the PV input decimal point.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2101"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2101<small>doc D2102</small></td><td class="n">SUB sub-target setpoint</td><td class="d">Offset from SP in two-position two-level control.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2102"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2102<small>doc D2103</small></td><td class="n">PIDN_L1 loop-1 PID number selection</td><td class="d">1-8.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2103"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2103<small>doc D2104</small></td><td class="n">A1_L1 loop-1 alarm-1 setpoint</td><td class="d">-19999 to 30000, decimal point per input.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2104"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2104<small>doc D2105</small></td><td class="n">A2_L1 loop-1 alarm-2 setpoint</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2105"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2105<small>doc D2106</small></td><td class="n">A3_L1 loop-1 alarm-3 setpoint</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2106"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2106<small>doc D2107</small></td><td class="n">A4_L1 loop-1 alarm-4 setpoint</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2113"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2113<small>doc D2114</small></td><td class="n">P_L1 proportional band</td><td class="d">0.0-999.9 % (heating side in heating/cooling).</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2114"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2114<small>doc D2115</small></td><td class="n">I_L1 integral time</td><td class="d">0 = off, 1-6000 s.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2115"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2115<small>doc D2116</small></td><td class="n">D_L1 derivative time</td><td class="d">0 = off, 1-6000 s.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2116"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2116<small>doc D2117</small></td><td class="n">OH_L1 control output high limit</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2117"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2117<small>doc D2118</small></td><td class="n">OL_L1 control output low limit</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2118"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2118<small>doc D2119</small></td><td class="n">MR_L1 manual reset</td><td class="d">Used when integral time is off.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2123"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2123<small>doc D2124</small></td><td class="n">DR_L1 direct/reverse action</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = RVS reverse action; 1 = DIR direct action</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2132"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2132<small>doc D2133</small></td><td class="n">PO_L1 preset output</td><td class="d">Output used in STOP mode, -5.0 to 105.0 %.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2150"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2150<small>doc D2151</small></td><td class="n">SP_L2 loop-2 target setpoint</td><td class="d">Same as D2101 for loop 2.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2163"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2163<small>doc D2164</small></td><td class="n">P_L2 loop-2 proportional band</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2164"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2164<small>doc D2165</small></td><td class="n">I_L2 loop-2 integral time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2165"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2165<small>doc D2166</small></td><td class="n">D_L2 loop-2 derivative time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2300"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2300<small>doc D2301</small></td><td class="n">A.M AUTO/MAN switch</td><td class="d">Not for cascade modes.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = AUTO; 1 = MAN</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2302"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2302<small>doc D2303</small></td><td class="n">C.A.M CAS/AUTO/MAN switch</td><td class="d">Cascade control modes.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = AUTO; 1 = MAN; 2 = CAS</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2303"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2303<small>doc D2304</small></td><td class="n">S.R STOP/RUN switch</td><td class="d">Preset output is used in STOP.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = RUN; 1 = STOP</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2305"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2305<small>doc D2306</small></td><td class="n">R.L_L1 loop-1 REMOTE/LOCAL switch</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = LCL (local); 1 = REM (remote)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2306"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2306<small>doc D2307</small></td><td class="n">R.L_L2 loop-2 REMOTE/LOCAL switch</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = LCL (local); 1 = REM (remote)</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2307"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2307<small>doc D2308</small></td><td class="n">AT_L1 loop-1 auto-tuning switch</td><td class="d">0 = off, 1-8 = tune into that PID, 9 = reference PID.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2308"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2308<small>doc D2309</small></td><td class="n">AT_L2 loop-2 auto-tuning switch</td><td class="d">Same as AT_L1.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2311"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2311<small>doc D2312</small></td><td class="n">SPNO. SP number selection</td><td class="d">1-8.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2313"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2313<small>doc D2314</small></td><td class="n">TRK_ON_L1 output tracking</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = OFF; 1 = ON</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2330"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2330<small>doc D2331</small></td><td class="n">C.RSP_L1 loop-1 communication remote setpoint</td><td class="d">Used when remote mode takes SP from comms. Engineering value without decimal point; position set by the PV input decimal point.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2331"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2331<small>doc D2332</small></td><td class="n">C.RSP_L2 loop-2 communication remote setpoint</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2332"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2332<small>doc D2333</small></td><td class="n">MOUT_L1 loop-1 manual output</td><td class="d">Heating-side output in MAN mode.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2334"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2334<small>doc D2335</small></td><td class="n">MOUT_L2 loop-2 manual output</td><td class="d">Heating-side output in MAN mode.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>All registers are 16-bit. Values are sent without their decimal point: PV/SP-type values follow the input&#x27;s decimal point setting, percentages carry one decimal (scale 0.1).</li><li>D2001-D2100 are read-only. D2101-D2135 / D2151-D2185 act on the SP/PID group currently in use (group 1-8 or R).</li><li>UP55A program-pattern registers (D2015-D2017, D2033/D2034, D2039-D2050, D2201-D2300, D2316-D2343) and the GREEN-series compatible area (D0001-D2000) are not included.</li><li>Only part of the D-register space is listed; alarm setpoints 5-8, cooling-side PID terms and the setup parameter areas (D2501 onward) are left out.</li><li>Modbus/TCP applies only to units with the Ethernet communication option.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller</h2><div class="faq"><details open><summary>What Modbus registers does the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller have?</summary><p>This map lists 63 registers: 63 holding registers. 32 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 1-based (subtract 1 for the wire address). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The manual lists D register numbers (D2003). The Modbus reference number replaces the D with 4 (42003) and the wire address is that minus 40001, printed in the table&#x27;s H No. column (D2003 = 07D2H).</p></details><details><summary>What are the minimum Modbus registers to integrate the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller?</summary><p>Start with HR 2002 PV_L1 loop-1 measured value (Loop-1 PV (D2003)); HR 2003 CSP_L1 loop-1 control setpoint (Loop-1 control setpoint (D2004)); HR 2004 OUT_L1 loop-1 control output (Loop-1 output (D2005)); HR 2007 MOD_L1 loop-1 operation mode status (UT55A/UT52A) (Operation mode status (D2008)); HR 2010 ALM_L1 loop-1 alarm 1-8 status (Loop-1 alarm status (D2011)); HR 2100 SP_L1 loop-1 target setpoint (Loop-1 target setpoint (D2101)); HR 2300 A.M AUTO/MAN switch (AUTO/MAN (D2301)); HR 2303 S.R STOP/RUN switch (RUN/STOP (D2304)).</p></details><details><summary>How do I enable Modbus control of the Yokogawa UTAdvanced UT55A / UT52A digital indicating controller?</summary><p>Set the communication setup parameters (protocol MBRTU or MBASC, baud, parity, stop bits, data length, address) on the keypad. Ethernet models use Modbus/TCP on port 502 by default.</p></details><details><summary>Where is the official Yokogawa UTAdvanced UT55A / UT52A digital indicating controller Modbus documentation?</summary><p>The source is UTAdvanced Series Communication Interface (RS-485, Ethernet) User&#x27;s Manual (IM 05P07A01-01EN 13th Edition), revision 2026-03, published free by Yokogawa at https://web-material3.yokogawa.com/IM05P07A01-01EN.pdf.</p></details></div>
+<h2>More Yokogawa Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/yokogawa/um33a" data-row><span class="k">Sensor (digital indicator with alarms)</span><h3>Yokogawa UTAdvanced UM33A digital indicator with alarms</h3><p>Yokogawa UM33A indicators with RS-485 (Modbus RTU/ASCII); process monitoring D registers from IM 05P07A01-01EN chapter 10.</p><div class="meta">12 registers &middot; 0 writable &middot; RTU/ASCII</div><span class="sr-only"> Also known as: UM33A</span></a></li><li><a class="card" href="/modbus-register-maps/yokogawa/up35a-up32a" data-row><span class="k">Sensor (program temperature controller)</span><h3>Yokogawa UTAdvanced UP35A / UP32A program controller</h3><p>Yokogawa UP35A and UP32A single-loop program controllers with RS-485 or Ethernet communication; D-register map from IM 05P07A01-01EN chapter 8 (UP35A/UP32A columns).</p><div class="meta">40 registers &middot; 13 writable &middot; RTU/ASCII/TCP</div><span class="sr-only"> Also known as: UP35A, UP32A</span></a></li><li><a class="card" href="/modbus-register-maps/yokogawa/up55a" data-row><span class="k">Sensor (program temperature controller)</span><h3>Yokogawa UTAdvanced UP55A program controller</h3><p>Yokogawa UP55A program controller with RS-485 or Ethernet communication; D-register map from IM 05P07A01-01EN chapter 6 (UP55A column).</p><div class="meta">51 registers &middot; 21 writable &middot; RTU/ASCII/TCP</div><span class="sr-only"> Also known as: UP55A</span></a></li><li><a class="card" href="/modbus-register-maps/yokogawa/ut35a-ut32a" data-row><span class="k">Sensor (digital indicating temperature controller)</span><h3>Yokogawa UTAdvanced UT35A / UT32A digital indicating controller</h3><p>Yokogawa UT35A and UT32A single-loop controllers with RS-485 or Ethernet communication; D-register map from IM 05P07A01-01EN chapter 8 (UT32A-D loop 2 and UP35A/UP32A program items excluded).</p><div class="meta">52 registers &middot; 29 writable &middot; RTU/ASCII/TCP</div><span class="sr-only"> Also known as: UT35A, UT32A, UT35A/MDL, UT32A/MDL</span></a></li><li><a class="card" href="/modbus-register-maps/yokogawa/ut35a-l" data-row><span class="k">Sensor (limit controller)</span><h3>Yokogawa UTAdvanced UT35A-L limit controller</h3><p>Yokogawa UT35A-L limit controllers with RS-485 (Modbus RTU/ASCII); process monitoring D registers from IM 05P07A01-01EN chapter 12.</p><div class="meta">16 registers &middot; 0 writable &middot; RTU/ASCII</div><span class="sr-only"> Also known as: UT35A-L</span></a></li><li><a class="card" href="/modbus-register-maps/yokogawa/ut75a" data-row><span class="k">Sensor (digital indicating temperature controller)</span><h3>Yokogawa UTAdvanced UT75A digital indicating controller</h3><p>Yokogawa UT75A one- or two-loop controller with RS-485 or Ethernet communication; D-register map from IM 05P07A01-01EN chapter 14.</p><div class="meta">66 registers &middot; 35 writable &middot; RTU/ASCII/TCP</div><span class="sr-only"> Also known as: UT75A</span></a></li></ul><h2>Other temperature &amp; process controllers register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/novus/n20k48" data-row><span class="k">Sensor (process / temperature controller)</span><h3>Novus N20K48 modular process controller (Modbus RTU)</h3><p>N20K48 controllers with the optional RS-485 interface, communication protocol V1.0x.</p><div class="meta">38 registers &middot; 33 writable &middot; RTU</div><span class="sr-only"> Also known as: Novus N20K48, N20K48 modular controller</span></a></li><li><a class="card" href="/modbus-register-maps/shinko-technos/acs2" data-row><span class="k">Sensor (digital temperature controller)</span><h3>Shinko Technos ACS2 digital indicating controller (C5, C5W options)</h3><p>Shinko ACS2 with the C5 or C5W serial option, Shinko protocol / MODBUS RTU command set; manual No.ACS2CE3.</p><div class="meta">47 registers &middot; 31 writable &middot; RTU</div><span class="sr-only"> Also known as: ACS2-C5, ACS2-C5W</span></a></li><li><a class="card" href="/modbus-register-maps/shinko-technos/jir-301-m" data-row><span class="k">Sensor (digital temperature controller)</span><h3>Shinko Technos JIR-301-M digital indicator (C5 option)</h3><p>Shinko JIR-301-M with the C5 option, plain (non-block) Modbus protocol setting; manual No.JIR32CE4.</p><div class="meta">28 registers &middot; 25 writable &middot; RTU/ASCII</div><span class="sr-only"> Also known as: JIR-301-M-C5, JIR-301-M C5</span></a></li><li><a class="card" href="/modbus-register-maps/fuji-electric/pxr" data-row><span class="k">Sensor (digital temperature controller)</span><h3>Fuji Electric PXR micro controller X (RS-485 Modbus option)</h3><p>Fuji Electric PXR series controllers with the RS-485 Modbus communication option; manual INP-TN512642d-E.</p><div class="meta">103 registers &middot; 82 writable &middot; RTU</div><span class="sr-only"> Also known as: PXR3, PXR4, PXR5, PXR9</span></a></li><li><a class="card" href="/modbus-register-maps/shinko-technos/acs-13a" data-row><span class="k">Sensor (digital temperature controller)</span><h3>Shinko Technos ACS-13A digital indicating controller (C5 option)</h3><p>Shinko ACS-13A with the C5 serial communication option; communication manual No.ACS12CE5.</p><div class="meta">58 registers &middot; 50 writable &middot; RTU/ASCII</div><span class="sr-only"> Also known as: ACS-13A-C5, ACS-13A C5</span></a></li><li><a class="card" href="/modbus-register-maps/shinko-technos/jcx-33a" data-row><span class="k">Sensor (digital temperature controller)</span><h3>Shinko Technos JCS-33A / JCM-33A / JCR-33A / JCD-33A digital indicating controller (C5 option)</h3><p>Shinko JCx-33A series (JCS, JCM, JCR, JCD-33A) with the C5 option; communication manual No.JC3CE11.</p><div class="meta">50 registers &middot; 46 writable &middot; RTU/ASCII</div><span class="sr-only"> Also known as: JCS-33A, JCM-33A, JCR-33A, JCD-33A, JCx-33A</span></a></li></ul><p><a href="https://easymodbus.com/modbus-register-maps/equipment/temperature-process-controllers/">All temperature &amp; process controllers Modbus register maps &rarr;</a></p>
+<p class="updated">Source: <a href="https://web-material3.yokogawa.com/IM05P07A01-01EN.pdf" rel="nofollow noopener" target="_blank">UTAdvanced Series Communication Interface (RS-485, Ethernet) User&#x27;s Manual &middot; IM 05P07A01-01EN 13th Edition &middot; rev. 2026-03</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

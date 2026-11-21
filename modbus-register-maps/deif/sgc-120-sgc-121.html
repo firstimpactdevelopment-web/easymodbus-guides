@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEIF SGC 120/121 Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="DEIF SGC 120/121 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="DEIF SGC 120/121 Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="DEIF SGC 120/121 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DEIF SGC 120/121 Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="DEIF SGC 120/121 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121",
+   "url": "https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121",
+   "name": "DEIF SGC 120/121 Modbus Register List & Map | Easy Modbus",
+   "description": "DEIF SGC 120/121 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-19",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121#dataset",
+   "name": "DEIF SGC 120 / SGC 121 Single Genset Controller Modbus register map",
+   "description": "The SGC 120 and SGC 121 are DEIF's small auto-start and AMF genset controllers. They act as a Modbus RTU server on one RS-485 port, and every value is a holding register read with function 03. This map covers the 16-bit generator, mains and load readings, engine values, start and trip counters, the packed alarm-state, I/O and genset-status words, and the mode-change command. DEIF SGC 120/121 Modbus register map: 66 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121",
+   "keywords": [
+    "DEIF SGC 120 / SGC 121 Single Genset Controller Modbus register map",
+    "DEIF SGC 120 / SGC 121 Single Genset Controller Modbus registers",
+    "DEIF Modbus map",
+    "SGC 120 Modbus register map",
+    "SGC 121 Modbus register map",
+    "SGC120 Modbus register map",
+    "SGC121 Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "dateModified": "2026-11-19",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "SGC 120 and SGC 121 Modbus tables",
+    "url": "https://deif-cdn-umbraco.azureedge.net/media/pawhllhf/sgc-120-sgc-121-modbus-tables-4189341357.xlsx",
+    "author": {
+     "@type": "Organization",
+     "name": "DEIF"
+    }
+   },
+   "about": {
+    "@type": "Thing",
+    "name": "DEIF SGC 120 / SGC 121 Single Genset Controller",
+    "description": "Generator controller"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "Easy Modbus register-map library",
+    "url": "https://easymodbus.com/modbus-register-maps/"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the DEIF SGC 120 / SGC 121 Single Genset Controller have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 66 registers: 66 holding registers. 1 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the DEIF SGC 120 / SGC 121 Single Genset Controller Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The tables print plain register numbers starting at 0, and the user manual's frame layouts put the register address from the map straight into the request. Read generator L1-N voltage at 1, not 40002."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the DEIF SGC 120 / SGC 121 Single Genset Controller?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 1 Generator L1-N voltage (Generator L1-N voltage); HR 7 Generator R frequency (Generator frequency); HR 23 Load L1 current (Load L1 current); HR 29 Load total active power (Total kW); HR 56 Battery voltage (Battery voltage); HR 78 DG status word (Genset status flags); HR 0 Protocol revision (read) / DG mode command (write) (Mode-change command)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the DEIF SGC 120 / SGC 121 Single Genset Controller?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Set Communication mode to Modbus in the RS485 COMM menu, then set the server ID (1-247), baud rate and parity."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official DEIF SGC 120 / SGC 121 Single Genset Controller Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is SGC 120 and SGC 121 Modbus tables (4189341357), published free by DEIF at https://deif-cdn-umbraco.azureedge.net/media/pawhllhf/sgc-120-sgc-121-modbus-tables-4189341357.xlsx."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "DEIF",
+     "item": "https://easymodbus.com/modbus-register-maps/deif/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "SGC 120 / SGC 121 Single Genset Controller",
+     "item": "https://easymodbus.com/modbus-register-maps/deif/sgc-120-sgc-121"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/deif/">DEIF</a></li><li aria-current="page">SGC 120 / SGC 121 Single Genset Controller</li></ol>
+<p class="eyebrow">Generator controller &middot; Modbus register map</p><h1><span class="mfr">DEIF</span> SGC 120 / SGC 121 Single Genset Controller Modbus register map</h1><p class="updated">Updated 19 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>The SGC 120 and SGC 121 are DEIF&#x27;s small auto-start and AMF genset controllers. They act as a Modbus RTU server on one RS-485 port, and every value is a holding register read with function 03. This map covers the 16-bit generator, mains and load readings, engine values, start and trip counters, the packed alarm-state, I/O and genset-status words, and the mode-change command.</p>
+<p>This page lists <strong>66 Modbus registers</strong> for the DEIF SGC 120 / SGC 121 Single Genset Controller &mdash; 1 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+DEIF&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/deif/">DEIF</a></dd></div><div><dt>Model</dt><dd>SGC 120 / SGC 121 Single Genset Controller</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/generator-controllers/">Generator controller</a></dd></div><div><dt>Registers</dt><dd>66 (1 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>8N1</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Firmware</dt><dd>Application software 9.04 (user manual 4189341340B)</dd></div><div><dt>Also known as</dt><dd>SGC 120, SGC 121, SGC120, SGC121</dd></div><div><dt>Source document</dt><dd><a href="https://deif-cdn-umbraco.azureedge.net/media/pawhllhf/sgc-120-sgc-121-modbus-tables-4189341357.xlsx" rel="nofollow noopener" target="_blank">SGC 120 and SGC 121 Modbus tables &middot; 4189341357</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/deif/sgc-120-sgc-121.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/deif/sgc-120-sgc-121.json">JSON</a>
+  <a class="btn" href="https://deif-cdn-umbraco.azureedge.net/media/pawhllhf/sgc-120-sgc-121-modbus-tables-4189341357.xlsx" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: DEIF SGC 120 / SGC 121 Single Genset Controller</h2>
+<div class="answer"><b>Integration in brief</b><p>Poll holding registers 1-59 with function 03 for live values and 78 for genset status. To start or stop remotely, write 2 (START) or 1 (STOP) to register 0 with function 16; write 4 to go to AUTO.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-1">HR 1</a></td><td class="n">Generator L1-N voltage</td><td class="f">UINT16</td><td>Generator L1-N voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-7">HR 7</a></td><td class="n">Generator R frequency</td><td class="f">UINT16</td><td>Generator frequency</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-23">HR 23</a></td><td class="n">Load L1 current</td><td class="f">UINT16</td><td>Load L1 current</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-29">HR 29</a></td><td class="n">Load total active power</td><td class="f">INT16</td><td>Total kW</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-56">HR 56</a></td><td class="n">Battery voltage</td><td class="f">UINT16</td><td>Battery voltage</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-78">HR 78</a></td><td class="n">DG status word</td><td class="f">UINT16</td><td>Genset status flags</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Protocol revision (read) / DG mode command (write)</td><td class="f">UINT16</td><td>Mode-change command</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Set Communication mode to Modbus in the RS485 COMM menu, then set the server ID (1-247), baud rate and parity.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>Only functions 03 and 16 are supported.</li><li>Register 0 reads back the protocol revision but accepts mode-key writes.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Baud 1200-115200 selectable; parity None/Even/Odd; stop bits 1 or 2.</li><li>RS-485 is on terminals 15 (B) and 16 (A); the port has a built-in 120 ohm termination resistor.</li><li>Up to 255 registers per request; the manual gives a 250 ms no-response timeout.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Phase frequencies are labelled R, Y, B (L1, L2, L3).</li></ul>
+</section>
+<h2 id="registers">DEIF SGC 120 / SGC 121 Single Genset Controller Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>66</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">66 of 66 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">DEIF SGC 120 / SGC 121 Single Genset Controller Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-0"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">0</td><td class="n">Protocol revision (read) / DG mode command (write)</td><td class="d">FC03 returns the protocol revision; FC16 writes one key code.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">1 = STOP key; 2 = START key; 4 = AUTO key; 64 = ACK key</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1</td><td class="n">Generator L1-N voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2</td><td class="n">Generator L2-N voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3</td><td class="n">Generator L3-N voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4</td><td class="n">Generator L1-L2 voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-5"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">5</td><td class="n">Generator L2-L3 voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6</td><td class="n">Generator L3-L1 voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7</td><td class="n">Generator R frequency</td><td class="d">Phase R (L1) frequency.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8</td><td class="n">Generator Y frequency</td><td class="d">Phase Y (L2) frequency.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9</td><td class="n">Generator B frequency</td><td class="d">Phase B (L3) frequency.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10</td><td class="n">Generator power factor L1</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11</td><td class="n">Generator power factor L2</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12</td><td class="n">Generator power factor L3</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-13"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">13</td><td class="n">Generator average power factor</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-14"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">14</td><td class="n">Mains L1-N voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15</td><td class="n">Mains L2-N voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16</td><td class="n">Mains L3-N voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-17"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">17</td><td class="n">Mains L1-L2 voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-18"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">18</td><td class="n">Mains L2-L3 voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-19"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">19</td><td class="n">Mains L3-L1 voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-20"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">20</td><td class="n">Mains R frequency</td><td class="d">Phase R (L1) frequency.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-21"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">21</td><td class="n">Mains Y frequency</td><td class="d">Phase Y (L2) frequency.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-22"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">22</td><td class="n">Mains B frequency</td><td class="d">Phase B (L3) frequency.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-23"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">23</td><td class="n">Load L1 current</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-24"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">24</td><td class="n">Load L2 current</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-25"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">25</td><td class="n">Load L3 current</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>A</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-26"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">26</td><td class="n">Load L1 active power</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-27"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">27</td><td class="n">Load L2 active power</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-28"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">28</td><td class="n">Load L3 active power</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-29"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">29</td><td class="n">Load total active power</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-30"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">30</td><td class="n">Percentage Load</td><td class="d">Load as a percentage of rating.</td><td class="f">INT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-31"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">31</td><td class="n">Load L1 apparent power</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kVA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32</td><td class="n">Load L2 apparent power</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kVA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-33"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">33</td><td class="n">Load L3 apparent power</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kVA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-34"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">34</td><td class="n">Load total apparent power</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kVA</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-35"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">35</td><td class="n">Load L1 reactive power</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kvar</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-36"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">36</td><td class="n">Load L2 reactive power</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kvar</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-37"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">37</td><td class="n">Load L3 reactive power</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kvar</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-38"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">38</td><td class="n">Load total reactive power</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kvar</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-51"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">51</td><td class="n">Oil pressure</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>bar</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-52"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">52</td><td class="n">Coolant temperature</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>°C</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-53"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">53</td><td class="n">Fuel level</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-54"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">54</td><td class="n">Fuel level in litres</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>L</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-55"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">55</td><td class="n">Charge alternator voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-56"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">56</td><td class="n">Battery voltage</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-57"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">57</td><td class="n">Engine speed</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>rpm</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-58"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">58</td><td class="n">No of starts</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-59"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">59</td><td class="n">No of trips</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-62"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">62</td><td class="n">Eng run min</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>min</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-63"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">63</td><td class="n">Mains run hrs</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-64"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">64</td><td class="n">Mains run min</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>min</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-65"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">65</td><td class="n">Alarm states word 1</td><td class="d">Oil pressure, coolant temp, fuel level, water level states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-66"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">66</td><td class="n">Alarm states word 2</td><td class="d">Under/over speed, fail to start, fail to stop states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-67"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">67</td><td class="n">Alarm states word 3</td><td class="d">Reverse power, low load, gen low/high frequency states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-68"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">68</td><td class="n">Alarm states word 4</td><td class="d">Gen high current, overload, unbalanced load, emergency stop states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-69"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">69</td><td class="n">Alarm states word 5</td><td class="d">Charge alternator, maintenance due, AFT timeout, ash load states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-70"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">70</td><td class="n">Alarm states word 6</td><td class="d">Battery low/high voltage, temperature circuit open, LOP short states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-71"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">71</td><td class="n">Alarm states word 7</td><td class="d">Fuel theft, pickup fault, oil pressure open circuit, aux input I.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-72"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">72</td><td class="n">Alarm states word 8</td><td class="d">Auxiliary inputs A-D states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-73"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">73</td><td class="n">Alarm states word 9</td><td class="d">Auxiliary inputs E-H states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-74"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">74</td><td class="n">Alarm states word 10</td><td class="d">Gen L1 and L2 low and high voltage states.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-75"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">75</td><td class="n">Alarm states word 11</td><td class="d">Gen L3 low/high voltage, DG and mains phase rotation.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-76"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">76</td><td class="n">Alarm states word 12</td><td class="d">Fuel level open circuit, V-belt broken, high oil pressure.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-77"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">77</td><td class="n">Digital input/output status word</td><td class="d">Inputs A-I and outputs A-F packed one per bit; see notes.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-78"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">78</td><td class="n">DG status word</td><td class="d">Mode, mains healthy, load position, running and common alarm flags; see notes.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-82"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">82</td><td class="n">Current time stamp: year</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>Left out: the 32-bit energy counters (39-50) and engine run hours (60-61). The tables give each as a two-register range with no word order, so they cannot be decoded with certainty.</li><li>Scaling is a multiplier: 0.1 means the raw value is in tenths.</li><li>Alarm words 65-76 each pack four alarms as 4-bit fields. The table numbers bits 1-16 and puts the first-listed alarm in bits 13-16, the next in 9-12, then 5-8 and 1-4. It does not say whether bit 1 is the least significant bit, so the fields are not split here. Each field holds 0 = disabled, 1 = not active, 2 = warning, 3 = shutdown, 4 = electrical trip, 5 = notification.</li><li>Word 77 packs digital inputs A-I (table bits 16 down to 8) and outputs A-F (bits 7 down to 2). Word 78 packs, from table bit 16 down: SGC mode, mains healthy, operation mode (bits 14-12: 110 scheduler, 101 auto, 100 manual), load on mains, load on DG, DG running/stopped, stopped normally, stopped with fault, fail to start, gen available, common shutdown, common electric trip, common warning, common notification. The same bit-numbering caveat applies.</li><li>Registers 79-81 hold the time stamp as packed hex bytes (minute/second, weekday/hour, month/day) and are not listed; 82 holds the year.</li><li>Mode-change writes use function 16 to register 0 with one key code at a time.</li><li>RS-485 settings come from the SGC 120 user manual 4189341340B (https://deif-cdn-umbraco.azureedge.net/media/1ajpbyvp/sgc-120-user-manual-4189341340-uk.pdf).</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the DEIF SGC 120 / SGC 121 Single Genset Controller</h2><div class="faq"><details open><summary>What Modbus registers does the DEIF SGC 120 / SGC 121 Single Genset Controller have?</summary><p>This map lists 66 registers: 66 holding registers. 1 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the DEIF SGC 120 / SGC 121 Single Genset Controller Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The tables print plain register numbers starting at 0, and the user manual&#x27;s frame layouts put the register address from the map straight into the request. Read generator L1-N voltage at 1, not 40002.</p></details><details><summary>What are the minimum Modbus registers to integrate the DEIF SGC 120 / SGC 121 Single Genset Controller?</summary><p>Start with HR 1 Generator L1-N voltage (Generator L1-N voltage); HR 7 Generator R frequency (Generator frequency); HR 23 Load L1 current (Load L1 current); HR 29 Load total active power (Total kW); HR 56 Battery voltage (Battery voltage); HR 78 DG status word (Genset status flags); HR 0 Protocol revision (read) / DG mode command (write) (Mode-change command).</p></details><details><summary>How do I enable Modbus control of the DEIF SGC 120 / SGC 121 Single Genset Controller?</summary><p>Set Communication mode to Modbus in the RS485 COMM menu, then set the server ID (1-247), baud rate and parity.</p></details><details><summary>Where is the official DEIF SGC 120 / SGC 121 Single Genset Controller Modbus documentation?</summary><p>The source is SGC 120 and SGC 121 Modbus tables (4189341357), published free by DEIF at https://deif-cdn-umbraco.azureedge.net/media/pawhllhf/sgc-120-sgc-121-modbus-tables-4189341357.xlsx.</p></details></div>
+<h2>More DEIF Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/deif/agc-150" data-row><span class="k">Generator controller</span><h3>DEIF AGC 150 Generator controller</h3><p>AGC 150 software 1.39.0 (Modbus server tables revision Z), GEN (genset) controller type. The iE 150 Land tables 4189341430 rev. H for the same software match these tables apart from the product name.</p><div class="meta">197 registers &middot; 19 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: AGC 150 GEN, AGC 150 Generator, iE 150 Land, iE 150 GEN</span></a></li><li><a class="card" href="/modbus-register-maps/deif/agc-150-marine" data-row><span class="k">Generator controller</span><h3>DEIF AGC 150 Generator Marine controller</h3><p>AGC 150 Marine software 1.39.0 (marine Modbus server tables revision E), GEN-M (marine genset) controller type. The iE 150 Marine tables 4189341431 rev. H match these tables.</p><div class="meta">164 registers &middot; 19 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: AGC 150 GEN-M, AGC 150 Generator Marine, iE 150 Marine</span></a></li><li><a class="card" href="/modbus-register-maps/deif/agc-200" data-row><span class="k">Generator controller</span><h3>DEIF AGC 200 Advanced Genset Controller</h3><p>AGC 200 series software 4.68.2.x, genset (DG) application only.</p><div class="meta">159 registers &middot; 19 writable &middot; RTU</div><span class="sr-only"> Also known as: AGC 222, AGC 242, AGC 243, AGC 244, AGC 245, AGC 246, AGC-200</span></a></li><li><a class="card" href="/modbus-register-maps/deif/agc-4" data-row><span class="k">Generator controller</span><h3>DEIF AGC-4 Automatic Genset Controller</h3><p>AGC-4 software 4.83.0 (Modbus tables revision I), genset (DG) application; mains and BTB variants share many addresses but are not covered.</p><div class="meta">159 registers &middot; 19 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: AGC-4 DG, AGC 4, Multi-line 2 AGC-4</span></a></li><li><a class="card" href="/modbus-register-maps/deif/agc-4-mk-ii" data-row><span class="k">Generator controller</span><h3>DEIF AGC-4 Mk II Automatic Genset Controller</h3><p>AGC-4 Mk II software 6.31.0 (Modbus tables revision N), genset (GEN) application only.</p><div class="meta">184 registers &middot; 19 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: AGC-4 Mk2, AGC-4 MkII</span></a></li><li><a class="card" href="/modbus-register-maps/deif/sgc-120-mk-ii" data-row><span class="k">Generator controller</span><h3>DEIF SGC 120 Mk II Single Genset Controller</h3><p>SGC 120 Mk II software R18.0 (Modbus tables revision C).</p><div class="meta">53 registers &middot; 1 writable &middot; RTU</div><span class="sr-only"> Also known as: SGC 120 MkII, SGC 120 Mk2</span></a></li><li><a class="card" href="/modbus-register-maps/deif/sgc-420-mk-ii" data-row><span class="k">Generator controller</span><h3>DEIF SGC 420 Mk II Single Genset Controller</h3><p>SGC 420 Mk II software R19.0 (Modbus tables revision C).</p><div class="meta">55 registers &middot; 1 writable &middot; RTU</div><span class="sr-only"> Also known as: SGC 420 MkII, SGC 420 Mk2</span></a></li></ul><h2>Other generator controllers register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/kohler/mpac-1000" data-row><span class="k">Transfer switch</span><h3>Kohler MPAC 1000 automatic transfer switch controller</h3><p>Kohler MPAC 1000 ATS controllers, Modbus RTU on RS-485, per section 12 of TP-6113.</p><div class="meta">43 registers &middot; 10 writable &middot; RTU</div><span class="sr-only"> Also known as: MPAC 1000, MPAC1000, Kohler MPAC 1000 ATS</span></a></li><li><a class="card" href="/modbus-register-maps/lovato-electric/rgk750" data-row><span class="k">Generator controller</span><h3>Lovato Electric RGK750 genset controller</h3><p>RGK750, as marked in the per-model columns of the RGK series Modbus protocol document I375 I GB 08 22.</p><div class="meta">126 registers &middot; 0 writable &middot; RTU/ASCII/TCP</div><span class="sr-only"> Also known as: RGK 750</span></a></li><li><a class="card" href="/modbus-register-maps/smartgen/hgm6100n" data-row><span class="k">Generator controller</span><h3>SmartGen HGM6100N / HGM6100CAN Series</h3><p>HGM6100N and HGM6100CAN genset controllers (HGM6110 auto-start and HGM6120 AMF variants), protocol document v1.7.</p><div class="meta">145 registers &middot; 7 writable &middot; RTU</div><span class="sr-only"> Also known as: HGM6100CAN, HGM6110N, HGM6120N, HGM6110CAN, HGM6120CAN</span></a></li><li><a class="card" href="/modbus-register-maps/woodward/mslc-2" data-row><span class="k">Generator controller (utility-tie master synchronizer)</span><h3>Woodward MSLC-2 Master Synchronizer and Load Control</h3><p>MSLC-2, data protocol 5200, per manual 37444G.</p><div class="meta">69 registers &middot; 6 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: MSLC2, MSLC-2 master synchronizer</span></a></li><li><a class="card" href="/modbus-register-maps/cummins/powercommand-2x-3x" data-row><span class="k">Generator controller</span><h3>Cummins PowerCommand 2.2 / 2.3 / 3.3 genset control (Modbus RTU)</h3><p>Cummins PowerCommand 2.x and 3.x generator set controls (PC 2.2, 2.3, 3.3), per section 2 of A029X159 Issue 7; registers marked PC 3.x only are absent on PC 2.x.</p><div class="meta">152 registers &middot; 2 writable &middot; RTU</div><span class="sr-only"> Also known as: PowerCommand 2.2, PowerCommand 2.3, PowerCommand 3.3, PC2.2, PC2.3, PC3.3</span></a></li><li><a class="card" href="/modbus-register-maps/kohler/decision-maker-mpac" data-row><span class="k">Transfer switch</span><h3>Kohler Decision-Maker MPAC 750/1200/1500 ATS controller</h3><p>Kohler Decision-Maker MPAC 750, 1200 and 1500 ATS controllers, Modbus RTU on the logic board RS-485 port or Modbus TCP, per section 14 of TP-6113.</p><div class="meta">48 registers &middot; 10 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: Decision-Maker MPAC 750, Decision-Maker MPAC 1200, Decision-Maker MPAC 1500, DM MPAC</span></a></li></ul><p><a href="https://easymodbus.com/modbus-register-maps/equipment/generator-controllers/">All generator controllers Modbus register maps &rarr;</a></p>
+<p class="updated">Source: <a href="https://deif-cdn-umbraco.azureedge.net/media/pawhllhf/sgc-120-sgc-121-modbus-tables-4189341357.xlsx" rel="nofollow noopener" target="_blank">SGC 120 and SGC 121 Modbus tables &middot; 4189341357</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

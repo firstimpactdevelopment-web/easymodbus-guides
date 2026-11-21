@@ -1,0 +1,37 @@
+﻿# LG THERMA V R32 Monobloc air-to-water heat pump (built-in Modbus RTU) Modbus register map - easymodbus.com - source: https://media.us.lg.com/m/448e6747eb2bae77/original/IM_MFL68026615_02_240405_05_WEB-pdf.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,00001,00001,Enable/Disable (Heating/Cooling),Space heating/cooling operation on or off.,BIT,1,,1,0,,Read/write,0 = Operation off; 1 = Operation on
+Coil,"FC01 read / FC05, FC15 write",1,00002,00002,Enable/Disable (DHW),Domestic hot water operation on or off.,BIT,1,,1,0,,Read/write,0 = Operation off; 1 = Operation on
+Coil,"FC01 read / FC05, FC15 write",2,00003,00003,Silent Mode Set,,BIT,1,,1,0,,Read/write,0 = Silent mode off; 1 = Silent mode on
+Coil,"FC01 read / FC05, FC15 write",4,00005,00005,Emergency Stop,,BIT,1,,1,0,,Read/write,0 = Normal operation; 1 = Emergency stop
+Coil,"FC01 read / FC05, FC15 write",5,00006,00006,Trigger Emergency Operation,Write 1 to start emergency operation.,BIT,1,,1,0,,Read/write,0 = Keep status; 1 = Operation start
+Discrete input,FC02 read,0,10001,10001,Water flow status,,BIT,1,,1,0,,Read,0 = Flow rate OK; 1 = Flow rate too low
+Discrete input,FC02 read,1,10002,10002,Water pump status,,BIT,1,,1,0,,Read,0 = Water pump off; 1 = Water pump on
+Discrete input,FC02 read,2,10003,10003,Ext. water pump status,External water pump.,BIT,1,,1,0,,Read,0 = Water pump off; 1 = Water pump on
+Discrete input,FC02 read,3,10004,10004,Compressor status,,BIT,1,,1,0,,Read,0 = Compressor off; 1 = Compressor on
+Discrete input,FC02 read,4,10005,10005,Defrosting status,,BIT,1,,1,0,,Read,0 = Defrost off; 1 = Defrost on
+Discrete input,FC02 read,5,10006,10006,DHW heating status (DHW thermal on/off),,BIT,1,,1,0,,Read,0 = DHW inactive; 1 = DHW active
+Discrete input,FC02 read,7,10008,10008,Silent mode status,,BIT,1,,1,0,,Read,0 = Silent mode inactive; 1 = Silent mode active
+Discrete input,FC02 read,8,10009,10009,Cooling status,,BIT,1,,1,0,,Read,0 = No cooling; 1 = Cooling operation
+Discrete input,FC02 read,9,10010,10010,Solar pump status,,BIT,1,,1,0,,Read,0 = Solar pump off; 1 = Solar pump on
+Discrete input,FC02 read,10,10011,10011,Backup heater (step 1) status,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,11,10012,10012,Backup heater (step 2) status,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,12,10013,10013,DHW boost heater status,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,13,10014,10014,Error status,,BIT,1,,1,0,,Read,0 = No error; 1 = Error state
+Discrete input,FC02 read,14,10015,10015,Emergency operation available (space heating/cooling),,BIT,1,,1,0,,Read,0 = Unavailable; 1 = Available
+Discrete input,FC02 read,15,10016,10016,Emergency operation available (DHW),,BIT,1,,1,0,,Read,0 = Unavailable; 1 = Available
+Discrete input,FC02 read,16,10017,10017,Mix pump status,,BIT,1,,1,0,,Read,0 = Mix pump off; 1 = Mix pump on
+Input register,FC04 read,0,30001,30001,Error code,Active error code number.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,1,30002,30002,ODU operation cycle,What the outdoor unit is doing.,UINT16,1,,1,0,,Read,0 = Standby (off); 1 = Cooling; 2 = Heating
+Input register,FC04 read,8,30009,30009,Current flow rate,Water flow in tenths of a litre per minute.,UINT16,1,,0.1,0,L/min,Read,
+Input register,FC04 read,11,30012,30012,Energy state input,"Energy state currently in effect (0 = state 0, 1 = state 1 and so on).",UINT16,1,,1,0,,Read,
+Input register,FC04 read,9997,39998,39998,Product group,"0x8X: the manual lists 0x80, 0x83, 0x88 and 0x89.",UINT16,1,,1,0,,Read,
+Input register,FC04 read,9998,39999,39999,Product info,,UINT16,1,,1,0,,Read,0 = Split; 3 = Monobloc; 4 = High temperature; 5 = Medium temperature; 6 = System boiler
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Operation mode,,UINT16,1,,1,0,,Read/write,0 = Cooling; 3 = Auto; 4 = Heating
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Control method (circuit 1/2),Which temperature the unit controls to.,UINT16,1,,1,0,,Read/write,0 = Water outlet temperature control; 1 = Water inlet temperature control; 2 = Room air control
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Target temp (heating/cooling) circuit 1,"Water target for circuit 1, in tenths of a degree.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,40004,40004,Room air temp. circuit 1,"Room air target for circuit 1, in tenths of a degree.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Target temp (heating/cooling) circuit 2,"Water target for circuit 2, in tenths of a degree.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,Room air temp. circuit 2,"Room air target for circuit 2, in tenths of a degree.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8,40009,40009,DHW target temp.,"Hot water tank target, in tenths of a degree.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",9,40010,40010,Energy state input,Smart-grid style energy state written by the BMS.,UINT16,1,,1,0,,Read/write,0 = Not used; 1 = Forced off (as TB_SG1 closed / TB_SG2 open); 2 = Normal operation (as TB_SG1 open / TB_SG2 open); 3 = On-recommendation (as TB_SG1 open / TB_SG2 closed); 4 = On-command (as TB_SG1 closed / TB_SG2 closed); 5 = On-command step 2 (++ energy use vs normal); 6 = On-recommendation step 1 (+ energy use vs normal); 7 = Energy saving mode (- energy use vs normal); 8 = Super energy saving mode (-- energy use vs normal)

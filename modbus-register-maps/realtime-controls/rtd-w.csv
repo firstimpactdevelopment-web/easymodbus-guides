@@ -1,0 +1,39 @@
+﻿# Realtime Control Systems RTD-W Modbus interface for Daikin Altherma HT hydrobox and small inverter chillers Modbus register map - easymodbus.com - source: https://res.cloudinary.com/sonepar-fr/raw/upload/s--ayUiJ1AJ--/v1/documents/121/RTD-W_Installation_Instructions_20670-1.07_FR.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,20,I0020,30021,P1P2 PCB count,"Units found, 0..16.",INT16,1,,1,0,,Read,
+Input register,FC04 read,21,I0021,30022,Group error,,INT16,1,,1,0,,Read,0 = No error; 1 = Error
+Input register,FC04 read,22,I0022,30023,Group error code,RTD ASCII format.,INT16,1,,1,0,,Read,
+Input register,FC04 read,23,I0023,30024,Group average leaving water temperature,Signed °C x 100.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,36,I0036,30037,Group error sub-code,0..99.,INT16,1,,1,0,,Read,
+Input register,FC04 read,50,I0050,30051,Remote controller room temperature,Signed °C x 100.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,70,I0070,30071,Space heating/cooling on/off,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,71,I0071,30072,Circulation pump running,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,72,I0072,30073,Compressor running,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,74,I0074,30075,Disinfection operation,,INT16,1,,1,0,,Read,0 = Idle; 1 = Busy
+Input register,FC04 read,75,I0075,30076,Setback operation,,INT16,1,,1,0,,Read,0 = Idle; 1 = Busy
+Input register,FC04 read,76,I0076,30077,Defrost / start-up mode,,INT16,1,,1,0,,Read,0 = Idle; 1 = Busy
+Input register,FC04 read,77,I0077,30078,DHW reheat,,INT16,1,,1,0,,Read,0 = Idle; 1 = Busy
+Input register,FC04 read,78,I0078,30079,DHW storage,,INT16,1,,1,0,,Read,0 = Idle; 1 = Busy
+Input register,FC04 read,80,I0080 / I0081,30081,Accumulated pump run hours,"I0080 high word, I0081 low word. Non-volatile.",UINT32,2,ABCD,1,0,h,Read,
+Input register,FC04 read,122,I0122,30123,PCB 01 error code,RTD ASCII format. Per-PCB block; see notes.,INT16,1,,1,0,,Read,
+Input register,FC04 read,123,I0123,30124,PCB 01 leaving water temperature,Signed °C x 100.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,131,I0131,30132,PCB 01 return water temperature,Signed °C x 100.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,132,I0132,30133,PCB 01 DHW tank temperature,Signed °C x 100. Only if fitted.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,133,I0133,30134,PCB 01 outdoor temperature,Signed °C x 100.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,136,I0136,30137,PCB 01 error sub-code,0..99.,INT16,1,,1,0,,Read,
+Input register,FC04 read,144,I0144,30145,PCB 01 system code,ASCII character.,INT16,1,,1,0,,Read,
+Input register,FC04 read,145,I0145,30146,PCB 01 type code,ASCII character.,INT16,1,,1,0,,Read,
+Input register,FC04 read,146,I0146,30147,PCB 01 series code,ASCII character.,INT16,1,,1,0,,Read,
+Input register,FC04 read,147,I0147,30148,PCB 01 capacity code,0..251.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,H0001,40002,"Leaving water setpoint, heating","Whole °C: 25..80 HT hydrobox, 25..50 inverter chiller.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,H0002,40003,"Leaving water setpoint, cooling","Whole °C: 5..20 HT hydrobox, -10..20 inverter chiller.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,H0003,40004,Operating mode,,INT16,1,,1,0,,Read/write,1 = Heating; 2 = Cooling
+Holding register,"FC03 read / FC06, FC16 write",4,H0004,40005,Space heating/cooling Modbus on/off,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",5,H0005,40006,Room temperature setpoint,"Whole °C, 16..32.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,H0006,40007,DHW reheat Modbus on/off,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",7,H0007,40008,DHW storage start,,INT16,1,,1,0,,Read/write,0 = Inactive; 1 = Start
+Holding register,"FC03 read / FC06, FC16 write",8,H0008,40009,Control source for mode and on/off,External = Modbus and S inputs only; Local = remote controller only.,INT16,1,,1,0,,Read/write,1 = External; 2 = Local; 3 = Changeover (default)
+Holding register,"FC03 read / FC06, FC16 write",9,H0009,40010,Quiet mode operation,,INT16,1,,1,0,,Read/write,0 = Disable; 1 = Enable
+Holding register,"FC03 read / FC06, FC16 write",10,H0010,40011,Weather-dependent setpoint operation,,INT16,1,,1,0,,Read/write,0 = Disable; 1 = Enable
+Holding register,"FC03 read / FC06, FC16 write",11,H0011,40012,Weather-dependent leaving water setpoint offset,-5..+5 °C.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",12,H0012,40013,Pump run-hour counter reset,Write 55555 to reset (raw value above the signed 16-bit range).,UINT16,1,,1,0,,Write,55555 = Reset

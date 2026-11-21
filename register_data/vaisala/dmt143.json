@@ -1,0 +1,508 @@
+{
+  "manufacturer": "Vaisala",
+  "manufacturer_slug": "vaisala",
+  "model": "DMT143 miniature dew point transmitter (Modbus RTU)",
+  "model_slug": "dmt143",
+  "short_model": "DMT143",
+  "aliases": [
+    "DMT143",
+    "DRYCAP DMT143"
+  ],
+  "equipment_type": "Sensor (dew point transmitter)",
+  "applies_to": "DMT143 dew point transmitters ordered with the Modbus RTU option (user guide M211435EN-L).",
+  "summary": "The DMT143 is a compact Vaisala DRYCAP dew point transmitter for compressed air and dryers. Units with the Modbus option are Modbus RTU slaves on RS-485. This map covers dew/frost point and ppm readings, pressure compensation, filtering, serial settings, the LED alarm and test registers.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 240,
+    "baud": 19200,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 2,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "The guide numbers registers in decimal starting at 1 and also prints the 0-based hex address used in the request; register number 1 is address 0x0000 on the wire."
+  },
+  "default_word_order": "CDAB",
+  "firmware": null,
+  "source": {
+    "title": "DMT143 User Guide",
+    "doc_number": "M211435EN-L",
+    "revision_date": "2026-01",
+    "url": "https://docs.vaisala.com/r/M211435EN-L/en-US",
+    "pages": "Appendix A Modbus reference, pp. 94-102 (Tables 31-40)"
+  },
+  "notes": [
+    "All registers are holding registers: read with function 03, write with function 16.",
+    "32-bit floats put the least significant word at the listed register (CDAB). The guide states this and its worked read example confirms it.",
+    "Unavailable data reads as quiet NaN (float) or 0x8000 (16-bit integer) rather than an exception.",
+    "Integer dew point registers are value x 100 (raw x 0.01).",
+    "Left out: the error code register. The guide prints it as number 515 with address 0x0203, which do not match (515 would be 0x0202), so the correct address is not clear.",
+    "Pressure registers 769 and 771 are in bar (absolute), not hPa."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 6,
+      "documented": "7",
+      "name": "Dew/frost point temperature",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 8,
+      "documented": "9",
+      "name": "Dew point temperature",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "11",
+      "name": "Dew/frost point at 1 atm",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 20,
+      "documented": "21",
+      "name": "Water concentration",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 259,
+      "documented": "260",
+      "name": "Dew/frost point (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 260,
+      "documented": "261",
+      "name": "Dew point (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 261,
+      "documented": "262",
+      "name": "Dew/frost point at 1 atm (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.01,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 266,
+      "documented": "267",
+      "name": "Water concentration (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 512,
+      "documented": "513",
+      "name": "Error status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "No errors"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 513,
+      "documented": "514",
+      "name": "Online status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Outputs frozen (autocalibration or purge)",
+        "1": "Data available"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 768,
+      "documented": "769",
+      "name": "Pressure, power-up default",
+      "description": "Absolute, 0.001-50 bar; stored.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "bar",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 770,
+      "documented": "771",
+      "name": "Pressure",
+      "description": "Absolute, 0.001-50 bar; live value.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "bar",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 794,
+      "documented": "795",
+      "name": "Filtering factor",
+      "description": "0.00001-1.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1536,
+      "documented": "1537",
+      "name": "Modbus address",
+      "description": "1-247.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1537,
+      "documented": "1538",
+      "name": "Bit rate",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "5": "9600",
+        "6": "19200"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1538,
+      "documented": "1539",
+      "name": "Parity, data, stop bits",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "N81",
+        "1": "N82",
+        "2": "E81",
+        "3": "E82",
+        "4": "O81",
+        "5": "O82"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1539,
+      "documented": "1540",
+      "name": "Response delay",
+      "description": "0-1020 ms.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ms",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1540,
+      "documented": "1541",
+      "name": "Interface mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "6": "Modbus"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1541,
+      "documented": "1542",
+      "name": "Restart device",
+      "description": "Write 1 to restart.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3072,
+      "documented": "3073",
+      "name": "LED indicator mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "Status only",
+        "2": "Alarm"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3073,
+      "documented": "3074",
+      "name": "LED alarm parameter",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "6": "Td/f"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3074,
+      "documented": "3075",
+      "name": "LED alarm setpoint",
+      "description": "-70...+60 °C.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7680,
+      "documented": "7681",
+      "name": "Restore settings",
+      "description": "Write 1 to restore factory settings.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7936,
+      "documented": "7937",
+      "name": "Signed integer test",
+      "description": "Always reads -12345.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7937,
+      "documented": "7938",
+      "name": "Floating point test",
+      "description": "Always reads -123.45.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7939,
+      "documented": "7940",
+      "name": "Text string test",
+      "description": "Reads the text \"-123.45\".",
+      "data_type": "STRING",
+      "length": 4,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read holding registers 7-12 for dew/frost point values (CDAB floats). Write the line pressure (bar absolute) to 771 so the dew point converted to 1 atm is correct.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 6,
+        "why": "Dew/frost point"
+      },
+      {
+        "table": "holding_register",
+        "address": 20,
+        "why": "Water ppm"
+      },
+      {
+        "table": "holding_register",
+        "address": 512,
+        "why": "Error status"
+      },
+      {
+        "table": "holding_register",
+        "address": 513,
+        "why": "Online / frozen"
+      },
+      {
+        "table": "holding_register",
+        "address": 770,
+        "why": "Live pressure compensation"
+      }
+    ],
+    "enable": "Order the transmitter with the Modbus configuration option, or set the serial mode to MODBUS with the SMODE serial command (takes effect at the next reset or power-up).",
+    "watchdog": null,
+    "quirks": [
+      "Floats are low word first (CDAB); pick \"word-swapped\" float in masters that default to high word first.",
+      "Read or write each 32-bit value in one transaction."
+    ],
+    "setup": [
+      "Defaults: address 240, 19200 baud, None parity, 8 data bits, 2 stop bits.",
+      "Give each device on a shared bus a unique address (1-247); change serial settings with Insight or registers 1537-1540."
+    ],
+    "gotchas": [
+      "Use the test registers (7937 on) to confirm float format and addressing before trusting readings."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

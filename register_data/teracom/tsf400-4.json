@@ -1,0 +1,328 @@
+{
+  "manufacturer": "Teracom",
+  "manufacturer_slug": "teracom",
+  "model": "TSF400-4 water-leak detector with Modbus RTU",
+  "model_slug": "tsf400-4",
+  "short_model": "TSF400-4",
+  "aliases": [
+    "TSF400-4"
+  ],
+  "equipment_type": "Sensor (water leak detector)",
+  "applies_to": "TSF400-4 per the Teracom TSF400-4 user manual Revision R1.2.",
+  "summary": "The TSF400-4 is a Teracom floor-standing water-leak detector with five electrodes on its base and a Modbus RTU RS-485 interface. It reports the leak state as a normal and an inverted flag, in both holding and input registers.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 1,
+    "baud": 19200,
+    "parity": "Even",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The register table prints both a PDU (wire) address and a logical address (PDU + 40001 for holding registers). 'documented' holds the logical number; the PDU number is what goes in the request, e.g. logical 40101 = PDU 100."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "TSF400-4 User manual",
+    "doc_number": "Revision R1.2",
+    "revision_date": "2026-10",
+    "url": "https://www.teracomsystems.com/download/tsf400-4-water-leak-detector-with-modbus-rtu-interface-user-manual/",
+    "pages": "p. 6 (Modbus address table)"
+  },
+  "notes": [
+    "Addresses are taken from the manual's PDU address column (0-based); the logical column adds 40001 for holding registers and 30001 for input registers, as the manual states.",
+    "All 32-bit values follow the Data order register (PDU 13): 1 = most significant word first (factory default), 2 = least significant word first. The map shows the default, ABCD.",
+    "Left out: the 32-bit float/integer test-value registers (PDU 82-95), which only exist to check word order; the 16-bit test values are kept.",
+    "The same two alarm flags are readable as holding registers (PDU 100, 102) and as input registers (PDU 1, 2); the normal flag reads 1 when the floor is dry.",
+    "The device has no 32-bit measurement registers; the Data order register only affects the test values."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 10,
+      "documented": "40011",
+      "name": "Modbus address",
+      "description": "Modbus slave address of the device.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 11,
+      "documented": "40012",
+      "name": "Baud rate",
+      "description": "Serial baud rate; takes effect after a power cycle.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 12,
+      "documented": "40013",
+      "name": "Parity, data, stop bits",
+      "description": "Parity/data/stop framing; takes effect after a power cycle.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "8 data bits, even parity, 1 stop (E81)",
+        "2": "8 data bits, odd parity, 1 stop (O81)",
+        "3": "8 data bits, no parity, 1 stop (N81)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 13,
+      "documented": "40014",
+      "name": "Data order",
+      "description": "Word order used for all 32-bit values.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "MSWF - most significant word first",
+        "2": "LSWF - least significant word first"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 14,
+      "documented": "40015",
+      "name": "Device code",
+      "description": "Fixed product identification code.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 15,
+      "documented": "40016",
+      "name": "FW version",
+      "description": "Firmware version number.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 18,
+      "documented": "40019",
+      "name": "Vendor URL",
+      "description": "Maker URL as UTF-8 text (64 bytes).",
+      "data_type": "STRING",
+      "length": 32,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 86,
+      "documented": "40087",
+      "name": "Signed integer test value",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 91,
+      "documented": "40092",
+      "name": "Unsigned integer test value",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 100,
+      "documented": "40101",
+      "name": "Alarm",
+      "description": "Leak state; reads 1 while dry.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "Water absent",
+        "0": "Water present"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 102,
+      "documented": "40103",
+      "name": "Alarm (inverse)",
+      "description": "Inverted leak state; reads 1 when water is present.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "Water present",
+        "0": "Water absent"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1,
+      "documented": "30002",
+      "name": "Alarm",
+      "description": "Leak state; reads 1 while dry.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "Water absent",
+        "0": "Water present"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 2,
+      "documented": "30003",
+      "name": "Alarm (inverse)",
+      "description": "Inverted leak state; reads 1 when water is present.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "Water present",
+        "0": "Water absent"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Poll PDU 102 with function 03 (1 = water present) or input register PDU 2 with function 04. Mind the polarity of the non-inverted flag.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 100,
+        "why": "Leak flag (1 = dry)"
+      },
+      {
+        "table": "holding_register",
+        "address": 102,
+        "why": "Leak flag inverted (1 = water)"
+      },
+      {
+        "table": "input_register",
+        "address": 1,
+        "why": "Leak flag via FC04"
+      },
+      {
+        "table": "input_register",
+        "address": 2,
+        "why": "Inverted leak flag via FC04"
+      }
+    ],
+    "enable": "Modbus RTU is the only interface and is always active; there is nothing to switch on. Factory settings are address 1, 19200 baud, 8E1.",
+    "watchdog": null,
+    "quirks": [
+      "Baud rate and framing changes only take effect after the device is powered off and on again.",
+      "Word order for every 32-bit value is set by the Data order register (PDU 13); check it before blaming the scaling."
+    ],
+    "setup": [
+      "Set unit ID (PDU 10), baud (PDU 11) and framing (PDU 12), then power-cycle the device.",
+      "Terminate both ends of the RS-485 bus with 120 ohm resistors; a daisy chain is recommended."
+    ],
+    "gotchas": [
+      "The non-inverted Alarm flag is 1 when no water is present, so treat a comms timeout as a fault rather than as dry."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

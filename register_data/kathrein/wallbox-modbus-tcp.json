@@ -1,0 +1,553 @@
+{
+  "manufacturer": "KATHREIN",
+  "manufacturer_slug": "kathrein",
+  "model": "KATHREIN Wallbox (Modbus TCP server)",
+  "model_slug": "wallbox-modbus-tcp",
+  "short_model": "KATHREIN Wallbox",
+  "aliases": [],
+  "equipment_type": "EV charger",
+  "applies_to": "KATHREIN wallboxes with the Modbus server enabled (register mapping version 0x0001, document release 1.1).",
+  "summary": "KATHREIN wallboxes include a Modbus TCP server, disabled at the factory, that lets an energy manager read the charger state and set the charging current. This map covers the identity strings, device info and phase mapping, the UTC timestamp, the EVSE, error, PP and CP states, relay state, granted current and power, session duration and energy, and the EMS control block with its timeout fallback.",
+  "transport": [
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": 0,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": 502
+  },
+  "addressing": {
+    "convention": "hex 0-based",
+    "note": "Addresses are printed in hex and go on the wire unchanged. The table starts with register 0x0000 (mapping version), which cannot exist in 1-based numbering, so the printed numbers are protocol addresses: 0x00A2 is requested as 162 decimal."
+  },
+  "default_word_order": "ABCD",
+  "firmware": null,
+  "source": {
+    "title": "KATHREIN-Wallbox - ModBus-Server - Register-Mapping",
+    "doc_number": "Release Version 1.1",
+    "revision_date": "2024-09-09",
+    "url": "https://community.symcon.de/uploads/short-url/cy0QLy5VdPIfO0xxbqwA4czIcnt.pdf",
+    "unofficial": true,
+    "pages": "p. 2 (interface, data types, function codes), pp. 3-7 (holding register table)"
+  },
+  "notes": [
+    "KATHREIN does not host this register mapping publicly; the linked copy is the unaltered release 1.1 document posted on the Symcon community forum.",
+    "Word order: the data-type table says integer types are stored big-endian with the most significant register first, so UINT32 and UINT64 values are high word first (ABCD).",
+    "Left out: the meter block 0x0030-0x005C (voltages, currents, powers, power factors, total energy). These are FLOAT32 values and the document only says they follow IEEE 754; the integer word-order rule is not stated for floats.",
+    "Left out: tariff registers 0x006B-0x006D and the reserved BINARY blocks, which the document marks as reserved for future use.",
+    "Only holding registers are answered: read with function 03, write with 06 or 16."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "0x0000",
+      "name": "Header: Mapping-Version",
+      "description": "Version of this register mapping (currently 0x0001).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "0x0001",
+      "name": "Device: Number",
+      "description": "Article number text, format 620xxxxx(-yyyy).",
+      "data_type": "STRING",
+      "length": 8,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 9,
+      "documented": "0x0009",
+      "name": "Device: Type",
+      "description": "Type text, format ACxx(E).",
+      "data_type": "STRING",
+      "length": 8,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 17,
+      "documented": "0x0011",
+      "name": "Device: Serial",
+      "description": "Serial number text, format G0Rxxxxxxx.",
+      "data_type": "STRING",
+      "length": 8,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 25,
+      "documented": "0x0019",
+      "name": "Device: Info",
+      "description": "Power class, cable or socket, calibration-law version and relay capability.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Power class bit 0 (0x0001 = 11 kW, 3 x 16 A)",
+        "1": "Power class bit 1 (0x0002 = 22 kW, 3 x 32 A)",
+        "4": "0 = cable, 1 = socket (plug)",
+        "7": "0 = standard, 1 = Eichrecht",
+        "8": "Relay capability: L1 only",
+        "9": "Relay capability: L2 only",
+        "10": "Relay capability: L3 only",
+        "12": "Relay capability: L1 and L2",
+        "13": "Relay capability: L1 and L3",
+        "14": "Relay capability: L2 and L3",
+        "15": "Relay capability: L1, L2 and L3"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 26,
+      "documented": "0x001A",
+      "name": "Device: Line-Mapping",
+      "description": "Phase rotation the wallbox is wired with.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "L1-L2-L3 (default)",
+        "1": "L1-L3-L2 (invalid phase rotation)",
+        "2": "L2-L3-L1",
+        "3": "L2-L1-L3 (invalid phase rotation)",
+        "4": "L3-L1-L2",
+        "5": "L3-L2-L1 (invalid phase rotation)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 27,
+      "documented": "0x001B",
+      "name": "Device: Timestamp (UTC)",
+      "description": "Unix time: seconds since 1970-01-01 00:00:00 UTC.",
+      "data_type": "UINT64",
+      "length": 4,
+      "word_order": "ABCD",
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 96,
+      "documented": "0x0060",
+      "name": "EVSE: Status",
+      "description": "Charging session state.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Idle",
+        "1": "EV Connected",
+        "2": "Authentication Waiting",
+        "3": "Authentication Confirmed",
+        "4": "Charging Active",
+        "5": "Charging Paused",
+        "6": "Charging Completed",
+        "7": "RFID-Pairing",
+        "65535": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 97,
+      "documented": "0x0061",
+      "name": "EVSE: Error-State",
+      "description": "Active fault flags; 0 = no error.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Relay welded",
+        "1": "Residual DC current detected (RCD)",
+        "2": "Socket lock detection",
+        "3": "Charging overcurrent",
+        "4": "CP-D: ventilation not available",
+        "5": "CP-E: short circuit CP-PE",
+        "6": "CP-F: loop broken CP-PE",
+        "7": "PP error (short circuit)",
+        "15": "Internal error"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 98,
+      "documented": "0x0062",
+      "name": "EVSE: PP-State",
+      "description": "Plug version: cable rating from the PP resistor in amps; fixed-cable version reads 0.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Cable not connected (socket version) / fixed cable mounted (cable version)",
+        "13": "13 A (1500 ohm)",
+        "20": "20 A (680 ohm)",
+        "32": "32 A (220 ohm)",
+        "63": "63 A (100 ohm)",
+        "65535": "Error (invalid PP resistor)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 99,
+      "documented": "0x0063",
+      "name": "EVSE: CP-State",
+      "description": "Control pilot state; other values mean undefined or error.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "A (EV not detected, standby)",
+        "1": "B (EV detected)",
+        "2": "C (EV charging)",
+        "3": "D (EV charging with fan)",
+        "4": "E (CP short circuit)",
+        "5": "F (EVSE not available, CP = -12 VDC)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 100,
+      "documented": "0x0064",
+      "name": "EVSE: Relais-State",
+      "description": "Which line relays are closed; 0 = all off.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Relay L1 activated",
+        "1": "Relay L2 activated",
+        "2": "Relay L3 activated"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 101,
+      "documented": "0x0065",
+      "name": "EVSE: Granted Current",
+      "description": "Current per line signalled on the CP: 0 or 6000-32000 mA.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "mA",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 102,
+      "documented": "0x0066",
+      "name": "EVSE: Granted Power",
+      "description": "Power allowed over all active lines per the CP signal (1380-22080 W at 230 V).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "W",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 103,
+      "documented": "0x0067",
+      "name": "Charging: Duration",
+      "description": "Duration of the charging session.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "s",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 105,
+      "documented": "0x0069",
+      "name": "Charging: Energy",
+      "description": "Energy delivered in the charging session.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "ABCD",
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "Wh",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 160,
+      "documented": "0x00A0",
+      "name": "EMS-Control: Control-Register",
+      "description": "Write 0x8000 to hand control to the energy manager; default 0x0000 (off).",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "EMS control disabled (default)",
+        "32768": "Enable EMS control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 161,
+      "documented": "0x00A1",
+      "name": "EMS-Control: Setpoint Relais-Matrix",
+      "description": "Lines used with the current setpoint; L2 and L3 marked reserved for future. Default 0x0007.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Line 1",
+        "1": "Line 2 (reserved for future)",
+        "2": "Line 3 (reserved for future)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 162,
+      "documented": "0x00A2",
+      "name": "EMS-Control: Setpoint Charging Current",
+      "description": "0 pauses, 6000-32000 mA charges, 0xFFFF cancels; default = power-class maximum.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "mA",
+      "access": "RW",
+      "values": {
+        "0": "Charging paused",
+        "65535": "Charging cancel"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 163,
+      "documented": "0x00A3",
+      "name": "EMS-Control: Timeout Period",
+      "description": "0 = timeout off (default); each setpoint write restarts the timer.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "s",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 164,
+      "documented": "0x00A4",
+      "name": "EMS-Control: Timeout Fallback Pattern",
+      "description": "Lines used after a timeout; default 0x0007 (3 lines).",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Line 1",
+        "1": "Line 2",
+        "2": "Line 3"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 165,
+      "documented": "0x00A5",
+      "name": "EMS-Control: Timeout Fallback Current",
+      "description": "Current applied after a timeout: 0 or 6000-32000 mA, default 6000.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "offset": 0,
+      "scale_factor_ref": null,
+      "units": "mA",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Enable the Modbus server in easyOperate, write 0x8000 to 0x00A0 to take EMS control, then write the charging current in mA to 0x00A2 (0 pauses). Read 0x0060 for state, 0x0066 for granted power and 0x0069 for session energy.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 160,
+        "why": "Enable EMS control"
+      },
+      {
+        "table": "holding_register",
+        "address": 162,
+        "why": "Charging current setpoint (mA)"
+      },
+      {
+        "table": "holding_register",
+        "address": 163,
+        "why": "Setpoint timeout"
+      },
+      {
+        "table": "holding_register",
+        "address": 165,
+        "why": "Fallback current after timeout"
+      },
+      {
+        "table": "holding_register",
+        "address": 96,
+        "why": "EVSE status"
+      },
+      {
+        "table": "holding_register",
+        "address": 97,
+        "why": "Error flags"
+      },
+      {
+        "table": "holding_register",
+        "address": 102,
+        "why": "Granted power"
+      },
+      {
+        "table": "holding_register",
+        "address": 105,
+        "why": "Session energy"
+      }
+    ],
+    "enable": "The Modbus server is switched on or off in the easyOperate configuration panel; it is disabled by factory default. EMS control itself is enabled by writing 0x8000 to 0x00A0.",
+    "watchdog": "If 0x00A3 is set above 0, each setpoint write restarts a timer of that many seconds; when it runs out the wallbox charges with the fallback current in 0x00A5 (default 6000 mA) on the lines in 0x00A4. The default 0 disables the timeout.",
+    "quirks": [
+      "Current setpoints are in milliamps, not amps or tenths of amps.",
+      "Writing 0xFFFF to 0x00A2 cancels the charge; 0 only pauses it.",
+      "The unit ID is ignored today, but 0 is recommended for future firmware."
+    ],
+    "setup": [
+      "Connect to the wallbox IP address on TCP port 502.",
+      "Use unit ID 0."
+    ],
+    "gotchas": [
+      "Meter values (0x0030 on) are floats with no stated word order; check against the display before using them."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

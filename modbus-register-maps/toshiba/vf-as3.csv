@@ -1,0 +1,59 @@
+﻿# Toshiba TOSVERT VF-AS3 inverter (RS485 Modbus RTU) Modbus register map - easymodbus.com - source: https://cdn.automationdirect.com/static/manuals/toshibamotors/as3rs485manual.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",2048,0800,42049,RS485 (1) baud rate [F800],Takes effect after reset.,UINT16,1,,1,0,,Read/write,0 = 9600 bps; 1 = 19200 bps; 2 = 38400 bps
+Holding register,"FC03 read / FC06, FC16 write",2049,0801,42050,RS485 (1) parity [F801],Takes effect after reset.,UINT16,1,,1,0,,Read/write,0 = Disabled (none); 1 = Even parity; 2 = Odd parity
+Holding register,"FC03 read / FC06, FC16 write",2050,0802,42051,Inverter number [F802],0-247; use 1-247 for Modbus (0 = broadcast).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2051,0803,42052,RS485 (1) time-out time [F803],"0.0 = disabled, 0.1-100.0 s.",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2052,0804,42053,RS485 (1) time-out operation [F804],,UINT16,1,,1,0,,Read/write,1 = Continue running; 4 = Trip; 6 = Trip after deceleration stop
+Holding register,"FC03 read / FC06, FC16 write",2053,0805,42054,RS485 (1) transmission wait time [F805],0.00-2.00 s.,UINT16,1,,0.01,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2055,0807,42056,RS485 (1) protocol [F807],Takes effect after reset.,UINT16,1,,1,0,,Read/write,0 = TOSHIBA; 1 = MODBUS
+Holding register,"FC03 read / FC06, FC16 write",2056,0808,42057,RS485 (1) time-out detection [F808],,UINT16,1,,1,0,,Read/write,0 = Always; 1 = When run and frequency commands come from comms; 2 = During run by communication
+Holding register,"FC03 read / FC06, FC16 write",2096,0830,42097,MODBUS continuous address [F830],How block reads step through missing numbers.,UINT16,1,,1,0,,Read/write,0 = Disabled (skip non-existent numbers); 1 = Enabled (all addresses)
+Holding register,"FC03 read / FC06, FC16 write",64000,FA00,464001,RS485 (1) command 1,"Run/stop and control bits; set bit 15 for run priority, bit 14 for frequency priority.",BITMAP16,1,,1,0,,Read/write,"bit 0 = Preset speed bit 1; bit 1 = Preset speed bit 2; bit 2 = Preset speed bit 3; bit 3 = Preset speed bit 4; bit 4 = V/f switching (1 = V/f2); bit 5 = PID control off; bit 6 = Acc/Dec switching (1 = Acc/Dec 2); bit 7 = Forced DC braking; bit 8 = Jog run; bit 9 = Direction (0 = forward, 1 = reverse); bit 10 = Run (0 = stop, 1 = run); bit 11 = Coast stop; bit 12 = Emergency off (E trip); bit 13 = Reset; bit 14 = Frequency command priority (comms); bit 15 = Run command priority (comms)"
+Holding register,"FC03 read / FC06, FC16 write",64001,FA01,464002,RS485 (1) frequency command,0 to maximum frequency (FH).,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64004,FA04,464005,RS485 (2) command 1,"Same bit layout as FA00, for RS485 port 2.",BITMAP16,1,,1,0,,Read/write,"bit 0 = Preset speed bit 1; bit 1 = Preset speed bit 2; bit 2 = Preset speed bit 3; bit 3 = Preset speed bit 4; bit 4 = V/f switching (1 = V/f2); bit 5 = PID control off; bit 6 = Acc/Dec switching (1 = Acc/Dec 2); bit 7 = Forced DC braking; bit 8 = Jog run; bit 9 = Direction (0 = forward, 1 = reverse); bit 10 = Run (0 = stop, 1 = run); bit 11 = Coast stop; bit 12 = Emergency off (E trip); bit 13 = Reset; bit 14 = Frequency command priority (comms); bit 15 = Run command priority (comms)"
+Holding register,"FC03 read / FC06, FC16 write",64005,FA05,464006,RS485 (2) frequency command,,UINT16,1,,0.01,0,Hz,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64019,FA13,464020,RS485 (1) motor speed command,0-32700 rpm.,UINT16,1,,1,0,rpm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64048,FA30,464049,RS485 (1) torque command,-250.00 to 250.00 %.,INT16,1,,0.01,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64080,FA50,464081,Terminal output data,Drives outputs assigned to 'designated data' functions.,BITMAP16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64081,FA51,464082,Terminal FM output data,,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64082,FA52,464083,Terminal AM output data,,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64263,FB07,464264,Inverter series type,Reads 178 on a VF-AS3.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64656,FC90,464657,Current trip,Trip code of the present trip.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64657,FC91,464658,Alarm,Alarm information word.,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64768,FD00,464769,Output frequency,Current value.,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",64769,FD01,464770,Status information 1,Current status.,BITMAP16,1,,1,0,,Read,bit 0 = Failure FL output; bit 1 = Tripped; bit 2 = Alarm occurring; bit 3 = Main circuit undervoltage (MOFF); bit 4 = V/f2 active; bit 5 = PID control off; bit 6 = Acc/Dec 2 active; bit 7 = DC braking; bit 8 = Jog run; bit 9 = Reverse run; bit 10 = Running; bit 11 = Coast stop (ST off); bit 12 = Emergency off; bit 13 = Ready for run 1 (ST on); bit 14 = Ready for run 2; bit 15 = HAND / LOC (0 = AUTO / REM)
+Holding register,"FC03 read / FC06, FC16 write",64770,FD02,464771,Frequency command value,,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",64771,FD03,464772,Output current,% of inverter rated current.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",64772,FD04,464773,Input voltage (DC detection),% of rated voltage.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",64773,FD05,464774,Output voltage,% of rated voltage.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",64774,FD06,464775,Input terminal status,,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64775,FD07,464776,Output terminal status,,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64789,FD15,464790,Motor primary frequency,,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",64792,FD18,464793,Torque,,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",64802,FD22,464803,PID feedback value,,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",64803,FD23,464804,Motor overload factor (OL2),,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",64804,FD24,464805,Inverter overload factor (OL1),,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",64806,FD26,464807,Motor load factor,,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",64807,FD27,464808,Inverter load factor,,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",64809,FD29,464810,Input power,,UINT16,1,,0.01,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",64816,FD30,464817,Output power,,UINT16,1,,0.01,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",64833,FD41,464834,Cumulative cooling fan run time,,UINT16,1,,10,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",64834,FD42,464835,Inverter status 2,,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",64856,FD58,464857,PID set value,,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",64888,FD78,464889,Power circuit board temperature,,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",64899,FD83,464900,Internal temperature 1,,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",64912,FD90,464913,Motor speed (estimated),,INT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",65032,FE08,465033,Inverter CPU version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",65040,FE10,465041,Past trip 1 (latest),,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",65041,FE11,465042,Past trip 2,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",65042,FE12,465043,Past trip 3,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",65043,FE13,465044,Past trip 4,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",65044,FE14,465045,Cumulative run time,,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",65077,FE35,465078,Terminal RR input value,0-100.00 %.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",65078,FE36,465079,Terminal RX input value,-100.00 to 100.00 %.,INT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",65079,FE37,465080,Terminal II input value,0-100.00 %.,UINT16,1,,0.01,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",65136,FE70,465137,Inverter rated current,,UINT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",65137,FE71,465138,Inverter rated voltage,,UINT16,1,,0.1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",65145,FE79,465146,Parts replacement alarm status,,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",65152,FE80,465153,Cumulative power-on time,,UINT16,1,,10,0,h,Read,

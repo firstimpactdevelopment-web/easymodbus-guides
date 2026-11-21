@@ -1,0 +1,1398 @@
+{
+ "manufacturer": "Gree",
+ "manufacturer_slug": "gree",
+ "model": "Modbus Gateway (Mini) ME30-24/E6(M) for GMV multi VRF systems",
+ "model_slug": "modbus-gateway-mini-me30-24-e6m",
+ "short_model": "Gree ME30-24/E6(M)",
+ "aliases": [
+  "ME30-24/E6(M)",
+  "Modbus Gateway(Mini)",
+  "GMV5 Modbus gateway"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "Gree Modbus Gateway (Mini) on CAN-bus multi VRF systems (GMV5, GMV5 C/E/HR/MAX/MINI/SLIM, GMV Water, energy-recovery ventilation); Communication Protocol V2.0, multi VRF part only.",
+ "summary": "The Gree Modbus Gateway (Mini) sits on the CAN bus of a GMV multi VRF system and serves up to 16 outdoor systems and 128 indoor units to a BMS over Modbus RTU. Holding registers carry per-indoor-unit on/off, mode, setpoint, fan speed and temperatures plus per-system outdoor data; coils carry feature flags, shields, locks and fault bits. Every indoor unit and system has an identical block, so this map lists indoor unit 1 and system 1 and gives the address rule for the rest.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The protocol numbers words from 0 and coils (bits) from 0, and its example frames send the printed number unchanged (read word 1 sends 00 01, read coil 5 sends 00 05). Word n and Bit n are wire address n. Indoor unit n uses words from 102+25*(n-1) and coils from 288+64*(n-1); system m uses words from 3302+10*(m-1) and coils from 8488+48*(m-1)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Modbus Gateway(Mini) Communication Protocol V2.0",
+  "doc_number": "V2.0",
+  "revision_date": null,
+  "url": "https://www.asami.lt/uploads/Products/product_78/me30-24_e6-m-_mini_modbus_variable_list_en_1708354351.pdf",
+  "pages": "p. 8 serial settings, pp. 8-12 frames and addressing, pp. 13-17 BMS precautions, pp. 17-27 words (multi VRF), pp. 27-42 bits (multi VRF), pp. 85-91 DIP switches",
+  "unofficial": true
+ },
+ "notes": [
+  "Gree does not host this protocol publicly; the link is a copy on a Lithuanian distributor's site (Asami) and appears to be the unaltered Gree document.",
+  "Only indoor unit 1 and outdoor system 1 are listed. The source prints identical blocks for indoor units 2-128 (words +25 per unit, coils +64 per unit), systems 2-16 (words +10, coils +48) and the 'subway' on/off blocks (coils +8 per unit or system).",
+  "Left out: indoor ambient temperature (word 116) and outdoor ambient temperature (word 3307). Both are sent as x10 with negative ranges, but word 116 is typed 'floating-point' and word 3307 has no data type at all, so the 16-bit encoding is not settled.",
+  "Words the source skips with '...' (for example 109-114 and 120-122) are not printed there and are not listed.",
+  "Mode and fan words use one set of codes for writing and another for reading; the values list shows both.",
+  "The fresh air unit sections (words 4200-13159, bits 11200-27583) are not included in this map.",
+  "The protocol lists function codes 0x01, 0x03, 0x0F and 0x10 only; single writes (0x05/0x06) are not listed.",
+  "The ME30-24/E6(M) part number comes from the distributor's product listing; the protocol document itself only calls the device 'Modbus Gateway(Mini)'."
+ ],
+ "registers": [
+  {
+   "table": "coil",
+   "address": 88,
+   "documented": "Bit 88",
+   "name": "System 1 present",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Without",
+    "1": "With"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 120,
+   "documented": "Bit 120",
+   "name": "IDU 1 present",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Without",
+    "1": "With"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 248,
+   "documented": "Bit 248",
+   "name": "System 1 remote emergency stop",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 280,
+   "documented": "Bit 280",
+   "name": "Set all IDUs on",
+   "description": "Group command.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 281,
+   "documented": "Bit 281",
+   "name": "Set all IDUs off",
+   "description": "Group command.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 282,
+   "documented": "Bit 282",
+   "name": "Set all IDUs remotely locked",
+   "description": "Group command.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 288,
+   "documented": "Bit 288",
+   "name": "IDU 1 remote shield: energy saving",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Not shielded",
+    "1": "Shielded"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 289,
+   "documented": "Bit 289",
+   "name": "IDU 1 remote shield: temperature setting",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Not shielded",
+    "1": "Shielded"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 290,
+   "documented": "Bit 290",
+   "name": "IDU 1 remote shield: mode",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Not shielded",
+    "1": "Shielded"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 291,
+   "documented": "Bit 291",
+   "name": "IDU 1 remote shield: on/off",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Not shielded",
+    "1": "Shielded"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 292,
+   "documented": "Bit 292",
+   "name": "IDU 1 remote lock",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Unlocked",
+    "1": "Locked"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 293,
+   "documented": "Bit 293",
+   "name": "IDU 1 priority power supply",
+   "description": "Used in the power-shortage mode of the supply system.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 294,
+   "documented": "Bit 294",
+   "name": "IDU 1 up-down swing",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 295,
+   "documented": "Bit 295",
+   "name": "IDU 1 left-right swing",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 296,
+   "documented": "Bit 296",
+   "name": "IDU 1 energy saving",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 297,
+   "documented": "Bit 297",
+   "name": "IDU 1 forbid auxiliary heater",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auxiliary heater allowed",
+    "1": "Auxiliary heater forbidden"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 298,
+   "documented": "Bit 298",
+   "name": "IDU 1 power failure memory",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Standby after power loss",
+    "1": "Power failure memory"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 299,
+   "documented": "Bit 299",
+   "name": "IDU 1 cancel filter cleaning reminder",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 300,
+   "documented": "Bit 300",
+   "name": "IDU 1 dry (X-fan)",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 301,
+   "documented": "Bit 301",
+   "name": "IDU 1 sleep",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 302,
+   "documented": "Bit 302",
+   "name": "IDU 1 quiet",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 303,
+   "documented": "Bit 303",
+   "name": "IDU 1 ventilation (air)",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 304,
+   "documented": "Bit 304",
+   "name": "IDU 1 low-temperature dehumidification",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Cancel",
+    "1": "Start"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 305,
+   "documented": "Bit 305",
+   "name": "IDU 1 shield on command",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No shielding",
+    "1": "Shielding"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 306,
+   "documented": "Bit 306",
+   "name": "IDU 1 shield off command",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No shielding",
+    "1": "Shielding"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 307,
+   "documented": "Bit 307",
+   "name": "IDU 1 shield timer",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No shielding",
+    "1": "Shielding"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 308,
+   "documented": "Bit 308",
+   "name": "IDU 1 8 °C heating (absence) function",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Cancel",
+    "1": "Start"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 315,
+   "documented": "Bit 315",
+   "name": "IDU 1 master/slave",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Slave IDU",
+    "1": "Master IDU"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 316,
+   "documented": "Bit 316",
+   "name": "IDU 1 auxiliary electric heater",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 318,
+   "documented": "Bit 318",
+   "name": "IDU 1 air outlet temperature sensor error",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 319,
+   "documented": "Bit 319",
+   "name": "IDU 1 general error",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8488,
+   "documented": "Bit 8488",
+   "name": "System 1 communication error",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8489,
+   "documented": "Bit 8489",
+   "name": "System 1 refrigerant loss protection",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8491,
+   "documented": "Bit 8491",
+   "name": "System 1 power phase sequence protection",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8492,
+   "documented": "Bit 8492",
+   "name": "System 1 VIP power supply mode started",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8493,
+   "documented": "Bit 8493",
+   "name": "System 1 unit debugging status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Debugging"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8494,
+   "documented": "Bit 8494",
+   "name": "System 1 compressor operation status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8495,
+   "documented": "Bit 8495",
+   "name": "System 1 general outdoor unit error",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8526,
+   "documented": "Bit 8526",
+   "name": "System 1 outdoor EEPROM read/write error",
+   "description": "Often a poorly connected outdoor main board.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 9776,
+   "documented": "Bit 9776",
+   "name": "Subway IDU 1 on/off status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 9777,
+   "documented": "Bit 9777",
+   "name": "Subway IDU 1 error status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 10800,
+   "documented": "Bit 10800",
+   "name": "Subway system 1 ODU on/off / remote emergency stop",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 10801,
+   "documented": "Bit 10801",
+   "name": "Subway system 1 ODU error status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No",
+    "1": "Yes"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 101,
+   "documented": "Word 101",
+   "name": "Project no. of starting indoor unit",
+   "description": "First indoor unit number served by this gateway: 1 or 129.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 102,
+   "documented": "Word 102",
+   "name": "IDU 1 power on/off",
+   "description": "0xAA (170) = on, 0x55 (85) = off.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "170": "On (0xAA)",
+    "85": "Off (0x55)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 103,
+   "documented": "Word 103",
+   "name": "IDU 1 operation mode",
+   "description": "Write and read codes differ; see values.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Write: invalid",
+    "1": "Cooling (write and read)",
+    "2": "Dehumidifying (write and read)",
+    "3": "Fan / air supply (write and read)",
+    "4": "Heating (write and read)",
+    "5": "Write: auto / read: auto cooling",
+    "6": "Write: floor heating / read: auto heating",
+    "7": "Write: fast heat / read: floor heating",
+    "8": "Write: heat supply / read: fast heat",
+    "9": "Read: heat supply",
+    "10": "Read: clothes drying",
+    "11": "Read: air discharge",
+    "12": "Read: cool",
+    "13": "Read: auto dehumidifying"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 104,
+   "documented": "Word 104",
+   "name": "IDU 1 temperature setpoint",
+   "description": "Value x10, 16.0-30.0 °C.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 105,
+   "documented": "Word 105",
+   "name": "IDU 1 fan speed",
+   "description": "Write and read codes differ; see values.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Write: invalid",
+    "1": "Write: auto / read: fan stopped",
+    "2": "Write: low / read: super low",
+    "3": "Write: medium-low / read: low",
+    "4": "Write: medium / read: medium-low",
+    "5": "Write: medium-high / read: medium",
+    "6": "Write: high / read: medium-high",
+    "7": "Write: turbo / read: high",
+    "8": "Read: super high",
+    "9": "Read: quiet R1",
+    "10": "Read: quiet R2",
+    "11": "Read: quiet R3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 106,
+   "documented": "Word 106",
+   "name": "IDU 1 cooling energy-saving lower limit",
+   "description": "Value x10, 16.0-30.0 °C.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 107,
+   "documented": "Word 107",
+   "name": "IDU 1 heating energy-saving upper limit",
+   "description": "Value x10, 16.0-30.0 °C.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 108,
+   "documented": "Word 108",
+   "name": "IDU 1 dehumidifying energy-saving lower limit",
+   "description": "Value x10, 16.0-30.0 °C.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 115,
+   "documented": "Word 115",
+   "name": "IDU 1 air outlet temperature",
+   "description": "Sent as actual + 100; range -30 to 138 °C.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": -100
+  },
+  {
+   "table": "holding_register",
+   "address": 117,
+   "documented": "Word 117",
+   "name": "IDU 1 gate (key card) control status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Invalid",
+    "1": "No gate control",
+    "2": "Card inserted",
+    "3": "Card removed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 118,
+   "documented": "Word 118",
+   "name": "IDU 1 outdoor unit number",
+   "description": "Outdoor system (1-16) this indoor unit belongs to.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 119,
+   "documented": "Word 119",
+   "name": "IDU 1 indoor unit category",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Duct type",
+    "2": "Cassette",
+    "3": "Wall mounted",
+    "4": "Floor ceiling",
+    "5": "Floor standing",
+    "6": "Multi VRF fresh air indoor unit",
+    "7": "Water heater",
+    "8": "Water adaptor",
+    "9": "Total heat recovery fresh air",
+    "10": "Total heat recovery fresh air + heat exchanger",
+    "11": "AHU-KIT",
+    "12": "Air handler",
+    "13": "Console type",
+    "14": "Concealed floor standing type",
+    "255": "Other (0xFF)"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 123,
+   "documented": "Word 123",
+   "name": "IDU 1 rated capacity",
+   "description": "Rated capacity in hectowatts (22, 25 ... 560).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "hW",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 124,
+   "documented": "Word 124",
+   "name": "IDU 1 static pressure (AC fan motor)",
+   "description": "Static pressure step for AC-motor models.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Invalid",
+    "1": "Static pressure 1",
+    "2": "Static pressure 2",
+    "3": "Static pressure 3",
+    "4": "Static pressure 4",
+    "5": "Static pressure 5",
+    "6": "Static pressure 6",
+    "7": "Static pressure 7",
+    "8": "Static pressure 8",
+    "9": "Static pressure 9"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 125,
+   "documented": "Word 125",
+   "name": "IDU 1 static pressure (DC fan motor)",
+   "description": "Static pressure step for DC-motor models.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Invalid",
+    "1": "Static pressure 1",
+    "2": "Static pressure 2",
+    "3": "Static pressure 3",
+    "4": "Static pressure 4",
+    "5": "Static pressure 5",
+    "6": "Static pressure 6",
+    "7": "Static pressure 7",
+    "8": "Static pressure 8",
+    "9": "Static pressure 9",
+    "10": "Static pressure 10",
+    "11": "Static pressure 11",
+    "12": "Static pressure 12",
+    "13": "Static pressure 13"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3302,
+   "documented": "Word 3302",
+   "name": "System 1 outdoor capacity upper limit",
+   "description": "Upper capacity limit of outdoor system 1, 30-100 %.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3303,
+   "documented": "Word 3303",
+   "name": "System 1 running indoor unit count",
+   "description": "Number of general indoor units started, 0-255.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3306,
+   "documented": "Word 3306",
+   "name": "System 1 cooling/heating capability",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Invalid",
+    "1": "Cooling only",
+    "2": "Heating",
+    "3": "Cooling and heating",
+    "4": "Fan"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3308,
+   "documented": "Word 3308",
+   "name": "System 1 emergency operation mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Invalid",
+    "1": "No emergency operation",
+    "2": "Compressor emergency operation",
+    "3": "Fan emergency operation",
+    "4": "Module emergency operation"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3463,
+   "documented": "Word 3463",
+   "name": "All indoor units: mode setting",
+   "description": "Group command to every indoor unit on the gateway.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Invalid (no change)",
+    "1": "Cooling",
+    "2": "Dehumidifying",
+    "3": "Fan / air supply",
+    "4": "Heating",
+    "5": "Auto",
+    "6": "Floor heating",
+    "7": "Fast heat",
+    "8": "Heat supply"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3464,
+   "documented": "Word 3464",
+   "name": "All indoor units: setpoint",
+   "description": "Group command, value x10, 16.0-30.0 °C.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "W",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3465,
+   "documented": "Word 3465",
+   "name": "All indoor units: fan speed",
+   "description": "Group command to every indoor unit on the gateway.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Invalid (no change)",
+    "1": "Auto",
+    "2": "Low",
+    "3": "Medium-low",
+    "4": "Medium",
+    "5": "Medium-high",
+    "6": "High",
+    "7": "Turbo"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set the gateway address on DIP switches S1/S2, wire RS485 at 9600 8N1, then read coils from 120 to see which indoor units exist. Control each unit with its on/off, mode, setpoint and fan words (102-105 for unit 1) using function 0x10, and read fault coils 318-319 and system coils 8488-8495.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 102,
+    "why": "IDU 1 on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 103,
+    "why": "IDU 1 mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 104,
+    "why": "IDU 1 setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 105,
+    "why": "IDU 1 fan speed"
+   },
+   {
+    "table": "coil",
+    "address": 120,
+    "why": "IDU 1 present"
+   },
+   {
+    "table": "coil",
+    "address": 319,
+    "why": "IDU 1 general error"
+   },
+   {
+    "table": "coil",
+    "address": 8495,
+    "why": "System 1 outdoor error"
+   },
+   {
+    "table": "coil",
+    "address": 8494,
+    "why": "System 1 compressor running"
+   }
+  ],
+  "enable": "No software enable: set the Modbus address (1-255) on DIP switches S1 and S2 inside the gateway, and S3 switch 4 for the CAN2 terminating resistor, before use.",
+  "watchdog": null,
+  "quirks": [
+   "Power on/off uses 0xAA (on) and 0x55 (off), not 1/0.",
+   "Exception code 0x04 means the gateway has no contact with the air-conditioning units; it is also returned after power-up until valid data has been collected.",
+   "A read of more than 127 words is refused with exception 0x03.",
+   "Writes that conflict with the outdoor unit capability, the master indoor unit mode or active energy-saving limits are ignored; read back to confirm."
+  ],
+  "setup": [
+   "RS485, 9600 baud, 8 data bits, no parity, 1 stop bit (fixed in the protocol).",
+   "Gateway address 1-255 on DIP switches S1/S2; address 0 is broadcast (writes only, no reply).",
+   "One gateway serves up to 16 outdoor systems and 128 indoor units; beyond 128 indoor units use a second gateway (starting unit 129).",
+   "S3 switch 2 sets the first indoor unit the gateway serves: engineering code 1 (units 1-128) or 129 (units 129-255); word 101 reports the setting.",
+   "S3 switch 3 switches in the gateway's own RS485 terminating resistor; normally the BMS master end carries it and the gateway is left without.",
+   "If the gateway is at either end of the CAN2 bus, set S3 switch 4 to 0 to switch in the terminating resistor."
+  ],
+  "gotchas": [
+   "Re-commission the gateway whenever the unit engineering data (addresses, number of units) changes.",
+   "Keep communication wiring at least 15 cm from power cabling."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/gree/modbus-gateway-mini-me30-24-e6m",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

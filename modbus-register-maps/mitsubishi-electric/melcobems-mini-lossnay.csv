@@ -1,0 +1,52 @@
+﻿# Mitsubishi Electric MelcoBEMS MINI (A1M+ / A1M) gateway for Lossnay heat recovery ventilators (LGH and VL series) Modbus register map - easymodbus.com - source: https://library.mitsubishielectric.co.uk/pdf/download_full/5538
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",3,00004,00004,Power on/off,Same as holding 300.,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Discrete input,FC02 read,82,10083,10083,Night purge,,BIT,1,,1,0,,Read,0 = Normal operation; 1 = Night purge running
+Discrete input,FC02 read,83,10084,10084,Maintenance sign,,BIT,1,,1,0,,Read,0 = Inactive; 1 = Active
+Discrete input,FC02 read,84,10085,10085,Filter sign,,BIT,1,,1,0,,Read,0 = Inactive; 1 = Active
+Discrete input,FC02 read,85,10086,10086,Actual ventilation mode,,BIT,1,,1,0,,Read,0 = Lossnay ventilation; 1 = Bypass ventilation
+Discrete input,FC02 read,90,10091,10091,Energy consumption data available,,BIT,1,,1,0,,Read,0 = Not available; 1 = Available
+Discrete input,FC02 read,91,10092,10092,Bypass damper available,,BIT,1,,1,0,,Read,0 = Not available; 1 = Available
+Discrete input,FC02 read,92,10093,10093,Auto ventilation mode available,,BIT,1,,1,0,,Read,0 = Not available; 1 = Available
+Discrete input,FC02 read,94,10095,10095,Outdoor temperature sensor,,BIT,1,,1,0,,Read,0 = Not equipped; 1 = Equipped
+Discrete input,FC02 read,95,10096,10096,Return air temperature sensor,,BIT,1,,1,0,,Read,0 = Not equipped; 1 = Equipped
+Input register,FC04 read,3,30004,30004,Gateway firmware version,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,5,30006,30006,Modbus comms counter,Counts valid Modbus commands; wraps to 0 after 65535.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,9,30010,30010,System type detected,2 means a Lossnay is connected.,UINT16,1,,1,0,,Read,0 = Air-To-Air unit; 1 = Air-To-Water system; 2 = Lossnay system; 255 = Undetermined (no unit detected yet)
+Input register,FC04 read,175,30176,30176,Outdoor temperature (signed),"Signed °C x 10 (0xFDD0 = -56.0). 0x7FFE detecting, 0x7FFF no thermistor.",INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,176,30177,30177,Outdoor temperature (unsigned),"Unsigned twin of outdoor temperature, °C x 10. 0x7FFE detecting, 0x7FFF no thermistor.",UINT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,177,30178,30178,Room temperature,"Return-air (room) temperature, °C x 10. Needs the return-air sensor.",UINT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,179,30180,30180,Fault code (hex),Lossnay fault code in hex form.,UINT16,1,,1,0,,Read,26985 = No communication with the unit (0x6999); 32768 = No error (0x8000)
+Input register,FC04 read,180,30181,30181,Fault code (decimal),Same fault code shown as decimal digits.,UINT16,1,,1,0,,Read,6999 = No communication with the unit; 8000 = No error
+Input register,FC04 read,181,30182,30182,Energy consumption,kWh x 10 (0-6553.5 kWh).,UINT16,1,,0.1,0,kWh,Read,
+Input register,FC04 read,183,30184,30184,Actual supply fan speed,,UINT16,1,,1,0,,Read,0 = Stop; 1 = Speed 1; 2 = Speed 2; 3 = Speed 3; 4 = Speed 4
+Input register,FC04 read,184,30185,30185,Actual extract fan speed,,UINT16,1,,1,0,,Read,0 = Stop; 1 = Speed 1; 2 = Speed 2; 3 = Speed 3; 4 = Speed 4
+Input register,FC04 read,191,30192,30192,Number of fan speeds,1-4.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Modbus slave ID,Used when DIP 1-5 are all ON; 1-247.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,RS-485 baud rate,Used when DIP 6 is OFF.,UINT16,1,,1,0,,Read/write,0 = 9600; 1 = 1200; 2 = 2400; 3 = 4800; 4 = 9600; 5 = 14400; 6 = 19200; 7 = 28800; 8 = 38400; 9 = 56000; 10 = 57600; 11 = 115200
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,RS-485 parity,Used when DIP 6 is OFF.,UINT16,1,,1,0,,Read/write,0 = None; 1 = Even; 2 = Odd
+Holding register,"FC03 read / FC06, FC16 write",9,40010,40010,Fault code (hex),Read-only; other codes are in the Lossnay documentation.,UINT16,1,,1,0,,Read,26985 = No communication with the unit (0x6999); 32768 = No error (0x8000)
+Holding register,"FC03 read / FC06, FC16 write",10,40011,40011,Gateway firmware version,Read-only copy of input register 3.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",11,40012,40012,Modbus comms counter,Counts valid Modbus commands; wraps to 0 after 65535.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,40014,40014,System type detected,Read-only copy of input register 9.,UINT16,1,,1,0,,Read,0 = Air-To-Air unit; 1 = Air-To-Water system; 2 = Lossnay system; 255 = Undetermined (no unit detected yet)
+Holding register,"FC03 read / FC06, FC16 write",300,40301,40301,Power on/off,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",302,40303,40303,Ventilation mode,,UINT16,1,,1,0,,Read/write,0 = Lossnay (heat recovery) mode; 1 = Bypass mode; 2 = Auto mode
+Holding register,"FC03 read / FC06, FC16 write",303,40304,40304,Fan speed,Auto (0) is not supported on LGH or VL units.,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Speed 1; 2 = Speed 2; 3 = Speed 3; 4 = Speed 4
+Holding register,"FC03 read / FC06, FC16 write",306,40307,40307,Outdoor temperature (signed),"Signed °C x 10 (0xFDD0 = -56.0). 0x7FFE detecting, 0x7FFF no thermistor.",INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",307,40308,40308,Outdoor temperature (unsigned),"Unsigned twin of outdoor temperature, °C x 10. 0x7FFE detecting, 0x7FFF no thermistor.",UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",308,40309,40309,Room temperature,"Return-air (room) temperature, °C x 10. Needs the return-air sensor.",UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",310,40311,40311,Fault code (hex),Lossnay fault code in hex form.,UINT16,1,,1,0,,Read,26985 = No communication with the unit (0x6999); 32768 = No error (0x8000)
+Holding register,"FC03 read / FC06, FC16 write",311,40312,40312,Fault code (decimal),Same fault code shown as decimal digits.,UINT16,1,,1,0,,Read,6999 = No communication with the unit; 8000 = No error
+Holding register,"FC03 read / FC06, FC16 write",313,40314,40314,Energy consumption,kWh x 10 (0-6553.5 kWh).,UINT16,1,,0.1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",316,40317,40317,Night purge,,UINT16,1,,1,0,,Read,0 = Normal operation; 1 = Night purge running
+Holding register,"FC03 read / FC06, FC16 write",317,40318,40318,Maintenance sign,,UINT16,1,,1,0,,Read,0 = Inactive; 1 = Active
+Holding register,"FC03 read / FC06, FC16 write",318,40319,40319,Filter sign,,UINT16,1,,1,0,,Read,0 = Inactive; 1 = Active
+Holding register,"FC03 read / FC06, FC16 write",319,40320,40320,Actual ventilation mode,,UINT16,1,,1,0,,Read,0 = Lossnay ventilation; 1 = Bypass ventilation
+Holding register,"FC03 read / FC06, FC16 write",320,40321,40321,Actual supply fan speed,,UINT16,1,,1,0,,Read,0 = Stop; 1 = Speed 1; 2 = Speed 2; 3 = Speed 3; 4 = Speed 4
+Holding register,"FC03 read / FC06, FC16 write",321,40322,40322,Actual extract fan speed,,UINT16,1,,1,0,,Read,0 = Stop; 1 = Speed 1; 2 = Speed 2; 3 = Speed 3; 4 = Speed 4
+Holding register,"FC03 read / FC06, FC16 write",332,40333,40333,Energy consumption data available,,UINT16,1,,1,0,,Read,0 = Not available; 1 = Available
+Holding register,"FC03 read / FC06, FC16 write",333,40334,40334,Number of fan speeds,1-4.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",334,40335,40335,Bypass damper available,,UINT16,1,,1,0,,Read,0 = Not available; 1 = Available
+Holding register,"FC03 read / FC06, FC16 write",335,40336,40336,Auto ventilation mode available,,UINT16,1,,1,0,,Read,0 = Not available; 1 = Available
+Holding register,"FC03 read / FC06, FC16 write",338,40339,40339,Outdoor temperature sensor,,UINT16,1,,1,0,,Read,0 = Not equipped; 1 = Equipped
+Holding register,"FC03 read / FC06, FC16 write",339,40340,40340,Return air temperature sensor,,UINT16,1,,1,0,,Read,0 = Not equipped; 1 = Equipped

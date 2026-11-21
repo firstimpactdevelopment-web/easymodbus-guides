@@ -1,0 +1,135 @@
+﻿# Neptronic TUCB / TUHB Series universal wall-mount controller (Modbus RTU) Modbus register map - easymodbus.com - source: https://www.neptronic.com/Controls/PDF/20190515/TUXB-Modbus%20Guide-190515.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40000,40001,Address - Neptronic ID and Modbus address of current device,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,40001,40002,Baud rate (baud / 100),0 = automatic detection.,UINT16,1,,100,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,40002,40003,Communication port configuration,,UINT16,1,,1,0,,Read/write,"1 = No parity, 2 Stop bits; 2 = Even parity, 1 stop bit; 3 = Odd parity, 1 stop bit"
+Holding register,"FC03 read / FC06, FC16 write",7,40007,40008,"Controller Product_Version, actual firmware version",,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,40008,40009,Controller parameters version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,40009,40010,System Status 1,,BITMAP16,1,,1,0,,Read,"bit 0 = System operation (0 = Normal, 1 = Fault); bit 2 = System override by NSB or OCC (0 = Normal, 1 = OFF); bit 3 = ChangeOverMode (0 = Cooling, 1 = Heating); bit 4 = AL_FlowSwitch (0 = No alarm, 1 = Alarm activated); bit 6 = AL_DirtyFilter (0 = No alarm, 1 = Alarm activated)"
+Holding register,"FC03 read / FC06, FC16 write",10,40010,40011,System Status 2,,BITMAP16,1,,1,0,,Read,"bit 0 = Selector Switch Status (0 = Remote Mode, 1 = Local Mode); bit 2 = CO2 Alarm (0 = Normal, 1 = Alarm); bit 7 = AL_Override (0 = Off, 1 = On); bit 8 = AL_WindowOpened (0 = Off, 1 = On); bit 9 = AL_DoorOpened (0 = Off, 1 = On); bit 10 = AL_BI1 (0 = Off, 1 = On); bit 11 = AL_BI2 (0 = Off, 1 = On); bit 12 = AL_AI1 (0 = Off, 1 = On); bit 13 = AL_AI2 (0 = Off, 1 = On); bit 15 = AL_OverHeat (0 = Off, 1 = On)"
+Holding register,"FC03 read / FC06, FC16 write",11,40011,40012,Internal temperature sensor reading,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.01,0,°C / °F,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,40012,40013,External temperature sensor reading,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.01,0,°C / °F,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,40013,40014,Changeover temperature sensor reading,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.01,0,°C / °F,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,40014,40015,Control temperature reading,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.01,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",15,40015,40016,Internal humidity sensor reading,TUHB24C6X2 only.,UINT16,1,,0.1,0,%RH,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,40016,40017,External humidity sensor reading,,UINT16,1,,0.1,0,%RH,Read,
+Holding register,"FC03 read / FC06, FC16 write",17,40017,40018,Analog input 1 reading,"Volts or temperature, depending on how the input is configured.",INT16,1,,0.01,0,V / °C / °F,Read,
+Holding register,"FC03 read / FC06, FC16 write",18,40018,40019,Analog input 2 reading,"Volts or temperature, depending on how the input is configured.",INT16,1,,0.01,0,V / °C / °F,Read,
+Holding register,"FC03 read / FC06, FC16 write",19,40019,40020,CO2 sensor value in ppm,,INT16,1,,1,0,ppm,Read,
+Holding register,"FC03 read / FC06, FC16 write",20,40020,40021,Binary input statuses of 2 binary inputs,,BITMAP16,1,,1,0,,Read,"bit 0 = Binary Input 1 (0 = Open, 1 = Close); bit 1 = Binary Input 2 (0 = Open, 1 = Close)"
+Holding register,"FC03 read / FC06, FC16 write",21,40021,40022,Actual system occupancy state,,UINT16,1,,1,0,,Read,1 = NoOccupancy; 2 = Occupancy; 3 = Override
+Holding register,"FC03 read / FC06, FC16 write",22,40022,40023,Actual night setback state of the system,,UINT16,1,,1,0,,Read,1 = Day; 2 = Night; 3 = Override
+Holding register,"FC03 read / FC06, FC16 write",23,40023,40024,Actual heating demand of ramp 1,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",24,40024,40025,Actual heating demand of ramp 2,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",25,40025,40026,Actual cooling demand of ramp 1,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",26,40026,40027,Actual cooling demand of ramp 2,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,40027,40028,Actual changeover demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",28,40028,40029,Actual fan demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,40029,40030,Actual dehumidification demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,40030,40031,Actual humidification demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",31,40031,40032,Cooling/heating switch timer countdown,,UINT16,1,,1,0,s,Read,
+Holding register,"FC03 read / FC06, FC16 write",32,40032,40033,Analog output 1 value,,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",33,40033,40034,Analog output 2 value,,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",34,40034,40035,Binary output - 6 relays output status,,BITMAP16,1,,1,0,,Read/write,"bit 0 = Binary Output 1 (0 = Open, 1 = Close); bit 1 = Binary Output 2 (0 = Open, 1 = Close); bit 2 = Binary Output 3 (0 = Open, 1 = Close); bit 3 = Binary Output 4 (0 = Open, 1 = Close); bit 4 = Binary Output 5 (0 = Open, 1 = Close); bit 5 = Binary Output 6 (0 = Open, 1 = Close)"
+Holding register,"FC03 read / FC06, FC16 write",35,40035,40036,System command,,BITMAP16,1,,1,0,,Read/write,"bit 0 = Cfg_ServiceDisplayAddress (0 = Normal, 1 = Display address on LCD); bit 1 = Cfg_CoolingRampLock (0 = Off, 1 = On); bit 3 = Cfg_HeatingRamp1Lock (0 = Off, 1 = On); bit 4 = Cfg_HeatingRamp2Lock (0 = Off, 1 = On); bit 5 = Cfg_ChangeOverRampLock (0 = Off, 1 = On); bit 7 = Cfg_HumidifyRampLock (0 = Off, 1 = On); bit 8 = Cfg_DehumidifyRampLock (0 = Off, 1 = On)"
+Holding register,"FC03 read / FC06, FC16 write",36,40036,40037,System mode status,Each mode is only accepted when the system control mode and option bits allow it.,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Heating; 3 = Emergency heat (EMH); 4 = Cooling; 5 = Fan; 6 = Off
+Holding register,"FC03 read / FC06, FC16 write",37,40037,40038,Fan speed selection by user,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Low; 3 = Med; 4 = High
+Holding register,"FC03 read / FC06, FC16 write",38,40038,40039,Temperature setpoint in occupancy or day mode,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",39,40039,40040,System option 1,,BITMAP16,1,,1,0,,Read/write,"bit 0 = Cfg_TempUnitTstat (0 = °C, 1 = °F); bit 1 = Cfg_TempUnitModbus (0 = °C, 1 = °F); bit 2 = Cfg_TempSetPointLock (0 = Off, 1 = On); bit 3 = Cfg_HumSetPointLock (0 = Off, 1 = On); bit 4 = Cfg_ProgramModeLock (0 = Off, 1 = On); bit 7 = AL_FreezeProtection (0 = Off, 1 = On); bit 8 = Cfg_UserSysOffModes (0 = Enable, 1 = Disable); bit 9 = Cfg_KeyPadBottomLeftLock (0 = Off, 1 = On); bit 10 = Cfg_KeyPadUpperLeftLock (0 = Off, 1 = On); bit 11 = Cfg_KeyPadArrowsLock (0 = Off, 1 = On); bit 12 = Cfg_UserFanAutoMode (0 = Enable, 1 = Disable); bit 13 = Cfg_ NightOrNoOccMode (0 = Setpoint, 1 = OFF); bit 14 = Cfg_HumControlSource (0 = Intern Sensor, 1 = Extern Sensor (Writable only if an intern RH option is available) Only available on model TUHB24C6X2.); bit 15 = Time Mode (0 = 24h, 1 = 12h)"
+Holding register,"FC03 read / FC06, FC16 write",40,40040,40041,System option 2,,BITMAP16,1,,1,0,,Read/write,"bit 0 = Cfg_WindowOpenedMode (0 = Setpoint, 1 = OFF); bit 1 = Cfg_DoorOpenedMode (0 = Setpoint, 1 = OFF); bit 2 = Baud Rate (0 = Auto, 1 = Manual); bit 3 = Cfg_ActivateSchedule (0 = Off, 1 = On); bit 4 = Cfg_AnalogOutput1Direction (0 = Direct, 1 = Reverse); bit 5 = Cfg_AnalogOutput2Direction (0 = Direct, 1 = Reverse); bit 6 = Cfg_BinaryOutput1Direction (0 = Direct, 1 = Reverse); bit 7 = Cfg_BinaryOutput2Direction (0 = Direct, 1 = Reverse); bit 8 = Cfg_BinaryOutput3Direction (0 = Direct, 1 = Reverse); bit 9 = Cfg_BinaryOutput4Direction (0 = Direct, 1 = Reverse); bit 10 = Cfg_BinaryOutput5Direction (0 = Direct, 1 = Reverse); bit 11 = Cfg_BinaryOutput6Direction (0 = Direct, 1 = Reverse); bit 12 = Cfg_ FanSpeedOption (0 = Standard, 1 = Advanced (OE1)); bit 13 = Cfg_UserSysFanMode (0 = Disable, 1 = Enable); bit 14 = Cfg_HideFanDisplay (0 = N0, 1 = Yes)"
+Holding register,"FC03 read / FC06, FC16 write",41,40041,40042,System option 3,,BITMAP16,1,,1,0,,Read/write,"bit 0 = DAYLIGHT_SAVINGS_STATUS (0 = Normal, 1 = Summer); bit 1 = Cfg_EMHOutput (0 = Disable, 1 = Enable); bit 2 = Cfg_ HeatPumpMode (0 = Off (General Unit), 1 = On (HeatPump)); bit 3 = Cfg_ReversingValve (O/B) (0 = O, 1 = B); bit 4 = Cfg_EMHAutoMode (0 = No, 1 = Yes); bit 5 = Cfg_Y2Output (0 = Disable, 1 = Enable)"
+Holding register,"FC03 read / FC06, FC16 write",43,40043,40044,Display information,,UINT16,1,,1,0,,Read/write,1 = Temperature and Demand; 2 = Setpoint and Demand; 3 = Temperature Only; 4 = Setpoint Only; 5 = Off
+Holding register,"FC03 read / FC06, FC16 write",44,40044,40045,Temperature control source,,UINT16,1,,1,0,,Read/write,1 = Network Temp; 2 = Intern Temp; 3 = Extern Temp
+Holding register,"FC03 read / FC06, FC16 write",45,40045,40046,Network fallback timeout,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",46,40046,40047,Minimum occupancy/day setpoint,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",47,40047,40048,Maximum occupancy/day setpoint,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",48,40048,40049,Cooling temperature setpoint in unoccupied or night mode,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",49,40049,40050,Heating temperature setpoint in unoccupied or night mode,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50,40050,40051,Heating proportional band for ramp 1,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",51,40051,40052,Heating proportional band for ramp 2,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",52,40052,40053,Cooling proportional band for ramp 1,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",53,40053,40054,Cooling proportional band for ramp 2,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",54,40054,40055,Changeover proportional band,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",55,40055,40056,Heating deadband for ramp 1,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",56,40056,40057,Heating deadband for ramp 2,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57,40057,40058,Cooling deadband for ramp 1,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",58,40058,40059,Cooling deadband for ramp 2,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",59,40059,40060,Changeover deadband,Unit follows the Modbus temperature-unit option (°C or °F).,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",60,40060,40061,Changeover setpoint,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",61,40061,40062,Fan time out in seconds,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",62,40062,40063,Fan damping factor in seconds,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",63,40063,40064,Heating integral time factor in seconds,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64,40064,40065,Cooling integral time factor in seconds,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",65,40065,40066,Delay between cooling and heating,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",66,40066,40067,Cooling anticycle delay in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",67,40067,40068,NSB override delay in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",68,40068,40069,Unoccupied override delay in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",69,40069,40070,Occupancy minimum time in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",70,40070,40071,Unoccupied override delay count down in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",71,40071,40072,Fan mode (speed) in unoccupied or NSB mode,,UINT16,1,,1,0,,Read/write,1 = Low; 2 = Med; 3 = High; 4 = Auto
+Holding register,"FC03 read / FC06, FC16 write",72,40072,40073,Fan mode (speed) when window is opened (alarm),,UINT16,1,,1,0,,Read/write,1 = Low; 2 = Med; 3 = High; 4 = Auto
+Holding register,"FC03 read / FC06, FC16 write",73,40073,40074,Fan mode (speed) when door is opened (alarm),,UINT16,1,,1,0,,Read/write,1 = Low; 2 = Med; 3 = High; 4 = Auto
+Holding register,"FC03 read / FC06, FC16 write",74,40074,40075,System control mode,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Heat; 3 = Cool; 4 = Heat or Cool; 5 = Auto Lock
+Holding register,"FC03 read / FC06, FC16 write",75,40075,40076,Override System occupancy/NSB mode,,UINT16,1,,1,0,,Read/write,1 = Locally; 2 = OFF; 3 = Occupied; 4 = Unoccupied; 5 = Day; 6 = Night
+Holding register,"FC03 read / FC06, FC16 write",76,40076,40077,Internal temperature sensor offset correction,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.01,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",77,40077,40078,Analog Input 1 signal,,UINT16,1,,1,0,,Read/write,1 = OFF; 2 = Extern sensor 10K; 3 = Change over sensor; 4 = Change over normally cool; 5 = Change over normally heat; 6 = Outside air sensor; 7 = Extern sensor 0-10V; 8 = CO2 sensor 0-10V; 9 = Occupancy binary input; 10 = NSB binary input; 11 = Override binary input; 12 = Window binary input; 13 = Door binary input; 14 = Dirty Filter binary input; 15 = Flow switch binary input; 16 = OverHeat binary input; 17 = Selector switch binary input; 18 = Humidity sensor 0-10V
+Holding register,"FC03 read / FC06, FC16 write",78,40078,40079,Analog Input 2 signal,,UINT16,1,,1,0,,Read/write,1 = OFF; 2 = Extern sensor 10K; 3 = Change over sensor; 4 = Change over normally cool; 5 = Change over normally heat; 6 = Outside air sensor; 7 = Extern sensor 0-10V; 8 = CO2 sensor 0-10V; 9 = Occupancy binary input; 10 = NSB binary input; 11 = Override binary input; 12 = Window binary input; 13 = Door binary input; 14 = Dirty Filter binary input; 15 = Flow switch binary input; 16 = OverHeat binary input; 17 = Selector switch binary input; 18 = Humidity sensor 0-10V
+Holding register,"FC03 read / FC06, FC16 write",79,40079,40080,External temperature sensor offset correction,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.01,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",80,40080,40081,Changeover control mode,,UINT16,1,,1,0,,Read/write,1 = Local; 2 = Cool; 3 = Heat
+Holding register,"FC03 read / FC06, FC16 write",81,40081,40082,Minimum external temperature reading,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",82,40082,40083,Maximum external temperature reading,Unit follows the Modbus temperature-unit option (°C or °F).,INT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",83,40083,40084,Maximum CO2 reading,,INT16,1,,1,0,ppm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",84,40084,40085,Alarm level of CO2,,INT16,1,,1,0,ppm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",85,40085,40086,Fan output signal,,UINT16,1,,1,0,,Read/write,1 = 1 speed; 2 = 2 speeds; 3 = 3 speeds; 4 = Analog; 5 = VFD
+Holding register,"FC03 read / FC06, FC16 write",86,40086,40087,Ramp to control analog output 1,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Changeover with fan; 3 = Cooling 1 with fan; 4 = Cooling 2 with fan; 5 = Heating 1 with fan; 6 = Heating 2 with fan; 7 = Heating 2; 8 = Cooling 1 Heating 1 With Fan; 9 = HumidifyWithFan; 10 = CO2 alarm; 11 = 6 way valve
+Holding register,"FC03 read / FC06, FC16 write",87,40087,40088,Minimum voltage for analog output 1 (volt),,UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",88,40088,40089,Maximum voltage for analog output 1 (volt),,UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",89,40089,40090,Ramp to control analog output 2,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Changeover with fan; 3 = Cooling 1 with fan; 4 = Cooling 2 with fan; 5 = Heating 1 with fan; 6 = Heating 2 with fan; 7 = Heating 2; 8 = Cooling 1 Heating 1 With Fan; 9 = HumidifyWithFan; 10 = CO2 alarm; 11 = 6 way valve; 12 = FAN
+Holding register,"FC03 read / FC06, FC16 write",90,40090,40091,Minimum voltage for analog output 2 (volt),,UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",91,40091,40092,Maximum voltage for analog output 2 (volt),,UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",92,40092,40093,Position of CH1 AO output while heating (%),,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",93,40093,40094,Ramp to control binary output 1,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Changeover with fan; 3 = Cooling 1 with fan; 4 = Cooling 2 with fan; 5 = Heating 1 with fan; 6 = Heating 2 with fan; 7 = Heating 2; 8 = Cooling 1 Heating 1 With Fan; 9 = HumidifyWithFan; 10 = CO2 alarm
+Holding register,"FC03 read / FC06, FC16 write",94,40094,40095,Delay before activation of BO1 in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",95,40095,40096,Close position percentage for contact BO1,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",96,40096,40097,Open position percentage for contact BO1,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",97,40097,40098,Ramp to control binary output 2,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Changeover with fan; 3 = Cooling 1 with fan; 4 = Cooling 2 with fan; 5 = Heating 1 with fan; 6 = Heating 2 with fan; 7 = Heating 2; 8 = Cooling 1 Heating 1 With Fan; 9 = HumidifyWithFan; 10 = CO2 alarm
+Holding register,"FC03 read / FC06, FC16 write",98,40098,40099,Delay before activation of BO2 in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",99,40099,40100,Close position percentage for contact BO2,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",100,40100,40101,Open position percentage for contact BO2,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",101,40101,40102,Ramp to control binary output 3,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Changeover with fan; 3 = Cooling 1 with fan; 4 = Cooling 2 with fan; 5 = Heating 1 with fan; 6 = Heating 2 with fan; 7 = Heating 2; 8 = Cooling 1 Heating 1 With Fan; 9 = HumidifyWithFan; 10 = CO2 alarm
+Holding register,"FC03 read / FC06, FC16 write",102,40102,40103,Delay before activation of BO3 in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",103,40103,40104,Close position percentage for contact BO3,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",104,40104,40105,Open position percentage for contact BO3,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",105,40105,40106,Ramp to control binary output 4,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Changeover with fan; 3 = Cooling 1 with fan; 4 = Cooling 2 with fan; 5 = Heating 1 with fan; 6 = Heating 2 with fan; 7 = Heating 2; 8 = Cooling 1 Heating 1 With Fan; 9 = HumidifyWithFan; 10 = CO2 alarm; 11 = FAN
+Holding register,"FC03 read / FC06, FC16 write",106,40106,40107,Delay before activation of BO4 in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",107,40107,40108,Close position percentage for contact BO4,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",108,40108,40109,Open position percentage for contact BO4,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",109,40109,40110,Ramp to control binary output 5,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Changeover with fan; 3 = Cooling 1 with fan; 4 = Cooling 2 with fan; 5 = Heating 1 with fan; 6 = Heating 2 with fan; 7 = Heating 2; 8 = Cooling 1 Heating 1 With Fan; 9 = HumidifyWithFan; 10 = CO2 alarm; 11 = FAN
+Holding register,"FC03 read / FC06, FC16 write",110,40110,40111,Delay before activation of BO5 in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",111,40111,40112,Close position percentage for contact BO5,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",112,40112,40113,Open position percentage for contact BO5,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",113,40113,40114,Ramp to control binary output 6,,UINT16,1,,1,0,,Read/write,"1 = Off; 2 = Changeover with fan; 3 = Cooling 1 with fan; 4 = Cooling 2 with fan; 5 = Heating 1 with fan; 6 = Heating 2 with fan; 7 = Heating 2; 8 = Cooling 1 Heating 1 With Fan; 9 = HumidifyWithFan; 10 = CO2 alarm; 11 = FAN (only when the fan type is 1, 2 or 3 speeds)"
+Holding register,"FC03 read / FC06, FC16 write",114,40114,40115,Delay before activation of BO6 in minutes,,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",115,40115,40116,Close position percentage for contact BO6,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",116,40116,40117,Open position percentage for contact BO6,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",117,40117,40118,"Input contact of binary input 1, 2 and analog input 1, 2",,BITMAP16,1,,1,0,,Read/write,"bit 0 = Binary input 1 (0 = Normally Open, 1 = Normally Close); bit 1 = Binary input 2 (0 = Normally Open, 1 = Normally Close); bit 2 = Analog input 1 (0 = Normally Open, 1 = Normally Close); bit 3 = Analog input 2 (0 = Normally Open, 1 = Normally Close)"
+Holding register,"FC03 read / FC06, FC16 write",118,40118,40119,Configuration of binary input 1 mode,,UINT16,1,,1,0,,Read/write,1 = OFF; 2 = Override; 3 = Window; 4 = Door; 5 = DirtyFilter; 6 = FlowSwitch; 7 = OverHeat; 8 = Selector switch (use together with a flow switch; fan stays off in local mode); 9 = Change over normally cool; 10 = Change over normally heat; 11 = NSB; 12 = Occupancy
+Holding register,"FC03 read / FC06, FC16 write",119,40119,40120,Delay before activation of BI1 in seconds,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",120,40120,40121,Configuration of binary input 2 mode,,UINT16,1,,1,0,,Read/write,1 = OFF; 2 = Override; 3 = Window; 4 = Door; 5 = DirtyFilter; 6 = FlowSwitch; 7 = OverHeat; 8 = Selector switch (use together with a flow switch; fan stays off in local mode); 9 = Change over normally cool; 10 = Change over normally heat; 11 = NSB; 12 = Occupancy
+Holding register,"FC03 read / FC06, FC16 write",121,40121,40122,Delay before activation of BI2 in seconds,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",122,40122,40123,Delay before activation of AI1 in seconds,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",123,40123,40124,Delay before activation of AI2 in seconds,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",124,40124,40125,Humidity control mode status,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Dehumidification; 3 = Humidification; 4 = Off
+Holding register,"FC03 read / FC06, FC16 write",125,40125,40126,Humidity setpoint (%RH) in occupancy or day mode,,UINT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",126,40126,40127,Dehumidification setpoint (%RH) in unoccupied or night mode,,UINT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",127,40127,40128,Humidification setpoint (%RH) in unoccupied or night mode,,UINT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",128,40128,40129,Minimum user setpoint,,UINT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",129,40129,40130,Maximum user setpoint,,UINT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",130,40130,40131,Humidity proportional band,,UINT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",131,40131,40132,Humidity deadband,,UINT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",132,40132,40133,Internal humidity sensor offset correction,TUHB24C6X2 only.,INT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",133,40133,40134,External humidity sensor offset correction,,INT16,1,,0.1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",134,40134,40135,Voltage required for closing the 6-way valve,,UINT16,1,,0.01,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",135,40135,40136,Minimum output voltage required for cooling for the 6-way valve,,UINT16,1,,0.01,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",136,40136,40137,Minimum output voltage required for heating for the 6-way valve,,UINT16,1,,0.01,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",137,40137,40138,6-way valve size selection in inches,,UINT16,1,,1,0,,Read/write,1 = 1/2; 2 = 3/4; 3 = 1

@@ -1,0 +1,513 @@
+{
+ "manufacturer": "ICP DAS",
+ "manufacturer_slug": "icp-das",
+ "model": "M-7080 / M-7080B 2-channel counter/frequency module (Modbus RTU)",
+ "model_slug": "m-7080",
+ "short_model": "M-7080",
+ "aliases": [
+  "M-7080",
+  "M-7080B",
+  "M7080",
+  "M7080B"
+ ],
+ "equipment_type": "Sensor (counter/frequency input module)",
+ "applies_to": "ICP DAS M-7080 and M-7080B two-channel 32-bit counter/frequency modules with two digital outputs, in Modbus RTU mode.",
+ "summary": "The M-7080 and M-7080B are RS-485 remote I/O modules that count pulses or measure frequency on two inputs and drive two digital outputs. In Modbus RTU mode the 32-bit counts sit in holding registers as low/high word pairs, and configuration flags are coils. This map covers the count/frequency values, maximum and preset values, input thresholds, outputs and counter control.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The table is titled 'M-7000 Address Mapping (Base 1)': 00001 coils, 10001 discrete inputs, 30001 input registers, 40001 holding registers. Subtract the table base for the wire address (40001 = holding register 0)."
+ },
+ "default_word_order": "CDAB",
+ "firmware": null,
+ "source": {
+  "title": "M-7000 Series Address Mapping Table",
+  "doc_number": "V1.18",
+  "revision_date": "2025-09",
+  "url": "https://www.icpdas.com/en/download/file.php?num=19906",
+  "pages": "M-7080 pp. 72-73; M-7080B pp. 74-75"
+ },
+ "notes": [
+  "Each 32-bit value is listed as a low word followed by a high word, so read two registers and treat them as low word first (CDAB).",
+  "Whether channel values are counts or frequency depends on the module type code, which this table does not map; frequency units are not stated.",
+  "The M-7080B table has no set-to-preset coils (00133/00134); on the M-7080B, writing the preset registers with type code 52 also loads them into the counters.",
+  "The M-7080 counter-mode coils 00145/00146 need firmware 0A24 or later and are left out, as are the module name, address and baud registers not printed for these models."
+ ],
+ "integration": {
+  "summary": "Read holding registers 0-3 for both 32-bit counts (low word first). Start or stop each counter with coils 00135/00136 and drive the outputs with coils 00001/00002.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Channel 0 count/frequency"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Channel 1 count/frequency"
+   },
+   {
+    "table": "coil",
+    "address": 64,
+    "why": "Counter 0 overflow"
+   },
+   {
+    "table": "coil",
+    "address": 134,
+    "why": "Start/stop counter 0"
+   },
+   {
+    "table": "coil",
+    "address": 0,
+    "why": "DO 0"
+   }
+  ],
+  "enable": "The module must be in Modbus RTU mode (ICP DAS modules also speak DCON); see the module's user manual for switching protocol.",
+  "watchdog": null,
+  "quirks": [
+   "32-bit values are low word first (CDAB).",
+   "Counters are started by default (coils 00135/00136 default 1)."
+  ],
+  "setup": [
+   "Voltage trigger levels are in 0.1 V steps (factory 0.8 V low, 2.4 V high)."
+  ],
+  "gotchas": [
+   "On the M-7080B, writing the preset registers 40097-40100 with type code 52 also loads them into the counters."
+  ]
+ },
+ "registers": [
+  {
+   "table": "coil",
+   "address": 0,
+   "documented": "00001",
+   "name": "DO 0",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 1,
+   "documented": "00002",
+   "name": "DO 1",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 64,
+   "documented": "00065",
+   "name": "Overflow flag of counter 0",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Overflow"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 65,
+   "documented": "00066",
+   "name": "Overflow flag of counter 1",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Overflow"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 128,
+   "documented": "00129",
+   "name": "Input mode channel 0",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Non-isolated",
+    "1": "Isolated"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 129,
+   "documented": "00130",
+   "name": "Input mode channel 1",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Non-isolated",
+    "1": "Isolated"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 130,
+   "documented": "00131",
+   "name": "Gate active level",
+   "description": "Used when gate control is enabled.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Low active",
+    "1": "High active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 132,
+   "documented": "00133",
+   "name": "Set counter 0 to preset",
+   "description": "M-7080 only. Write 1.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 133,
+   "documented": "00134",
+   "name": "Set counter 1 to preset",
+   "description": "M-7080 only. Write 1.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 134,
+   "documented": "00135",
+   "name": "Start/stop counter 0",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Stop",
+    "1": "Start"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 135,
+   "documented": "00136",
+   "name": "Start/stop counter 1",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Stop",
+    "1": "Start"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 138,
+   "documented": "00139",
+   "name": "Digital filter enable",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable",
+    "1": "Enable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 141,
+   "documented": "00142",
+   "name": "Frequency gate time",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "0.1 s",
+    "1": "1.0 s"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 142,
+   "documented": "00143",
+   "name": "LED configuration",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Channel 0",
+    "1": "Channel 1"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "Counter/frequency value channel 0",
+   "description": "Counter or frequency per the channel type code; low word at the lower address.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40003",
+   "name": "Counter/frequency value channel 1",
+   "description": "Counter or frequency per the channel type code; low word at the lower address.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 64,
+   "documented": "40065",
+   "name": "Max value of counter 0",
+   "description": "Factory 65535 in each word.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 66,
+   "documented": "40067",
+   "name": "Max value of counter 1",
+   "description": "Factory 65535 in each word.",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 96,
+   "documented": "40097",
+   "name": "Preset value of counter 0",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 98,
+   "documented": "40099",
+   "name": "Preset value of counter 1",
+   "description": "",
+   "data_type": "UINT32",
+   "length": 2,
+   "word_order": "CDAB",
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 160,
+   "documented": "40161",
+   "name": "Low level width threshold",
+   "description": "2-65535 us.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "us",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 161,
+   "documented": "40162",
+   "name": "High level width threshold",
+   "description": "2-65535 us.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "us",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 162,
+   "documented": "40163",
+   "name": "Low voltage trigger value",
+   "description": "0-5.0 V; factory 0.8 V.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 163,
+   "documented": "40164",
+   "name": "High voltage trigger value",
+   "description": "0-5.0 V; factory 2.4 V.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "page": "https://easymodbus.com/modbus-register-maps/icp-das/m-7080",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

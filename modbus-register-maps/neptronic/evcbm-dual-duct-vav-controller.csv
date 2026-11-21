@@ -1,0 +1,108 @@
+﻿# Neptronic EVCBM dual-duct VAV controller (Modbus communication module) Modbus register map - easymodbus.com - source: https://www.neptronic.com/controls/PDF/EVC/BACnetModbus/20181001/EVCBM%20Dual%20Duct-V500-Modbus%20Guide-180927-ESA.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,40000,40001,Modbus address and product type,High byte = product type (111 for EVCB); low byte = Modbus address 1-246.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,40001,40002,Baud rate,Baud / 100 (e.g. 384 = 38400); 0 = auto-detect.,UINT16,1,,100,0,baud,Read/write,0 = Auto baud rate detection
+Holding register,"FC03 read / FC06, FC16 write",2,40002,40003,Modbus port configuration,,UINT16,1,,1,0,,Read/write,"1 = No parity, 2 stop bits; 2 = Even parity, 1 stop bit; 3 = Odd parity, 1 stop bit"
+Holding register,"FC03 read / FC06, FC16 write",7,40007,40008,Firmware version,e.g. 409.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,40008,40009,EEPROM version,e.g. 203.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,40009,40010,System status 1,Other bits reserved.,BITMAP16,1,,1,0,,Read,bit 12 = CO2 alarm
+Holding register,"FC03 read / FC06, FC16 write",10,40010,40011,System status 2,Other bits reserved.,BITMAP16,1,,1,0,,Read,bit 12 = Alarm override
+Holding register,"FC03 read / FC06, FC16 write",11,40011,40012,Internal temperature,TRL sensor; 0-50.,UINT16,1,,0.01,0,°C / °F,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,40012,40013,External temperature,-40 to 100.,INT16,1,,0.01,0,°C / °F,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,40014,40015,Internal humidity,TRLH / TRLGH sensor; 32767 if not fitted.,INT16,1,,0.1,0,%RH,Read,
+Holding register,"FC03 read / FC06, FC16 write",15,40015,40016,Input 3 pressure sensor reading,0-4000 mV.,UINT16,1,,1,0,mV,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,40016,40017,Pressure input 2 value,"Slave side, 0-4000 mV.",UINT16,1,,1,0,mV,Read,
+Holding register,"FC03 read / FC06, FC16 write",19,40019,40020,Supply air temperature,-40 to 100.,INT16,1,,0.01,0,°C / °F,Read,
+Holding register,"FC03 read / FC06, FC16 write",20,40020,40021,Control temperature,Temperature used for control; writable.,INT16,1,,0.01,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",21,40021,40022,Heating ramp 1 demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,40022,40023,Cooling ramp 1 demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,40023,40024,Internal temperature offset,-5 to 5.,INT16,1,,0.01,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",24,40024,40025,External temperature offset,-5 to 5.,INT16,1,,0.01,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",25,40025,40026,Occupied temperature setpoint,Limited by 40026 / 40027.,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",26,40026,40027,Minimum day setpoint,,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",27,40027,40028,Maximum day setpoint,,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28,40028,40029,Night setback / unoccupied cooling setpoint,,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",29,40029,40030,Night setback / unoccupied heating setpoint,,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",30,40030,40031,Cooling proportional band 1,0.5-5.,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",31,40031,40032,Heating proportional band 1,0.5-5.,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32,40032,40033,Cooling dead band 1,0-5.,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",33,40033,40034,Heating dead band 1,0-5.,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",35,40035,40036,Night setback override delay,0-180 min.,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",36,40036,40037,Heating integral time,0-250 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",37,40037,40038,Cooling anti-cycle delay,0-15 min before the cooling contact may restart.,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",38,40038,40039,Floating time 1,"Actuator 90° run time, 15-250 s.",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",39,40039,40040,Occupancy delay,0-180 min.,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40,40040,40041,Cooling ramp 2 demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",41,40041,40042,Cooling ramp 2 proportional band,,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",42,40042,40043,Cooling ramp 2 dead band,,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",43,40043,40044,Heating ramp 2 demand,Printed as writable.,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",44,40044,40045,Heating ramp 2 proportional band,,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",45,40045,40046,Heating ramp 2 dead band,,UINT16,1,,0.1,0,°C / °F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",50,40050,40051,AO2 minimum voltage,,UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",52,40052,40053,AO2 maximum voltage,,UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",53,40053,40054,Pressure 1 filter,"Master side, 1-10 s.",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",54,40054,40055,Airflow K-factor 1,"Master side, 100-9995 CFM.",UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",55,40055,40056,Minimum cooling airflow,,UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",56,40056,40057,Maximum cooling airflow,,UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57,40057,40058,Minimum heating airflow,,UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",58,40058,40059,Maximum heating airflow,,UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",60,40060,40061,Actual airflow 1,"Master side, from the differential pressure sensor.",UINT16,1,,1,0,CFM,Read,
+Holding register,"FC03 read / FC06, FC16 write",61,40061,40062,Airflow setpoint 1,Master side.,UINT16,1,,1,0,CFM,Read,
+Holding register,"FC03 read / FC06, FC16 write",62,40062,40063,Airflow 1 balancing maximum,Used in balancing mode 3 (maximum flow) for the K-factor.,UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",63,40063,40064,Motor 2 position,"Slave side, 0-100 %.",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64,40064,40065,Analog output 2 value,,UINT16,1,,0.1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",65,40065,40066,TRIAC 1 close demand,"Demand at which TO1 closes, 15-80 %.",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",66,40066,40067,TRIAC 2 close demand,"Demand at which TO2 closes, 15-80 %.",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",69,40069,40070,TRIAC 1 open demand,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",70,40070,40071,TRIAC 2 open demand,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",73,40073,40074,Cooling integral time,0-250 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",74,40074,40075,Motor 1 position,"Master side, 0-100 %.",UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",81,40081,40082,Airflow 1 offset calibration,"Master side, -500 to 500 CFM; balancing mode must be 1 (close).",INT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",84,40084,40085,Airflow 1 balancing minimum,Master side.,UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",89,40089,40090,Airflow K-factor 2,"Slave side, 100-9995 CFM.",UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",90,40090,40091,Actual airflow 2,Slave side.,UINT16,1,,1,0,CFM,Read,
+Holding register,"FC03 read / FC06, FC16 write",91,40091,40092,Airflow setpoint 2,Slave side.,UINT16,1,,1,0,CFM,Read,
+Holding register,"FC03 read / FC06, FC16 write",92,40092,40093,Airflow 2 offset calibration,"Slave side, -500 to 500 CFM; balancing mode must be 1 (close).",INT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",93,40093,40094,Airflow 2 balancing minimum,Slave side; balancing mode must be 2 (minimum flow).,UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",94,40094,40095,Airflow 2 balancing maximum,Slave side; balancing mode 3 (maximum flow) or higher.,UINT16,1,,1,0,CFM,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",95,40095,40096,Pressure 2 filter,"Slave side, 1-10 s.",UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",96,40096,40097,Network fallback timeout,0-60 min.,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",98,40098,40099,CO2 sensor maximum range,100-5000 ppm.,UINT16,1,,1,0,ppm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",99,40099,40100,CO2 alarm limit,,UINT16,1,,1,0,ppm,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",104,40104,40105,TRIAC on/off,,UINT16,1,,1,0,,Read,1 = TO1 on/off; 2 = TO2 on/off
+Holding register,"FC03 read / FC06, FC16 write",105,40105,40106,Occupancy / night setback command,,UINT16,1,,1,0,,Read/write,1 = Locally; 2 = Off; 3 = Occupancy; 4 = No occupancy; 5 = Day; 6 = Night
+Holding register,"FC03 read / FC06, FC16 write",106,40106,40107,Digital input 1 status,,UINT16,1,,1,0,,Read,0 = Open; 1 = Closed
+Holding register,"FC03 read / FC06, FC16 write",108,40108,40109,User system control mode,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Heat; 3 = Cool; 4 = Off
+Holding register,"FC03 read / FC06, FC16 write",109,40109,40110,User mode permissions,Which modes the user may select.,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Heat; 3 = Cool; 4 = Cool-Heat; 5 = Auto-Lock
+Holding register,"FC03 read / FC06, FC16 write",110,40110,40111,Night setback status,,UINT16,1,,1,0,,Read,1 = Day; 2 = Night; 3 = Derogation
+Holding register,"FC03 read / FC06, FC16 write",111,40111,40112,DI1 mode,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Occupancy NO; 3 = Occupancy NC; 4 = Night setback NO; 5 = Night setback NC
+Holding register,"FC03 read / FC06, FC16 write",112,40112,40113,AI2 input type,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = ETS; 3 = CO2; 4 = AST
+Holding register,"FC03 read / FC06, FC16 write",113,40113,40114,Zone occupancy status,,UINT16,1,,1,0,,Read,1 = No occupancy; 2 = Occupancy; 3 = Derogation
+Holding register,"FC03 read / FC06, FC16 write",115,40115,40116,AO2 control ramp,7-12 reserved.,UINT16,1,,1,0,,Read/write,1 = Off; 2 = CR1 (cool ramp 1); 3 = CR2 (cool ramp 2); 4 = HR1 (heat ramp 1); 5 = HR2 (heat ramp 2); 6 = CO2
+Holding register,"FC03 read / FC06, FC16 write",116,40116,40117,TO1 control ramp,7-12 reserved.,UINT16,1,,1,0,,Read/write,1 = Off; 2 = CR1 (cool ramp 1); 3 = CR2 (cool ramp 2); 4 = HR1 (heat ramp 1); 5 = HR2 (heat ramp 2); 6 = CO2
+Holding register,"FC03 read / FC06, FC16 write",117,40117,40118,TO2 control ramp,7-12 reserved.,UINT16,1,,1,0,,Read/write,1 = Off; 2 = CR1 (cool ramp 1); 3 = CR2 (cool ramp 2); 4 = HR1 (heat ramp 1); 5 = HR2 (heat ramp 2); 6 = CO2
+Holding register,"FC03 read / FC06, FC16 write",120,40120,40121,TO1 signal type,,UINT16,1,,1,0,,Read/write,3 = Pulsing; 4 = On/Off; 5 = Floating
+Holding register,"FC03 read / FC06, FC16 write",121,40121,40122,TO2 signal type,,UINT16,1,,1,0,,Read/write,3 = Pulsing; 4 = On/Off
+Holding register,"FC03 read / FC06, FC16 write",125,40125,40126,Motor ramp,,UINT16,1,,1,0,,Read/write,2 = CR1 (cooling ramp 1); 4 = HR1 (heating ramp 1)
+Holding register,"FC03 read / FC06, FC16 write",129,40129,40130,DI2 mode,,UINT16,1,,1,0,,Read/write,1 = Off; 2 = Override; 3 = OverHeat1; 4 = OverHeat2; 5 = OverHeatAll
+Holding register,"FC03 read / FC06, FC16 write",130,40130,40131,Temperature control source,Programming mode.,UINT16,1,,1,0,,Read/write,1 = Internal temperature; 2 = External temperature; 3 = Remote temperature
+Holding register,"FC03 read / FC06, FC16 write",131,40131,40132,Airflow 1 balance mode,Master side.,UINT16,1,,1,0,,Read/write,1 = Close; 2 = Minimum flow; 3 = Maximum flow; 4 = Full open
+Holding register,"FC03 read / FC06, FC16 write",132,40132,40133,Airflow 2 balance mode,Slave side.,UINT16,1,,1,0,,Read/write,1 = Close; 2 = Minimum flow; 3 = Maximum flow; 4 = Full open
+Holding register,"FC03 read / FC06, FC16 write",133,40133,40134,Night setback motor position,,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Open
+Holding register,"FC03 read / FC06, FC16 write",134,40134,40135,DI2 delay,0-3600 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",138,40138,40139,Airflow hysteresis stop,1-100 %.,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",139,40139,40140,Airflow hysteresis start,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",140,40140,40141,Airflow scale,,UINT16,1,,1,0,,Read/write,1 = Scale 1; 2 = Scale 10; 3 = Scale 100
+Holding register,"FC03 read / FC06, FC16 write",145,40145,40146,Heat/cool switch-over timer,"Wait before swapping between heating and cooling, 0-120 min.",UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",147,40147,40148,Floating TRIAC demand,TO1 or TO2 in floating mode.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",149,40149,40150,TO1 pulsing demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",150,40150,40151,TO2 pulsing demand,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",153,40153,40154,Overheat status,,UINT16,1,,1,0,,Read,1 = Normal; 2 = OverHeat1; 3 = OverHeat2; 4 = OverHeatAll
+Holding register,"FC03 read / FC06, FC16 write",154,40154,40155,Motor 1 position override,Master side.,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Open; 3 = Close; 4 = AirFlowCoolMin; 5 = AirFlowCoolMax
+Holding register,"FC03 read / FC06, FC16 write",155,40155,40156,TRL display information,,UINT16,1,,1,0,,Read/write,1 = Temp demand; 2 = Setpoint demand; 3 = Temp; 4 = Setpoint; 5 = Off
+Holding register,"FC03 read / FC06, FC16 write",156,40156,40157,Digital input 2 status,,UINT16,1,,1,0,,Read,0 = Open; 1 = Closed
+Holding register,"FC03 read / FC06, FC16 write",157,40157,40158,Input 3 minimum reading,"Pressure sensor dead band, 10-180 mV.",UINT16,1,,1,0,mV,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",158,40158,40159,System options 3,Other bits reserved.,BITMAP16,1,,1,0,,Read/write,"bit 2 = CO2 display (1 = yes); bit 3 = CO2 control source (0 = analog, 1 = TRLG); bit 5 = Constant flow option (1 = yes)"
+Holding register,"FC03 read / FC06, FC16 write",160,40160,40161,Internal CO2,TRLG / TRLGH sensor; 32767 if not fitted.,UINT16,1,,1,0,ppm,Read,
+Holding register,"FC03 read / FC06, FC16 write",161,40161,40162,Motor 2 position override,Slave side.,UINT16,1,,1,0,,Read/write,1 = Auto; 2 = Open; 3 = Close; 4 = AirFlowCoolMin; 5 = AirFlowCoolMax
+Holding register,"FC03 read / FC06, FC16 write",163,40163,40164,Occupancy minimum time,0-240 min.,UINT16,1,,1,0,min,Read/write,

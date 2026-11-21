@@ -1,0 +1,48 @@
+﻿# Invertek Drives Optidrive Elevator Core (built-in Modbus RTU) Modbus register map - easymodbus.com - source: https://support.invertekdrives.com/elevator-core/en/modbus-rtu-individual-register-details.html
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Command control word,"Run forward, run reverse and fault reset; needs P1-01 = 1.",BITMAP16,1,,1,0,,Read/write,bit 0 = Run forward (0 = stop); bit 1 = Run reverse (0 = stop); bit 2 = Fault reset request
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Commanded speed reference,"Units follow the drive setting: 0.1 Hz, 1 rpm, 0.01 ft/s or 0.01 m/s.",INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,Internal speed reference,"Pre-ramp speed reference (as P0-13), 0.01 resolution in the active unit.",INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",5,6,40006,Status word,,BITMAP16,1,,1,0,,Read,"bit 0 = Ready (no fault, mains present, safety chain closed); bit 1 = Running; bit 2 = Tripped; bit 6 = At speed set-point; bit 7 = Below minimum speed (P8-02) while enabled; bit 8 = Overload (current above P4-03); bit 9 = Mains loss; bit 10 = Heatsink above 85 °C; bit 11 = Control board above 80 °C; bit 12 = Switching frequency reduction active; bit 13 = Reverse rotation; bit 14 = Auto-tune active; bit 15 = Live toggle bit"
+Holding register,"FC03 read / FC06, FC16 write",6,7,40007,Output speed,"In the active speed unit, two decimal places.",INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",7,8,40008,Output current,105 = 10.5 A.,INT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,9,40009,Output torque,474 = 47.4 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",9,10,40010,Output power,1100 = 11.00 kW.,INT16,1,,0.01,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",10,11,40011,Digital input status,One bit per drive input.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",12,13,40013,Drive power rating,Power rating in kW; resolution not stated.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",13,14,40014,Drive voltage rating,Voltage rating; resolution not stated.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",14,15,40015,I/O firmware,Major x 100 + minor.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",15,16,40016,Power firmware,Major x 100 + minor.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",16,17,40017,Drive type code,Always 0x0330.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",17,18,40018,Active fault code,"Low byte = active fault code, high byte = fault sub-index (0 if none).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",18,19,40019,Alarm code,One bit per active alarm (see the Alarm Codes topic).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",19,20,40020,Analog 1 level,1000 = 100.0 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",20,21,40021,Analog 2 level,1000 = 100.0 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",21,22,40022,Pre-ramp speed reference,Internal speed set-point.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",22,23,40023,DC bus voltage,"Measured, in volts.",UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",23,24,40024,Drive temperature,Heatsink temperature.,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",24,25,40025,Serial number part 1,Registers 25-28 together form the serial number.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",25,26,40026,Serial number part 2,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",26,27,40027,Serial number part 3,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",27,28,40028,Serial number part 4,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",28,29,40029,Digital output status,Bit = 1 when that output is closed.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",29,30,40030,Energy consumption kWh,kWh part of the energy total.,UINT16,1,,1,0,kWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",30,31,40031,Energy consumption MWh,MWh part of the energy total.,UINT16,1,,1,0,MWh,Read,
+Holding register,"FC03 read / FC06, FC16 write",33,34,40034,Drive total run time (h),,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",34,35,40035,Drive total run time (m),,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",35,36,40036,Run time since last enable (h),,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",36,37,40037,Run time since last enable (m),,UINT16,1,,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",37,38,40038,Service time remaining,Time until the next service is due; unit not stated.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",38,39,40039,Control board temperature,,INT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",47,48,40048,STO status,1 when both STO1 and STO2 are closed.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",100,101,40101,P1-01 Primary command source,Set 1 for Modbus RTU control.,UINT16,1,,1,0,,Read/write,0 = Terminal; 1 = Modbus RTU; 2 = CANopen
+Holding register,"FC03 read / FC06, FC16 write",200,201,40201,P2-01 Modbus slave address,"0-247, default 1.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",201,202,40202,P2-02 Modbus RTU baud rate,,UINT16,1,,1,0,,Read/write,0 = 9600 bps; 1 = 19200 bps; 2 = 38400 bps; 3 = 57600 bps; 4 = 115200 bps (default)
+Holding register,"FC03 read / FC06, FC16 write",202,203,40203,P2-03 Modbus RTU data format,,UINT16,1,,1,0,,Read/write,"0 = No parity, 1 stop bit (default); 1 = No parity, 2 stop bits; 2 = Odd parity, 1 stop bit; 3 = Even parity, 1 stop bit"
+Holding register,"FC03 read / FC06, FC16 write",203,204,40204,P2-04 Modbus communications loss timeout,"0.0-5.0 s, default 1.0 s.",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",204,205,40205,P2-05 Communications loss action,,UINT16,1,,1,0,,Read/write,0 = Trip (default); 1 = Ramp to stop then trip; 2 = Ramp to stop only (no trip); 3 = Run at inspection speed (P8-08)
+Holding register,"FC03 read / FC06, FC16 write",205,206,40206,P2-06 Modbus RTU response delay,"Extra characters of delay, 0-16.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",255,256,40256,P2-56 Modbus status word (byte pair),High byte = active error code; low byte = extra status bits.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",257,258,40258,P2-58 Modbus motor current,Only active while P1-01 = 1.,INT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",258,259,40259,P2-59 Modbus output torque,Only active while P1-01 = 1.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",10002,10003,410003,P0-03 STO status (group 0 read),Group 0 parameters read at 10000 + parameter number.,UINT16,1,,1,0,,Read,

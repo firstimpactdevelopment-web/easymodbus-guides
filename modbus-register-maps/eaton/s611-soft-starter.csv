@@ -1,0 +1,92 @@
+﻿# Eaton S611 soft starter (via C441 Ethernet module) Modbus register map - easymodbus.com - source: https://www.precision-elec.com/wp-content/uploads/2021/01/C441-Ethernet-Module-User-Manual-C441R-C441T-C441U-C441V.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Field inputs,Adapter input points.,BITMAP16,1,,1,0,,Read,bit 0 = Input 1; bit 1 = Input 2; bit 2 = Input 3; bit 3 = Input 4
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Control voltage,Adapter supply voltage.,UINT16,1,,1,0,mV,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,DIP switch value,Present DIP switch state.,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",100,101,40101,Field relay outputs,Adapter output relays.,BITMAP16,1,,1,0,,Read/write,bit 0 = Output 1; bit 1 = Output 2
+Holding register,"FC03 read / FC06, FC16 write",109,110,40110,Modbus TCP com timeout,0 = disabled.,UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",110,111,40111,Field relay fault action,"Per relay: 0 = apply fault value, 1 = no change.",BITMAP16,1,,1,0,,Read/write,bit 0 = Relay / output 1; bit 1 = Relay / output 2
+Holding register,"FC03 read / FC06, FC16 write",111,112,40112,Field relay fault state,"Per relay value on comm fault: 0 off, 1 on.",BITMAP16,1,,1,0,,Read/write,bit 0 = Relay / output 1; bit 1 = Relay / output 2
+Holding register,"FC03 read / FC06, FC16 write",112,113,40113,Field relay idle action,"Per relay: 0 = apply idle value, 1 = no change.",BITMAP16,1,,1,0,,Read/write,bit 0 = Relay / output 1; bit 1 = Relay / output 2
+Holding register,"FC03 read / FC06, FC16 write",113,114,40114,Field relay idle state,"Per relay value on comm idle: 0 off, 1 on.",BITMAP16,1,,1,0,,Read/write,bit 0 = Relay / output 1; bit 1 = Relay / output 2
+Holding register,"FC03 read / FC06, FC16 write",142,143,40143,IP allocation method,,UINT16,1,,1,0,,Read,"0 = DHCP; 1 = Upper 3 octets from NV, last octet from DIP switches; 2 = Full address from NV memory; 3 = Restore 192.168.1.254"
+Holding register,"FC03 read / FC06, FC16 write",158,159,40159,Modbus serial com timeout,0 = disabled.,UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",159,160,40160,Modbus TX mode,,UINT16,1,,1,0,,Read/write,0 = RTU; 1 = ASCII
+Holding register,"FC03 read / FC06, FC16 write",160,161,40161,Modbus baud rate,,UINT16,1,,1,0,,Read/write,0 = 19200; 1 = 9600; 2 = 57600; 3 = 115200
+Holding register,"FC03 read / FC06, FC16 write",161,162,40162,Modbus address,Serial slave address loaded at start-up.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",162,163,40163,Modbus parity and stop bits,,UINT16,1,,1,0,,Read/write,"0 = Even, 1 stop; 1 = Odd, 1 stop; 2 = None, 2 stop; 3 = Even, 2 stop; 4 = Odd, 2 stop; 5 = None, 1 stop"
+Holding register,"FC03 read / FC06, FC16 write",200,201,40201,Intercom status,Link between adapter and host device.,BITMAP16,1,,1,0,,Read,"bit 0 = Connected fully, no errors; bit 1 = Message fault occurred; bit 2 = Devices married, target identified; bit 3 = Basic connection established"
+Holding register,"FC03 read / FC06, FC16 write",250,251,40251,Motor ctrl idle loss act disable,1 = keep motor state on comm idle; 0 = apply idle value (252).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",251,252,40252,Motor ctrl com idle action value,,UINT16,1,,1,0,,Read/write,0 = Ignore (no change); 1 = Stop
+Holding register,"FC03 read / FC06, FC16 write",252,253,40253,Motor ctrl com loss act disable,1 = keep motor state on comm loss; 0 = apply loss value (254).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",253,254,40254,Motor ctrl com loss action value,,UINT16,1,,1,0,,Read/write,0 = Ignore (no change); 1 = Stop
+Holding register,"FC03 read / FC06, FC16 write",299,300,40300,Motor status,,BITMAP16,1,,1,0,,Read,bit 0 = Run; bit 2 = In bypass; bit 5 = Fault; bit 11 = Relay 1 state; bit 12 = Relay 2 state; bit 13 = Control from network; bit 14 = Permissive state
+Holding register,"FC03 read / FC06, FC16 write",300,301,40301,Current scale factor,Factor used to scale 302-305.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",301,302,40302,Phase A RMS current,Scaled by register 301.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",302,303,40303,Phase B RMS current,Scaled by register 301.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",303,304,40304,Phase C RMS current,Scaled by register 301.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",304,305,40305,Average current,Scaled by register 301.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",305,306,40306,Vab RMS voltage,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",306,307,40307,Vbc RMS voltage,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",307,308,40308,Vca RMS voltage,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",308,309,40309,Average voltage,,UINT16,1,,1,0,V,Read,
+Holding register,"FC03 read / FC06, FC16 write",309,310,40310,Total kilowatts,Printed scale factor x10.,UINT16,1,,0.1,0,kW,Read,
+Holding register,"FC03 read / FC06, FC16 write",310,311,40311,Apparent power factor,Power factor x 100.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",311,312,40312,Power sign,Tells whether power is positive or negative (generating).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",312,313,40313,Line frequency,,UINT16,1,,0.01,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",313,314,40314,Overload thermal memory,100% causes an overload trip.,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",314,315,40315,Current unbalance,,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",315,316,40316,Voltage unbalance,,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",316,317,40317,Residual ground fault current,Scaling x100.,UINT16,1,,0.01,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",317,318,40318,Phase A pole temperature,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",318,319,40319,Phase B pole temperature,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",319,320,40320,Phase C pole temperature,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",320,321,40321,Average pole temperature,,UINT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",321,322,40322,Number of starts,Resettable via 402.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",322,323,40323,Total run time,Resettable via 402.,UINT16,1,,1,0,h,Read,
+Holding register,"FC03 read / FC06, FC16 write",323,324,40324,Trip reason,,BITMAP16,1,,1,0,,Read,bit 0 = Overload; bit 1 = Jam; bit 2 = Stall; bit 3 = Current imbalance; bit 4 = Load disconnect; bit 5 = Phase loss; bit 6 = Mains fault; bit 7 = Phase reversal; bit 8 = Shorted SCR; bit 9 = SCR not firing; bit 10 = Pole over-temperature; bit 11 = Bypass dropout; bit 12 = SCR overcurrent; bit 13 = Contactor overcurrent; bit 14 = Communication fault; bit 15 = Other device fault
+Holding register,"FC03 read / FC06, FC16 write",324,325,40325,Fault code,Most recent fault when read as one register.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",336,337,40337,UI firmware version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",337,338,40338,Unit ID,Product identifier.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",399,400,40400,Motor control,,BITMAP16,1,,1,0,,Read/write,bit 0 = Run; bit 2 = Permissive; bit 3 = Reset
+Holding register,"FC03 read / FC06, FC16 write",400,401,40401,Start input behavior,,UINT16,1,,1,0,,Read/write,0 = Edge; 1 = Level
+Holding register,"FC03 read / FC06, FC16 write",401,402,40402,Command register,,UINT16,1,,1,0,,Read/write,1 = Clear motor run hours; 2 = Clear motor start count; 3 = Clear fault queue; 255 = Force overload reset
+Holding register,"FC03 read / FC06, FC16 write",402,403,40403,Configuration reset,,UINT16,1,,1,0,,Read/write,1 = Soft reset; 2 = Factory defaults
+Holding register,"FC03 read / FC06, FC16 write",403,404,40404,Overload FLA,Scaling x10.,UINT16,1,,0.1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",404,405,40405,Rated voltage,Motor rated voltage.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",405,406,40406,Start method,,UINT16,1,,1,0,,Read/write,0 = Vramp (voltage ramp); 1 = Limit; 2 = Pump
+Holding register,"FC03 read / FC06, FC16 write",406,407,40407,Start time,Start ramp time.,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",407,408,40408,Initial torque,Starting torque percent.,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",408,409,40409,Stop time,Stop ramp time.,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",409,410,40410,Pump stop time,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",410,411,40411,Kick start time,,UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",411,412,40412,Kick start initial torque,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",412,413,40413,Reset mode,,UINT16,1,,1,0,,Read/write,0 = Manual; 1 = Auto
+Holding register,"FC03 read / FC06, FC16 write",413,414,40414,Fault enable bits,,BITMAP16,1,,1,0,,Read/write,bit 0 = Overload; bit 1 = Jam; bit 2 = Stall; bit 3 = Current imbalance; bit 4 = Load disconnect; bit 5 = Phase loss; bit 6 = Under voltage; bit 7 = Over voltage; bit 8 = Voltage unbalance; bit 9 = Phase reversal; bit 10 = Ground fault; bit 11 = Overload on start; bit 12 = Shorted SCR; bit 13 = SCR not firing; bit 14 = Over temperature
+Holding register,"FC03 read / FC06, FC16 write",414,415,40415,Overload class,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",415,416,40416,Jam trip level,Percent of FLA.,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",416,417,40417,Jam trip delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",417,418,40418,Stall trip level,Percent of FLA.,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",418,419,40419,Residual GF trip level,Scaling x100.,UINT16,1,,0.01,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",419,420,40420,Residual GF trip delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",420,421,40421,Residual GF start delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",421,422,40422,Current unbalance trip level,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",422,423,40423,Current unbalance trip delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",423,424,40424,Load disconnect trip level,Percent of rated FLA.,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",424,425,40425,Load disconnect trip delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",425,426,40426,Load disconnect source,,UINT16,1,,1,0,,Read/write,0 = Under power; 1 = Under current
+Holding register,"FC03 read / FC06, FC16 write",426,427,40427,Phase loss trip level,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",427,428,40428,Phase loss trip delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",428,429,40429,Under voltage level,Percent of set voltage.,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",429,430,40430,Under voltage trip delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",430,431,40431,Over voltage level,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",431,432,40432,Over voltage trip delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",432,433,40433,Voltage unbalance trip level,,UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",433,434,40434,Voltage unbalance trip delay,,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",434,435,40435,Phase sequence,,UINT16,1,,1,0,,Read/write,1 = ABC; 2 = ACB
+Holding register,"FC03 read / FC06, FC16 write",435,436,40436,Fault relay config,,UINT16,1,,1,0,,Read/write,0 = Faulted; 1 = Not faulted
+Holding register,"FC03 read / FC06, FC16 write",436,437,40437,Auxiliary relay configuration,,UINT16,1,,1,0,,Read/write,0 = Faulted; 1 = Not faulted; 2 = Bypass; 3 = Not in bypass; 4 = Motor energized; 5 = Motor not energized
+Holding register,"FC03 read / FC06, FC16 write",437,438,40438,UI edit lock,,UINT16,1,,1,0,,Read/write,0 = Unlocked; 1 = Locked
+Holding register,"FC03 read / FC06, FC16 write",442,443,40443,Communication loss timeout,,UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",443,444,40444,Communication loss behavior,,UINT16,1,,1,0,,Read/write,1 = Fault; 2 = Hold last state; 3 = Stop
+Holding register,"FC03 read / FC06, FC16 write",444,445,40445,Network timeout enable,Network watchdog.,UINT16,1,,1,0,,Read/write,0 = Disable; 1 = Enable

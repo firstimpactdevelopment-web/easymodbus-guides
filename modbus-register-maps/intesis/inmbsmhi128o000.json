@@ -1,0 +1,496 @@
+{
+ "manufacturer": "Intesis (HMS Networks)",
+ "manufacturer_slug": "intesis",
+ "model": "INMBSMHI128O000 / INMBSMHI048O000 Mitsubishi Heavy Industries Superlink to Modbus gateway",
+ "model_slug": "inmbsmhi128o000",
+ "short_model": "INMBSMHI128O000 MHI Superlink",
+ "aliases": [
+  "INMBSMHI128O000",
+  "INMBSMHI048O000",
+  "MH-AC-MBS-128",
+  "MH-AC-MBS-48",
+  "Intesis Modbus Server MHI Superlink"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "Intesis Modbus Server - Mitsubishi Heavy Industries AC, order codes INMBSMHI128O000 (128 units, Superlink-II) and INMBSMHI048O000 (48 units, Superlink-I or II), user's manual r1.0 (05/2012).",
+ "summary": "Gateway that sits on the Mitsubishi Heavy Industries Superlink bus and exposes up to 128 (or 48) indoor units as a fixed Modbus map: 20 registers per unit address with on/off, mode, setpoint, fan, louver, room temperature, error and lock, plus a few all-unit commands. Modbus RTU (RS-485 or RS-232) and Modbus TCP.",
+ "transport": [
+  "RTU",
+  "TCP"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": 502
+ },
+ "addressing": {
+  "convention": "1-based",
+  "note": "The tables say 'base addr is 1': printed register 1 is wire address 0. Indoor unit with Superlink address n (0..127) uses printed n x 20 + 1 .. n x 20 + 14, so wire n x 20 + 0..13. This file lists unit address 0 (printed 1..14, wire 0..13) and the all-unit block (printed 2995..3000)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Intesis Modbus Server - Mitsubishi Heavy Industries AC User's Manual",
+  "doc_number": "User's Manual r1.0 eng",
+  "revision_date": "2012-05",
+  "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-inmbsmhixxxo000.pdf",
+  "pages": "pp. 8-10 (Modbus interface and address map), p. 26 (error codes)"
+ },
+ "notes": [
+  "Only indoor unit address 0 is listed. For unit address n add n x 20 to each wire address (unit 127 on/off: printed 2542, wire 2541).",
+  "The manual says registers are 2-byte big-endian values but does not say signed or unsigned; all listed values are non-negative, so UINT16 is used.",
+  "Temperatures are whole °C (no x10).",
+  "Writes must use function 06 (single register). Reads use 03 or 04. A poll range containing an invalid address returns an exception.",
+  "Error code numbers match MHI remote-controller E codes (value 40 = E40 high pressure); full table on p. 26 of the manual.",
+  "INMBSMHI048O000 serves unit addresses 00..47 only."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "1",
+   "name": "IU communication status",
+   "description": "Indoor unit address 0 shown; see notes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Communication OK",
+    "1": "Communication error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "2",
+   "name": "IU on/off",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "3",
+   "name": "IU operation mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Cool",
+    "1": "Heat",
+    "2": "Fan",
+    "3": "Auto",
+    "4": "Dry"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "4",
+   "name": "IU setpoint temperature",
+   "description": "Whole °C, 16..30.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "5",
+   "name": "IU fan speed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Low",
+    "1": "Medium",
+    "2": "High",
+    "3": "Powerful"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "6",
+   "name": "IU remote controller lock",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Remote controller locked",
+    "1": "Remote controller unlocked"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "7",
+   "name": "IU louver control",
+   "description": "Reads Swing while the louver moves between positions.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Swing",
+    "1": "Pos 1",
+    "2": "Pos 2",
+    "3": "Pos 3",
+    "4": "Pos 4"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "8",
+   "name": "IU room temperature",
+   "description": "Whole °C, 0..30.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "9",
+   "name": "IU filter sign",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "10",
+   "name": "IU error code",
+   "description": "0 = no error; 1..99 = MHI E-code number (e.g. 9 = E9 drain trouble).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "11",
+   "name": "IU compressor status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "12",
+   "name": "IU filter sign reset",
+   "description": "Reads back 0.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Clear filter alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "13",
+   "name": "IU remote controller error reset",
+   "description": "Reads back 0.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Clear remote controller error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "14",
+   "name": "IU thermo on/off status",
+   "description": "Inverter units only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2994,
+   "documented": "2995",
+   "name": "Hardware communication status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No hardware communication error",
+    "1": "Hardware communication error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2995,
+   "documented": "2996",
+   "name": "All units on/off",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2996,
+   "documented": "2997",
+   "name": "All units operation mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Cool",
+    "1": "Heat",
+    "2": "Fan",
+    "3": "Auto",
+    "4": "Dry"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2997,
+   "documented": "2998",
+   "name": "All units setpoint",
+   "description": "Whole °C, 16..30.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "W",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2998,
+   "documented": "2999",
+   "name": "All units fan speed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Low",
+    "1": "Medium",
+    "2": "High",
+    "3": "Powerful"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2999,
+   "documented": "3000",
+   "name": "All units remote controller lock",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Remote controller locked",
+    "1": "Remote controller unlocked"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Enable the indoor units in LinkBoxMB, set the SLK selector (New = Superlink-II, Old = Superlink-I), then poll each unit's 20-register block. Write single registers (FC06) for on/off, mode, setpoint and fan.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Unit communication status"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "On/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Setpoint (°C)"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Fan speed"
+   },
+   {
+    "table": "holding_register",
+    "address": 7,
+    "why": "Room temperature (°C)"
+   },
+   {
+    "table": "holding_register",
+    "address": 9,
+    "why": "Error code"
+   },
+   {
+    "table": "holding_register",
+    "address": 2994,
+    "why": "Gateway hardware communication status"
+   }
+  ],
+  "enable": "Each indoor unit must be enabled in the LinkBoxMB Devices list and the configuration file sent to the gateway.",
+  "watchdog": "A per-unit communication-error signal is raised when a unit stops answering within the 'Timeout response' set in LinkBoxMB (2000..10000 ms).",
+  "quirks": [
+   "Printed addresses are 1-based: subtract 1 for the wire address.",
+   "Only FC06 is supported for writes (no FC16).",
+   "Mode codes differ from most other Intesis maps: 0 = Cool, 1 = Heat, 2 = Fan, 3 = Auto, 4 = Dry."
+  ],
+  "setup": [
+   "Configure Modbus (TCP and/or RTU, RS-485 on C1 or RS-232 on C2, baud 1200..38400, parity, slave number) in LinkBoxMB over the console port.",
+   "Superlink connects to the A-B terminals (no polarity), max 1000 m, no loop wiring.",
+   "Set the SLK selector to NEW for Superlink-II systems or OLD for Superlink-I."
+  ],
+  "gotchas": [
+   "With SC-SL2NA / SC-SL3NA central controllers present, unconnected indoor units must be deregistered and the remote lock rights adjusted (see manual section 1)."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/intesis/inmbsmhi128o000",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

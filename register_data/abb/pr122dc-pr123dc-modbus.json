@@ -1,0 +1,427 @@
+{
+  "manufacturer": "ABB",
+  "manufacturer_slug": "abb",
+  "model": "SACE Emax DC PR122DC / PR123DC trip units with PR120/D-M (Modbus RTU)",
+  "model_slug": "pr122dc-pr123dc-modbus",
+  "short_model": "PR122DC/PR123DC",
+  "aliases": [
+    "PR122DC",
+    "PR123DC",
+    "PR120/D-M",
+    "Emax DC",
+    "SACE Emax DC"
+  ],
+  "equipment_type": "Power meter (DC circuit breaker trip unit)",
+  "applies_to": "ABB SACE PR122DC and PR123DC DC protection trip units with the PR120/D-M communication module, document rev 02 (04/04/2014, SW 3.01 and later).",
+  "summary": "The PR122DC and PR123DC are the DC versions of ABB's Emax trip units. With the PR120/D-M module they talk Modbus RTU: pole currents, DC voltage, power and energy are input registers, and commands such as open, close and trip reset are written to two holding registers. 32-bit values are sent low word first.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": 8,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The map gives relative addresses on 30001 (input registers, function 4) and 40001 (holding registers) bases; its example says run-time measures at offset 200 are 30201, relative address 200, which is the wire address with 'Standard' addressing."
+  },
+  "default_word_order": "CDAB",
+  "firmware": "SW 3.01 and later",
+  "source": {
+    "title": "Communication System Interface for protection trip units PR122DC and PR123DC + PR120/D-M Com module",
+    "doc_number": "1SDH000841R0001 rev 02",
+    "revision_date": "2014-04-04",
+    "url": "https://library.e.abb.com/public/14a57dd39209c59dc12578b100664838/1SDH000841R0001.pdf",
+    "pages": "Comms parameters p. 5; Modbus map and word order pp. 9-10; commands p. 13; state pp. 16-18; run-time measures p. 19; information p. 20"
+  },
+  "notes": [
+    "The document states 4-byte values are sent with the low word at the lower address (LOW-HIGH), bytes within a word high first, so 32-bit registers are CDAB.",
+    "External bus settings: 9600 or 19200 baud, address 1-247, Standard or ABB addressing, E,8,1 / O,8,1 / N,8,2 / N,8,1. The document does not state the external-bus factory values.",
+    "IB, IB_2, ground current, voltage, power and energy are PR123DC only.",
+    "Left out: state words other than 2 and 8, statistics, history, logger and parameter areas.",
+    "Over the external bus, commands are accepted only in Remote mode (state 2 bit 9)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "40001 (rel. 0)",
+      "name": "Command type",
+      "description": "Write with the parameter in one function-16 request.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": {
+        "0": "Dummy",
+        "1": "Trip reset",
+        "2": "Signalling reset",
+        "3": "Communication statistics reset",
+        "4": "Log event reset",
+        "5": "Start programming session",
+        "6": "Abort programming session",
+        "7": "Stop programming session",
+        "8": "CB open",
+        "9": "CB close",
+        "10": "CB reset",
+        "11": "Wink toggle",
+        "12": "History measure reset",
+        "13": "History energy reset",
+        "14": "Datalogger trigger restart",
+        "15": "Datalogger stop"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40002 (rel. 1)",
+      "name": "Command parameter",
+      "description": "0 when the command needs none.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 101,
+      "documented": "30102 (rel. 101)",
+      "name": "State 2 - flags",
+      "description": "Breaker position and remote/local.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Any alarm / timing / warning",
+        "1": "Any trip (latched)",
+        "2": "CB tripped",
+        "3": "CB connected (0 = isolated)",
+        "4": "CB closed (0 = open)",
+        "5": "CB undefined",
+        "6": "No communication on local bus",
+        "7": "Springs charged",
+        "8": "Trip command fail",
+        "9": "Remote mode (0 = local)",
+        "10": "Programming OK",
+        "11": "Programming failed",
+        "12": "Internal bus programming session",
+        "13": "Test bus programming session",
+        "14": "Local bus programming session",
+        "15": "System bus programming session"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 107,
+      "documented": "30108 (rel. 107)",
+      "name": "State 8 - latched trips",
+      "description": "Cleared by CB reset or trip reset.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "L tripped",
+        "1": "S tripped",
+        "2": "S2 tripped",
+        "3": "I tripped (or MCR)",
+        "4": "Iinst tripped",
+        "5": "G tripped",
+        "7": "OT tripped",
+        "9": "U tripped",
+        "10": "UV tripped",
+        "11": "OV tripped",
+        "13": "RP tripped"
+      }
+    },
+    {
+      "table": "input_register",
+      "address": 200,
+      "documented": "30201-30202 (rel. 200)",
+      "name": "Maximum current",
+      "description": "2^32-1 = not available.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 202,
+      "documented": "30203 (rel. 202)",
+      "name": "Maximum current polarity",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not available",
+        "1": "IA",
+        "2": "IA_2",
+        "3": "IB",
+        "4": "IB_2"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 203,
+      "documented": "30204-30205 (rel. 203)",
+      "name": "IA current",
+      "description": "2^32-1 = not available.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 205,
+      "documented": "30206-30207 (rel. 205)",
+      "name": "IA_2 current",
+      "description": "2^32-1 = not available.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 207,
+      "documented": "30208-30209 (rel. 207)",
+      "name": "IB current",
+      "description": "PR123DC. 2^32-1 = not available.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 209,
+      "documented": "30210-30211 (rel. 209)",
+      "name": "IB_2 current",
+      "description": "PR123DC. 2^32-1 = not available.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 211,
+      "documented": "30212-30213 (rel. 211)",
+      "name": "Ground current",
+      "description": "PR123DC. 2^32-1 = not available.",
+      "data_type": "UINT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 217,
+      "documented": "30218 (rel. 217)",
+      "name": "DC voltage",
+      "description": "PR123DC; 65535 = not available.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "V",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 218,
+      "documented": "30219-30220 (rel. 218)",
+      "name": "Total active power",
+      "description": "PR123DC; 2^31-1 = not available.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 0.1,
+      "units": "kW",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 220,
+      "documented": "30221-30222 (rel. 220)",
+      "name": "Positive active energy",
+      "description": "PR123DC.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "kWh",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 222,
+      "documented": "30223-30224 (rel. 222)",
+      "name": "Negative active energy",
+      "description": "PR123DC.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "kWh",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 224,
+      "documented": "30225-30226 (rel. 224)",
+      "name": "Total active energy",
+      "description": "PR123DC.",
+      "data_type": "INT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "kWh",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 700,
+      "documented": "30701 (rel. 700)",
+      "name": "Slave ID",
+      "description": "Identifies the trip unit model.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "88": "PR123DC (0x58)",
+        "89": "PR122DC (0x59)"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 704,
+      "documented": "30705 (rel. 704)",
+      "name": "Rated current In",
+      "description": "100-6300 A.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "A",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read input registers 200-225 for currents, voltage, power and energy, and 101/107 for breaker state and trips. Open, close or reset with a function-16 write of command type and parameter to registers 0-1.",
+    "minimum_registers": [
+      {
+        "table": "input_register",
+        "address": 101,
+        "why": "CB open/closed, tripped, remote"
+      },
+      {
+        "table": "input_register",
+        "address": 107,
+        "why": "Which protection tripped"
+      },
+      {
+        "table": "input_register",
+        "address": 203,
+        "why": "Pole A current"
+      },
+      {
+        "table": "input_register",
+        "address": 217,
+        "why": "DC voltage"
+      },
+      {
+        "table": "input_register",
+        "address": 218,
+        "why": "Total active power"
+      },
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Commands"
+      }
+    ],
+    "enable": "Fit the PR120/D-M module and set the external bus address, baud and protocol on the trip unit. Remote mode (state 2 bit 9) is needed for open/close commands.",
+    "watchdog": null,
+    "quirks": [
+      "32-bit values are low word first.",
+      "Measures are input registers (function 4).",
+      "Commands always need function 16 with both registers."
+    ],
+    "setup": [
+      "Set the external-bus address (1-247), baud (9600/19200), addressing type and frame format (E,8,1 / O,8,1 / N,8,2 / N,8,1) on the trip unit."
+    ],
+    "gotchas": [
+      "Slave ID register 700 tells PR122DC (0x59) from PR123DC (0x58)."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

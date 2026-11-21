@@ -1,0 +1,765 @@
+{
+ "manufacturer": "LG",
+ "manufacturer_slug": "lg",
+ "model": "THERMA V R32 Monobloc air-to-water heat pump (built-in Modbus RTU)",
+ "model_slug": "therma-v-r32-monobloc-us",
+ "short_model": "LG THERMA V Monobloc",
+ "aliases": [
+  "ZHBW041GA0",
+  "ZHBW048GA0",
+  "ZHBW055GA0",
+  "KPHTC411M",
+  "KPHTC481M",
+  "KPHTC551M",
+  "THERMA V",
+  "MFL68026615"
+ ],
+ "equipment_type": "Heat pump (air-to-water)",
+ "applies_to": "LG THERMA V R32 Monobloc air-to-water heat pumps covered by installation manual MFL68026615 Rev.02 (North American models ZHBW041GA0 / ZHBW048GA0 / ZHBW055GA0), using the indoor PCB's own Modbus RTU slave port.",
+ "summary": "The THERMA V monobloc can be run by a third-party controller over Modbus RTU wired to terminal block 3 (26 = A, 27 = B) on the indoor PCB, with no LG gateway. Coils switch space heating/cooling, hot water, silent mode and emergency functions; discrete inputs report pump, compressor, defrost, heater and error states; holding registers carry the operating mode, control method, setpoints and the smart-grid energy state; input registers give the error code, outdoor-unit cycle, flow rate and product type.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": null,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "The memory map prints Modicon numbers: coils 00001-, discrete inputs 10001-, input registers 30001-, holding registers 40001-. Drop the leading table digit and subtract one to get the wire address (40001 = holding register 0, 30009 = input register 8, 39999 = input register 9998)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Installation Manual - Air-to-Water Heat Pump (THERMA V)",
+  "doc_number": "MFL68026615 Rev.02",
+  "revision_date": "2024-03-27",
+  "url": "https://media.us.lg.com/m/448e6747eb2bae77/original/IM_MFL68026615_02_240405_05_WEB-pdf.pdf",
+  "pages": "p. 25 models; pp. 71-72 3rd party controller wiring; p. 170 Modbus address; pp. 171-173 Modbus memory map"
+ },
+ "notes": [
+  "This file follows the North American Rev.02 edition, where holding registers (function 0x03) are numbered 40001- and input registers (0x04) 30001-.",
+  "Left out: every measured temperature (input registers 30003-30008, 30010, 30011 and 30013: water inlet/outlet, backup heater outlet, DHW tank, solar collector, room air and outdoor air) and the auto-mode shift values 40005 and 40008, because the manual gives a x10 scale but never says whether these values are signed, and they can be negative.",
+  "Setpoints 40003, 40004, 40006, 40007 and 40009 are listed as UINT16: the map prints only the x10 scale and no signedness, but these targets are always positive in the manual's setting ranges (for example leaving water 15-65 °C heating, 5-27 °C cooling), so signed and unsigned reads agree.",
+  "The map skips coil 00004 and discrete input 10007; they are not listed in this edition.",
+  "The error-code register returns LG's numeric error code; the code list is not part of this map."
+ ],
+ "registers": [
+  {
+   "table": "coil",
+   "address": 0,
+   "documented": "00001",
+   "name": "Enable/Disable (Heating/Cooling)",
+   "description": "Space heating/cooling operation on or off.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Operation off",
+    "1": "Operation on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 1,
+   "documented": "00002",
+   "name": "Enable/Disable (DHW)",
+   "description": "Domestic hot water operation on or off.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Operation off",
+    "1": "Operation on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 2,
+   "documented": "00003",
+   "name": "Silent Mode Set",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Silent mode off",
+    "1": "Silent mode on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 4,
+   "documented": "00005",
+   "name": "Emergency Stop",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Normal operation",
+    "1": "Emergency stop"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 5,
+   "documented": "00006",
+   "name": "Trigger Emergency Operation",
+   "description": "Write 1 to start emergency operation.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Keep status",
+    "1": "Operation start"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 0,
+   "documented": "10001",
+   "name": "Water flow status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Flow rate OK",
+    "1": "Flow rate too low"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 1,
+   "documented": "10002",
+   "name": "Water pump status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Water pump off",
+    "1": "Water pump on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 2,
+   "documented": "10003",
+   "name": "Ext. water pump status",
+   "description": "External water pump.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Water pump off",
+    "1": "Water pump on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 3,
+   "documented": "10004",
+   "name": "Compressor status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Compressor off",
+    "1": "Compressor on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 4,
+   "documented": "10005",
+   "name": "Defrosting status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Defrost off",
+    "1": "Defrost on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 5,
+   "documented": "10006",
+   "name": "DHW heating status (DHW thermal on/off)",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "DHW inactive",
+    "1": "DHW active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 7,
+   "documented": "10008",
+   "name": "Silent mode status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Silent mode inactive",
+    "1": "Silent mode active"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 8,
+   "documented": "10009",
+   "name": "Cooling status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No cooling",
+    "1": "Cooling operation"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 9,
+   "documented": "10010",
+   "name": "Solar pump status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Solar pump off",
+    "1": "Solar pump on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 10,
+   "documented": "10011",
+   "name": "Backup heater (step 1) status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 11,
+   "documented": "10012",
+   "name": "Backup heater (step 2) status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 12,
+   "documented": "10013",
+   "name": "DHW boost heater status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 13,
+   "documented": "10014",
+   "name": "Error status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Error state"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 14,
+   "documented": "10015",
+   "name": "Emergency operation available (space heating/cooling)",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Unavailable",
+    "1": "Available"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 15,
+   "documented": "10016",
+   "name": "Emergency operation available (DHW)",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Unavailable",
+    "1": "Available"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "discrete_input",
+   "address": 16,
+   "documented": "10017",
+   "name": "Mix pump status",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Mix pump off",
+    "1": "Mix pump on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 0,
+   "documented": "30001",
+   "name": "Error code",
+   "description": "Active error code number.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 1,
+   "documented": "30002",
+   "name": "ODU operation cycle",
+   "description": "What the outdoor unit is doing.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Standby (off)",
+    "1": "Cooling",
+    "2": "Heating"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8,
+   "documented": "30009",
+   "name": "Current flow rate",
+   "description": "Water flow in tenths of a litre per minute.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "L/min",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 11,
+   "documented": "30012",
+   "name": "Energy state input",
+   "description": "Energy state currently in effect (0 = state 0, 1 = state 1 and so on).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 9997,
+   "documented": "39998",
+   "name": "Product group",
+   "description": "0x8X: the manual lists 0x80, 0x83, 0x88 and 0x89.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 9998,
+   "documented": "39999",
+   "name": "Product info",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Split",
+    "3": "Monobloc",
+    "4": "High temperature",
+    "5": "Medium temperature",
+    "6": "System boiler"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "Operation mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Cooling",
+    "3": "Auto",
+    "4": "Heating"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "Control method (circuit 1/2)",
+   "description": "Which temperature the unit controls to.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Water outlet temperature control",
+    "1": "Water inlet temperature control",
+    "2": "Room air control"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40003",
+   "name": "Target temp (heating/cooling) circuit 1",
+   "description": "Water target for circuit 1, in tenths of a degree.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "40004",
+   "name": "Room air temp. circuit 1",
+   "description": "Room air target for circuit 1, in tenths of a degree.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40006",
+   "name": "Target temp (heating/cooling) circuit 2",
+   "description": "Water target for circuit 2, in tenths of a degree.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40007",
+   "name": "Room air temp. circuit 2",
+   "description": "Room air target for circuit 2, in tenths of a degree.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40009",
+   "name": "DHW target temp.",
+   "description": "Hot water tank target, in tenths of a degree.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "40010",
+   "name": "Energy state input",
+   "description": "Smart-grid style energy state written by the BMS.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Not used",
+    "1": "Forced off (as TB_SG1 closed / TB_SG2 open)",
+    "2": "Normal operation (as TB_SG1 open / TB_SG2 open)",
+    "3": "On-recommendation (as TB_SG1 open / TB_SG2 closed)",
+    "4": "On-command (as TB_SG1 closed / TB_SG2 closed)",
+    "5": "On-command step 2 (++ energy use vs normal)",
+    "6": "On-recommendation step 1 (+ energy use vs normal)",
+    "7": "Energy saving mode (- energy use vs normal)",
+    "8": "Super energy saving mode (-- energy use vs normal)"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Wire RS-485 to terminals 26 (A) and 27 (B), set the unit's Modbus address, then read discrete inputs 10001-10017 and input registers 30001-30012 for status and write coils 00001/00002 plus holding registers 40001-40010 for control.",
+  "minimum_registers": [
+   {
+    "table": "coil",
+    "address": 0,
+    "why": "Space heating/cooling on/off"
+   },
+   {
+    "table": "coil",
+    "address": 1,
+    "why": "Hot water on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Operation mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Circuit 1 water setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 8,
+    "why": "DHW setpoint"
+   },
+   {
+    "table": "discrete_input",
+    "address": 3,
+    "why": "Compressor running"
+   },
+   {
+    "table": "discrete_input",
+    "address": 13,
+    "why": "Error flag"
+   },
+   {
+    "table": "input_register",
+    "address": 0,
+    "why": "Error code"
+   }
+  ],
+  "enable": "Turn DIP switch No.1 of option switch 1 ON (Modbus function as slave for a 3rd-party controller), then set the Modbus address under Installer setting > Modbus Address on the LG controller.",
+  "watchdog": null,
+  "quirks": [
+   "Operation mode codes are 0 = cooling, 3 = auto, 4 = heating (not 0/1/2).",
+   "Product group and product info sit at the top of the input-register range (39998/39999 = wire 9997/9998)."
+  ],
+  "setup": [
+   "Serial settings are 9600 bps, no parity, 1 stop bit.",
+   "The bus connects to terminal block 3 (26 = A, 27 = B); check the CN_MODBUS harness is fully seated in CN_COM on the indoor PCB. The LG meter interface uses the same terminals."
+  ],
+  "gotchas": [
+   "While a 3rd-party Modbus controller is in use, the LG controller cannot run the unit at the same time."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/lg/therma-v-r32-monobloc-us",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

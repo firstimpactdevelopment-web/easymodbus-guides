@@ -1,0 +1,100 @@
+﻿"# RKC Instrument SRV module type controller, TIO temperature control module (Modbus RTU) Modbus register map - easymodbus.com - source: https://flw.com/rkc/pdf/ims01p01e7.pdf"
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0000,40001,Measured value (PV) (CH1),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",1,0001,40002,Comprehensive event state (CH1),,BITMAP16,1,,1,0,,Read,bit 0 = Burnout; bit 1 = Event 1; bit 2 = Event 2; bit 3 = Heater break alarm; bit 4 = Control loop break alarm (LBA)
+Holding register,"FC03 read / FC06, FC16 write",2,0002,40003,Heat-side manipulated output value (CH1),-5.0 to +105.0 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",3,0003,40004,Set value monitor (CH1),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,0004,40005,Error code (module),,BITMAP16,1,,1,0,,Read,bit 0 = Memory backup error; bit 2 = Internal communication error; bit 3 = Adjustment data error; bit 4 = Input error; bit 5 = Current transformer input error; bit 6 = Temperature compensation error
+Holding register,"FC03 read / FC06, FC16 write",5,0005,40006,Cool-side manipulated output value (CH1),-5.0 to +105.0 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",6,0006,40007,Current transformer input measured value (CH1),0.0 to 30.0 A or 0.0 to 100.0 A depending on CT.,INT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,0008,40009,Burnout state (CH1),,UINT16,1,,1,0,,Read,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",9,0009,40010,Event 1 state (CH1),,UINT16,1,,1,0,,Read,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",10,000A,40011,Event 2 state (CH1),,UINT16,1,,1,0,,Read,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",11,000B,40012,Heater break alarm (HBA) state (CH1),,UINT16,1,,1,0,,Read,0 = OFF; 1 = Heater break; 2 = Relay welding
+Holding register,"FC03 read / FC06, FC16 write",12,000C,40013,Control loop break alarm (LBA) state (CH1),,UINT16,1,,1,0,,Read,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",13,000D,40014,Temperature rise completion state (CH1),,UINT16,1,,1,0,,Read,0 = Not complete; 1 = Temperature rise complete
+Holding register,"FC03 read / FC06, FC16 write",15,000F,40016,Operation mode (CH1),,UINT16,1,,1,0,,Read/write,0 = Unused; 1 = Monitor 1; 2 = Monitor 2; 3 = Control
+Holding register,"FC03 read / FC06, FC16 write",16,0010,40017,Set value (SV) (CH1),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",17,0011,40018,Heat-side proportional band (CH1),0 = ON/OFF action. Decimal places follow the input range; V/I inputs are in % of span.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",18,0012,40019,Integral time (CH1),1 to 3600 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",19,0013,40020,Derivative time (CH1),0 to 3600 s; 0 = PI action.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20,0014,40021,Control response parameters (CH1),,UINT16,1,,1,0,,Read/write,0 = Slow; 1 = Medium; 2 = Fast
+Holding register,"FC03 read / FC06, FC16 write",21,0015,40022,PV bias (CH1),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",22,0016,40023,Event 1 set value (CH1),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",23,0017,40024,Event 2 set value (CH1),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28,001C,40029,Cool-side proportional band (CH1),Decimal places follow the input range; V/I inputs are in % of span.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",30,001E,40031,Overlap/Deadband (CH1),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",31,001F,40032,Setting change rate limiter (CH1),"Input span per minute, 0 = off; decimal places follow the input range.",INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32,0020,40033,PID/AT transfer (CH1),,UINT16,1,,1,0,,Read/write,0 = PID control; 1 = Autotuning (AT)
+Holding register,"FC03 read / FC06, FC16 write",33,0021,40034,Auto/Manual transfer (CH1),,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Manual
+Holding register,"FC03 read / FC06, FC16 write",34,0022,40035,Manual output value (CH1),-5.0 to +105.0 %.,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",35,0023,40036,Output limiter (high) (CH1),Output limiter (low) to 105.0 %.,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",36,0024,40037,Output limiter (low) (CH1),-5.0 % to output limiter (high).,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",37,0025,40038,Heat-side proportional cycle time (CH1),1 to 100 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",38,0026,40039,Cool-side proportional cycle time (CH1),1 to 100 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",39,0027,40040,Digital filter (CH1),0 to 100 s; 0 = off.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40,0028,40041,Heater break alarm (HBA) set value (CH1),0.0 to 30.0 A or 0.0 to 100.0 A.,UINT16,1,,0.1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",48,0030,40049,Control RUN/STOP transfer (module),,UINT16,1,,1,0,,Read/write,0 = Control STOP; 1 = Control RUN
+Holding register,"FC03 read / FC06, FC16 write",53,0035,40054,Manipulated output value at input error (CH1),-105.0 to +105.0 %.,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",62,003E,40063,DI state (module),,UINT16,1,,1,0,,Read,0 = Contact open (OFF); 1 = Contact closed (ON)
+Holding register,"FC03 read / FC06, FC16 write",65,0041,40066,DO state (module),Writable only when DO1 and DO2 settings are 0.,UINT16,1,,1,0,,Read/write,"0 = DO1 open, DO2 open; 1 = DO1 closed, DO2 open; 2 = DO1 open, DO2 closed; 3 = DO1 closed, DO2 closed"
+Holding register,"FC03 read / FC06, FC16 write",66,0042,40067,Event interlock release (module),,UINT16,1,,1,0,,Read/write,0 = Normal state; 1 = Execute interlock release
+Holding register,"FC03 read / FC06, FC16 write",67,0043,40068,Temperature rise completion zone (CH1),0 = unused. Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",68,0044,40069,Temperature rise completion soak time (CH1),0 to 360 min.,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2137,0859,42138,Control loop break alarm (LBA) use selection (CH1),,UINT16,1,,1,0,,Read/write,0 = Unused; 1 = Used
+Holding register,"FC03 read / FC06, FC16 write",2138,085A,42139,Control loop break alarm (LBA) time (CH1),1 to 7200 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2144,0860,42145,Initial setting mode (module),Stop control before entering initial setting mode.,UINT16,1,,1,0,,Read/write,0 = Normal setting mode; 1 = Initial setting mode
+Holding register,"FC03 read / FC06, FC16 write",2160,0870,42161,Input range number (CH1),"Input type code 0-37, e.g. 0 = type K, 23 = Pt100, 37 = 4-20 mA.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2161,0871,42162,Input scale high limit (CH1),Voltage/current input only. Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2162,0872,42163,Input scale low limit (CH1),Voltage/current input only. Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2163,0873,42164,Input range decimal point position (CH1),Voltage/current input only.,UINT16,1,,1,0,,Read/write,0 = No decimal place; 1 = One decimal place; 2 = Two decimal places; 3 = Three decimal places
+Holding register,"FC03 read / FC06, FC16 write",2164,0874,42165,Temperature unit selection (CH1),,UINT16,1,,1,0,,Read/write,0 = °C; 1 = °F
+Holding register,"FC03 read / FC06, FC16 write",2165,0875,42166,Control type selection (CH1),,UINT16,1,,1,0,,Read/write,"0 = Heat control, direct action; 1 = Heat control, reverse action; 2 = Heat/cool control, water cooling; 3 = Heat/cool control, air cooling"
+Holding register,"FC03 read / FC06, FC16 write",2170,087A,42171,Event 1 type selection (CH1),,UINT16,1,,1,0,,Read/write,0 = Not provided; 1 = Process high; 2 = Process low; 3 = Deviation high; 4 = Deviation low; 5 = Deviation high/low; 6 = Band
+Holding register,"FC03 read / FC06, FC16 write",2171,087B,42172,Event 2 type selection (CH1),,UINT16,1,,1,0,,Read/write,0 = Not provided; 1 = Process high; 2 = Process low; 3 = Deviation high; 4 = Deviation low; 5 = Deviation high/low; 6 = Band
+Holding register,"FC03 read / FC06, FC16 write",4096,1000,44097,Measured value (PV) (CH2),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4097,1001,44098,Comprehensive event state (CH2),,BITMAP16,1,,1,0,,Read,bit 0 = Burnout; bit 1 = Event 1; bit 2 = Event 2; bit 3 = Heater break alarm; bit 4 = Control loop break alarm (LBA)
+Holding register,"FC03 read / FC06, FC16 write",4098,1002,44099,Heat-side manipulated output value (CH2),-5.0 to +105.0 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",4099,1003,44100,Set value monitor (CH2),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",4101,1005,44102,Cool-side manipulated output value (CH2),-5.0 to +105.0 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",4102,1006,44103,Current transformer input measured value (CH2),0.0 to 30.0 A or 0.0 to 100.0 A depending on CT.,INT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",4104,1008,44105,Burnout state (CH2),,UINT16,1,,1,0,,Read,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",4105,1009,44106,Event 1 state (CH2),,UINT16,1,,1,0,,Read,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",4106,100A,44107,Event 2 state (CH2),,UINT16,1,,1,0,,Read,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",4107,100B,44108,Heater break alarm (HBA) state (CH2),,UINT16,1,,1,0,,Read,0 = OFF; 1 = Heater break; 2 = Relay welding
+Holding register,"FC03 read / FC06, FC16 write",4108,100C,44109,Control loop break alarm (LBA) state (CH2),,UINT16,1,,1,0,,Read,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",4109,100D,44110,Temperature rise completion state (CH2),,UINT16,1,,1,0,,Read,0 = Not complete; 1 = Temperature rise complete
+Holding register,"FC03 read / FC06, FC16 write",4111,100F,44112,Operation mode (CH2),,UINT16,1,,1,0,,Read/write,0 = Unused; 1 = Monitor 1; 2 = Monitor 2; 3 = Control
+Holding register,"FC03 read / FC06, FC16 write",4112,1010,44113,Set value (SV) (CH2),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4113,1011,44114,Heat-side proportional band (CH2),0 = ON/OFF action. Decimal places follow the input range; V/I inputs are in % of span.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4114,1012,44115,Integral time (CH2),1 to 3600 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4115,1013,44116,Derivative time (CH2),0 to 3600 s; 0 = PI action.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4116,1014,44117,Control response parameters (CH2),,UINT16,1,,1,0,,Read/write,0 = Slow; 1 = Medium; 2 = Fast
+Holding register,"FC03 read / FC06, FC16 write",4117,1015,44118,PV bias (CH2),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4118,1016,44119,Event 1 set value (CH2),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4119,1017,44120,Event 2 set value (CH2),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4124,101C,44125,Cool-side proportional band (CH2),Decimal places follow the input range; V/I inputs are in % of span.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4126,101E,44127,Overlap/Deadband (CH2),Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4127,101F,44128,Setting change rate limiter (CH2),"Input span per minute, 0 = off; decimal places follow the input range.",INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4128,1020,44129,PID/AT transfer (CH2),,UINT16,1,,1,0,,Read/write,0 = PID control; 1 = Autotuning (AT)
+Holding register,"FC03 read / FC06, FC16 write",4129,1021,44130,Auto/Manual transfer (CH2),,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Manual
+Holding register,"FC03 read / FC06, FC16 write",4130,1022,44131,Manual output value (CH2),-5.0 to +105.0 %.,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4131,1023,44132,Output limiter (high) (CH2),Output limiter (low) to 105.0 %.,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4132,1024,44133,Output limiter (low) (CH2),-5.0 % to output limiter (high).,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4133,1025,44134,Heat-side proportional cycle time (CH2),1 to 100 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4134,1026,44135,Cool-side proportional cycle time (CH2),1 to 100 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4135,1027,44136,Digital filter (CH2),0 to 100 s; 0 = off.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4136,1028,44137,Heater break alarm (HBA) set value (CH2),0.0 to 30.0 A or 0.0 to 100.0 A.,UINT16,1,,0.1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4149,1035,44150,Manipulated output value at input error (CH2),-105.0 to +105.0 %.,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4163,1043,44164,Temperature rise completion zone (CH2),0 = unused. Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4164,1044,44165,Temperature rise completion soak time (CH2),0 to 360 min.,UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6233,1859,46234,Control loop break alarm (LBA) use selection (CH2),,UINT16,1,,1,0,,Read/write,0 = Unused; 1 = Used
+Holding register,"FC03 read / FC06, FC16 write",6234,185A,46235,Control loop break alarm (LBA) time (CH2),1 to 7200 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6256,1870,46257,Input range number (CH2),"Input type code 0-37, e.g. 0 = type K, 23 = Pt100, 37 = 4-20 mA.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6257,1871,46258,Input scale high limit (CH2),Voltage/current input only. Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6258,1872,46259,Input scale low limit (CH2),Voltage/current input only. Raw integer; decimals follow the input range (0873H for voltage/current inputs).,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6259,1873,46260,Input range decimal point position (CH2),Voltage/current input only.,UINT16,1,,1,0,,Read/write,0 = No decimal place; 1 = One decimal place; 2 = Two decimal places; 3 = Three decimal places
+Holding register,"FC03 read / FC06, FC16 write",6260,1874,46261,Temperature unit selection (CH2),,UINT16,1,,1,0,,Read/write,0 = °C; 1 = °F
+Holding register,"FC03 read / FC06, FC16 write",6261,1875,46262,Control type selection (CH2),,UINT16,1,,1,0,,Read/write,"0 = Heat control, direct action; 1 = Heat control, reverse action; 2 = Heat/cool control, water cooling; 3 = Heat/cool control, air cooling"
+Holding register,"FC03 read / FC06, FC16 write",6266,187A,46267,Event 1 type selection (CH2),,UINT16,1,,1,0,,Read/write,0 = Not provided; 1 = Process high; 2 = Process low; 3 = Deviation high; 4 = Deviation low; 5 = Deviation high/low; 6 = Band
+Holding register,"FC03 read / FC06, FC16 write",6267,187B,46268,Event 2 type selection (CH2),,UINT16,1,,1,0,,Read/write,0 = Not provided; 1 = Process high; 2 = Process low; 3 = Deviation high; 4 = Deviation low; 5 = Deviation high/low; 6 = Band

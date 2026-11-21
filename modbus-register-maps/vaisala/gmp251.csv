@@ -1,0 +1,27 @@
+﻿# Vaisala GMP251 CARBOCAP carbon dioxide probe (Modbus RTU) Modbus register map - easymodbus.com - source: https://docs.vaisala.com/r/M211799EN-N/en-US
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Measured CO2,,FLOAT32,2,CDAB,1,0,ppm,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,3,40003,Compensation T,Temperature value the probe is using for compensation.,FLOAT32,2,CDAB,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,Measured T,Temperature measured by the probe.,FLOAT32,2,CDAB,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",256,257,40257,Measured CO2 (integer),"Integer copy, valid up to 32000 ppm.",INT16,1,,1,0,ppm,Read,
+Holding register,"FC03 read / FC06, FC16 write",257,258,40258,"Measured CO2 (integer, x10)",Integer copy scaled down by 10; multiply raw by 10.,INT16,1,,10,0,ppm,Read,
+Holding register,"FC03 read / FC06, FC16 write",512,513,40513,Power-up pressure compensation,"Stored in EEPROM; 500-1100 hPa, default 1013.25.",FLOAT32,2,CDAB,1,0,hPa,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",514,515,40515,Power-up temperature compensation,"Stored in EEPROM; -40...+60, default 25.",FLOAT32,2,CDAB,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",516,517,40517,Power-up humidity compensation,"Stored in EEPROM; 0-100, default 0.",FLOAT32,2,CDAB,1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",518,519,40519,Power-up oxygen compensation,"Stored in EEPROM; 0-100, default 0.",FLOAT32,2,CDAB,1,0,%O2,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",520,521,40521,Volatile pressure compensation,Cleared at reset; use for frequent updates.,FLOAT32,2,CDAB,1,0,hPa,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",522,523,40523,Volatile temperature compensation,Cleared at reset; use for frequent updates.,FLOAT32,2,CDAB,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",524,525,40525,Volatile humidity compensation,Cleared at reset; use for frequent updates.,FLOAT32,2,CDAB,1,0,%RH,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",526,527,40527,Volatile oxygen compensation,Cleared at reset; use for frequent updates.,FLOAT32,2,CDAB,1,0,%O2,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",768,769,40769,Modbus address,"1-247, default 240.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",769,770,40770,Serial speed,,UINT16,1,,1,0,,Read/write,0 = 4800; 1 = 9600; 2 = 19200; 3 = 38400; 4 = 57600; 5 = 115200
+Holding register,"FC03 read / FC06, FC16 write",770,771,40771,Serial parity,,UINT16,1,,1,0,,Read/write,0 = None; 1 = Even; 2 = Odd
+Holding register,"FC03 read / FC06, FC16 write",771,772,40772,Serial stop bits,"1 or 2, default 2.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",772,773,40773,Pressure compensation mode,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",773,774,40774,Temperature compensation mode,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = Given; 2 = Internal
+Holding register,"FC03 read / FC06, FC16 write",774,775,40775,Humidity compensation mode,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",775,776,40776,Oxygen compensation mode,,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",776,777,40777,CO2 filtering factor,"0-100; 100 = no filtering, 50 = factor 0.5.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2048,2049,42049,Device status,,UINT16,1,,1,0,,Read,0 = OK; 1 = Critical error; 2 = Error; 4 = Warning
+Holding register,"FC03 read / FC06, FC16 write",2049,2050,42050,CO2 status,,UINT16,1,,1,0,,Read,0 = OK; 2 = CO2 reading not reliable (start-up); 256 = Measurement not ready (start-up)
+Holding register,"FC03 read / FC06, FC16 write",2051,2052,42052,Error code,Sum of active error bits; probe firmware 1.4.3 and later.,UINT32,2,CDAB,1,0,,Read,bit 0 = Program memory CRC critical error; bit 1 = Parameter memory CRC critical error; bit 4 = Low supply voltage; bit 5 = Internal 30 V error; bit 6 = Low RX signal; bit 7 = Internal 8 V error; bit 8 = RX signal cut; bit 12 = Out of measurement range; bit 13 = Sensor heater error; bit 14 = IR temperature error; bit 15 = FPI slope error; bit 16 = Internal 2.5 V error; bit 17 = Internal 1.7 V error; bit 18 = Low IR current

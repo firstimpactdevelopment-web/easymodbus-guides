@@ -1,0 +1,245 @@
+{
+ "manufacturer": "JUMO",
+ "manufacturer_slug": "jumo",
+ "model": "ecoLine O-DO digital optical dissolved oxygen sensor (Modbus RTU)",
+ "model_slug": "ecoline-o-do",
+ "short_model": "ecoLine O-DO",
+ "aliases": [
+  "202613",
+  "JUMO ecoLine O-DO",
+  "ecoLine O-DO type 202613"
+ ],
+ "equipment_type": "Sensor (dissolved oxygen)",
+ "applies_to": "JUMO ecoLine O-DO type 202613 with RS-485 Modbus RTU (interface description V1.01).",
+ "summary": "The JUMO ecoLine O-DO is an optical (luminescence) dissolved oxygen sensor with a built-in RS-485 Modbus RTU interface. Measurements are started by the master. This map covers the start command, the measurement status word, temperature and oxygen readings and the compensation inputs.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Tables list the Modbus PDU address in decimal and hex; the value goes into the request unchanged (the example reads the temperature at start address 0x0053)."
+ },
+ "default_word_order": "ABCD",
+ "firmware": null,
+ "source": {
+  "title": "JUMO ecoLine O-DO/NTU - Digital sensors for turbidity and oxygen measurement - Modbus interface description",
+  "doc_number": "20261300T92Z003K000 V1.01/EN/00692386",
+  "revision_date": null,
+  "url": "https://www.jumo.net/attachments/JUMO/attachmentdownload?id=494310",
+  "pages": "Data types and float example ch. 2.5-2.6 (pp. 10-13); serial settings ch. 5.1 (p. 21); O-DO tables pp. 25-27; NTU tables pp. 29-30"
+ },
+ "notes": [
+  "Floats are IEEE 754 sent high word first (ABCD); the worked example returns 41 CA 66 66 = 25.3 °C for start address 0x0053.",
+  "Measurements are triggered: write a start command to register 1, wait at least 300 ms without any Modbus traffic, poll the status word at 82 until no field reads 7, then read the values.",
+  "Integers are unsigned 16-bit, high byte first.",
+  "Each 3-bit field: 0 OK, 1 OK but outside sensor spec, 2 OK with reduced accuracy, 3 OK (reserved), 4 failed outside spec, 5 failed (membrane cap missing or damaged), 6 failed (reserved), 7 not yet complete.",
+  "Only the values requested by the start command are valid after a cycle; ignore the others.",
+  "Compensation values are not saved in the sensor; the master must write them before measuring if they differ from the defaults. Whether the sensor uses its own or the written temperature is chosen in JUMO DSM software.",
+  "The membrane is rated for about 1 million measurements, so do not trigger faster than needed.",
+  "The document gives the address range 1-247 but does not state a factory default address."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1 (0x0001)",
+   "name": "Start measuring operation",
+   "description": "Starts one measurement cycle.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "3": "Temperature + O2 %Sat",
+    "7": "Temperature + O2 %Sat and mg/l",
+    "11": "Temperature + O2 %Sat and ppm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 82,
+   "documented": "82 (0x0052)",
+   "name": "Measuring operation status",
+   "description": "Bits 0-2 temp, 3-5 O2 %Sat, 6-8 mg/l, 9-11 ppm; field value 7 = not done.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 83,
+   "documented": "83 (0x0053)",
+   "name": "Temperature",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 85,
+   "documented": "85 (0x0055)",
+   "name": "Oxygen saturation",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "%Sat",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 87,
+   "documented": "87 (0x0057)",
+   "name": "Oxygen concentration",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "mg/l",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 89,
+   "documented": "89 (0x0059)",
+   "name": "Oxygen concentration",
+   "description": "",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "ppm",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 93,
+   "documented": "93 (0x005D)",
+   "name": "Compensation temperature",
+   "description": "Default 25 °C; not stored, resend after power-up.",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 95,
+   "documented": "95 (0x005F)",
+   "name": "Compensation air pressure",
+   "description": "Default 1023 hPa.",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "hPa",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 97,
+   "documented": "97 (0x0061)",
+   "name": "Compensation salt content",
+   "description": "Default 0 g/kg.",
+   "data_type": "FLOAT32",
+   "length": 2,
+   "word_order": "ABCD",
+   "scale": 1,
+   "units": "g/kg",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Write the compensation values (93-98), write 7 to register 1, wait 300 ms, poll register 82 until no 3-bit field equals 7, then read 83-90 as ABCD floats.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Start a measurement"
+   },
+   {
+    "table": "holding_register",
+    "address": 82,
+    "why": "Measurement status"
+   },
+   {
+    "table": "holding_register",
+    "address": 83,
+    "why": "Temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 85,
+    "why": "O2 saturation"
+   },
+   {
+    "table": "holding_register",
+    "address": 87,
+    "why": "O2 mg/l"
+   }
+  ],
+  "enable": "Modbus RTU is the sensor's native interface; set the address with JUMO DSM software.",
+  "watchdog": null,
+  "quirks": [
+   "Floats are high word first (ABCD).",
+   "No Modbus requests are allowed for 300 ms after a start command; requests during that window are ignored."
+  ],
+  "setup": [
+   "9600 baud, 8 data bits, no parity, 1 stop bit; address 1-247.",
+   "Wire A/B on M12 pins 5/4; the sensor needs +5 V on pin 1."
+  ],
+  "gotchas": [
+   "Resend the compensation values after every power-up; they are not stored."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/jumo/ecoline-o-do",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

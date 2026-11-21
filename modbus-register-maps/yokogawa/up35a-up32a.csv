@@ -1,0 +1,42 @@
+﻿# Yokogawa UTAdvanced UP35A / UP32A program controller Modbus register map - easymodbus.com - source: https://web-material3.yokogawa.com/IM05P07A01-01EN.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",2000,D2001,42001,AD1.E A/D converter error status 1,,BITMAP16,1,,1,0,,Read,bit 0 = PV input A/D converter error; bit 5 = PV input RJC error; bit 8 = PV input burnout error
+Holding register,"FC03 read / FC06, FC16 write",2001,D2002,42002,PV1.E_L1 PV input error status,,BITMAP16,1,,1,0,,Read,bit 0 = PV input burnout; bit 4 = PV over-scale; bit 5 = PV under-scale; bit 14 = Auto-tuning timeout error
+Holding register,"FC03 read / FC06, FC16 write",2002,D2003,42003,PV_L1 measured value,Engineering value without decimal point; position set by the PV input decimal point.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2003,D2004,42004,CSP_L1 control setpoint,Engineering value without decimal point; position set by the PV input decimal point.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2004,D2005,42005,OUT_L1 control output,-5.0 to 105.0 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2005,D2006,42006,H.OUT_L1 heating-side output,Heating/cooling control.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2006,D2007,42007,C.OUT_L1 cooling-side output,0.0 to 105.0 %.,INT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2007,D2008,42008,MOD_L1 operation mode status (UP35A/UP32A),,BITMAP16,1,,1,0,,Read,"bit 0 = A.M (0 AUTO, 1 MAN); bit 4 = Program reset; bit 5 = Program operation; bit 6 = Local operation; bit 10 = Advance of segment; bit 12 = Pause (hold); bit 13 = Wait; bit 14 = Auto-tuning ON"
+Holding register,"FC03 read / FC06, FC16 write",2008,D2009,42009,PID_L1 current PID number,Bits 0-2 hold the PID number; reads 0 for reference PID.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2010,D2011,42011,ALM_L1 alarm status,UP35A/UP32A use alarms 1 and 2.,BITMAP16,1,,1,0,,Read,bit 0 = Alarm 1 ON; bit 1 = Alarm 2 ON
+Holding register,"FC03 read / FC06, FC16 write",2011,D2012,42012,LA.ER ladder error status,,BITMAP16,1,,1,0,,Read,bit 0 = Corrupted ladder program; bit 1 = Ladder calculation overflow; bit 2 = Ladder program error; bit 4 = Load factor over 100 %; bit 5 = Load factor over 200 % (forced end)
+Holding register,"FC03 read / FC06, FC16 write",2014,D2015,42015,C.PTNO. current program pattern number,0-2 (0-4 with option /AP).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2015,D2016,42016,SEG.N current segment number,"0 = not executing, 1-20 (40 with /AP).",UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2016,D2017,42017,SEG_RTIME remaining segment time,0-59999; elapsed time during wait. Unit set by TMU.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2032,D2033,42033,CTSP_L1 final target setpoint,Engineering value without decimal point; position set by the PV input decimal point.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2034,D2035,42035,DEV_L1 deviation,Engineering value of span without decimal point.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2038,D2039,42039,PV_EV PV event status,,BITMAP16,1,,1,0,,Read,bit 0 = PV event 1 ON; bit 1 = PV event 2 ON
+Holding register,"FC03 read / FC06, FC16 write",2039,D2040,42040,TIME_EV_1 time event status,,BITMAP16,1,,1,0,,Read,bit 0 = Time event 1 ON; bit 1 = Time event 2 ON; bit 2 = Time event 3 ON; bit 4 = Time event 4 ON
+Holding register,"FC03 read / FC06, FC16 write",2043,D2044,42044,SEG_USE segments in selected pattern,0-20 (40 with /AP).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2047,D2048,42048,NOW_RST repeat start segment,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2048,D2049,42049,NOW_REN repeat end segment,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2049,D2050,42050,PV_EV_OUT PV event output status,,BITMAP16,1,,1,0,,Read,bit 0 = PV event 1 output ON; bit 1 = PV event 2 output ON
+Holding register,"FC03 read / FC06, FC16 write",2060,D2061,42061,HC1 heater break alarm-1 current,0.0-360.0 A rms.,INT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",2061,D2062,42062,HC2 heater break alarm-2 current,0.0-360.0 A rms.,INT16,1,,0.1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",2062,D2063,42063,CT_AL heater break alarm status,,BITMAP16,1,,1,0,,Read,bit 0 = Heater break alarm 1 ON; bit 1 = Heater break alarm 2 ON
+Holding register,"FC03 read / FC06, FC16 write",2063,D2064,42064,VALV valve status,,BITMAP16,1,,1,0,,Read,bit 0 = Estimating-type operation (0 = feedback input); bit 1 = Open output on; bit 2 = Close output on; bit 3 = Automatic valve position adjustment running
+Holding register,"FC03 read / FC06, FC16 write",2067,D2068,42068,PA.ER parameter error status,,BITMAP16,1,,1,0,,Read,bit 0 = System data error; bit 1 = Calibration value error; bit 2 = User default value error; bit 4 = Setup parameter error; bit 5 = Operation parameter error; bit 6 = Program pattern error (UP35A); bit 8 = Faulty FRAM; bit 10 = Control parameter error
+Holding register,"FC03 read / FC06, FC16 write",2200,D2201,42201,LSP_L1 local target setpoint,Setpoint for local-mode operation. Engineering value without decimal point; position set by the PV input decimal point.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2202,D2203,42203,L.PID PID number for local-mode operation,,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2307,D2308,42308,AT_L1 auto-tuning switch,"0 = off, 1-4 = tune into that PID, 9 = reference PID.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2313,D2314,42314,TRK_ON_L1 output tracking,,UINT16,1,,1,0,,Read/write,0 = OFF; 1 = ON
+Holding register,"FC03 read / FC06, FC16 write",2315,D2316,42316,MODE program operation mode,,UINT16,1,,1,0,,Read/write,0 = RESET (stop program); 1 = PROG (start program); 2 = LOCAL (start local-mode operation)
+Holding register,"FC03 read / FC06, FC16 write",2316,D2317,42317,HOLD program pause,,UINT16,1,,1,0,,Read/write,0 = OFF (release pause); 1 = ON (pause)
+Holding register,"FC03 read / FC06, FC16 write",2317,D2318,42318,ADV advance segment,Write 1 to jump to the next segment.,UINT16,1,,1,0,,Read/write,1 = Advance
+Holding register,"FC03 read / FC06, FC16 write",2318,D2319,42319,A.M_L1 AUTO/MAN switch,,UINT16,1,,1,0,,Read/write,0 = AUTO; 1 = MAN
+Holding register,"FC03 read / FC06, FC16 write",2321,D2322,42322,PTNO. program pattern number selection,0 = none.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2332,D2333,42333,MOUT_L1 manual output,Output in MAN mode.,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2333,D2334,42334,MOUTc_L1 cooling-side manual output,Cooling-side output in MAN mode.,INT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2336,D2337,42337,H.SP_L1 SP for HOLD state,Engineering value without decimal point; position set by the PV input decimal point.,INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2338,D2339,42339,H.TSP_L1 TSP for HOLD state,Engineering value without decimal point; position set by the PV input decimal point.,INT16,1,,1,0,,Read/write,

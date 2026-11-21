@@ -1,0 +1,3148 @@
+{
+  "manufacturer": "Vertiv",
+  "manufacturer_slug": "vertiv",
+  "model": "Liebert CRV in-row cooling unit with iCOM v4 (IntelliSlot Modbus)",
+  "model_slug": "liebert-crv-icom",
+  "short_model": "Liebert CRV",
+  "aliases": [
+    "Liebert CRV",
+    "CRV",
+    "Liebert CRV iCOM"
+  ],
+  "equipment_type": "Air handler (in-row computer room cooling unit)",
+  "applies_to": "Liebert CRV row-based cooling units (DX and chilled water) on the iCOM v4 controller with a Liebert IntelliSlot Modbus 485 or Modbus IP card.",
+  "summary": "The Liebert CRV is a row-based precision cooling unit that sits between IT racks. Through a Liebert IntelliSlot Modbus card its iCOM v4 controller is a Modbus RTU / TCP slave. The map covers supply and return air temperatures, dew point and humidity, remote rack sensors, setpoints and alarm thresholds, fan speed and capacity, condenser data, system on/off and status, and the event bits.",
+  "transport": [
+    "RTU",
+    "TCP"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "The guide prints Modicon-style numbers: discrete inputs 1xxxx, input registers 3xxxx, holding registers 4xxxx. Its RTU example asks for holding register 40051 with start offset 50 (0x0032), so subtract 10001 / 30001 / 40001 to get the wire address. Coils are printed as plain numbers on the same scale as the discrete inputs (coil 25 sits beside status 10025), so coil n is wire address n-1."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Liebert IntelliSlot Modbus 485, Modbus IP and BACnet IP Reference Guide",
+    "doc_number": "SL-28170 Rev 9",
+    "revision_date": "10-12 (printed as SL-28170_REV9_10-12)",
+    "url": "https://ccontrols.com/support/dp/Liebert.pdf",
+    "pages": "Tables 9-10, printed pp. 32-38 (glossary Table 11 pp. 39-42)",
+    "unofficial": true
+  },
+  "notes": [
+    "Source: Emerson Network Power / Liebert reference guide SL-28170 (Rev 9). Vertiv does not host this guide publicly; the linked copy is the unaltered PDF on the Contemporary Controls support site.",
+    "Scale column: 'x / 10' means the raw value is tenths (scale 0.1); '-' or blank means no scaling. Some temperature setpoints are printed without a scale while similar points use x / 10; they are transcribed exactly as printed.",
+    "Most temperatures exist twice: once in deg C and once in deg F at a different register. Only the deg C registers are listed here.",
+    "Points that the guide lists with both an input register (3xxxx) and a holding register (4xxxx) are the writable settings; we list the holding register (read/write). The same value can also be read at the matching 3xxxx input register (same offset).",
+    "Signedness is not stated in the guide. Temperature values are listed as INT16 (they can be below zero); everything else as UINT16.",
+    "Points that take two registers (date/time and schedule start/stop times, 32-bit values) are left out because the guide does not state their word order.",
+    "Event/alarm discrete inputs read 1 while the event is active ('Active on Alarm').",
+    "Event acknowledge/reset (40500) is a holding register only; write 2 to reset or 4 to acknowledge, per the guide."
+  ],
+  "registers": [
+    {
+      "table": "discrete_input",
+      "address": 0,
+      "documented": "10001",
+      "name": "Supply Air Over Temperature",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 1,
+      "documented": "10002",
+      "name": "Supply Air Under Temperature",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 2,
+      "documented": "10003",
+      "name": "Return Air Over Temperature",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 3,
+      "documented": "10004",
+      "name": "Supply Air Sensor Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 4,
+      "documented": "10005",
+      "name": "High Return Humidity",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 5,
+      "documented": "10006",
+      "name": "Low Return Humidity",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 6,
+      "documented": "10007",
+      "name": "Humidifier Hours Exceeded",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 7,
+      "documented": "10008",
+      "name": "Dehumidifier Hours Exceeded",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 8,
+      "documented": "10009",
+      "name": "Humidifier Under Current",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 9,
+      "documented": "10010",
+      "name": "Humidifier Over Current",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 10,
+      "documented": "10011",
+      "name": "Humidifier Low Water",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 11,
+      "documented": "10012",
+      "name": "Humidifier Cylinder Worn",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 12,
+      "documented": "10013",
+      "name": "Humidifier Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 13,
+      "documented": "10014",
+      "name": "Ext Humidifier Lockout",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 14,
+      "documented": "10015",
+      "name": "Humidifier Control Board Not Detected",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 15,
+      "documented": "10016",
+      "name": "Return Humidity Out Of Proportional Band",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 16,
+      "documented": "10017",
+      "name": "Loss of Air Flow",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 17,
+      "documented": "10018",
+      "name": "Fan Hours Exceeded",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 18,
+      "documented": "10019",
+      "name": "Top Fan Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 19,
+      "documented": "10020",
+      "name": "Bottom Fan Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 20,
+      "documented": "10021",
+      "name": "Remote Sensor Issue 1",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 21,
+      "documented": "10022",
+      "name": "Remote Sensor Issue 2",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 22,
+      "documented": "10023",
+      "name": "Remote Sensor Issue 3",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 23,
+      "documented": "10024",
+      "name": "Remote Sensor Issue 4",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 24,
+      "documented": "10025",
+      "name": "Remote Sensor Issue 5",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 25,
+      "documented": "10026",
+      "name": "Remote Sensor Issue 6",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 26,
+      "documented": "10027",
+      "name": "Remote Sensor Issue 7",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 27,
+      "documented": "10028",
+      "name": "Remote Sensor Issue 8",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 28,
+      "documented": "10029",
+      "name": "Remote Sensor Issue 9",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 29,
+      "documented": "10030",
+      "name": "Remote Sensor Issue 10",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 30,
+      "documented": "10031",
+      "name": "Compressor 1 High Head Pressure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 31,
+      "documented": "10032",
+      "name": "Compressor 1 Low Suction Pressure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 32,
+      "documented": "10033",
+      "name": "Compressor 1 Hours Exceeded",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 33,
+      "documented": "10034",
+      "name": "Dig Scroll Comp 1 Temp Sensor Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 34,
+      "documented": "10035",
+      "name": "Dig Scroll Comp 1 Over Temp",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 35,
+      "documented": "10036",
+      "name": "Compressor 1 Low Pressure Transducer Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 36,
+      "documented": "10037",
+      "name": "Ext Compressor Lockout",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 37,
+      "documented": "10038",
+      "name": "Compressor 1 Short Cycle",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 38,
+      "documented": "10039",
+      "name": "Compressor 1 High Pressure Transducer Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 39,
+      "documented": "10040",
+      "name": "Compressor 1 Pump Down Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 40,
+      "documented": "10041",
+      "name": "Reheater Over Temperature",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 41,
+      "documented": "10042",
+      "name": "Electric Reheater Hours Exceeded",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 42,
+      "documented": "10043",
+      "name": "Ext Reheat Lockout",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 43,
+      "documented": "10044",
+      "name": "Condenser 1 Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 44,
+      "documented": "10045",
+      "name": "Condenser VFD Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 45,
+      "documented": "10046",
+      "name": "Condenser TVSS Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 46,
+      "documented": "10047",
+      "name": "Supply Chilled Water Over Temp",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 47,
+      "documented": "10048",
+      "name": "Chilled Water Control Valve Failure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 48,
+      "documented": "10049",
+      "name": "Supply Chilled Water Loss of Flow",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 49,
+      "documented": "10050",
+      "name": "Supply Fluid Temp Sensor Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 50,
+      "documented": "10051",
+      "name": "Customer Input 1",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 51,
+      "documented": "10052",
+      "name": "Customer Input 2",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 52,
+      "documented": "10053",
+      "name": "Customer Input 3",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 53,
+      "documented": "10054",
+      "name": "Customer Input 4",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 54,
+      "documented": "10055",
+      "name": "Smoke Detected",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 55,
+      "documented": "10056",
+      "name": "Water Under Floor",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 56,
+      "documented": "10057",
+      "name": "Service Required",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 57,
+      "documented": "10058",
+      "name": "Shutdown - Loss Of Power",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 58,
+      "documented": "10059",
+      "name": "Ext Over Temperature",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 59,
+      "documented": "10060",
+      "name": "Ext Loss of Flow",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 60,
+      "documented": "10061",
+      "name": "Ext Condenser Pump High Water",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 61,
+      "documented": "10062",
+      "name": "Ext Standby Glycol Pump On",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 62,
+      "documented": "10063",
+      "name": "External Fire Detected",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 63,
+      "documented": "10064",
+      "name": "Unit On",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 64,
+      "documented": "10065",
+      "name": "Unit Off",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 65,
+      "documented": "10066",
+      "name": "Unit Standby",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 66,
+      "documented": "10067",
+      "name": "Unit Partial Shutdown",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 67,
+      "documented": "10068",
+      "name": "Unit Shutdown",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 68,
+      "documented": "10069",
+      "name": "Water Leakage Detector Sensor Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 69,
+      "documented": "10070",
+      "name": "BMS Communications Timeout",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 70,
+      "documented": "10071",
+      "name": "Maintenance Due",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 71,
+      "documented": "10072",
+      "name": "Maintenance Completed",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 72,
+      "documented": "10073",
+      "name": "Clogged Air Filter",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 73,
+      "documented": "10074",
+      "name": "RAM Battery Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 74,
+      "documented": "10075",
+      "name": "Master Unit Communication Lost",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 75,
+      "documented": "10076",
+      "name": "High Power Shutdown",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 76,
+      "documented": "10077",
+      "name": "Return Air Sensor Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 77,
+      "documented": "10078",
+      "name": "Condenser Outside Air Temp Sensor Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 78,
+      "documented": "10079",
+      "name": "Condenser Outside Air Temp Out of Operating Range",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 79,
+      "documented": "10080",
+      "name": "Condenser Control Board Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 80,
+      "documented": "10081",
+      "name": "Condenser Refrigerant Pressure Over Threshold",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 81,
+      "documented": "10082",
+      "name": "Condenser Refrigerant Pressure Under Threshold",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 82,
+      "documented": "10083",
+      "name": "Condenser Refrigerant Pressure Sensor Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 83,
+      "documented": "10084",
+      "name": "Condenser Supply Refrigerant Over Temp",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 84,
+      "documented": "10085",
+      "name": "Condenser Supply Refrigerant Under Temp",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 85,
+      "documented": "10086",
+      "name": "Condenser Supply Refrigerant Temp Sensor Issue",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 86,
+      "documented": "10087",
+      "name": "Condenser Max Fan Speed Override",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 87,
+      "documented": "10088",
+      "name": "Condenser Fan Issue 1",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 88,
+      "documented": "10089",
+      "name": "Condenser Fan Issue 2",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 89,
+      "documented": "10090",
+      "name": "Condenser Fan Issue 3",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 90,
+      "documented": "10091",
+      "name": "Condenser Fan Issue 4",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 384,
+      "documented": "30385",
+      "name": "Supply Air Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 386,
+      "documented": "30387",
+      "name": "Return Air Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 388,
+      "documented": "30389",
+      "name": "Return Dew Point",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 390,
+      "documented": "30391",
+      "name": "Remote Sensor Minimum Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 392,
+      "documented": "30393",
+      "name": "Remote Sensor Maximum Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 394,
+      "documented": "30395",
+      "name": "Remote Sensor Average Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 410,
+      "documented": "30411",
+      "name": "Supply Humidity",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "% RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 411,
+      "documented": "30412",
+      "name": "Return Humidity",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "% RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 423,
+      "documented": "30424",
+      "name": "Remote Sensor Temperature 1",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 424,
+      "documented": "30425",
+      "name": "Remote Sensor Temperature 2",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 425,
+      "documented": "30426",
+      "name": "Remote Sensor Temperature 3",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 426,
+      "documented": "30427",
+      "name": "Remote Sensor Temperature 4",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 427,
+      "documented": "30428",
+      "name": "Remote Sensor Temperature 5",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 428,
+      "documented": "30429",
+      "name": "Remote Sensor Temperature 6",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 429,
+      "documented": "30430",
+      "name": "Remote Sensor Temperature 7",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 430,
+      "documented": "30431",
+      "name": "Remote Sensor Temperature 8",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 431,
+      "documented": "30432",
+      "name": "Remote Sensor Temperature 9",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 432,
+      "documented": "30433",
+      "name": "Remote Sensor Temperature 10",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 443,
+      "documented": "30444",
+      "name": "Supply Chilled Water Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 449,
+      "documented": "30450",
+      "name": "Operating Efficiency",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 450,
+      "documented": "30451",
+      "name": "Fan Speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 451,
+      "documented": "30452",
+      "name": "Cooling Capacity (Primary)",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 452,
+      "documented": "30453",
+      "name": "Dehumidifier Utilization",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 453,
+      "documented": "30454",
+      "name": "Reheat Utilization",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 454,
+      "documented": "30455",
+      "name": "Humidifier Utilization",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 455,
+      "documented": "30456",
+      "name": "Calculated Next Maintenance Month",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 456,
+      "documented": "30457",
+      "name": "Calculated Next Maintenance Year",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 457,
+      "documented": "30458",
+      "name": "Maintenance Ramp",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 458,
+      "documented": "30459",
+      "name": "Server Class",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "UPS",
+        "2": "AIR",
+        "3": "PMP",
+        "4": "PDU"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 473,
+      "documented": "30474",
+      "name": "System Status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "Normal Operation",
+        "2": "StartUp",
+        "8": "Normal with Warning",
+        "16": "Normal with Alarm",
+        "32": "Abnormal Operation"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 474,
+      "documented": "30475",
+      "name": "System Operating State",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "off",
+        "1": "on",
+        "2": "standby"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 475,
+      "documented": "30476",
+      "name": "System Control Mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Internal (Auto)",
+        "1": "External (Manual)"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 476,
+      "documented": "30477",
+      "name": "System Operating State Reason",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Reason Unknown",
+        "1": "Network Display",
+        "2": "Alarm",
+        "3": "Schedule",
+        "4": "Remote System",
+        "5": "External Input",
+        "6": "Local Display"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 478,
+      "documented": "30479",
+      "name": "Condenser Refrigerant Type",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "R22",
+        "1": "R407C",
+        "2": "R410A"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 479,
+      "documented": "30480",
+      "name": "Condenser Outside Air Temperature",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 481,
+      "documented": "30482",
+      "name": "Condenser Fan Speed 1",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 482,
+      "documented": "30483",
+      "name": "Condenser Fan Speed 2",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 483,
+      "documented": "30484",
+      "name": "Condenser Fan Speed 3",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 484,
+      "documented": "30485",
+      "name": "Condenser Fan Speed 4",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 485,
+      "documented": "30486",
+      "name": "Condenser Fan Power 1",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "kW",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 486,
+      "documented": "30487",
+      "name": "Condenser Fan Power 2",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "kW",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 487,
+      "documented": "30488",
+      "name": "Condenser Fan Power 3",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "kW",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 488,
+      "documented": "30489",
+      "name": "Condenser Fan Power 4",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "kW",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 489,
+      "documented": "30490",
+      "name": "Condenser Low Noise Mode State",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Inactive",
+        "1": "Active (Interval)",
+        "2": "Active (Full Day)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 396,
+      "documented": "40397",
+      "name": "Air Temperature Set Point",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 398,
+      "documented": "40399",
+      "name": "Cooling Proportional Band",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 400,
+      "documented": "40401",
+      "name": "Heating Proportional Band",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 402,
+      "documented": "40403",
+      "name": "Air Temperature Dead Band",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 404,
+      "documented": "40405",
+      "name": "Supply Air Over Temp Threshold",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 406,
+      "documented": "40407",
+      "name": "Supply Air Under Temp Threshold",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 408,
+      "documented": "40409",
+      "name": "Return Air Over Temp Threshold",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 412,
+      "documented": "40413",
+      "name": "Humidity Set Point",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "% RH",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 413,
+      "documented": "40414",
+      "name": "Humidification Proportional Band",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "% RH",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 414,
+      "documented": "40415",
+      "name": "Dehumidification Proportional Band",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "% RH",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 415,
+      "documented": "40416",
+      "name": "Humidity Dead Band",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "% RH",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 416,
+      "documented": "40417",
+      "name": "High Return Humidity Threshold",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "% RH",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 417,
+      "documented": "40418",
+      "name": "Low Return Humidity Threshold",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "% RH",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 418,
+      "documented": "40419",
+      "name": "Fan Speed Proportional Band",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 420,
+      "documented": "40421",
+      "name": "Fan Speed Manual Set Point",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 421,
+      "documented": "40422",
+      "name": "Fan Speed Maximum Set Point",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 422,
+      "documented": "40423",
+      "name": "Fan Speed Minimum Set Point",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 445,
+      "documented": "40446",
+      "name": "Supply Chilled Water Over Temp Threshold",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "deg C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 447,
+      "documented": "40448",
+      "name": "BMS Timeout Period",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "min",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 448,
+      "documented": "40449",
+      "name": "Auto Restart Delay",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "sec",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 459,
+      "documented": "40460",
+      "name": "Air Temperature Control Sensor",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Supply",
+        "1": "Remote",
+        "2": "Return"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 460,
+      "documented": "40461",
+      "name": "Remote Sensor Temperature Calculation",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Average",
+        "1": "Maximum"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 461,
+      "documented": "40462",
+      "name": "Fan Control Mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Internal (Auto)",
+        "1": "External (Manual)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 462,
+      "documented": "40463",
+      "name": "Fan Control Sensor",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Supply",
+        "1": "Remote",
+        "2": "Return"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 463,
+      "documented": "40464",
+      "name": "Remote Sensor Function 1",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 464,
+      "documented": "40465",
+      "name": "Remote Sensor Function 2",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 465,
+      "documented": "40466",
+      "name": "Remote Sensor Function 3",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 466,
+      "documented": "40467",
+      "name": "Remote Sensor Function 4",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 467,
+      "documented": "40468",
+      "name": "Remote Sensor Function 5",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 468,
+      "documented": "40469",
+      "name": "Remote Sensor Function 6",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 469,
+      "documented": "40470",
+      "name": "Remote Sensor Function 7",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 470,
+      "documented": "40471",
+      "name": "Remote Sensor Function 8",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 471,
+      "documented": "40472",
+      "name": "Remote Sensor Function 9",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 472,
+      "documented": "40473",
+      "name": "Remote Sensor Function 10",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Disable",
+        "1": "Reference",
+        "2": "Control"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 477,
+      "documented": "40478",
+      "name": "System On/Off Control",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "off",
+        "1": "on"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 490,
+      "documented": "40491",
+      "name": "Condenser Low Noise Mode Schedule Control",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "disabled",
+        "1": "enabled"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 491,
+      "documented": "40492",
+      "name": "Condenser Low Noise Mode Max Fan Speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 492,
+      "documented": "40493",
+      "name": "Condenser Normal Mode Max Fan Speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "%",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 493,
+      "documented": "40494",
+      "name": "Condenser Low Noise Mode - Interval Days",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Monday",
+        "1": "Tuesday",
+        "2": "Wednesday",
+        "3": "Thursday",
+        "4": "Friday",
+        "5": "Saturday",
+        "6": "Sunday"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 494,
+      "documented": "40495",
+      "name": "Condenser Low Noise Mode - Full Days",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": {
+        "0": "Monday",
+        "1": "Tuesday",
+        "2": "Wednesday",
+        "3": "Thursday",
+        "4": "Friday",
+        "5": "Saturday",
+        "6": "Sunday"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 499,
+      "documented": "40500",
+      "name": "System Event Acknowledge/Reset",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "2": "Reset",
+        "4": "Acknowledge"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read 30385-30395 for air temperatures, 30474-30477 for status and 30451-30455 for fan and capacity. Write 40478 to switch the unit on/off and 40397 for the air temperature setpoint in tenths of deg C.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 477,
+        "why": "System on/off control"
+      },
+      {
+        "table": "input_register",
+        "address": 474,
+        "why": "System operating state"
+      },
+      {
+        "table": "input_register",
+        "address": 473,
+        "why": "System status"
+      },
+      {
+        "table": "input_register",
+        "address": 384,
+        "why": "Supply air temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 386,
+        "why": "Return air temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 411,
+        "why": "Return humidity"
+      },
+      {
+        "table": "holding_register",
+        "address": 396,
+        "why": "Air temperature setpoint"
+      },
+      {
+        "table": "input_register",
+        "address": 450,
+        "why": "Fan speed"
+      },
+      {
+        "table": "holding_register",
+        "address": 499,
+        "why": "Acknowledge / reset events"
+      }
+    ],
+    "enable": "Fit the Liebert IntelliSlot card the guide lists for the unit's controller (for iCOM v4 units: IS-485L for Modbus 485, IS-IPBML for Modbus IP / BACnet IP) and set its Modbus address and line speed on the card.",
+    "watchdog": "Holding register 40448 'BMS Timeout Period' (minutes) sets how long the unit waits for BMS communication before a timeout event; the resulting action is not described in this guide.",
+    "quirks": [
+      "Modicon numbering: subtract 40001 / 30001 / 10001 for the wire address.",
+      "On/off is a holding register here (40478), not a coil.",
+      "Low-noise-mode day selections (40494, 40495) are bit masks: bit 0 Monday ... bit 6 Sunday."
+    ],
+    "setup": [
+      "RS-485 (2-wire) RTU settings for the IntelliSlot 485 card: 9600, 19200 or 38400 baud, 8 data bits, no parity, 1 stop bit.",
+      "Each unit needs a unique Modbus slave address on the RS-485 line.",
+      "For Modbus IP, use the IntelliSlot Modbus IP / BACnet IP card listed for the unit's controller in the guide's compatibility table."
+    ],
+    "gotchas": [
+      "Humidity setpoint and humidification/dehumidification bands (40413-40415) are whole %RH, while the humidity dead band and thresholds (40416-40418) are tenths."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

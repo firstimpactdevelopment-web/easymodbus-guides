@@ -1,0 +1,478 @@
+{
+ "manufacturer": "First Co.",
+ "manufacturer_slug": "first-co",
+ "model": "WSHP series DDC controller CB900 (water-source heat pump, Modbus RTU/TCP)",
+ "model_slug": "wshp-ddc-controller-cb900",
+ "short_model": "First Co. CB900 WSHP",
+ "aliases": [
+  "CB900",
+  "CB900-1",
+  "CB900-2",
+  "IOM8083D02",
+  "WSV series DDC",
+  "First Co. WSHP DDC controller",
+  "AE-Air WSHP DDC"
+ ],
+ "equipment_type": "Heat pump (water-source heat pump controller)",
+ "applies_to": "First Co. / AE-Air water-source heat pumps (WSV and related series) with the factory DDC controller CB900, without hot-gas reheat (IOM8083D02 rev. A).",
+ "summary": "First Co. water-source heat pumps can ship with a CB900 DDC controller that speaks BACnet MS/TP/IP and Modbus RTU/TCP. The Modbus side exposes pressure-switch, condensate, call-signal and compressor bits plus the operating code, machine mode and software version. This map lists those status points.",
+ "transport": [
+  "RTU",
+  "TCP"
+ ],
+ "defaults": {
+  "unit_id": 9,
+  "baud": 38400,
+  "parity": "None",
+  "data_bits": null,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The table gives a 'Modbus Index' starting at 0 for both coils and holding registers (HP status is coil index 0). The index is used as the wire address."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "WSHP Series DDC Controller Installation, Operation and Maintenance Manual (no hot-gas reheat)",
+  "doc_number": "IOM8083D02 Rev. A",
+  "revision_date": "2026-03",
+  "url": "https://firstco.com/files/IOM/IOM8083D02-Water-Source-DDC-Controller-no-HGRH.pdf",
+  "pages": "Table 7 p. 11; communication menus Tables 14 and 18"
+ },
+ "notes": [
+  "Left out: exit water coil temperature (index 0), air coil temperature (1), supply air temperature (2) and the lockout retry count (4). The manual types them as analog values (BACnet AV) with no Modbus data type or scale, so the raw format is not known.",
+  "Fan mode and machine enable are multi-state values whose state numbers the manual does not list.",
+  "The coil points are status values; the manual does not say whether any of them can be written.",
+  "Op code value 17 and mode value 6 are not listed in the manual. Mode values 4 and 5 are both printed as 'Cool'.",
+  "Software revision and program number are also exposed as BACnet state-text objects that have no Modbus index.",
+  "For the LP status coil the manual prints \"1-high pressure\"; read 1 as the low-pressure switch tripped."
+ ],
+ "registers": [
+  {
+   "table": "coil",
+   "address": 0,
+   "documented": "0",
+   "name": "HP status",
+   "description": "High-pressure switch (BV0)",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "High pressure"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 1,
+   "documented": "1",
+   "name": "LP status",
+   "description": "Low-pressure switch (BV1)",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Low pressure"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 2,
+   "documented": "2",
+   "name": "Condensate status",
+   "description": "Drain pan condensate (BV2)",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Not detected",
+    "1": "Condensate detected"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 3,
+   "documented": "3",
+   "name": "Reversing valve status",
+   "description": "BV3",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 4,
+   "documented": "4",
+   "name": "Y signal status",
+   "description": "BV4",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 5,
+   "documented": "5",
+   "name": "C signal status",
+   "description": "BV5",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 6,
+   "documented": "6",
+   "name": "O signal status",
+   "description": "BV6",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 8,
+   "documented": "8",
+   "name": "Test mode status",
+   "description": "Shortened wait times; ends by itself after 15 min (BV8)",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Test mode"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 10,
+   "documented": "10",
+   "name": "Compressor status",
+   "description": "BV10",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "Op code",
+   "description": "Controller operating / fault code (MSV1)",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "11": "OK",
+    "12": "High pressure",
+    "13": "Low pressure",
+    "14": "Low leaving water temperature",
+    "15": "Low air coil temperature",
+    "16": "Condensate detected",
+    "18": "Swapped temperature sensors",
+    "19": "Bad thermistor",
+    "20": "Low cooling capacity",
+    "21": "High cooling capacity",
+    "22": "Low heating capacity",
+    "23": "High heating capacity"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "5",
+   "name": "Mode of machine",
+   "description": "MSV2",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Standby",
+    "2": "Fan only",
+    "3": "Heat",
+    "4": "Cool",
+    "5": "Cool",
+    "7": "Lockout",
+    "8": "Diagnostic"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6",
+   "name": "Fan mode",
+   "description": "Fan status (MSV3); states not listed",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Machine enable",
+   "description": "System enable/disable (MSV4); states not listed",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "11",
+   "name": "Program number 1st character",
+   "description": "1 = A, 2 = B, 3 = C ...",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "12",
+   "name": "Program number 2nd character",
+   "description": "1 = A, 2 = B, 3 = C ...",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "13",
+   "name": "Program number numeric part",
+   "description": "0 = 000, 1 = 001 ...",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "14",
+   "name": "Program revision",
+   "description": "1 = A, 2 = B, 3 = C ...",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "15",
+   "name": "Software revision x1",
+   "description": "Major change digit",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "16",
+   "name": "Software revision x2",
+   "description": "Hardware/wiring change digit",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 17,
+   "documented": "17",
+   "name": "Software revision x3",
+   "description": "Software-only change digit",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 18,
+   "documented": "18",
+   "name": "Software revision x4",
+   "description": "Minor change digit",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read holding registers 3 (op code) and 5 (machine mode) for status and fault, and coils 0-10 for pressure switches, condensate, reversing valve, call signals and compressor state.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "Operating / fault code"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Machine mode"
+   },
+   {
+    "table": "coil",
+    "address": 0,
+    "why": "High-pressure switch"
+   },
+   {
+    "table": "coil",
+    "address": 1,
+    "why": "Low-pressure switch"
+   },
+   {
+    "table": "coil",
+    "address": 2,
+    "why": "Condensate"
+   },
+   {
+    "table": "coil",
+    "address": 10,
+    "why": "Compressor status"
+   }
+  ],
+  "enable": "On the controller (or the CB1000 HMI tool) set the communication mode to 'BacIp&ModRtu' for Modbus RTU; Modbus IP is always available. Modbus RTU and BACnet MS/TP cannot run together.",
+  "watchdog": null,
+  "quirks": [
+   "Temperatures have no published Modbus format, so they are not in this map."
+  ],
+  "setup": [
+   "Modbus RTU page: baud 9600-115200 (default 38400), device address 1-247 (default 9), parity default None, stop bits default 1.",
+   "A soft restart is needed after changing communication settings.",
+   "Communication menus need password level 2 or 3."
+  ],
+  "gotchas": [
+   "BACnet MS/TP mode turns Modbus RTU off.",
+   "Test mode shortens all wait times and turns itself off after 15 minutes."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/first-co/wshp-ddc-controller-cb900",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

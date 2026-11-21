@@ -1,0 +1,74 @@
+﻿# Grundfos IO 113 pump protection module (Modbus RTU) Modbus register map - easymodbus.com - source: https://api.grundfos.com/literature/Grundfosliterature-4363039.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",1992,1992,41993,t_support_bear,Support bearing temperature (PT100); SM113 power-line units only.,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1993,1993,41994,t_main_bear,Main bearing temperature (PT100); SM113 units only.,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1994,1994,41995,t_pt100,Motor stator temperature (PT100).,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1995,1995,41996,t_pt1000,Motor stator temperature (PT1000).,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1996,1996,41997,r_insulate,Insulation resistance; SM113 units only.,UINT16,1,,100,0,kΩ,Read,
+Holding register,"FC03 read / FC06, FC16 write",1997,1997,41998,vibration,"Vibration, x direction; 1 count = 20/254 mm/s. SM113 units only.",UINT16,1,,0.0787401575,0,mm/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",1998,1998,41999,water_in_oil,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",1999,1999,42000,aux_sensor,Auxiliary sensor at SM113 (unscaled).,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2000,2000,42001,t_support_bear_peak,,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2001,2001,42002,t_main_bear_peak,,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2002,2002,42003,t_pt100_peak,,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2003,2003,42004,t_pt1000_peak,,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",2004,2004,42005,r_insulate_peak,,UINT16,1,,100,0,kΩ,Read,
+Holding register,"FC03 read / FC06, FC16 write",2005,2005,42006,vibration_peak,,UINT16,1,,0.0787401575,0,mm/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",2006,2006,42007,water_in_oil_peak,,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2007,2007,42008,aux_sensor_peak,Unscaled.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2008,2008,42009,command_mode_status,,BITMAP16,1,,1,0,,Read,"bit 0 = Operation mode (0 = start, 1 = stop); bit 1 = Test mode (internal use); bit 2 = Automatic sensor learning armed"
+Holding register,"FC03 read / FC06, FC16 write",2009,2009,42010,supervise_mode_status,"Bits 1-0: 00 normal, 01 warning mode, 10 alarm mode.",BITMAP16,1,,1,0,,Read,bit 2 = Unacknowledged (pending) alarm
+Holding register,"FC03 read / FC06, FC16 write",2010,2010,42011,alarm_code,Event code of the pending alarm.,UINT16,1,,1,0,,Read,10 = Power line communication fault; 11 = Leakage (water in oil high / water in air); 12 = Time for service; 20 = Insulation resistance low; 22 = Moisture switch activated; 24 = Vibration high; 25 = Setup conflict; 64 = Motor stator temperature high (PT100/PT1000); 69 = Thermal switch (PTC) activated; 83 = IO113 EEPROM parameter verification error; 85 = Sensor board EEPROM parameter error; 145 = Support bearing temperature high; 146 = Main bearing temperature high; 170 = Water-in-oil sensor signal fault; 179 = Support bearing sensor signal fault; 180 = Main bearing sensor signal fault; 181 = Thermal switch (PTC) signal fault
+Holding register,"FC03 read / FC06, FC16 write",2011,2011,42012,warning_code,Event code of the pending warning.,UINT16,1,,1,0,,Read,10 = Power line communication fault; 11 = Leakage (water in oil high / water in air); 12 = Time for service; 20 = Insulation resistance low; 22 = Moisture switch activated; 24 = Vibration high; 25 = Setup conflict; 64 = Motor stator temperature high (PT100/PT1000); 69 = Thermal switch (PTC) activated; 83 = IO113 EEPROM parameter verification error; 85 = Sensor board EEPROM parameter error; 145 = Support bearing temperature high; 146 = Main bearing temperature high; 170 = Water-in-oil sensor signal fault; 179 = Support bearing sensor signal fault; 180 = Main bearing sensor signal fault; 181 = Thermal switch (PTC) signal fault
+Holding register,"FC03 read / FC06, FC16 write",2012,2012,42013,alarms,,BITMAP16,1,,1,0,,Read,bit 0 = Moisture switch (22); bit 1 = PTC activated (69); bit 2 = PTC signal fault (181); bit 3 = PT100 stator temperature high (64); bit 4 = PT1000 stator temperature high (64); bit 5 = Power line communication fault (10); bit 6 = Setup conflict (25); bit 8 = Support bearing temperature high (145); bit 9 = Main bearing temperature high (146); bit 10 = Support bearing sensor fault (179); bit 11 = Main bearing sensor fault (180); bit 12 = Insulation resistance low (20); bit 13 = Leakage (11); bit 14 = Water-in-oil sensor fault (170); bit 15 = Vibration high (24)
+Holding register,"FC03 read / FC06, FC16 write",2013,2013,42014,warnings1,Same bit layout as alarms (bits 0-2 never set as warnings).,BITMAP16,1,,1,0,,Read,bit 0 = Moisture switch (22); bit 1 = PTC activated (69); bit 2 = PTC signal fault (181); bit 3 = PT100 stator temperature high (64); bit 4 = PT1000 stator temperature high (64); bit 5 = Power line communication fault (10); bit 6 = Setup conflict (25); bit 8 = Support bearing temperature high (145); bit 9 = Main bearing temperature high (146); bit 10 = Support bearing sensor fault (179); bit 11 = Main bearing sensor fault (180); bit 12 = Insulation resistance low (20); bit 13 = Leakage (11); bit 14 = Water-in-oil sensor fault (170); bit 15 = Vibration high (24)
+Holding register,"FC03 read / FC06, FC16 write",2014,2014,42015,warnings2,,BITMAP16,1,,1,0,,Read,bit 0 = IO113 EEPROM parameter error (83); bit 1 = Sensor board EEPROM parameter error (85); bit 2 = Time for service (12)
+Holding register,"FC03 read / FC06, FC16 write",2015,2015,42016,sensors_present,Result of sensor learning or preset.,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2016,2016,42017,dip_switch,Hardware DIP switch setup.,BITMAP16,1,,1,0,,Read,bit 0 = SW6 (0 to 1 needed to arm sensor learning); bit 1 = SW10 explosion protection; bit 13 = SW7 motor temp output: 1 = PT1000 emulation; bit 14 = SW8 WIO output: 1 = pulse; bit 15 = SW9 interface: 1 = Modbus
+Holding register,"FC03 read / FC06, FC16 write",2017,2017,42018,dig_outputs,,BITMAP16,1,,1,0,,Read,bit 0 = Alarm relay; bit 1 = General warning; bit 2 = Temperature alarm; bit 3 = Moisture alarm; bit 4 = Insulation alarm
+Holding register,"FC03 read / FC06, FC16 write",2018,2018,42019,dig_inputs,,BITMAP16,1,,1,0,,Read,bit 0 = Contactor feedback (1 = motor switched in); bit 1 = Reset button enabled; bit 2 = Alarm reset active
+Holding register,"FC03 read / FC06, FC16 write",2019,2019,42020,unit_family,22 for IO113.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2020,2020,42021,unit_type,,UINT16,1,,1,0,,Read,"4 = Pump type C, SM 113 integrated (reserved); 5 = Pump type A, sensors wired to IO 113; 6 = Pump type B, SM 113 integrated; 7 = Pump type D, sensors wired to IO 113"
+Holding register,"FC03 read / FC06, FC16 write",2021,2021,42022,unit_version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2022,2022,42023,t_run,Running time (hi/lo pair).,UINT32,2,ABCD,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",2024,2024,42025,t_on,Power-on time (hi/lo pair).,UINT32,2,ABCD,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",2026,2026,42027,t_run_trip_cnt,Running time trip counter; cleared by RESET_HIST.,UINT32,2,ABCD,1,0,min,Read,
+Holding register,"FC03 read / FC06, FC16 write",2028,2028,42029,start_cnt,Number of starts.,UINT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2030,2030,42031,start_trip_cnt,Starts trip counter; cleared by RESET_HIST.,UINT32,2,ABCD,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2032,2032,42033,RESET,Command: write a non-zero value. Hardware reset of the module.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2033,2033,42034,RESET_ALARM,Command: write a non-zero value. Resets pending alarms and tries a restart.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2034,2034,42035,FACT_BOOT,Command: write a non-zero value. Rebuild factory EEPROM area (needs RESET or power cycle).,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2035,2035,42036,USER_BOOT,Command: write a non-zero value. Rebuild user EEPROM area (needs RESET or power cycle).,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2036,2036,42037,STOP,Command: write a non-zero value. Records the pump as stopped.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2037,2037,42038,START,Command: write a non-zero value. Records the pump as started.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2038,2038,42039,RESET_HIST,Command: write a non-zero value. Resets historical values.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2040,2040,42041,ARM_LEARNING,Command: write a non-zero value. Arms automatic sensor learning; follow with RESET.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",2041,2041,42042,t_support_bear_alarm,Factory 140.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2042,2042,42043,t_support_bear_warn,Factory 120.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2043,2043,42044,t_main_bear_alarm,Factory 140.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2044,2044,42045,t_main_bear_warn,Factory 120.,UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2045,2045,42046,t_pt1000_alarm,"Stator alarm limit, factory 150.",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2046,2046,42047,t_pt1000_warn,"Stator warning limit, factory 130.",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2047,2047,42048,t_pt100_alarm,"Extra temperature alarm limit, factory 150.",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2048,2048,42049,t_pt100_warn,"Extra temperature warning limit, factory 130.",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2049,2049,42050,t_run_trip_cnt_warn,Service warning limit; factory 255.,UINT16,1,,100,0,h,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2050,2050,42051,unit_addr,Modbus address 32-231; factory 231.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2051,2051,42052,vibration_alarm,Factory 255.,UINT16,1,,0.0787401575,0,mm/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2052,2052,42053,vibration_warn,Factory 255.,UINT16,1,,0.0787401575,0,mm/s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2053,2053,42054,water_in_oil_warn,Factory 195.,UINT16,1,,0.1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2054,2054,42055,wio_meas_delay,Factory 20 s.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2055,2055,42056,wio_meas_filter,Factory 120.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2059,2059,42060,alarms_enable,"Enable bits, layout as alarms (2012).",BITMAP16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2060,2060,42061,warnings1_enable,"Enable bits, layout as warnings1 (2013).",BITMAP16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2061,2061,42062,warnings2_enable,"Enable bits, layout as warnings2 (2014).",BITMAP16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2063,2063,42064,r_insulate_peak_serv,Peak since last service.,UINT16,1,,100,0,kΩ,Read,
+Holding register,"FC03 read / FC06, FC16 write",2064,2064,42065,speed,Pump speed.,UINT16,1,,1,0,rpm,Read,
+Holding register,"FC03 read / FC06, FC16 write",2065,2065,42066,vibration_peak_serv,Peak since last service.,UINT16,1,,0.0787401575,0,mm/s,Read,
+Holding register,"FC03 read / FC06, FC16 write",2066,2066,42067,water_in_oil_peak_serv,Peak since last service.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",2067,2067,42068,water_in_air,Boolean: water-in-air detection.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2068,2068,42069,aux_sensor_peak_serv,Unscaled; since last service.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2069,2069,42070,front_leds1,"Front-plate LED states, part 1.",BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2070,2070,42071,front_leds2,"Front-plate LED states, part 2.",BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2071,2071,42072,digital_sensors,,BITMAP16,1,,1,0,,Read,bit 0 = Moisture switch; bit 1 = PTC thermal switch
+Holding register,"FC03 read / FC06, FC16 write",2072,2072,42073,vib_meas_delay,Factory 20.,UINT16,1,,1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2073,2073,42074,vibmeas_filter,Factory 0.,UINT16,1,,1,0,,Read/write,

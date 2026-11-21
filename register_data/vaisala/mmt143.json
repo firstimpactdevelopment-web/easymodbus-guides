@@ -1,0 +1,460 @@
+{
+  "manufacturer": "Vaisala",
+  "manufacturer_slug": "vaisala",
+  "model": "MMT143 moisture in oil transmitter (Modbus RTU)",
+  "model_slug": "mmt143",
+  "short_model": "MMT143",
+  "aliases": [
+    "MMT143"
+  ],
+  "equipment_type": "Sensor (moisture in oil transmitter)",
+  "applies_to": "MMT143 moisture-in-oil transmitter ordered with the Modbus RTU option (user guide M213308EN-B).",
+  "summary": "The MMT143 is a compact Vaisala transmitter for moisture in transformer, lubrication and hydraulic oils. Units with the Modbus option are Modbus RTU slaves on RS-485. This map covers water activity, ppm water content, relative saturation and temperature, oil type coefficients, serial settings and test registers.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": 240,
+    "baud": 19200,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "The guide numbers registers in decimal starting at 1 and also prints the 0-based hex address used in the request; register number 1 is address 0x0000 on the wire."
+  },
+  "default_word_order": "CDAB",
+  "firmware": null,
+  "source": {
+    "title": "MMT143 User Guide",
+    "doc_number": "M213308EN-B",
+    "revision_date": "2026-11",
+    "url": "https://docs.vaisala.com/r/M213308EN-B/en-US",
+    "pages": "Appendix A Modbus reference, pp. 71-80 (Tables 26-36)"
+  },
+  "notes": [
+    "All registers are holding registers: read with function 03, write with function 16.",
+    "32-bit floats put the least significant word at the listed register (CDAB). The guide states this and its worked read example confirms it.",
+    "Unavailable data reads as quiet NaN (float) or 0x8000 (16-bit integer) rather than an exception.",
+    "Left out: status code (516) and security hash (518). They are 32-bit integers, and this guide only states the word order for 32-bit floats.",
+    "The ppmw value depends on the oil type setting (771) or custom coefficients A/B.",
+    "Integer copies: temperature and relative saturation are x10, water activity x1000.",
+    "Left out: the 16-character identification strings at 7425-7449; use Read Device Identification (function 43/14) instead."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "3",
+      "name": "Temperature",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 28,
+      "documented": "29",
+      "name": "Water activity",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 34,
+      "documented": "35",
+      "name": "Water content",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "ppmw",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 40,
+      "documented": "41",
+      "name": "Relative saturation",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "%RS",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 257,
+      "documented": "258",
+      "name": "Temperature (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 270,
+      "documented": "271",
+      "name": "Water activity (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.001,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 273,
+      "documented": "274",
+      "name": "Water content (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ppmw",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 276,
+      "documented": "277",
+      "name": "Relative saturation (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RS",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 512,
+      "documented": "513",
+      "name": "Error status",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "No errors"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 770,
+      "documented": "771",
+      "name": "Oil type",
+      "description": "Custom uses coefficients A and B.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Custom",
+        "1": "Mineral oil",
+        "2": "Synthetic ester (Midel 7131)",
+        "3": "Natural ester (FR3)",
+        "4": "Silicone liquid (Dow Corning 561)"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 776,
+      "documented": "777",
+      "name": "Oil coefficient A",
+      "description": "-100000...0.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 778,
+      "documented": "779",
+      "name": "Oil coefficient B",
+      "description": "-100...100.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 794,
+      "documented": "795",
+      "name": "Measurement filtering factor",
+      "description": "0.00001-1.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1536,
+      "documented": "1537",
+      "name": "Modbus address",
+      "description": "1-247.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1537,
+      "documented": "1538",
+      "name": "Bit rate",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "5": "9600",
+        "6": "19200"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1538,
+      "documented": "1539",
+      "name": "Parity, data, stop bits",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "N81",
+        "1": "N82",
+        "2": "E81",
+        "3": "E82",
+        "4": "O81",
+        "5": "O82"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1539,
+      "documented": "1540",
+      "name": "Response delay",
+      "description": "0-1020 ms.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ms",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1540,
+      "documented": "1541",
+      "name": "Interface mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "6": "Modbus"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1541,
+      "documented": "1542",
+      "name": "Restart device",
+      "description": "Write 1 to restart.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7680,
+      "documented": "7681",
+      "name": "Restore settings",
+      "description": "Write 1 to restore factory settings.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "W",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7936,
+      "documented": "7937",
+      "name": "Signed integer test",
+      "description": "Always reads -12345.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7937,
+      "documented": "7938",
+      "name": "Floating point test",
+      "description": "Always reads -123.45.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7939,
+      "documented": "7940",
+      "name": "Text string test",
+      "description": "Reads the text \"-123.45\".",
+      "data_type": "STRING",
+      "length": 4,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read holding registers 3-4 and 29-42 for temperature, water activity, ppm and relative saturation (CDAB floats). Set the oil type first so ppm is meaningful.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 34,
+        "why": "Water content ppm"
+      },
+      {
+        "table": "holding_register",
+        "address": 28,
+        "why": "Water activity"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Oil temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 512,
+        "why": "Error status"
+      },
+      {
+        "table": "holding_register",
+        "address": 770,
+        "why": "Oil type"
+      }
+    ],
+    "enable": "Order the transmitter with the Modbus configuration option, or set the serial mode to MODBUS with the SMODE serial command (applied at the next power-up).",
+    "watchdog": null,
+    "quirks": [
+      "Floats are low word first (CDAB); pick \"word-swapped\" float in masters that default to high word first.",
+      "Read or write each 32-bit value in one transaction."
+    ],
+    "setup": [
+      "Defaults: address 240, 19200 baud, no parity, 8 data bits; stop bits are 1 or 2 depending on the ordered configuration (check register 1539).",
+      "Change Modbus serial settings with Insight, the Indigo80 or registers 1537-1540; give each device on a shared bus a unique address (1-247)."
+    ],
+    "gotchas": [
+      "Use the test registers (7937 on) to confirm float format and addressing before trusting readings."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

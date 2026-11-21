@@ -1,0 +1,1146 @@
+{
+ "manufacturer": "Intesis (HMS Networks)",
+ "manufacturer_slug": "intesis",
+ "model": "IN770AIR***O000 700 Series Air Gateway, Panasonic application (Modbus)",
+ "model_slug": "in770air-panasonic-vrf",
+ "short_model": "IN770AIR Panasonic",
+ "aliases": [
+  "IN770AIR00MO000",
+  "IN770AIR00SO000",
+  "IN770AIRXXSO000"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "Intesis 700 Series Air Gateway IN770AIR***O000 with the Panasonic application (U1U2 P-Link / S-Link), Modbus RTU / TCP server, user manual version 1.1.7 (2025-12-09).",
+ "summary": "Intesis 700 Series gateway on Panasonic P-Link / S-Link (U1U2) systems serving Modbus RTU and TCP. Each indoor unit gets a 100-register block with control, temperatures, setpoint limits, error and occupancy values; outdoor units get pressure and demand-limit registers; low addresses hold occupancy setpoints and all-unit commands.",
+ "transport": [
+  "RTU",
+  "TCP"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Occupancy registers start at address 0, so printed addresses are wire addresses. Indoor unit n (1..64) on line L uses n x 100 + (L-1) x 10000 + offset; outdoor unit n (1..31) uses n x 25 + (L-1) x 10000 + 7000 + offset. This file lists line 1, indoor 1 (100..129) and outdoor 1 (7025..7028)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "700 Series Air Gateway - IN770AIR***O000, Panasonic to Modbus, KNX, BACnet, MQTT and Home Automation - User Manual",
+  "doc_number": "User Manual Version 1.1.7",
+  "revision_date": "2025-12-09",
+  "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-in770panxxxo000.pdf",
+  "pages": "pp. 27-30 (Modbus registers)"
+ },
+ "notes": [
+  "For indoor unit n add (n-1) x 100, for outdoor unit n add (n-1) x 25, and add 10000 for line 2.",
+  "The all-unit temperature setpoint is printed at address 14, which is already the 'fan speed Low (all units)' address; it is left out.",
+  "Compressor 1..3 operation time (outdoor +4..+6) are left out: a 0..16777215 h range does not fit the single register listed.",
+  "One manual covers the three licence sizes of the same hardware: IN770AIRXXSO000 (4 indoor / 4 outdoor units), IN770AIR00SO000 (16 / 16) and IN770AIR00MO000 (64 indoor / 30 outdoor). The brand application is chosen in Intesis MAPS.",
+  "The manual gives no data type for the registers; values whose printed range goes below zero are listed as INT16, the rest as UINT16.",
+  "The consumption registers (yesterday / today / total, also per heat and cool) are left out: each takes two addresses, but the manual gives neither the word order nor a fixed unit (Wh or kWh is chosen in MAPS).",
+  "Reads use FC03 or FC04; writes use FC06 only. 'T' (trigger) registers act when 1 is written."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0",
+   "name": "Occupancy cool setpoint",
+   "description": "Tenths; -15..60 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1",
+   "name": "Occupancy heat setpoint",
+   "description": "Tenths; -15..60 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "Unoccupancy cool setpoint",
+   "description": "Tenths; -15..60 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "Unoccupancy heat setpoint",
+   "description": "Tenths; -15..60 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4",
+   "name": "Occupancy continuous check",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disabled",
+    "1": "Enabled"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "5",
+   "name": "Unoccupancy deadband action",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "Current mode"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6",
+   "name": "On (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Off (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "8",
+   "name": "Mode Auto (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "9",
+   "name": "Mode Heat (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "10",
+   "name": "Mode Dry (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "11",
+   "name": "Mode Fan (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "12",
+   "name": "Mode Cool (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "13",
+   "name": "Fan speed Auto (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "14",
+   "name": "Fan speed Low (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "15",
+   "name": "Fan speed Med (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "16",
+   "name": "Fan speed High (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 17,
+   "documented": "17",
+   "name": "Vanes stop (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 18,
+   "documented": "18",
+   "name": "Vanes position 1 (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 19,
+   "documented": "19",
+   "name": "Vanes position 2 (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 20,
+   "documented": "20",
+   "name": "Vanes position 3 (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 21,
+   "documented": "21",
+   "name": "Vanes position 4 (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "22",
+   "name": "Vanes position 5 (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "23",
+   "name": "Vanes swing (all units)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 100,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 0",
+   "name": "IU on/off",
+   "description": "Line 1, indoor unit 1 shown; see notes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 101,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 1",
+   "name": "IU operation mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Dry",
+    "3": "Fan",
+    "4": "Cool",
+    "5": "AutoHeat",
+    "6": "AutoCool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 102,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 2",
+   "name": "IU fan speed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Low",
+    "2": "Low+",
+    "3": "Medium",
+    "4": "Medium+",
+    "5": "High"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 103,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 3",
+   "name": "IU vane position",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Stop",
+    "1": "Position 1",
+    "2": "Position 2",
+    "3": "Position 3",
+    "4": "Position 4",
+    "5": "Position 5",
+    "10": "Swing"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 104,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 4",
+   "name": "IU temperature setpoint",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 105,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 5",
+   "name": "IU AC ambient temperature",
+   "description": "Tenths of °C. -35..92.5.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 106,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 6",
+   "name": "IU wired remote controller sensor",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Body sensor",
+    "1": "Remote control sensor"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 107,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 7",
+   "name": "IU discharge setpoint cool",
+   "description": "Tenths of °C. Printed range -10..10.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 108,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 8",
+   "name": "IU discharge setpoint heat",
+   "description": "Tenths of °C. Printed range -10..10.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 109,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 9",
+   "name": "IU discharge current temperature",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 110,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 10",
+   "name": "IU heat exchanger temperature",
+   "description": "Tenths of °C. -1..26.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 111,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 11",
+   "name": "IU heat setpoint upper limit",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 112,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 12",
+   "name": "IU heat setpoint lower limit",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 113,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 13",
+   "name": "IU cool setpoint upper limit",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 114,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 14",
+   "name": "IU cool setpoint lower limit",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 115,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 15",
+   "name": "IU dry setpoint upper limit",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 116,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 16",
+   "name": "IU dry setpoint lower limit",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 117,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 17",
+   "name": "IU auto setpoint upper limit",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 118,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 18",
+   "name": "IU auto setpoint lower limit",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 119,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 19",
+   "name": "IU unit error code",
+   "description": "0 = no error, 1..255 = error.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 120,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 20",
+   "name": "IU filter alarm",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Normal",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 121,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 21",
+   "name": "IU filter alarm reset",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Reset"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 122,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 22",
+   "name": "IU communication error",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 123,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 23",
+   "name": "IU allow on/off from RC",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allow"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 124,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 24",
+   "name": "IU allow mode from RC",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allow"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 125,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 25",
+   "name": "IU allow setpoint from RC",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allow"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 126,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 26",
+   "name": "IU unit type",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Not defined",
+    "1": "TBD",
+    "2": "GHP",
+    "3": "PAC",
+    "4": "VRF"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 127,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 27",
+   "name": "IU occupancy",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Occupied",
+    "2": "Unoccupied",
+    "3": "Disable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 128,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 28",
+   "name": "IU Modbus ambient temperature",
+   "description": "Room temperature written from Modbus; tenths.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 129,
+   "documented": "(IU address[1..64] × 100) + ((L - 1) × 10000) + 29",
+   "name": "IU AC real temperature setpoint",
+   "description": "Tenths of °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7025,
+   "documented": "(OU address[1..31] × 25) + ((L - 1) × 10000) + 7000) + 0",
+   "name": "OU communication error",
+   "description": "Line 1, outdoor unit 1 shown.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7026,
+   "documented": "(OU address[1..31] × 25) + ((L - 1) × 10000) + 7000) + 1",
+   "name": "OU demand limit ratio",
+   "description": "0..200 %, 255 = no limit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "RW",
+   "values": {
+    "255": "No limit"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7027,
+   "documented": "(OU address[1..31] × 25) + ((L - 1) × 10000) + 7000) + 2",
+   "name": "OU high pressure sensor",
+   "description": "bar x 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "bar",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7028,
+   "documented": "(OU address[1..31] × 25) + ((L - 1) × 10000) + 7000) + 3",
+   "name": "OU low pressure sensor",
+   "description": "bar x 10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "bar",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Pick the Panasonic application and the Modbus interface in Intesis MAPS, discover or add the units, send the project, then read and write each unit's block.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 100,
+    "why": "On/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 101,
+    "why": "Mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 102,
+    "why": "Fan speed"
+   },
+   {
+    "table": "holding_register",
+    "address": 104,
+    "why": "Setpoint (x10)"
+   },
+   {
+    "table": "holding_register",
+    "address": 105,
+    "why": "Room temperature (x10)"
+   },
+   {
+    "table": "holding_register",
+    "address": 119,
+    "why": "Error code"
+   },
+   {
+    "table": "holding_register",
+    "address": 122,
+    "why": "Communication error"
+   },
+   {
+    "table": "holding_register",
+    "address": 7025,
+    "why": "Outdoor unit communication error"
+   }
+  ],
+  "enable": "The gateway must be configured with Intesis MAPS (Panasonic 770 project template, Modbus selected) and the project sent to it; the unit numbers used in the address formulas are the indoor / outdoor unit addresses.",
+  "watchdog": null,
+  "quirks": [
+   "Writes accept FC06 (single register) only.",
+   "Trigger (T) registers act when 1 is written and are not meant to be read."
+  ],
+  "setup": [
+   "All Modbus settings (RTU or TCP, slave address, baud, parity) are made with the Intesis MAPS tool; the manual gives no factory serial settings.",
+   "On first power-up DHCP is tried for 30 seconds, then the gateway falls back to 192.168.100.246.",
+   "Modbus RTU uses the EIA-485 port (A+, B-); bias and 120 ohm termination are on DIP switch block SW A."
+  ],
+  "gotchas": [
+   "The line number (1 or 2) moves the whole indoor and outdoor map by 10000."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/intesis/in770air-panasonic-vrf",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

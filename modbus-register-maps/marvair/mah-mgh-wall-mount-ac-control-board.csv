@@ -1,0 +1,74 @@
+﻿# Marvair MAH / MGH wall-mount air conditioner control board (Modbus RTU) Modbus register map - easymodbus.com - source: https://marvair.com/doc/25/MAH1018A-1060A%20MGH1072A%20MAH2024A-2060A%20%20MGH2072A%20Wall-Mount%20AC%20Manual%20Rev%207
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,0,00001,Y1 compressor call,Stage 1 cooling request,BIT,1,,1,0,,Read/write,0 = No call; 1 = Call
+Coil,"FC01 read / FC05, FC15 write",1,1,00002,Y2 compressor call,Stage 2 cooling request,BIT,1,,1,0,,Read/write,0 = No call; 1 = Call
+Coil,"FC01 read / FC05, FC15 write",2,2,00003,Humidity call,Dehumidification request,BIT,1,,1,0,,Read/write,0 = No call; 1 = Call
+Coil,"FC01 read / FC05, FC15 write",3,3,00004,G fan call,Fan-only request,BIT,1,,1,0,,Read/write,0 = No call; 1 = Call
+Coil,"FC01 read / FC05, FC15 write",4,4,00005,W2 electric heat call,,BIT,1,,1,0,,Read/write,0 = No call; 1 = Call
+Coil,"FC01 read / FC05, FC15 write",17,17,00018,Communicating thermostat mode,Same as parameter P22: take calls from Modbus instead of hardware inputs,BIT,1,,1,0,,Read/write,0 = Hardware calls (H); 1 = Comm/Modbus calls (C)
+Coil,"FC01 read / FC05, FC15 write",18,18,00019,Read hardware call inputs,1 = still read hardware thermostat inputs while P22 = C,BIT,1,,1,0,,Read/write,0 = Normal (per P22); 1 = Read hardware calls
+Coil,"FC01 read / FC05, FC15 write",24,24,00025,O reversing valve request,,BIT,1,,1,0,,Read/write,0 = No call; 1 = Call
+Coil,"FC01 read / FC05, FC15 write",26,26,00027,Emergency ventilation request,,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Coil,"FC01 read / FC05, FC15 write",27,27,00028,Pulse reheat,Default on,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Discrete input,FC02 read,5,5,10006,FCC call,,BIT,1,,1,0,,Read,0 = No call; 1 = Call
+Discrete input,FC02 read,6,6,10007,High pressure switch 1,,BIT,1,,1,0,,Read,0 = Open; 1 = Closed
+Discrete input,FC02 read,7,7,10008,High pressure switch 2,,BIT,1,,1,0,,Read,0 = Open; 1 = Closed
+Discrete input,FC02 read,8,8,10009,Low pressure switch 1,AC manual labels it the HPS2 hardware input,BIT,1,,1,0,,Read,0 = Open; 1 = Closed
+Discrete input,FC02 read,9,9,10010,Low pressure switch 2,,BIT,1,,1,0,,Read,0 = Open; 1 = Closed
+Discrete input,FC02 read,10,10,10011,OFM mode selection,Outdoor fan motor signal type,BIT,1,,1,0,,Read,0 = PWM; 1 = 0-10 V
+Discrete input,FC02 read,11,11,10012,IFM mode selection,Indoor fan motor signal type,BIT,1,,1,0,,Read,0 = PWM; 1 = 0-10 V
+Discrete input,FC02 read,12,12,10013,Technician speedup test mode,,BIT,1,,1,0,,Read,0 = Normal; 1 = Test mode
+Discrete input,FC02 read,13,13,10014,Compressor 1 relay output,,BIT,1,,1,0,,Read,0 = Off; 1 = Energized
+Discrete input,FC02 read,14,14,10015,Compressor 2 relay output,,BIT,1,,1,0,,Read,0 = Off; 1 = Energized
+Discrete input,FC02 read,15,15,10016,RH relay output,,BIT,1,,1,0,,Read,0 = Off; 1 = Energized
+Discrete input,FC02 read,16,16,10017,W2 relay output,,BIT,1,,1,0,,Read,0 = Off; 1 = Energized
+Discrete input,FC02 read,19,19,10020,AC / HP,Unit type,BIT,1,,1,0,,Read,0 = AC; 1 = Heat pump
+Discrete input,FC02 read,20,20,10021,EHDD,EHDD option setting,BIT,1,,1,0,,Read,0 = No; 1 = Yes
+Discrete input,FC02 read,21,21,10022,SCKT,SCKT option setting,BIT,1,,1,0,,Read,0 = No; 1 = Yes
+Discrete input,FC02 read,22,22,10023,Economizer enabled,,BIT,1,,1,0,,Read,0 = No; 1 = Yes
+Discrete input,FC02 read,23,23,10024,Economizer sensor type,,BIT,1,,1,0,,Read,0 = Dry bulb; 1 = Enthalpy
+Discrete input,FC02 read,25,25,10026,RV output,Reversing valve output,BIT,1,,1,0,,Read,0 = Off; 1 = Energized
+Discrete input,FC02 read,28,28,10029,Emergency ventilation status,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Discrete input,FC02 read,29,29,10030,EC relay output,,BIT,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,9,9,30010,Current OFM speed,0-1023,UINT16,1,,1,0,,Read,
+Input register,FC04 read,10,10,30011,Current IFM speed,0-1023,UINT16,1,,1,0,,Read,
+Input register,FC04 read,11,11,30012,Anti-short-cycle compressor 1,0-360 counts of 0.5 s,UINT16,1,,0.5,0,s,Read,
+Input register,FC04 read,12,12,30013,Anti-short-cycle compressor 2,0-360 counts of 0.5 s,UINT16,1,,0.5,0,s,Read,
+Input register,FC04 read,13,13,30014,Voltage reading,"0-1023; 1023 = above 20 V, 965 = 18 V cutoff",UINT16,1,,1,0,,Read,
+Input register,FC04 read,14,14,30015,P1 temperature,0-160 °F; 255 = no sensor,UINT16,1,,1,0,°F,Read,255 = No sensor
+Input register,FC04 read,15,15,30016,P2 temperature,0-160 °F; 255 = no sensor,UINT16,1,,1,0,°F,Read,255 = No sensor
+Input register,FC04 read,16,16,30017,Freeze sensor 1 temperature,0-160 °F; 255 = no sensor,UINT16,1,,1,0,°F,Read,255 = No sensor
+Input register,FC04 read,17,17,30018,Freeze sensor 2 temperature,0-160 °F; 255 = no sensor,UINT16,1,,1,0,°F,Read,255 = No sensor
+Input register,FC04 read,18,18,30019,Alarm status,0 = no fault,BITMAP16,1,,1,0,,Read,bit 0 = Freeze sensor fault; bit 1 = HPS1 fault; bit 2 = Low voltage; bit 6 = LPS1 fault; bit 14 = Y1 locked out; bit 15 = Y2 locked out
+Input register,FC04 read,24,24,30025,Software version,Decimal,UINT16,1,,1,0,,Read,
+Input register,FC04 read,25,25,30026,Supply / mixed air temperature,0-160 °F,UINT16,1,,1,0,°F,Read,
+Input register,FC04 read,27,27,30028,Outdoor temperature,0-160 °F,UINT16,1,,1,0,°F,Read,
+Input register,FC04 read,29,29,30030,Suction line temperature (LPS1),0-160 °F; 255 = open or shorted sensor,UINT16,1,,1,0,°F,Read,255 = Sensor open/shorted
+Input register,FC04 read,31,31,30032,Liquid line temperature (FCC1),0-160 °F; 255 = open or shorted sensor,UINT16,1,,1,0,°F,Read,255 = Sensor open/shorted
+Input register,FC04 read,33,33,30034,Defrost sensor temperature,0-160 °F,UINT16,1,,1,0,°F,Read,
+Input register,FC04 read,38,38,30039,Economizer output,"0 = off, 20-100",UINT16,1,,1,0,,Read,0 = Off
+Holding register,"FC03 read / FC06, FC16 write",0,0,40001,Heat set point,Reserved for future use; 45-100 °F,UINT16,1,,1,0,°F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,1,40002,Cool set point,Reserved for future use; 45-100 °F,UINT16,1,,1,0,°F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,2,40003,Temperature calibration,"0-18, default 9; correction = value - 9",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,3,40004,W2 speed multiplier,"Percent of Y2 fan speed, 0-100, default 80",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",4,4,40005,Dehumidification speed multiplier,"Percent of Y2 fan speed, 0-100, default 80",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",5,5,40006,OFM set speed,"Outdoor fan speed, 0-1023",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,6,40007,IFM Y1 set speed,"Indoor fan speed for Y1, 40-100, default 60",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7,7,40008,IFM Y2 set speed,"Indoor fan speed for Y2, 40-100, default 60",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8,8,40009,Modbus timeout,"Minutes without Modbus before reverting to hardware calls; 1-60, default 10",UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",19,19,40020,Minimum position,"Economizer minimum position: 20 = minimum, 20-100 = open %",UINT16,1,,1,0,%,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20,20,40021,Economizer dry bulb set point,"20-105 °F, default 70",UINT16,1,,1,0,°F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",21,21,40022,ODS set,"0-70, default 50",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",22,22,40023,Fan purge,"0 = no, 10-90 s, default 90",UINT16,1,,1,0,s,Read/write,0 = No purge
+Holding register,"FC03 read / FC06, FC16 write",23,23,40024,Defrost timer,"30, 60 or 90 min (default 30)",UINT16,1,,1,0,min,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",26,26,40027,SAS/MAS calibration,"0-18, default 9; correction = value - 9",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",28,28,40029,ODS calibration,"0-18, default 9; correction = value - 9",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",30,30,40031,Suction line temp calibration,"0-18, default 9; correction = value - 9",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",32,32,40033,Liquid line temp calibration,"0-18, default 9; correction = value - 9",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",34,34,40035,DS calibration,"0-18, default 9; correction = value - 9",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",35,35,40036,Dehumidifier set point,"70-75 °F, default 72",UINT16,1,,1,0,°F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",36,36,40037,Pulse reheat differential,"5-10 °F, default 5",UINT16,1,,1,0,°F,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",37,37,40038,Economizer enthalpy set point,"Modes A..E as 0..4, default 3 (D)",UINT16,1,,1,0,,Read/write,0 = A; 1 = B; 2 = C; 3 = D; 4 = E
+Holding register,"FC03 read / FC06, FC16 write",39,39,40040,Head pressure cutout temperature,"75-95, default 85",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",40,40,40041,IFM G set speed,"Indoor fan speed for fan-only, 30-100, default 60",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",41,41,40042,OFM speed heating,"Outdoor fan speed in heating (heat pumps), 65-100, default 85",UINT16,1,,1,0,,Read/write,

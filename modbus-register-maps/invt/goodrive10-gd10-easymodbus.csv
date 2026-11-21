@@ -1,0 +1,39 @@
+Device Name,Host,Port,Unit ID,Transport,Reading Name,Table,Wire Address,Register Number,Modicon,Data Type,Word Order,Bit,Multiplier,Offset Value,Units,Value,Status,Notes
+INVT GD10,,502,1,RTU_OVER_TCP,P00.01 Run command channel,Holding Register,1,2,40002,UINT16,,,1,0,,,,Set 2 so run/stop comes from 2000H. | 0 = Keypad; 1 = Terminal; 2 = Communication
+INVT GD10,,502,1,RTU_OVER_TCP,P00.03 Max. output frequency,Holding Register,3,4,40004,UINT16,,,0.01,0,Hz,,,Fmax; ceiling for 2001H.
+INVT GD10,,502,1,RTU_OVER_TCP,P00.06 A frequency command channel,Holding Register,6,7,40007,UINT16,,,1,0,,,,Set to the Modbus option so 2001H sets the speed; other values pick local sources. | 8 = Modbus communication setting
+INVT GD10,,502,1,RTU_OVER_TCP,P07.27 Present fault type,Holding Register,1819,1820,41820,UINT16,,,1,0,,,,Same codes as 2102H. | 0 = No fault; 4 = Overcurrent during acceleration (OC1); 5 = Overcurrent during deceleration (OC2); 6 = Overcurrent during constant speed running (OC3); 7 = Overvoltage during acceleration (OV1); 8 = Overvoltage during deceleration (OV2); 9 = Overvoltage during constant speed running (OV3); 10 = Bus undervoltage (UV); 11 = Motor overload (OL1); 12 = VFD overload (OL2); 15 = Rectifier module overheat (OH1); 16 = Inverter module overheat (OH2); 17 = External fault (EF); 18 = RS485 communication fault (CE); 21 = EEPROM operation fault (EEP); 22 = PID feedback offline fault (PIDE); 24 = Running time reached (END); 25 = Electronic overload fault (OL3); 36 = Electronic underload fault (LL)
+INVT GD10,,502,1,RTU_OVER_TCP,P14.00 Local communication address,Holding Register,3584,3585,43585,UINT16,,,1,0,,,,1-247; 0 is broadcast.
+INVT GD10,,502,1,RTU_OVER_TCP,P14.01 Baud rate,Holding Register,3585,3586,43586,UINT16,,,1,0,,,,0 = 1200 bps; 1 = 2400 bps; 2 = 4800 bps; 3 = 9600 bps; 4 = 19200 bps; 5 = 38400 bps
+INVT GD10,,502,1,RTU_OVER_TCP,P14.02 Data bit check,Holding Register,3586,3587,43587,UINT16,,,1,0,,,,"0 = N,8,1 RTU; 1 = E,8,1 RTU; 2 = O,8,1 RTU; 3 = N,8,2 RTU; 4 = E,8,2 RTU; 5 = O,8,2 RTU"
+INVT GD10,,502,1,RTU_OVER_TCP,P14.03 Communication response delay,Holding Register,3587,3588,43588,UINT16,,,1,0,ms,,,0-200 ms extra delay before replying.
+INVT GD10,,502,1,RTU_OVER_TCP,P14.04 Communication timeout,Holding Register,3588,3589,43589,UINT16,,,0.1,0,s,,,0.0 = off; otherwise CE fault after this much bus silence.
+INVT GD10,,502,1,RTU_OVER_TCP,P14.05 Transmission fault processing,Holding Register,3589,3590,43590,UINT16,,,1,0,,,,"0 = Alarm and coast to stop; 1 = Keep running, no alarm; 2 = Stop by stop mode, no alarm (communication mode only); 3 = Stop by stop mode, no alarm (any mode)"
+INVT GD10,,502,1,RTU_OVER_TCP,Communication control command,Holding Register,8192,8193,48193,UINT16,,,1,0,,,,Needs P00.01 = 2. | 1 = Forward running; 2 = Reverse running; 3 = Forward jogging; 4 = Reverse jogging; 5 = Stop; 6 = Coast to stop; 7 = Fault reset; 8 = Jogging stop
+INVT GD10,,502,1,RTU_OVER_TCP,Communication frequency setting,Holding Register,8193,8194,48194,UINT16,,,0.01,0,Hz,,,0 to Fmax.
+INVT GD10,,502,1,RTU_OVER_TCP,PID reference,Holding Register,8194,8195,48195,UINT16,,,0.1,0,%,,,0-1000 = 0-100.0 %.
+INVT GD10,,502,1,RTU_OVER_TCP,PID feedback,Holding Register,8195,8196,48196,UINT16,,,0.1,0,%,,,0-1000 = 0-100.0 %.
+INVT GD10,,502,1,RTU_OVER_TCP,Virtual input terminal command,Holding Register,8202,8203,48203,UINT16,,,1,0,,,,Range 0x000-0x1FF.
+INVT GD10,,502,1,RTU_OVER_TCP,Virtual output terminal command,Holding Register,8203,8204,48204,UINT16,,,1,0,,,,Range 0x00-0x0F.
+INVT GD10,,502,1,RTU_OVER_TCP,AO output setting 1,Holding Register,8205,8206,48206,INT16,,,0.1,0,%,,,'-1000 to 1000 = -100.0 to 100.0 %.
+INVT GD10,,502,1,RTU_OVER_TCP,VFD status word 1,Holding Register,8448,8449,48449,UINT16,,,1,0,,,,1 = Forward running; 2 = Running (printed as forward running twice); 3 = Stop; 4 = Fault; 5 = POFF state
+INVT GD10,,502,1,RTU_OVER_TCP,VFD status word 2,Holding Register,8449,8450,48450,UINT16,,,1,0,,,,"bit 0 = 1 = bus voltage established; bit 1 = Motor select bit 0 (00 = motor 1); bit 2 = Motor select bit 1; bit 3 = 1 = synchronous motor, 0 = asynchronous; bit 4 = 1 = overload pre-alarm; bit 5 = Control source bit 0 (bits 5-6: 00 keypad, 01 terminal, 10 communication); bit 6 = Control source bit 1"
+INVT GD10,,502,1,RTU_OVER_TCP,VFD fault code,Holding Register,8450,8451,48451,UINT16,,,1,0,,,,Codes match P07.27. | 0 = No fault; 4 = Overcurrent during acceleration (OC1); 5 = Overcurrent during deceleration (OC2); 6 = Overcurrent during constant speed running (OC3); 7 = Overvoltage during acceleration (OV1); 8 = Overvoltage during deceleration (OV2); 9 = Overvoltage during constant speed running (OV3); 10 = Bus undervoltage (UV); 11 = Motor overload (OL1); 12 = VFD overload (OL2); 15 = Rectifier module overheat (OH1); 16 = Inverter module overheat (OH2); 17 = External fault (EF); 18 = RS485 communication fault (CE); 21 = EEPROM operation fault (EEP); 22 = PID feedback offline fault (PIDE); 24 = Running time reached (END); 25 = Electronic overload fault (OL3); 36 = Electronic underload fault (LL)
+INVT GD10,,502,1,RTU_OVER_TCP,VFD identification code,Holding Register,8451,8452,48452,UINT16,,,1,0,,,,0x010D = Goodrive10 (high byte 0x01 Goodrive series).
+INVT GD10,,502,1,RTU_OVER_TCP,Running frequency,Holding Register,12288,12289,412289,UINT16,,,0.01,0,Hz,,,
+INVT GD10,,502,1,RTU_OVER_TCP,Set frequency,Holding Register,12289,12290,412290,UINT16,,,0.01,0,Hz,,,
+INVT GD10,,502,1,RTU_OVER_TCP,Bus voltage,Holding Register,12290,12291,412291,UINT16,,,0.1,0,V,,,
+INVT GD10,,502,1,RTU_OVER_TCP,Output voltage,Holding Register,12291,12292,412292,UINT16,,,1,0,V,,,
+INVT GD10,,502,1,RTU_OVER_TCP,Output current,Holding Register,12292,12293,412293,UINT16,,,0.1,0,A,,,
+INVT GD10,,502,1,RTU_OVER_TCP,Rotating speed,Holding Register,12293,12294,412294,UINT16,,,1,0,rpm,,,
+INVT GD10,,502,1,RTU_OVER_TCP,Output power,Holding Register,12294,12295,412295,INT16,,,0.1,0,%,,,'-300.0 to 300.0 %.
+INVT GD10,,502,1,RTU_OVER_TCP,Output torque,Holding Register,12295,12296,412296,INT16,,,0.1,0,%,,,'-250.0 to 250.0 %.
+INVT GD10,,502,1,RTU_OVER_TCP,PID setting,Holding Register,12296,12297,412297,INT16,,,0.1,0,%,,,'-100.0 to 100.0 %.
+INVT GD10,,502,1,RTU_OVER_TCP,PID feedback,Holding Register,12297,12298,412298,INT16,,,0.1,0,%,,,'-100.0 to 100.0 %.
+INVT GD10,,502,1,RTU_OVER_TCP,Input terminal state,Holding Register,12298,12299,412299,UINT16,,,1,0,,,,Range 000-1FF.
+INVT GD10,,502,1,RTU_OVER_TCP,Output terminal state,Holding Register,12299,12300,412300,UINT16,,,1,0,,,,Range 000-1FF.
+INVT GD10,,502,1,RTU_OVER_TCP,Analog input 1,Holding Register,12300,12301,412301,UINT16,,,0.01,0,V,,,0.00-10.00 V.
+INVT GD10,,502,1,RTU_OVER_TCP,Analog input 2,Holding Register,12301,12302,412302,UINT16,,,0.01,0,V,,,0.00-10.00 V.
+INVT GD10,,502,1,RTU_OVER_TCP,Current step of multi-step speed,Holding Register,12306,12307,412307,UINT16,,,1,0,,,,0-15.
+INVT GD10,,502,1,RTU_OVER_TCP,External count value,Holding Register,12308,12309,412309,UINT16,,,1,0,,,,
+INVT GD10,,502,1,RTU_OVER_TCP,Torque setting,Holding Register,12309,12310,412310,INT16,,,0.1,0,%,,,'-300.0 to 300.0 %.

@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APC InRow ACRC30x Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="APC InRow ACRC30x Modbus register map: 163 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="APC InRow ACRC30x Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="APC InRow ACRC30x Modbus register map: 163 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="APC InRow ACRC30x Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="APC InRow ACRC30x Modbus register map: 163 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x",
+   "url": "https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x",
+   "name": "APC InRow ACRC30x Modbus Register List & Map | Easy Modbus",
+   "description": "APC InRow ACRC30x Modbus register map: 163 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-19",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x#dataset",
+   "name": "APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus register map",
+   "description": "The InRow ACRC30x is a 300 mm wide chilled-water cooling unit that sits between server racks. Its controller answers Modbus RTU and Modbus TCP, with every value in holding registers that can also be read with function 04. This map covers the group values (cooling output, setpoints, airflow), the unit readings (temperatures, fan speed, chilled water valve, flow, power and energy, run hours), configuration items and the full list of one-register alarm flags. APC InRow ACRC30x Modbus register map: 163 registers with addresses, data types, word order, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x",
+   "keywords": [
+    "APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus register map",
+    "APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus registers",
+    "APC (Schneider Electric) Modbus map",
+    "ACRC30x Modbus register map",
+    "ACRC300 Modbus register map",
+    "ACRC301 Modbus register map",
+    "InRow RC 300 mm Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "dateModified": "2026-11-19",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "Modbus Register Map: InRow ACRC30x",
+    "url": "https://download.se.com/files?p_Doc_Ref=SPD_KKRZ-99YNMA_EN",
+    "author": {
+     "@type": "Organization",
+     "name": "APC (Schneider Electric)"
+    }
+   },
+   "about": {
+    "@type": "Thing",
+    "name": "APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm)",
+    "description": "Air handler (in-row chilled-water cooling unit)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "Easy Modbus register-map library",
+    "url": "https://easymodbus.com/modbus-register-maps/"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 163 registers: 163 holding registers. 27 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each row gives a Modicon number (40001 style) plus the absolute address in hex and decimal. Note 11 says absolute address 0 equals register 40001 and is address zero on the wire, so the decimal column is the wire address."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What byte order does the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) use for 32-bit values?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 0 Overall status (Overall alarm severity); HR 206 Operating mode (Unit operating mode); HR 207 Unit cool output (Unit cooling output); HR 211 Unit max rack inlet temp (Highest rack inlet temperature); HR 213 Supply air temp (Supply air temperature); HR 215 Return air temp (Return air temperature); HR 219 Fan speed (Fan speed); HR 5 Cool setpoint (Cooling setpoint (writable)); HR 386 Cool function unavailable (Cooling function unavailable alarm); HR 403 Water detected (Water detected alarm)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The register map does not describe how to enable Modbus or set the network parameters."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is Modbus Register Map: InRow ACRC30x (990-4742B), published free by APC (Schneider Electric) at https://download.se.com/files?p_Doc_Ref=SPD_KKRZ-99YNMA_EN."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "APC (Schneider Electric)",
+     "item": "https://easymodbus.com/modbus-register-maps/apc/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "InRow ACRC30x chilled-water cooling unit (300 mm)",
+     "item": "https://easymodbus.com/modbus-register-maps/apc/inrow-acrc30x"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/apc/">APC (Schneider Electric)</a></li><li aria-current="page">InRow ACRC30x chilled-water cooling unit (300 mm)</li></ol>
+<p class="eyebrow">Air handler (in-row chilled-water cooling unit) &middot; Modbus register map</p><h1><span class="mfr">APC (Schneider Electric)</span> InRow ACRC30x chilled-water cooling unit (300 mm) Modbus register map</h1><p class="updated">Updated 19 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>The InRow ACRC30x is a 300 mm wide chilled-water cooling unit that sits between server racks. Its controller answers Modbus RTU and Modbus TCP, with every value in holding registers that can also be read with function 04. This map covers the group values (cooling output, setpoints, airflow), the unit readings (temperatures, fan speed, chilled water valve, flow, power and energy, run hours), configuration items and the full list of one-register alarm flags.</p>
+<p>This page lists <strong>163 Modbus registers</strong> for the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) &mdash; 27 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+APC (Schneider Electric)&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/apc/">APC (Schneider Electric)</a></dd></div><div><dt>Model</dt><dd>InRow ACRC30x chilled-water cooling unit (300 mm)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/hvac/">Air handler (in-row chilled-water cooling unit)</a></dd></div><div><dt>Registers</dt><dd>163 (27 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU, Modbus TCP</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Documented addressing</dt><dd>Modicon 3xxxx/4xxxx (drop the prefix, subtract 1)</dd></div><div><dt>32-bit word order</dt><dd>ABCD <small class="count">high word first (big-endian)</small></dd></div><div><dt>Also known as</dt><dd>ACRC30x, ACRC300, ACRC301, InRow RC 300 mm</dd></div><div><dt>Source document</dt><dd><a href="https://download.se.com/files?p_Doc_Ref=SPD_KKRZ-99YNMA_EN" rel="nofollow noopener" target="_blank">Modbus Register Map: InRow ACRC30x &middot; 990-4742B</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/apc/inrow-acrc30x.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/apc/inrow-acrc30x.json">JSON</a>
+  <a class="btn" href="https://download.se.com/files?p_Doc_Ref=SPD_KKRZ-99YNMA_EN" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm)</h2>
+<div class="answer"><b>Integration in brief</b><p>Poll holding registers from address 0 with function 03 or 04. Read OVERALL_STATUS and OPERATING_MODE first, then the 32-bit temperatures and cooling output in tenths, and scan the alarm block at 384-456 for active flags.</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-0">HR 0</a></td><td class="n">Overall status</td><td class="f">UINT16</td><td>Overall alarm severity</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-206">HR 206</a></td><td class="n">Operating mode</td><td class="f">UINT16</td><td>Unit operating mode</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-207">HR 207</a></td><td class="n">Unit cool output</td><td class="f">INT32 ABCD</td><td>Unit cooling output</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-211">HR 211</a></td><td class="n">Unit max rack inlet temp</td><td class="f">INT32 ABCD</td><td>Highest rack inlet temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-213">HR 213</a></td><td class="n">Supply air temp</td><td class="f">INT32 ABCD</td><td>Supply air temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-215">HR 215</a></td><td class="n">Return air temp</td><td class="f">INT32 ABCD</td><td>Return air temperature</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-219">HR 219</a></td><td class="n">Fan speed</td><td class="f">INT32 ABCD</td><td>Fan speed</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-5">HR 5</a></td><td class="n">Cool setpoint</td><td class="f">INT32 ABCD</td><td>Cooling setpoint (writable)</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-386">HR 386</a></td><td class="n">Cool function unavailable</td><td class="f">UINT16</td><td>Cooling function unavailable alarm</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-403">HR 403</a></td><td class="n">Water detected</td><td class="f">UINT16</td><td>Water detected alarm</td><td><span class="acc R">Read</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>The register map does not describe how to enable Modbus or set the network parameters.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>32-bit values are high word first (ABCD).</li><li>Temperatures are tenths of a degree Fahrenheit; the map has no Celsius registers.</li><li>A single-register read of a reserved address fails, while block reads across gaps return zeros.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>Modbus RTU and Modbus TCP are both supported; serial settings and unit ID are not in this map.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Large reads can take 2 seconds or more; shorten blocks or raise the response timeout if requests time out.</li><li>Reading an item before the controller has data for it returns an invalid-address error, so retry later.</li><li>Alarm flags are only consistent within one register; do not combine bits across registers.</li></ul>
+</section>
+<h2 id="registers">APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>163</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">163 of 163 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-0"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">0<small>doc 40001 (absolute 0)</small></td><td class="n">Overall status</td><td class="d">Worst active alarm severity for the unit.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No Alarm; 1 = Informational; 2 = Warning; 3 = Critical</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1<small>doc 40002 (absolute 1)</small></td><td class="n">Group cool output</td><td class="d">Cooling delivered by the whole InRow group.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-3"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">3<small>doc 40004 (absolute 3)</small></td><td class="n">Group cool demand</td><td class="d">Cooling requested by the whole group.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-5"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">5<small>doc 40006 (absolute 5)</small></td><td class="n">Cool setpoint</td><td class="d">Cooling setpoint the group controls to.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7<small>doc 40008 (absolute 7)</small></td><td class="n">Supply air setpoint</td><td class="d">Supply air temperature setpoint.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-9"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">9<small>doc 40010 (absolute 9)</small></td><td class="n">Group air flow</td><td class="d">Total airflow of the group.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>CFM</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11<small>doc 40012 (absolute 11)</small></td><td class="n">Group max rack temp</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-13"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">13<small>doc 40014 (absolute 13)</small></td><td class="n">Group min rack temp</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15<small>doc 40016 (absolute 15)</small></td><td class="n">Airflow control</td><td class="d">Fan speed preference: automatic or a fixed percentage.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Automatic; 1 = 60%; 2 = 70%; 3 = 80%; 4 = 90%; 5 = 100%</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-16"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">16<small>doc 40017 (absolute 16)</small></td><td class="n">Number of units</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-18"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">18<small>doc 40019 (absolute 18)</small></td><td class="n">Configuration type</td><td class="d">Containment arrangement the group is set up for.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = RACS; 1 = HACS; 2 = InRow; 3 = CACS</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-19"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">19<small>doc 40020 (absolute 19)</small></td><td class="n">Cool pid p</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-21"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">21<small>doc 40022 (absolute 21)</small></td><td class="n">Cool pid i</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-23"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">23<small>doc 40024 (absolute 23)</small></td><td class="n">Cool pid d</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-25"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">25<small>doc 40026 (absolute 25)</small></td><td class="n">Percent glycol</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-27"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">27<small>doc 40028 (absolute 27)</small></td><td class="n">Max fan speed</td><td class="d">Upper limit for fan speed.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-30"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">30<small>doc 40031 (absolute 30)</small></td><td class="n">Altitude</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>ft</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-32"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">32<small>doc 40033 (absolute 32)</small></td><td class="n">Number active flow controllers</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-34"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">34<small>doc 40035 (absolute 34)</small></td><td class="n">Active flow control bias</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Positive; 1 = Slightly Positive; 2 = Zero; 3 = Slightly Negative; 4 = Negative</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-35"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">35<small>doc 40036 (absolute 35)</small></td><td class="n">Active flow control status</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Under; 1 = Okay; 2 = Over; 3 = N/A</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-36"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">36<small>doc 40037 (absolute 36)</small></td><td class="n">Active flow control lamp test</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Disable; 1 = Enable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-37"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">37<small>doc 40038 (absolute 37)</small></td><td class="n">Delta t setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 10 Deg F; 1 = 15 Deg F; 2 = 20 Deg F; 3 = 25 Deg F; 4 = 30 Deg F; 5 = 35 Deg F; 6 = 40 Deg F</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-128"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">128<small>doc 40129 (absolute 128)</small></td><td class="n">Unit name</td><td class="d"></td><td class="f">STRING[42]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-149"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">149<small>doc 40150 (absolute 149)</small></td><td class="n">Unit location</td><td class="d"></td><td class="f">STRING[42]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-172"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">172<small>doc 40173 (absolute 172)</small></td><td class="n">Model number</td><td class="d"></td><td class="f">STRING[20]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-182"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">182<small>doc 40183 (absolute 182)</small></td><td class="n">Serial number</td><td class="d"></td><td class="f">STRING[20]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-192"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">192<small>doc 40193 (absolute 192)</small></td><td class="n">Firmware rev</td><td class="d"></td><td class="f">STRING[8]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-196"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">196<small>doc 40197 (absolute 196)</small></td><td class="n">Hardware rev</td><td class="d"></td><td class="f">STRING[8]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-200"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">200<small>doc 40201 (absolute 200)</small></td><td class="n">Date of manufacture</td><td class="d"></td><td class="f">STRING[12]</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-206"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">206<small>doc 40207 (absolute 206)</small></td><td class="n">Operating mode</td><td class="d">Current unit state.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Standby; 1 = On; 2 = idle; 3 = Maintenance</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-207"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">207<small>doc 40208 (absolute 207)</small></td><td class="n">Unit cool output</td><td class="d">Cooling delivered by this unit.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-209"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">209<small>doc 40210 (absolute 209)</small></td><td class="n">Unit cool demand</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-211"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">211<small>doc 40212 (absolute 211)</small></td><td class="n">Unit max rack inlet temp</td><td class="d">Highest rack inlet temperature seen by this unit.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-213"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">213<small>doc 40214 (absolute 213)</small></td><td class="n">Supply air temp</td><td class="d">Air temperature leaving the unit.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-215"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">215<small>doc 40216 (absolute 215)</small></td><td class="n">Return air temp</td><td class="d">Air temperature entering the unit.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-217"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">217<small>doc 40218 (absolute 217)</small></td><td class="n">Unit air flow</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>CFM</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-219"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">219<small>doc 40220 (absolute 219)</small></td><td class="n">Fan speed</td><td class="d">Current fan speed.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-221"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">221<small>doc 40222 (absolute 221)</small></td><td class="n">Active power source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Primary; 1 = Secondary</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-222"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">222<small>doc 40223 (absolute 222)</small></td><td class="n">Filter differential pressure</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.01</td><td>in W.C.</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-226"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">226<small>doc 40227 (absolute 226)</small></td><td class="n">Chilled water valve position</td><td class="d">Chilled water valve opening.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-228"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">228<small>doc 40229 (absolute 228)</small></td><td class="n">Chilled water flow</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>GPM</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-230"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">230<small>doc 40231 (absolute 230)</small></td><td class="n">Chilled water temp in</td><td class="d">Entering chilled water temperature.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-232"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">232<small>doc 40233 (absolute 232)</small></td><td class="n">Chilled water temp out</td><td class="d">Leaving chilled water temperature.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-234"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">234<small>doc 40235 (absolute 234)</small></td><td class="n">Air filter runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-236"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">236<small>doc 40237 (absolute 236)</small></td><td class="n">Fan 1 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-238"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">238<small>doc 40239 (absolute 238)</small></td><td class="n">Fan 2 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-240"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">240<small>doc 40241 (absolute 240)</small></td><td class="n">Fan 3 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-242"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">242<small>doc 40243 (absolute 242)</small></td><td class="n">Fan 4 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-244"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">244<small>doc 40245 (absolute 244)</small></td><td class="n">Fan 5 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-246"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">246<small>doc 40247 (absolute 246)</small></td><td class="n">Fan 6 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-248"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">248<small>doc 40249 (absolute 248)</small></td><td class="n">Fan 7 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-250"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">250<small>doc 40251 (absolute 250)</small></td><td class="n">Fan 8 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-252"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">252<small>doc 40253 (absolute 252)</small></td><td class="n">Fan psu 1 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-254"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">254<small>doc 40255 (absolute 254)</small></td><td class="n">Fan psu 2 runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-256"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">256<small>doc 40257 (absolute 256)</small></td><td class="n">Condensate pump runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-258"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">258<small>doc 40259 (absolute 258)</small></td><td class="n">Air filter service interval</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>weeks</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-260"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">260<small>doc 40261 (absolute 260)</small></td><td class="n">Air filter service interval alarm</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Enable; 1 = Disable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-261"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">261<small>doc 40262 (absolute 261)</small></td><td class="n">Rack temp high thresh</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-263"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">263<small>doc 40264 (absolute 263)</small></td><td class="n">Supply air temp high thresh</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-265"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">265<small>doc 40266 (absolute 265)</small></td><td class="n">Return air temp high thresh</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-267"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">267<small>doc 40268 (absolute 267)</small></td><td class="n">Entering chilled water temp high thresh</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-269"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">269<small>doc 40270 (absolute 269)</small></td><td class="n">Startup delay</td><td class="d">Delay before the unit starts after power-up.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-271"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">271<small>doc 40272 (absolute 271)</small></td><td class="n">Chilled water valve control</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Automatic; 1 = Open</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-272"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">272<small>doc 40273 (absolute 272)</small></td><td class="n">Idle on leak</td><td class="d">0 means the unit idles when a leak is detected.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Yes; 1 = No</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-273"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">273<small>doc 40274 (absolute 273)</small></td><td class="n">Standby input normal state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Open; 1 = Closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-274"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">274<small>doc 40275 (absolute 274)</small></td><td class="n">Standby input state</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Open; 1 = Closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-276"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">276<small>doc 40277 (absolute 276)</small></td><td class="n">Output state 1</td><td class="d">Same as decimal address 280. For legacy systems.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Abnormal; 1 = Normal</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-278"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">278<small>doc 40279 (absolute 278)</small></td><td class="n">Power source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Single; 1 = Dual</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-279"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">279<small>doc 40280 (absolute 279)</small></td><td class="n">Idle on cool fail</td><td class="d">0 means the unit idles when cooling fails.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Yes; 1 = No</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-280"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">280<small>doc 40281 (absolute 280)</small></td><td class="n">Output state 1</td><td class="d">Same as decimal address 276.</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Abnormal; 1 = Normal</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-281"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">281<small>doc 40282 (absolute 281)</small></td><td class="n">Output state 2</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Abnormal; 1 = Normal</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-282"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">282<small>doc 40283 (absolute 282)</small></td><td class="n">Output state 3</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Abnormal; 1 = Normal</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-283"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">283<small>doc 40284 (absolute 283)</small></td><td class="n">Output state 4</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Abnormal; 1 = Normal</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-289"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">289<small>doc 40290 (absolute 289)</small></td><td class="n">Maximum chilled water flow</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>GPM</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-291"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">291<small>doc 40292 (absolute 291)</small></td><td class="n">Bypass value position</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Open; 1 = Closed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-292"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">292<small>doc 40293 (absolute 292)</small></td><td class="n">Unit service interval</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>weeks</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-294"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">294<small>doc 40295 (absolute 294)</small></td><td class="n">Unit service interval alarm</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Enable; 1 = Disable</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-295"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">295<small>doc 40296 (absolute 295)</small></td><td class="n">Dew point temp</td><td class="d">Dew point measured at the unit.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-297"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">297<small>doc 40298 (absolute 297)</small></td><td class="n">Coil chilled water temp</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-299"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">299<small>doc 40300 (absolute 299)</small></td><td class="n">Unit power</td><td class="d">Electrical power drawn by the unit.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>kW</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-301"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">301<small>doc 40302 (absolute 301)</small></td><td class="n">Unit energy</td><td class="d">Energy used by the unit.</td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>kWh</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-303"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">303<small>doc 40304 (absolute 303)</small></td><td class="n">Unit runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-305"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">305<small>doc 40306 (absolute 305)</small></td><td class="n">Circulation pump runhour</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-307"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">307<small>doc 40308 (absolute 307)</small></td><td class="n">Number of rack inlet temperature sensors</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-309"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">309<small>doc 40310 (absolute 309)</small></td><td class="n">Number of leak detectors</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-311"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">311<small>doc 40312 (absolute 311)</small></td><td class="n">Air filter type</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Standard; 1 = Pleated</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-312"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">312<small>doc 40313 (absolute 312)</small></td><td class="n">Leak detector state 1</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No Leak; 1 = Leak Detected</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-313"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">313<small>doc 40314 (absolute 313)</small></td><td class="n">Leak detector state 2</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No Leak; 1 = Leak Detected</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-314"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">314<small>doc 40315 (absolute 314)</small></td><td class="n">Leak detector state 3</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No Leak; 1 = Leak Detected</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-315"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">315<small>doc 40316 (absolute 315)</small></td><td class="n">Leak detector state 4</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No Leak; 1 = Leak Detected</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-316"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">316<small>doc 40317 (absolute 316)</small></td><td class="n">Unit rack inlet temp 1</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-318"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">318<small>doc 40319 (absolute 318)</small></td><td class="n">Unit rack inlet temp 2</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-320"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">320<small>doc 40321 (absolute 320)</small></td><td class="n">Unit rack inlet temp 3</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-322"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">322<small>doc 40323 (absolute 322)</small></td><td class="n">Unit rack inlet temp 4</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>°F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-324"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">324<small>doc 40325 (absolute 324)</small></td><td class="n">Alarm on standby</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-325"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">325<small>doc 40326 (absolute 325)</small></td><td class="n">Circulation pump flow</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f">&times; 0.1</td><td>GPM</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-327"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">327<small>doc 40328 (absolute 327)</small></td><td class="n">Circulation pump speed</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-329"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">329<small>doc 40330 (absolute 329)</small></td><td class="n">Circulation pump power</td><td class="d"></td><td class="f">INT32</td><td class="f">ABCD</td><td class="f"></td><td>W</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-384"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">384<small>doc 40385 (absolute 384)</small></td><td class="n">Internal comm error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-386"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">386<small>doc 40387 (absolute 386)</small></td><td class="n">Cool function unavailable</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-387"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">387<small>doc 40388 (absolute 387)</small></td><td class="n">High rack temp</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-388"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">388<small>doc 40389 (absolute 388)</small></td><td class="n">Air filter clogged</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-389"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">389<small>doc 40390 (absolute 389)</small></td><td class="n">Lower return air sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-390"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">390<small>doc 40391 (absolute 390)</small></td><td class="n">Upper return air sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-391"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">391<small>doc 40392 (absolute 391)</small></td><td class="n">Lower supply air sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-392"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">392<small>doc 40393 (absolute 392)</small></td><td class="n">Upper supply air sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-393"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">393<small>doc 40394 (absolute 393)</small></td><td class="n">Rack temp sensor 1 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-394"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">394<small>doc 40395 (absolute 394)</small></td><td class="n">Chilled water valve actuator error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-395"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">395<small>doc 40396 (absolute 395)</small></td><td class="n">Fan 1 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-396"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">396<small>doc 40397 (absolute 396)</small></td><td class="n">Fan 2 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-397"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">397<small>doc 40398 (absolute 397)</small></td><td class="n">Fan 3 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-398"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">398<small>doc 40399 (absolute 398)</small></td><td class="n">Fan 4 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-399"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">399<small>doc 40400 (absolute 399)</small></td><td class="n">Fan 5 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-400"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">400<small>doc 40401 (absolute 400)</small></td><td class="n">Fan 6 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-401"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">401<small>doc 40402 (absolute 401)</small></td><td class="n">Fan 7 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-402"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">402<small>doc 40403 (absolute 402)</small></td><td class="n">Fan 8 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-403"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">403<small>doc 40404 (absolute 403)</small></td><td class="n">Water detected</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-404"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">404<small>doc 40405 (absolute 404)</small></td><td class="n">Check conds mgmt system</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-405"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">405<small>doc 40406 (absolute 405)</small></td><td class="n">Chilled water flowmeter error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-406"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">406<small>doc 40407 (absolute 406)</small></td><td class="n">Entering chilled water high temp</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-407"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">407<small>doc 40408 (absolute 407)</small></td><td class="n">Entering chilled water temp sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-408"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">408<small>doc 40409 (absolute 408)</small></td><td class="n">Leaving chilled water temp sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-409"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">409<small>doc 40410 (absolute 409)</small></td><td class="n">Condensate pan full</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-410"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">410<small>doc 40411 (absolute 410)</small></td><td class="n">Primary power source unavailable</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-411"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">411<small>doc 40412 (absolute 411)</small></td><td class="n">Secondary power source unavailable</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-412"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">412<small>doc 40413 (absolute 412)</small></td><td class="n">Fan power supply 1 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-413"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">413<small>doc 40414 (absolute 413)</small></td><td class="n">Fan power supply 2 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-414"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">414<small>doc 40415 (absolute 414)</small></td><td class="n">Air filter runhour violation</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-416"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">416<small>doc 40417 (absolute 416)</small></td><td class="n">Standby due to input contact</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-417"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">417<small>doc 40418 (absolute 417)</small></td><td class="n">Unexpected number of units in group</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-418"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">418<small>doc 40419 (absolute 418)</small></td><td class="n">Supply high temperature</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-419"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">419<small>doc 40420 (absolute 419)</small></td><td class="n">Return high temperature</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-420"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">420<small>doc 40421 (absolute 420)</small></td><td class="n">Dp filter sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-422"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">422<small>doc 40423 (absolute 422)</small></td><td class="n">Chilled water valve not set to auto</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-423"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">423<small>doc 40424 (absolute 423)</small></td><td class="n">Idle due to leak detected</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-429"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">429<small>doc 40430 (absolute 429)</small></td><td class="n">Ecoaisle door open</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-430"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">430<small>doc 40431 (absolute 430)</small></td><td class="n">Unexpected number of active flow controllers</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-431"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">431<small>doc 40432 (absolute 431)</small></td><td class="n">Insufficient airflow</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-432"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">432<small>doc 40433 (absolute 432)</small></td><td class="n">Active flow controller sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-433"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">433<small>doc 40434 (absolute 433)</small></td><td class="n">Rack temp sensor 2 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-434"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">434<small>doc 40435 (absolute 434)</small></td><td class="n">Rack temp sensor 3 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-435"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">435<small>doc 40436 (absolute 435)</small></td><td class="n">Rack temp sensor 4 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-436"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">436<small>doc 40437 (absolute 436)</small></td><td class="n">Unit service required</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-437"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">437<small>doc 40438 (absolute 437)</small></td><td class="n">Humidity sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-438"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">438<small>doc 40439 (absolute 438)</small></td><td class="n">Coil condensation possible</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-439"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">439<small>doc 40440 (absolute 439)</small></td><td class="n">Controller power supply 1 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-440"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">440<small>doc 40441 (absolute 440)</small></td><td class="n">Controller power supply 2 error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-441"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">441<small>doc 40442 (absolute 441)</small></td><td class="n">Coil chilled water temp sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-442"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">442<small>doc 40443 (absolute 442)</small></td><td class="n">Fan power supply 1 current sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-443"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">443<small>doc 40444 (absolute 443)</small></td><td class="n">Fan power supply 2 current sensor error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-444"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">444<small>doc 40445 (absolute 444)</small></td><td class="n">Factory configuration not complete</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-445"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">445<small>doc 40446 (absolute 445)</small></td><td class="n">Unit in maintenance mode</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-446"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">446<small>doc 40447 (absolute 446)</small></td><td class="n">Unexpected number of rack inlet sensors</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-447"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">447<small>doc 40448 (absolute 447)</small></td><td class="n">Unexpected number of leak sensors</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-448"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">448<small>doc 40449 (absolute 448)</small></td><td class="n">Output relay 1 abnormal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-449"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">449<small>doc 40450 (absolute 449)</small></td><td class="n">Output relay 2 abnormal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-450"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">450<small>doc 40451 (absolute 450)</small></td><td class="n">Output relay 3 abnormal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-451"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">451<small>doc 40452 (absolute 451)</small></td><td class="n">Output relay 4 abnormal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-452"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">452<small>doc 40453 (absolute 452)</small></td><td class="n">Circulation pump error</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-453"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">453<small>doc 40454 (absolute 453)</small></td><td class="n">Standby due to user action</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-454"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">454<small>doc 40454 (absolute 454)</small></td><td class="n">Circulation pump comm loss</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-455"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">455<small>doc 40454 (absolute 455)</small></td><td class="n">Circulation pump warning</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-456"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">456<small>doc 40454 (absolute 456)</small></td><td class="n">Circulation pump needs service</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Clear; 1 = Alarm</td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>Word order: note 2 says INT32 and UINT32 keep the most significant word at n+0, so 32-bit values are ABCD (big-endian). Note 5: signed values are two&#x27;s complement.</li><li>Scale comes from the units column: &#x27;(Tenths)&#x27; is 0.1 and &#x27;(Hundredths)&#x27; is 0.01. Temperatures are in tenths of a degree Fahrenheit only; the map has no Celsius registers.</li><li>Function codes 3 and 4 both read the same registers. Writes use function 16, or function 6 for one-register items.</li><li>Strings hold two characters per register, high byte first; a null terminator must be included when writing.</li><li>The last four alarm rows (decimal 453-456) all print Modicon 40454 in the source. Their hex and decimal columns run 453, 454, 455, 456, and those are used here.</li><li>In revision B the column headed hexadecimal actually prints the decimal value (for example 40017 shows 16, not 0010); the decimal column is used for the wire address.</li><li>Reserved rows are left out. Reading an undefined register on its own returns an error; a block read that starts on a valid register returns zeros for gaps.</li><li>The register map does not give serial settings, a unit ID or a TCP port.</li><li>An older edition, 990-4742A, is also published by Schneider; it lacks the rows added in revision B (for example OPERATE_MODE is named OPERATING_MODE in B).</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm)</h2><div class="faq"><details open><summary>What Modbus registers does the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) have?</summary><p>This map lists 163 registers: 163 holding registers. 27 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers Modicon 3xxxx/4xxxx (drop the prefix, subtract 1). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. Each row gives a Modicon number (40001 style) plus the absolute address in hex and decimal. Note 11 says absolute address 0 equals register 40001 and is address zero on the wire, so the decimal column is the wire address.</p></details><details><summary>What byte order does the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) use for 32-bit values?</summary><p>Multi-register values in this map use ABCD (high word first (big-endian)). Set your client to this order for every 32/64-bit value in the table.</p></details><details><summary>What are the minimum Modbus registers to integrate the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm)?</summary><p>Start with HR 0 Overall status (Overall alarm severity); HR 206 Operating mode (Unit operating mode); HR 207 Unit cool output (Unit cooling output); HR 211 Unit max rack inlet temp (Highest rack inlet temperature); HR 213 Supply air temp (Supply air temperature); HR 215 Return air temp (Return air temperature); HR 219 Fan speed (Fan speed); HR 5 Cool setpoint (Cooling setpoint (writable)); HR 386 Cool function unavailable (Cooling function unavailable alarm); HR 403 Water detected (Water detected alarm).</p></details><details><summary>How do I enable Modbus control of the APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm)?</summary><p>The register map does not describe how to enable Modbus or set the network parameters.</p></details><details><summary>Where is the official APC (Schneider Electric) InRow ACRC30x chilled-water cooling unit (300 mm) Modbus documentation?</summary><p>The source is Modbus Register Map: InRow ACRC30x (990-4742B), published free by APC (Schneider Electric) at https://download.se.com/files?p_Doc_Ref=SPD_KKRZ-99YNMA_EN.</p></details></div>
+<h2>More APC (Schneider Electric) Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/apc/galaxy-vl" data-row><span class="k">UPS</span><h3>APC (Schneider Electric) Galaxy VL 200-500 kW three-phase UPS</h3><p>Schneider Electric Galaxy VL 200-500 kW UPS with firmware 7.23 or later, per register map 990-6447.</p><div class="meta">161 registers &middot; 0 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: Galaxy VL, GVL, Galaxy VL 200 kW, Galaxy VL 500 kW</span></a></li><li><a class="card" href="/modbus-register-maps/apc/inrow-acrd60x-acrc60x" data-row><span class="k">Air handler (in-row data-centre cooling unit)</span><h3>APC (Schneider Electric) InRow ACRD60x / ACRC60x cooling units (Modbus register map 990-5786)</h3><p>APC / Schneider Electric InRow ACRD60x and ACRC60x in-row cooling units, register map part number 990-5786A.</p><div class="meta">216 registers &middot; 53 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: ACRD60x, ACRC60x, InRow ACRD60x, InRow ACRC60x, 990-5786</span></a></li><li><a class="card" href="/modbus-register-maps/apc/inrow-acsc100" data-row><span class="k">Air handler (in-row self-contained DX cooling unit)</span><h3>APC (Schneider Electric) InRow ACSC 100 Series self-contained DX cooling unit</h3><p>APC by Schneider Electric InRow SC (ACSC 100 series) self-contained cooling units, per register map part number 990-3027D.</p><div class="meta">119 registers &middot; 32 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: ACSC100, InRow SC, InRow ACSC</span></a></li><li><a class="card" href="/modbus-register-maps/apc/inrow-rd-990-3576" data-row><span class="k">Air handler (in-row data-centre DX cooling unit)</span><h3>APC (Schneider Electric) InRow RD direct-expansion cooling unit (Modbus register map 990-3576B)</h3><p>APC / Schneider Electric InRow RD cooling units, register map part number 990-3576B (08/2015).</p><div class="meta">72 registers &middot; 16 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: InRow RD, 990-3576B, Schneider Electric InRow RD</span></a></li><li><a class="card" href="/modbus-register-maps/apc/smart-ups-nmc-990-5702" data-row><span class="k">UPS</span><h3>APC Smart-UPS / Smart-UPS VT / MGE Galaxy 3500 (NMC Modbus map 990-5702)</h3><p>APC Smart-UPS (excluding SMT, SMX, SURTD and SRT prefixes), Smart-UPS VT and MGE Galaxy 3500 through Network Management Card AP9630/AP9631/AP9635 (TCP) or AP9635 (RTU), part number 990-5702.</p><div class="meta">73 registers &middot; 0 writable &middot; TCP/RTU</div><span class="sr-only"> Also known as: 990-5702, AP9630, AP9631, AP9635, Smart-UPS VT, MGE Galaxy 3500, Schneider Electric APC Smart-UPS</span></a></li><li><a class="card" href="/modbus-register-maps/apc/symmetra-px-250-500" data-row><span class="k">UPS</span><h3>APC Symmetra PX 250/500 kW</h3><p>APC Symmetra PX 250/500 kW three-phase UPS via Network Management Card AP9635, register map 990-3936D (firmware sypx510 to sypx516 changes listed in the source).</p><div class="meta">156 registers &middot; 0 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: 990-3936D, Symmetra PX 250 kW, Symmetra PX 500 kW, SYPX</span></a></li></ul><h2>Other hvac equipment register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/condair/rs-ii" data-row><span class="k">Air handler humidifier (resistive steam)</span><h3>Condair RS II resistive steam humidifier (Integrated Controller, Modbus RTU/TCP)</h3><p>Condair RS with the Integrated Controller (cylinders A and B), per addendum 2603326-G.</p><div class="meta">59 registers &middot; 12 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: Condair RS, Condair RS II, RS</span></a></li><li><a class="card" href="/modbus-register-maps/ebm-papst/modbus-lite-ec-fans" data-row><span class="k">Air handler (EC fan)</span><h3>ebm-papst EC fans with MODBUS Lite (series 84/112/150/200 Lite)</h3><p>ebm-papst EC fans and motors whose electronics report the MODBUS Lite parameter set (series 84 / 112 / 150 / 200 Lite), specification V5.01.</p><div class="meta">33 registers &middot; 12 writable &middot; RTU</div><span class="sr-only"> Also known as: MODBUS Lite V5.01, ebm-papst RadiCal Modbus, ebm-papst RadiPac Modbus, ebm-papst series 84 Lite, ebm-papst series 112 Lite, ebm-papst series 150 Lite, ebm-papst series 200 Lite</span></a></li><li><a class="card" href="/modbus-register-maps/johnson-controls/tc3223" data-row><span class="k">Thermostat</span><h3>Johnson Controls PENN TC3223 refrigeration temperature controller (Modbus RTU)</h3><p>PENN TC3223 electronic refrigeration controller with built-in Modbus RTU, per the TC3 Modbus Protocol Reference Guide LIT-12013523 (2020-04-28).</p><div class="meta">107 registers &middot; 99 writable &middot; RTU</div><span class="sr-only"> Also known as: TC3223, TC3, PENN TC3, LIT-12013523</span></a></li><li><a class="card" href="/modbus-register-maps/mitsubishi-electric/s-mext-g00-crac" data-row><span class="k">Air handler (computer room air conditioner)</span><h3>Mitsubishi Electric s-MEXT-G00 computer room air conditioner (ME28 relC)</h3><p>Mitsubishi Electric (Hydronics &amp; IT Cooling) s-MEXT-G00 006-044 close-control units with ME28-relC software and the Modbus serial board.</p><div class="meta">68 registers &middot; 10 writable &middot; RTU</div><span class="sr-only"> Also known as: s-MEXT, s-MEXT-G00 006-044, s-MEXT G00, ME28 relC</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/skg4" data-row><span class="k">Air handler humidifier (gas-fired steam)</span><h3>Neptronic SKG4 gas-fired steam humidifier (Modbus communication module)</h3><p>Neptronic SKG4 series gas-fired steam humidifiers (one to four burner modules) with the Modbus communication module, guide SKG4-Modbus Guide-221114 (V2.04).</p><div class="meta">245 registers &middot; 87 writable &middot; RTU</div><span class="sr-only"> Also known as: SKG4-E, SKG4-N, SKG4 Gas Fired Humidifier, Neptronic SKG4 Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/regin/corrigo" data-row><span class="k">Air handler controller</span><h3>Regin Corrigo ventilation controller (ventilation application 3.6)</h3><p>Regin Corrigo controllers running the pre-programmed ventilation (air handling unit) application, version 3.6 or later; not the heating or Exigo applications.</p><div class="meta">134 registers &middot; 45 writable &middot; RTU</div><span class="sr-only"> Also known as: Corrigo E, Corrigo ventilation, Corrigo E ventilation, Corrigo AHU controller</span></a></li></ul><p><a href="https://easymodbus.com/modbus-register-maps/equipment/hvac/">All hvac equipment Modbus register maps &rarr;</a></p>
+<p class="updated">Source: <a href="https://download.se.com/files?p_Doc_Ref=SPD_KKRZ-99YNMA_EN" rel="nofollow noopener" target="_blank">Modbus Register Map: InRow ACRC30x &middot; 990-4742B</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

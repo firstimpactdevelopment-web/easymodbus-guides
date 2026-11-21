@@ -1,0 +1,430 @@
+{
+  "manufacturer": "LG",
+  "manufacturer_slug": "lg",
+  "model": "PAHCMR000 AHU Communication Kit (Multi V DX kit, Modbus to DDC)",
+  "model_slug": "pahcmr000-ahu-comm-kit",
+  "short_model": "PAHCMR000",
+  "aliases": [
+    "PAHCMR000",
+    "LG AHU Communication Kit R32",
+    "LG AHU comm kit Modbus"
+  ],
+  "equipment_type": "Air handler DX kit (VRF / split AC gateway built in)",
+  "applies_to": "LG PAHCMR000 AHU Communication Kit (R32 and R410A Multi V / single split outdoor units with a PRLK EEV kit), installation manual IM_AHU_Comm_Kit_PAHCMR000_R32_06_26.",
+  "summary": "The PAHCMR000 kit lets a third-party air handler use an LG Multi V or single-split outdoor unit, and its RS485 CH1 port talks Modbus RTU directly to a DDC controller. Coils switch the unit and lock wired-controller functions, holding registers set mode, fan speed, target temperature and its limits, and discrete inputs and input registers report compressor, defrost and oil-return status, error code, return-air and coil temperatures.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": null,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Points are printed as 00001/10001/30001/40001-style registers together with the function codes for each block (01/05 coils 00001-00008, 02 inputs 10001-10008, 04 input registers 30001-30008, 03/06 holding registers 40001-40010). The wire address is the printed number minus the block base: 40003 is holding register 2."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Communications Kit Installation Manual for LG R32 Air Handler Unit (AHU) - PAHCMR000",
+    "doc_number": "IM_AHU_Comm_Kit_PAHCMR000_R32_06_26",
+    "revision_date": "2025",
+    "url": "https://media.us.lg.com/m/d2725fbeddc5be9/original/IM_AHU_Comm_Kit_PAHCMR000-pdf.pdf",
+    "pages": "printed p. 31 (PDF p. 31) Modbus function codes and memory map; p. 10 DIP switch SW1; p. 22 Modbus control overview"
+  },
+  "notes": [
+    "Reserved points (coils 00002 and 00008, inputs 10004-10008, input registers 30003, 30007-30008, holding 40006-40010) are left out.",
+    "Access follows the function-code columns of the memory map: coil 00007 (Error) is read with 01 only; the other coils accept 01 and 05. Holding registers accept 03 and 06.",
+    "Temperatures are sent multiplied by 10 and cover negative ranges, so they are listed as signed 16-bit.",
+    "The manual does not print the data-bit setting; only 9600 bps, no parity and 1 stop bit are stated."
+  ],
+  "registers": [
+    {
+      "table": "coil",
+      "address": 0,
+      "documented": "00001",
+      "name": "Operating On/Off",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 2,
+      "documented": "00003",
+      "name": "All button lock",
+      "description": "Locks the LG wired controller keys.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Unlock",
+        "1": "Lock"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 3,
+      "documented": "00004",
+      "name": "Mode lock",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Unlock",
+        "1": "Lock"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 4,
+      "documented": "00005",
+      "name": "Fan speed lock",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Unlock",
+        "1": "Lock"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 5,
+      "documented": "00006",
+      "name": "Target temperature lock",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Unlock",
+        "1": "Lock"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 6,
+      "documented": "00007",
+      "name": "Error",
+      "description": "Read only (function 01).",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 0,
+      "documented": "10001",
+      "name": "Compressor status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 1,
+      "documented": "10002",
+      "name": "Defrost status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Defrost"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 2,
+      "documented": "10003",
+      "name": "Oil return",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Oil return"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 0,
+      "documented": "30001",
+      "name": "Error code",
+      "description": "LG error code 0-255.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 1,
+      "documented": "30002",
+      "name": "Return air temperature",
+      "description": "Range -50 to 100 °C, sent x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 3,
+      "documented": "30004",
+      "name": "Pipe in temperature",
+      "description": "Range -50 to 100 °C, sent x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 4,
+      "documented": "30005",
+      "name": "Pipe out temperature",
+      "description": "Range -50 to 100 °C, sent x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 5,
+      "documented": "30006",
+      "name": "Capacity",
+      "description": "AHU capacity setting, 0-255.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "kBtu",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "40001",
+      "name": "Operation mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Cooling",
+        "2": "Fan",
+        "4": "Heating"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40002",
+      "name": "Fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "Low",
+        "2": "Middle",
+        "3": "High"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "40003",
+      "name": "Target temperature",
+      "description": "Range -10 to 100 °C, sent x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "40004",
+      "name": "Target temperature upper range",
+      "description": "15.6-30 °C, sent x10, in 1.0 °C steps.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "40005",
+      "name": "Target temperature lower range",
+      "description": "15.6-30 °C, sent x10, in 1.0 °C steps.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Set DIP SW1-2 to ON (communication), wire the DDC to RS485 CH1, then write coil 00001 for on/off and holding registers 40001-40003 for mode, fan and target temperature; read 30002 for return-air temperature and 30001 / coil 00007 for errors.",
+    "minimum_registers": [
+      {
+        "table": "coil",
+        "address": 0,
+        "why": "On/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Operation mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 1,
+        "why": "Fan speed"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Target temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 1,
+        "why": "Return air temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 0,
+        "why": "Error code"
+      },
+      {
+        "table": "discrete_input",
+        "address": 0,
+        "why": "Compressor status"
+      },
+      {
+        "table": "discrete_input",
+        "address": 1,
+        "why": "Defrost status"
+      }
+    ],
+    "enable": "DIP switch SW1-2 ON selects control by DDC Modbus (or LG remote / central controllers); OFF selects contact-signal control, where an LG central controller can only monitor.",
+    "watchdog": null,
+    "quirks": [
+      "Operation mode uses 0 = cooling, 2 = fan, 4 = heating (no auto value).",
+      "Only function 06 is listed for writing holding registers and 05 for coils."
+    ],
+    "setup": [
+      "RS485 CH1 to the DDC: 2-core 1.0-1.5 mm2 shielded cable, up to 500 m.",
+      "9600 bps, no parity, 1 stop bit.",
+      "The Modbus slave (sub) address follows the main module address setting described in the manual."
+    ],
+    "gotchas": [
+      "Discharge-air temperature control, forced thermal on/off and capacity control are not available over Modbus with this kit."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

@@ -1,0 +1,17 @@
+﻿# Northern Design Cube 300 panel kWh meter (Modbus RTU option) Modbus register map - easymodbus.com - source: https://res.cloudinary.com/fastron-electronics/image/upload/v1533451092/Northern%20Design/Cube_300_Modbus_Comms_Manual_2005.10.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",512,40513,40513,eScale (high word),Always reads 0.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",513,40514,40514,eScale,Energy decimal exponent; fixed by the CT primary and nominal volts settings.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",514,40515,40515,kWh,Raw display count; kWh = raw x 10^(eScale-6).,UINT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",516,40517,40517,T2 kWh,Second-tariff count; reads 0 without the dual tariff option.,UINT32,2,ABCD,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2816,42817,42817,Instantaneous kW,Signed raw display count; negative = export. kW = raw x 10^(pScale-6).,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2817,42818,42818,pScale,Power decimal exponent for register 2816.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3584,43585,43585,CT Primary,"10 to 25,000.",UINT16,1,,1,0,A,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3585,43586,43586,Nominal Volts,"10 to 55,000.",UINT16,1,,1,0,V,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3586,43587,43587,Pulse Rate,"Energy register increments per output pulse, 1-1000.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3587,43588,43588,Pulse ON Time x10,"1-100, meaning 0.1 to 10 s.",UINT16,1,,0.1,0,s,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3588,43589,43589,Baud,"4800, 9600 or 19200.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3589,43590,43590,Modbus ID,1-247.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3590,43591,43591,Meter Model,Reads 300 on a Cube300.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3591,43592,43592,Meter Type,Variant code; basic Cube300 = 1.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",3592,43593,43593,Meter Version,"Firmware issue, e.g. 101 = version 1.01.",UINT16,1,,1,0,,Read,

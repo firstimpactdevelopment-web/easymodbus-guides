@@ -1,0 +1,485 @@
+{
+ "manufacturer": "Mitsubishi Electric",
+ "manufacturer_slug": "mitsubishi-electric",
+ "model": "PAC-IF013B-E / PAC-SIF013B-E air handling unit interface (Modbus RTU)",
+ "model_slug": "pac-if013b-e-ahu-interface",
+ "short_model": "PAC-IF013B-E",
+ "aliases": [
+  "PAC-IF013B-E",
+  "PAC-SIF013B-E",
+  "PAC-(S)IF013B-E"
+ ],
+ "equipment_type": "Air handler DX interface (VRF / split AC gateway)",
+ "applies_to": "PAC-IF013B-E and PAC-SIF013B-E interface controllers linking a Mitsubishi Electric outdoor unit to an AHU coil, Modbus manual dated September 2015 (RG79F084H01).",
+ "summary": "Interface board that lets a third-party air handling unit controller run a Mitsubishi Electric outdoor unit on a DX coil. Its RS-485 port is a Modbus RTU slave: in manual step mode the AHU controller sends a capacity step (off, 1-11 or auto) and the mode; in auto step mode it sends on/off, mode and a setpoint. Thermistor temperatures, error code, output status and step status can be read back.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": 8,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "Modicon",
+  "note": "Every table prints the 0-based 'Address' next to the Modicon address (coil 00001 = 0, input 30001 = 0, holding 40001 = 0). The 0-based address is sent on the wire."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "INTERFACE PAC-IF013B-E / PAC-SIF013B-E Modbus manual",
+  "doc_number": "RG79F084H01",
+  "revision_date": "2015-09",
+  "url": "https://library.mitsubishielectric.co.uk/pdf/download_full/3004",
+  "pages": "pp. 2-3 (systems, DIP switches), pp. 5-6 (registers)"
+ },
+ "notes": [
+  "The manual lists seven system layouts. Systems 1-4 write in manual step mode (capacity request 40001 and drive mode 40002 only; do not send setpoint or on/off) and system 5 writes in auto step mode (coil 00001 / 40004 on/off, 40002 mode, 40003 setpoint; do not send a capacity request). Systems 6 (manual step via analog or remote-switch input) and 7 (auto step, no input) use Modbus for monitoring only. The register tables mark availability per column 1-4,6 and 5,7.",
+  "Manual step mode by Modbus needs DIP SW1-1, 1-2, 1-3 ON and SW6-1, 6-2 OFF; auto step mode by Modbus needs SW1-1 OFF, SW1-2 and 1-3 ON, SW6-1 and 6-2 OFF.",
+  "Input address 5 (Modicon 30006) is not listed in the manual and is left out.",
+  "Temperatures are sent as degrees x 10 in two's complement (0xFFFF = -0.1 °C, 0xFC19 = -99.9 °C), so they are listed as INT16 with scale 0.1. A setpoint value that is not a whole degree is rounded down.",
+  "Modbus error codes and the matching remote-controller codes: 5101 P1, 5102 P2, 1503 P6 (freezing), 1504 P6 (overheating), 5103 P9, 6831/6834 E0 or E4, 6201 E1, 6202 E2, 6832/6833 E3 or E5, 6840/6843 E6, 6842 E7, 0404 Fb, 1514 PL, 5111 PU, 7130 EE.",
+  "Writes with any value outside the listed codes are discarded by the interface."
+ ],
+ "registers": [
+  {
+   "table": "coil",
+   "address": 0,
+   "documented": "00001",
+   "name": "Drive ON/OFF",
+   "description": "Run command; auto step mode systems (5 and 7 column) only.",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 0,
+   "documented": "30001",
+   "name": "TH11 heat exchanger inlet air temperature",
+   "description": "Range -39 to 88.5 °C. Open 0xFC19, short 0x03E7.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 1,
+   "documented": "30002",
+   "name": "TH1 target air temperature",
+   "description": "Range -39 to 88.5 °C. Open 0xFC19, short 0x03E7.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 2,
+   "documented": "30003",
+   "name": "TH5 two-phase temperature",
+   "description": "Range -39 to 88.5 °C. Open 0xFC19, short 0x03E7.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 3,
+   "documented": "30004",
+   "name": "TH2 refrigerant liquid temperature",
+   "description": "Range -39 to 88.5 °C. Open 0xFC19, short 0x03E7.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 4,
+   "documented": "30005",
+   "name": "TH7 outdoor temperature",
+   "description": "Range -15 to 46 °C.",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 6,
+   "documented": "30007",
+   "name": "Error code (hex)",
+   "description": "0x8000 = no error; otherwise the error code.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "32768": "No error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 7,
+   "documented": "30008",
+   "name": "Error code (decimal)",
+   "description": "8000 = no error; otherwise the error code (see notes).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "8000": "No error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 8,
+   "documented": "30009",
+   "name": "External outputs",
+   "description": "Mirror of the eight output signals.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "OUT1 on/off",
+    "1": "OUT2 error",
+    "2": "OUT3 compressor",
+    "3": "OUT4 defrost",
+    "4": "OUT5 cooling mode",
+    "5": "OUT6 heating mode",
+    "6": "OUT7 self protection",
+    "7": "OUT8 pre-defrost"
+   },
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 9,
+   "documented": "30010",
+   "name": "Refrigerant address",
+   "description": "Outdoor unit refrigerant address 0-15.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 10,
+   "documented": "30011",
+   "name": "Modbus comms counter",
+   "description": "Counts valid Modbus commands; wraps after 65535.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "40001",
+   "name": "Capacity request",
+   "description": "Manual step mode only. 0 = off, other = on; read only in auto step mode.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "Step 1 (min)",
+    "2": "Step 2",
+    "3": "Step 3",
+    "4": "Step 4",
+    "5": "Step 5",
+    "6": "Step 6",
+    "7": "Step 7",
+    "8": "Step 8",
+    "9": "Step 9",
+    "10": "Step 10",
+    "11": "Step 11 (max)",
+    "12": "Auto step mode"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "40002",
+   "name": "Drive mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Heating",
+    "3": "Cooling",
+    "7": "Fan",
+    "8": "Auto changeover"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "40003",
+   "name": "Temperature setpoint",
+   "description": "Auto step mode only. Cooling 12-30 °C, heating / auto 17-28 °C, 1 °C steps.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "40004",
+   "name": "Drive ON/OFF",
+   "description": "Auto step mode only (5 and 7 column).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "40005",
+   "name": "Error code (hex)",
+   "description": "0x8000 = no error.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "32768": "No error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "40006",
+   "name": "Error code (decimal)",
+   "description": "8000 = no error.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "8000": "No error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "40007",
+   "name": "Step status",
+   "description": "Capacity step actually running; per unit with multiple outdoor unit control.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "Step 1 (min)",
+    "2": "Step 2",
+    "3": "Step 3",
+    "4": "Step 4",
+    "5": "Step 5",
+    "6": "Step 6",
+    "7": "Step 7",
+    "8": "Step 8",
+    "9": "Step 9",
+    "10": "Step 10",
+    "11": "Step 11 (max)",
+    "12": "Auto step mode"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "40008",
+   "name": "Refrigerant address",
+   "description": "0-15.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "40009",
+   "name": "Modbus comms counter",
+   "description": "Counts valid Modbus commands; wraps after 65535.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Pick manual or auto step mode on the DIP switches, then write either the capacity step (40001) or on/off and setpoint (00001 / 40004, 40003) together with the mode (40002). Poll the step status, error code and temperatures every 10 seconds or so.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Capacity step (manual step mode)"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Operating mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 3,
+    "why": "On/off (auto step mode)"
+   },
+   {
+    "table": "holding_register",
+    "address": 2,
+    "why": "Setpoint x10 (auto step mode)"
+   },
+   {
+    "table": "holding_register",
+    "address": 6,
+    "why": "Running capacity step"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Error code (8000 = none)"
+   },
+   {
+    "table": "input_register",
+    "address": 0,
+    "why": "AHU coil inlet air temperature"
+   }
+  ],
+  "enable": "Set DIP SW1-1 to 1-3 and SW6 for 'Modbus' (manual step) or 'No input' (auto step mode), as listed in the manual's system table.",
+  "watchdog": "Send a query or command at least every 10 minutes (10 seconds recommended). After more than 10 minutes without a query, on/off control is handed back to the remote controller.",
+  "quirks": [
+   "Leave at least 1 minute between operation commands, whatever the baud rate.",
+   "The slave answers about 50 ms after a request.",
+   "Broadcast is accepted for coil writes and for FC06/16 holding writes."
+  ],
+  "setup": [
+   "Slave address 1-31 on DIP SW4-1 to 4-5 (all off = 1); the manual does not state a factory setting.",
+   "Baud 1200-57600 on SW3-6 to 3-8; parity odd/even/none on SW4-6/4-7; stop bits on SW4-8.",
+   "Wire the Modbus master to TB63 (A, B, SG); earth the shield at one end only.",
+   "No termination resistor is fitted on the board: add 120 ohm if the interface is at a line end."
+  ],
+  "gotchas": [
+   "With multiple outdoor unit control, send the capacity step and mode to the main interface only; sub interfaces read back 12 (auto) in 40001.",
+   "LED4 lit means a communication error, blinking means traffic."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/mitsubishi-electric/pac-if013b-e-ahu-interface",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

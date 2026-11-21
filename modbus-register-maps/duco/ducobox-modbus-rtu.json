@@ -1,0 +1,302 @@
+{
+ "manufacturer": "Duco",
+ "manufacturer_slug": "duco",
+ "model": "DucoBox ventilation units / IQ unit (Modbus RTU, master node)",
+ "model_slug": "ducobox-modbus-rtu",
+ "short_model": "DucoBox",
+ "aliases": [
+  "DucoBox Silent Connect",
+  "DucoBox Focus",
+  "DucoBox Energy",
+  "DucoBox Energy Premium",
+  "DucoBox ECO",
+  "Duco IQ unit",
+  "L8000009"
+ ],
+ "equipment_type": "Air handler (demand-controlled ventilation unit)",
+ "applies_to": "DucoBox Silent Connect, Focus, Energy (all variants) and ECO with the Communication Print option, and the Duco IQ unit (Modbus standard), per information sheet L8000009-B.",
+ "summary": "Duco residential and light-commercial ventilation systems expose each network component (the DucoBox itself, control valves, sensors, user controls, window ventilators) as a Modbus 'node'. Registers are numbered node x 10 + parameter, with up to ten 16-bit input (read) and ten holding (write) parameters per node. This map lists the DucoBox master node (node 1, registers 10-19): system status, ventilation level and power, plus the system override, auto min/max and action registers.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Duco numbers registers as node number followed by parameter number (node 1 parameter 0 = 10, node 7 parameter 2 = 72). The sheet says its implementation follows the official Modbus specification, so the printed number is the address sent on the wire; masters that subtract one (reading 19 for 20) can be compensated with the RegOffs parameter set to 1."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Information sheet ModBus RTU",
+  "doc_number": "L8000009-B",
+  "revision_date": "2023-02-23",
+  "url": "https://www.duco.eu/Wes/CDN/1/Attachments/information-sheet-ModBus-RTU-(en)_638328128583726330.pdf",
+  "pages": "p. 1 (settings, functions, offset note), pp. 2-5 (parameter structure, status and action values), p. 6 (DucoBox node table), pp. 7-13 (other components)"
+ },
+ "notes": [
+  "Only the DucoBox master node (node 1) is listed because every other component's registers depend on the node number the installer's network assigns. For any component, input and holding register = node x 10 + parameter (parameter 0-9).",
+  "Common per-component parameters (from the sheet): input 0 type of module, 1 status, 2 ventilation position %, 9 localisation number; holding 0 target value % (-1 = off), 9 action. Sensor nodes add indoor temperature (°C x 10), CO2 (ppm) or RH (% x 100) in the input block.",
+  "Input register Status values differ from the Action values (manual low is 4 in Status but 2 in Action).",
+  "Target value (holding 10) is typed INT16 because -1 turns the override off.",
+  "All registers are 16-bit. Supported functions: 03, 04, 06, 16.",
+  "The Modbus slave address is set in the display menu or the Duco Network Tool; its default is not stated in this sheet."
+ ],
+ "registers": [
+  {
+   "table": "input_register",
+   "address": 10,
+   "documented": "10",
+   "name": "Type of Module",
+   "description": "10 = DucoBox (master unit).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "10": "DucoBox / master unit"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 11,
+   "documented": "11",
+   "name": "Status",
+   "description": "Active ventilation setting of the whole system.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Auto",
+    "1": "10 minutes in high setting",
+    "2": "20 minutes in high setting",
+    "3": "30 minutes in high setting",
+    "4": "Manual low setting",
+    "5": "Manual medium setting",
+    "6": "Manual high setting",
+    "7": "Nobody home / unoccupied",
+    "8": "Permanent low position",
+    "9": "Permanent middle position",
+    "10": "Permanent high position",
+    "99": "Error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 12,
+   "documented": "12",
+   "name": "Ventilation position",
+   "description": "Actual ventilation level of the whole system.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 13,
+   "documented": "13",
+   "name": "Current power",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "W",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 14,
+   "documented": "14",
+   "name": "Average power",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "W",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 15,
+   "documented": "15",
+   "name": "Maximum power",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "W",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 19,
+   "documented": "19",
+   "name": "Localisation number",
+   "description": "Group number of components that belong together.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "10",
+   "name": "Target value",
+   "description": "Overrides the system ventilation level, 0-100 % in steps of 5; -1 = override off (default).",
+   "data_type": "INT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "15",
+   "name": "Auto min.",
+   "description": "Minimum level in automatic mode, 0-100 % in steps of 5 (default 10 %).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "16",
+   "name": "Auto max.",
+   "description": "Maximum level in automatic mode, 0-100 % in steps of 5 (default 100 %).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 19,
+   "documented": "19",
+   "name": "Action",
+   "description": "Simulates a user-control press for the zone.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Node display off",
+    "1": "Node display on",
+    "2": "Zone to temporary manual setting 1",
+    "3": "Zone to temporary manual setting 2",
+    "4": "Zone to temporary manual setting 3",
+    "5": "Zone to automatic setting",
+    "6": "Nobody home / unoccupied setting"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Read input 11-12 for the system status and ventilation level. Control either with holding 10 (target %, -1 to release) or holding 19 (Action, simulates a button press so user controls stay in step).",
+  "minimum_registers": [
+   {
+    "table": "input_register",
+    "address": 11,
+    "why": "System status"
+   },
+   {
+    "table": "input_register",
+    "address": 12,
+    "why": "Ventilation level %"
+   },
+   {
+    "table": "input_register",
+    "address": 13,
+    "why": "Current power"
+   },
+   {
+    "table": "holding_register",
+    "address": 10,
+    "why": "Target value override"
+   },
+   {
+    "table": "holding_register",
+    "address": 19,
+    "why": "Action (manual/auto)"
+   },
+   {
+    "table": "holding_register",
+    "address": 15,
+    "why": "Auto minimum"
+   }
+  ],
+  "enable": "Fit the Communication Print option (DucoBox) or use the IQ unit's built-in port; set the Modbus address in the display menu or Duco Network Tool.",
+  "watchdog": null,
+  "quirks": [
+   "Addresses are node x 10 + parameter; read node numbers from the Duco Network Tool.",
+   "If the master reads values shifted by one register, set RegOffs = 1 in the Duco display menu."
+  ],
+  "setup": [
+   "Default serial settings 9600 baud, 8 data bits, no parity, 1 stop bit; change in the display menu."
+  ],
+  "gotchas": [
+   "A target value left set overrides the zone and user controls no longer show the true setting; write -1 to release it."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/duco/ducobox-modbus-rtu",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

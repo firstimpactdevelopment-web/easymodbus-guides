@@ -1,0 +1,34 @@
+﻿# Lovato Electric ADXL soft starters (Modbus RTU / ASCII / TCP) Modbus register map - easymodbus.com - source: https://datasheet.lovatoelectric.com/DOWNLOAD/Technical/TechInstructions/05.%20SOFT%20STARTER/I454IGB03_22.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,5,06h,30006,L3-L1 voltage,,UINT32,2,ABCD,0.01,0,V,Read,
+Input register,FC04 read,7,08h,30008,L1 current,,UINT32,2,ABCD,0.0001,0,A,Read,
+Input register,FC04 read,9,0Ah,30010,L2 current,,UINT32,2,ABCD,0.0001,0,A,Read,
+Input register,FC04 read,11,0Ch,30012,L3 current,,UINT32,2,ABCD,0.0001,0,A,Read,
+Input register,FC04 read,19,14h,30020,L1 active power,,INT32,2,ABCD,0.00001,0,kW,Read,
+Input register,FC04 read,21,16h,30022,L2 active power,,INT32,2,ABCD,0.00001,0,kW,Read,
+Input register,FC04 read,23,18h,30024,L3 active power,,INT32,2,ABCD,0.00001,0,kW,Read,
+Input register,FC04 read,37,26h,30038,L1 power factor,,INT32,2,ABCD,0.0001,0,,Read,
+Input register,FC04 read,39,28h,30040,L2 power factor,,INT32,2,ABCD,0.0001,0,,Read,
+Input register,FC04 read,41,2Ah,30042,L3 power factor,,INT32,2,ABCD,0.0001,0,,Read,
+Input register,FC04 read,49,32h,30050,Frequency,,UINT32,2,ABCD,0.001,0,Hz,Read,
+Input register,FC04 read,57,3Ah,30058,Total active power,Printed as kW/10000 (phase powers are kW/100000).,INT32,2,ABCD,0.0001,0,kW,Read,
+Input register,FC04 read,63,40h,30064,Total power factor,,INT32,2,ABCD,0.0001,0,,Read,
+Input register,FC04 read,117,76h,30118,Max current,,UINT32,2,ABCD,0.0001,0,A,Read,
+Input register,FC04 read,119,78h,30120,Torque,,UINT32,2,ABCD,0.1,0,%,Read,
+Input register,FC04 read,121,7Ah,30122,Maximum instantaneous current,,UINT32,2,ABCD,0.1,0,%,Read,
+Input register,FC04 read,3967,F80h,33968,Motor hour meter,"Printed as h/3600, i.e. the count is in seconds.",UINT32,2,ABCD,1,0,s,Read,
+Input register,FC04 read,3969,F82h,33970,Start counter,,UINT32,2,ABCD,1,0,,Read,
+Input register,FC04 read,4015,FB0h,34016,Motor thermal status,,UINT32,2,ABCD,1,0,%,Read,
+Input register,FC04 read,4017,FB2h,34018,Thyristor temperature,,UINT32,2,ABCD,0.1,0,°C,Read,
+Input register,FC04 read,8447,2100h,38448,Inputs 1-3,,BITMAP16,1,,1,0,,Read,bit 0 = Input 1; bit 1 = Input 2; bit 2 = Input 3
+Input register,FC04 read,8512,2141h,38513,Outputs 1-3,,BITMAP16,1,,1,0,,Read,bit 0 = Output 1; bit 1 = Output 2; bit 2 = Output 3
+Input register,FC04 read,8575,2180h,38576,Remote variables 1-4,,BITMAP16,1,,1,0,,Read,bit 0 = Remote 1; bit 1 = Remote 2; bit 2 = Remote 3; bit 3 = Remote 4
+Input register,FC04 read,8639,21C0h,38640,Limit thresholds 1-4,,BITMAP16,1,,1,0,,Read,bit 0 = Limit 1; bit 1 = Limit 2; bit 2 = Limit 3; bit 3 = Limit 4
+Holding register,"FC03 read / FC06, FC16 write",4097,1002h,44098,Motor start command,Write 1 to start the motor.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",4098,1003h,44099,Motor stop command,Write 1 to stop the motor.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",12034,2F03h,412035,Save to flash / reboot,Write 5 to save parameters to flash (also given as the reboot command).,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",12271,2FF0h,412272,Command register,Write a command code (function 06).,UINT16,1,,1,0,,Write,0 = C01 Reset maintenance interval; 1 = C02 Thermal status reset; 2 = C03 Reset start counter; 3 = C04 Reset motor hour meter; 4 = C05 Reset energy counters; 5 = C06 Reset LIM variables with memory; 10 = C11 Repeat AUTOSET wizard; 11 = C12 Restore factory defaults; 12 = C13 Save copy of setup; 13 = C14 Restore copy of setup; 14 = C15 Test with low power motor; 15 = C16 Reset event list
+Holding register,"FC03 read / FC06, FC16 write",20479,5000h,420480,Parameter menu number,Step 1 of parameter access.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20480,5001h,420481,Parameter sub-menu number,"Step 2, if the menu has sub-menus.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20481,5002h,420482,Parameter number,Step 3: parameter within the menu.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",20527,5030h,420528,Event pointer / counter,"High byte = events stored, low byte = last index. Write to select an event.",UINT16,1,,1,0,,Read/write,

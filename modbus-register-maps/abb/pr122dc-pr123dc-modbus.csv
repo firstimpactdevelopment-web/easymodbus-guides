@@ -1,0 +1,20 @@
+﻿# ABB SACE Emax DC PR122DC / PR123DC trip units with PR120/D-M (Modbus RTU) Modbus register map - easymodbus.com - source: https://library.e.abb.com/public/14a57dd39209c59dc12578b100664838/1SDH000841R0001.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,101,30102 (rel. 101),30102,State 2 - flags,Breaker position and remote/local.,BITMAP16,1,,1,0,,Read,bit 0 = Any alarm / timing / warning; bit 1 = Any trip (latched); bit 2 = CB tripped; bit 3 = CB connected (0 = isolated); bit 4 = CB closed (0 = open); bit 5 = CB undefined; bit 6 = No communication on local bus; bit 7 = Springs charged; bit 8 = Trip command fail; bit 9 = Remote mode (0 = local); bit 10 = Programming OK; bit 11 = Programming failed; bit 12 = Internal bus programming session; bit 13 = Test bus programming session; bit 14 = Local bus programming session; bit 15 = System bus programming session
+Input register,FC04 read,107,30108 (rel. 107),30108,State 8 - latched trips,Cleared by CB reset or trip reset.,BITMAP16,1,,1,0,,Read,bit 0 = L tripped; bit 1 = S tripped; bit 2 = S2 tripped; bit 3 = I tripped (or MCR); bit 4 = Iinst tripped; bit 5 = G tripped; bit 7 = OT tripped; bit 9 = U tripped; bit 10 = UV tripped; bit 11 = OV tripped; bit 13 = RP tripped
+Input register,FC04 read,200,30201-30202 (rel. 200),30201,Maximum current,2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,202,30203 (rel. 202),30203,Maximum current polarity,,UINT16,1,,1,0,,Read,0 = Not available; 1 = IA; 2 = IA_2; 3 = IB; 4 = IB_2
+Input register,FC04 read,203,30204-30205 (rel. 203),30204,IA current,2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,205,30206-30207 (rel. 205),30206,IA_2 current,2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,207,30208-30209 (rel. 207),30208,IB current,PR123DC. 2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,209,30210-30211 (rel. 209),30210,IB_2 current,PR123DC. 2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,211,30212-30213 (rel. 211),30212,Ground current,PR123DC. 2^32-1 = not available.,UINT32,2,CDAB,1,0,A,Read,
+Input register,FC04 read,217,30218 (rel. 217),30218,DC voltage,PR123DC; 65535 = not available.,UINT16,1,,0.1,0,V,Read,
+Input register,FC04 read,218,30219-30220 (rel. 218),30219,Total active power,PR123DC; 2^31-1 = not available.,INT32,2,CDAB,0.1,0,kW,Read,
+Input register,FC04 read,220,30221-30222 (rel. 220),30221,Positive active energy,PR123DC.,INT32,2,CDAB,1,0,kWh,Read,
+Input register,FC04 read,222,30223-30224 (rel. 222),30223,Negative active energy,PR123DC.,INT32,2,CDAB,1,0,kWh,Read,
+Input register,FC04 read,224,30225-30226 (rel. 224),30225,Total active energy,PR123DC.,INT32,2,CDAB,1,0,kWh,Read,
+Input register,FC04 read,700,30701 (rel. 700),30701,Slave ID,Identifies the trip unit model.,UINT16,1,,1,0,,Read,88 = PR123DC (0x58); 89 = PR122DC (0x59)
+Input register,FC04 read,704,30705 (rel. 704),30705,Rated current In,100-6300 A.,UINT16,1,,1,0,A,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,40001 (rel. 0),40001,Command type,Write with the parameter in one function-16 request.,UINT16,1,,1,0,,Write,0 = Dummy; 1 = Trip reset; 2 = Signalling reset; 3 = Communication statistics reset; 4 = Log event reset; 5 = Start programming session; 6 = Abort programming session; 7 = Stop programming session; 8 = CB open; 9 = CB close; 10 = CB reset; 11 = Wink toggle; 12 = History measure reset; 13 = History energy reset; 14 = Datalogger trigger restart; 15 = Datalogger stop
+Holding register,"FC03 read / FC06, FC16 write",1,40002 (rel. 1),40002,Command parameter,0 when the command needs none.,UINT16,1,,1,0,,Write,

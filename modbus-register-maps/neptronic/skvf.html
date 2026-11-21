@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Google Analytics 4 (Consent Mode v2) — analytics cookies gated by the banner -->
+<script>
+(function(){
+  var ID="G-C75X0X538C", KEY="ga-consent", P="https://easymodbus.com/privacy.html";
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+  var v=null;try{v=localStorage.getItem(KEY);}catch(e){}
+  function load(){if(window.__ga)return;window.__ga=1;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);gtag('config',ID,{anonymize_ip:true});}
+  function grant(){gtag('consent','update',{analytics_storage:'granted'});load();}
+  if(v==='granted'){grant();}
+  function banner(){
+    if(v==='granted'||v==='denied')return;
+    var d=document.createElement('div');d.className='cookie-consent';
+    d.innerHTML='<p>We use Google Analytics to understand which guides help. No ads, no cross-site tracking. <a href="'+P+'">Privacy policy</a>.</p><div class="cc-row"><button type="button" id="cc-no">Decline</button><button type="button" id="cc-yes">Accept</button></div>';
+    document.body.appendChild(d);
+    d.querySelector('#cc-yes').onclick=function(){try{localStorage.setItem(KEY,'granted');}catch(e){}grant();d.remove();};
+    d.querySelector('#cc-no').onclick=function(){try{localStorage.setItem(KEY,'denied');}catch(e){}d.remove();};
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',banner);}else{banner();}
+})();
+</script>
+<style>
+.cookie-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;max-width:660px;margin:0 auto;z-index:9999;background:#1d2227;color:#f3f5f6;border:1px solid #2f363d;border-radius:12px;padding:1rem 1.15rem;box-shadow:0 14px 44px rgba(0,0,0,.55);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.92rem;line-height:1.5}
+.cookie-consent p{margin:0 0 .8rem}
+.cookie-consent a{color:#ff9a1f}
+.cookie-consent .cc-row{display:flex;gap:.6rem;justify-content:flex-end}
+.cookie-consent button{font:inherit;font-weight:700;padding:.5rem 1.15rem;border-radius:8px;border:1px solid #3a424c;background:transparent;color:#f3f5f6;cursor:pointer}
+.cookie-consent #cc-yes{background:#ff9a1f;border-color:#ff9a1f;color:#0d0f11}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neptronic SKVF Modbus Register List &amp; Map | Easy Modbus</title>
+<meta name="description" content="Neptronic SKVF Modbus register map: 143 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<link rel="canonical" href="https://easymodbus.com/modbus-register-maps/neptronic/skvf">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#14171a">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Easy Modbus">
+<meta property="og:title" content="Neptronic SKVF Modbus Register List &amp; Map | Easy Modbus">
+<meta property="og:description" content="Neptronic SKVF Modbus register map: 143 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta property="og:url" content="https://easymodbus.com/modbus-register-maps/neptronic/skvf">
+<meta property="og:image" content="https://easymodbus.com/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Neptronic SKVF Modbus Register List &amp; Map | Easy Modbus">
+<meta name="twitter:description" content="Neptronic SKVF Modbus register map: 143 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.">
+<meta name="twitter:image" content="https://easymodbus.com/img/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#14171a;--panel:#1d2227;--panel2:#191e22;--line:#2f363d;
+  --fg:#f3f5f6;--mut:#9aa4ad;--accent:#2dd4bf;--ink:#0d0f11;--code:#101418;--ok:#5fd38d;--warn:#ffb454}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-wrap:break-word;margin:0;background:var(--bg);color:var(--fg);font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;line-height:1.1}
+h1{font-weight:900;text-transform:uppercase;font-size:clamp(1.7rem,4.6vw,2.9rem);margin:.4rem 0 .8rem}
+h1 .mfr{color:var(--accent)}
+h2{font-weight:800;font-size:clamp(1.2rem,2.6vw,1.55rem);margin:2.6rem 0 .9rem}
+h3{font-weight:800;font-size:1.05rem;margin:0 0 .35rem}
+p{margin:0 0 1rem}
+strong{color:#fff}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.top{border-bottom:1px solid var(--line);background:rgba(20,23,26,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:.65rem;height:58px}
+.brand{display:inline-flex;align-items:center;gap:.55rem;color:var(--fg)!important;text-decoration:none!important}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+.brand b{font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.top nav{margin-left:auto;display:flex;gap:1.1rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.top nav a{color:var(--mut)}
+.top nav a.on{color:var(--accent)}
+.crumbs{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;color:var(--mut);margin:1.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.35rem}
+.crumbs li:not(:last-child)::after{content:"/";margin-left:.35rem;color:var(--line)}
+.crumbs a{color:var(--mut)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:1.4rem 0 0}
+.lede{font-size:1.08rem;color:#e7ebee;max-width:70ch}
+.updated{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em}
+.answer{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1.1rem 1.3rem;margin:1.4rem 0;max-width:78ch}
+.answer > b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.answer p:last-child{margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:1.4rem 0}
+.facts div{background:var(--panel);padding:.85rem 1rem}
+.facts dt{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.facts dd{margin:.2rem 0 0;font-weight:700;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0;padding:0;list-style:none}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.76rem;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:.25rem .7rem;color:var(--fg);cursor:pointer}
+.chip b{color:var(--accent);margin-left:.3rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:rgba(45,212,191,.12)}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font:inherit;font-weight:700;font-size:.92rem;padding:.6rem 1rem;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--fg)!important;text-decoration:none!important;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--ink)!important}
+.btn small{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.68rem;opacity:.75}
+.tools{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1rem 0 .4rem}
+.search{flex:1 1 260px;font:inherit;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.65rem .85rem}
+.search:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.pick{font:inherit;font-weight:700;color:var(--fg);background:var(--code);border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;min-width:min(100%,320px)}
+.count{color:var(--mut);font-family:"IBM Plex Mono",monospace;font-size:.76rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.6rem 0 1rem;background:var(--panel2)}
+table.pts{border-collapse:collapse;width:100%;font-size:.88rem;min-width:980px}
+table.pts th,table.pts td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.pts thead th{position:sticky;top:0;background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;white-space:nowrap}
+table.pts td.t,table.pts td.i,table.pts td.f{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+table.pts td.t{color:#cfe1f2}
+table.pts td.i{text-align:right}
+table.pts td.i small{display:block;color:var(--mut);font-size:.7rem}
+table.pts td.n{font-weight:600}
+table.pts td.d,table.pts td.s{color:var(--mut)}
+table.pts td.s{font-size:.82rem;min-width:200px}
+table.pts tr:hover td{background:rgba(255,255,255,.025)}
+table.comms{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
+table.comms th,table.comms td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+table.comms thead th{background:#20262c;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.acc{font-family:"IBM Plex Mono",monospace;font-size:.72rem;border-radius:5px;padding:.08rem .4rem;border:1px solid var(--line);white-space:nowrap}
+.acc.RW,.acc.W{color:var(--ok);border-color:rgba(95,211,141,.45)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0;padding:0;list-style:none}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1.05rem 1.1rem;color:var(--fg)!important;text-decoration:none!important;height:100%}
+.card:hover{border-color:var(--accent)}
+.card .k{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card h3{margin:.35rem 0 .3rem;font-size:1.08rem}
+.card p{color:var(--mut);font-size:.9rem;margin:0}
+.card .meta{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--mut)}
+.notes{margin:0;padding-left:1.2rem}
+.notes li{margin:.35rem 0}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:1rem 1.2rem;margin:1.5rem 0;max-width:78ch}
+.callout p:last-child{margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;max-width:78ch}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.6rem 0 0;color:#dfe4e8}
+.ibgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.ib{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:1rem 1.1rem}
+.ib p{margin:0;color:#dfe4e8;font-size:.95rem}
+.integ h3{margin-top:1.4rem}
+table.pts.min{min-width:560px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.toast{color:var(--ok);font-family:"IBM Plex Mono",monospace;font-size:.76rem;align-self:center}
+footer{border-top:1px solid var(--line);margin-top:3.5rem;padding:2rem 0 3rem;color:var(--mut);font-size:.9rem}
+footer a{color:var(--mut);text-decoration:underline}
+@media (max-width:640px){.top nav{display:none}body{font-size:16px}}
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://easymodbus.com/#org",
+   "name": "Easy Modbus",
+   "url": "https://easymodbus.com/",
+   "logo": "https://easymodbus.com/icon.svg"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://easymodbus.com/modbus-register-maps/neptronic/skvf",
+   "url": "https://easymodbus.com/modbus-register-maps/neptronic/skvf",
+   "name": "Neptronic SKVF Modbus Register List & Map | Easy Modbus",
+   "description": "Neptronic SKVF Modbus register map: 143 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "dateModified": "2026-11-19",
+   "isPartOf": {
+    "@id": "https://easymodbus.com/#site"
+   },
+   "mainEntity": {
+    "@id": "https://easymodbus.com/modbus-register-maps/neptronic/skvf#dataset"
+   },
+   "publisher": {
+    "@id": "https://easymodbus.com/#org"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "https://easymodbus.com/modbus-register-maps/neptronic/skvf#dataset",
+   "name": "Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus register map",
+   "description": "The Neptronic SKVF is an evaporative cooler that can run humidification or cooling control profiles. Its Modbus RTU module exposes holding registers only: signal voltages, room and supply RH and temperature readings, demand and output, humidity and cooling set points with PID terms, water supply, drain and drying settings, inputs and relays as 0/1 registers, and state, alarm, request and control-profile codes. Neptronic SKVF Modbus register map: 143 registers with addresses, data types, scaling and units, plus integration notes and a free CSV.",
+   "url": "https://easymodbus.com/modbus-register-maps/neptronic/skvf",
+   "keywords": [
+    "Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus register map",
+    "Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus registers",
+    "Neptronic Modbus map",
+    "SKVF Evaporative Cooler Modbus register map",
+    "SKVF Series Modbus register map",
+    "Neptronic SKVF Modbus Modbus register map"
+   ],
+   "isAccessibleForFree": true,
+   "license": "https://easymodbus.com/terms",
+   "creator": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Easy Modbus",
+    "url": "https://easymodbus.com/"
+   },
+   "dateModified": "2026-11-19",
+   "isBasedOn": {
+    "@type": "CreativeWork",
+    "name": "SKVF Evaporative Cooler - Modbus Communication Module User Guide",
+    "url": "https://www.neptronic.com/humidifiers/pdf/SKVF/20211208/SKVF-Modbus%20Guide-211025.pdf",
+    "author": {
+     "@type": "Organization",
+     "name": "Neptronic"
+    }
+   },
+   "about": {
+    "@type": "Thing",
+    "name": "Neptronic SKVF evaporative cooler / humidifier (Modbus communication module)",
+    "description": "Air handler evaporative cooler (adiabatic cooling / humidification)"
+   },
+   "variableMeasured": [
+    "Register table",
+    "Wire address (0-based)",
+    "Documented address",
+    "Register name",
+    "Data type",
+    "Word order",
+    "Scale",
+    "Engineering units",
+    "Access",
+    "Enumeration / bit meanings"
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/neptronic/skvf.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/json",
+     "contentUrl": "https://easymodbus.com/modbus-register-maps/neptronic/skvf.json"
+    }
+   ],
+   "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "Easy Modbus register-map library",
+    "url": "https://easymodbus.com/modbus-register-maps/"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What Modbus registers does the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) have?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "This map lists 143 registers: 143 holding registers. 95 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Are the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus addresses 0-based or 1-based?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The manufacturer's document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The guide prints a protocol-base (0-based) address and a six-digit holding register (base 400001) side by side, e.g. 6005 / 406006. The protocol-base number is the wire address."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What are the minimum Modbus registers to integrate the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start with HR 6008 Room RH (Room RH); HR 6012 Room Temperature (Room temperature); HR 6028 Power Output (Power output); HR 6073 Room RH Setpoint (Room RH set point); HR 15009 State (Unit state); HR 15010 System Alarm (System alarm); HR 15016 Control Profile (Control profile); HR 6112 Control Network Demand (Network demand)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I enable Modbus control of the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Fit the Modbus communication module, set the address in the device menu (or register 0) and choose the control profile (15016) and sources (15019-15028) if the BAS supplies readings or demand."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What happens when the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) loses Modbus communication?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "A Network Timeout exists but it is printed as a two-register value without word order (6117-6118), so it is not listed; Network Control State (12000) flags a network fault."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where is the official Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus documentation?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The source is SKVF Evaporative Cooler - Modbus Communication Module User Guide (SKVF-Modbus Guide-211025), revision 2021-10-25, published free by Neptronic at https://www.neptronic.com/humidifiers/pdf/SKVF/20211208/SKVF-Modbus%20Guide-211025.pdf."
+     }
+    }
+   ]
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://easymodbus.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Modbus register maps",
+     "item": "https://easymodbus.com/modbus-register-maps/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Neptronic",
+     "item": "https://easymodbus.com/modbus-register-maps/neptronic/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "SKVF evaporative cooler / humidifier (Modbus communication module)",
+     "item": "https://easymodbus.com/modbus-register-maps/neptronic/skvf"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/icon.svg" alt="" width="28" height="28"><b>Easy Modbus</b></a>
+  <nav aria-label="Site"><a href="/modbus-register-maps/" class="on">Register maps</a><a href="/#tools">Tools</a><a href="/#guides">Guides</a></nav>
+</div></div>
+<main class="wrap">
+<ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li><a href="/modbus-register-maps/">Modbus register maps</a></li><li><a href="/modbus-register-maps/neptronic/">Neptronic</a></li><li aria-current="page">SKVF evaporative cooler / humidifier (Modbus communication module)</li></ol>
+<p class="eyebrow">Air handler evaporative cooler (adiabatic cooling / humidification) &middot; Modbus register map</p><h1><span class="mfr">Neptronic</span> SKVF evaporative cooler / humidifier (Modbus communication module) Modbus register map</h1><p class="updated">Updated 19 November 2026</p>
+
+<div class="answer"><b>Short answer</b><p>The Neptronic SKVF is an evaporative cooler that can run humidification or cooling control profiles. Its Modbus RTU module exposes holding registers only: signal voltages, room and supply RH and temperature readings, demand and output, humidity and cooling set points with PID terms, water supply, drain and drying settings, inputs and relays as 0/1 registers, and state, alarm, request and control-profile codes.</p>
+<p>This page lists <strong>143 Modbus registers</strong> for the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) &mdash; 95 writable &mdash;
+with the table, 0-based wire address, data type, word order, scale, units and access of each, re-typed from
+Neptronic&rsquo;s own free documentation (linked below) and checked against it.</p></div>
+<dl class="facts"><div><dt>Manufacturer</dt><dd><a href="/modbus-register-maps/neptronic/">Neptronic</a></dd></div><div><dt>Model</dt><dd>SKVF evaporative cooler / humidifier (Modbus communication module)</dd></div><div><dt>Equipment type</dt><dd><a href="/modbus-register-maps/equipment/hvac/">Air handler evaporative cooler (adiabatic cooling / humidification)</a></dd></div><div><dt>Registers</dt><dd>143 (95 writable)</dd></div><div><dt>Transport</dt><dd>Modbus RTU</dd></div><div><dt>Default unit ID</dt><dd>Not stated</dd></div><div><dt>Default serial</dt><dd>8N2</dd></div><div><dt>Documented addressing</dt><dd>0-based (the number printed is the address on the wire)</dd></div><div><dt>Also known as</dt><dd>SKVF Evaporative Cooler, SKVF Series, Neptronic SKVF Modbus</dd></div><div><dt>Source document</dt><dd><a href="https://www.neptronic.com/humidifiers/pdf/SKVF/20211208/SKVF-Modbus%20Guide-211025.pdf" rel="nofollow noopener" target="_blank">SKVF Evaporative Cooler - Modbus Communication Module User Guide &middot; SKVF-Modbus Guide-211025 &middot; rev. 2021-10-25</a></dd></div></dl>
+<div class="dl">
+  <a class="btn primary" href="/modbus-register-maps/neptronic/skvf.csv" download>Download CSV <small>all columns</small></a>
+  <a class="btn" href="/modbus-register-maps/neptronic/skvf.json">JSON</a>
+  <a class="btn" href="https://www.neptronic.com/humidifiers/pdf/SKVF/20211208/SKVF-Modbus%20Guide-211025.pdf" rel="nofollow noopener" target="_blank">Manufacturer PDF &#8599;</a>
+</div>
+<section class="integ" id="integration"><h2>Integration notes: Neptronic SKVF evaporative cooler / humidifier (Modbus communication module)</h2>
+<div class="answer"><b>Integration in brief</b><p>Read Room RH (6008), Room Temperature (6012), Power Output (6028), State (15009) and System Alarm (15010). For BAS control choose a network Control Profile (15016) and Control Demand Source (15027 = Network) and write Control Network Demand (6112).</p></div>
+<h3>Minimum registers to map</h3><p class="count">Addresses are 0-based wire addresses. Enough to monitor and run the unit; map more as the job needs.</p><div class="tablewrap"><table class="pts min"><thead><tr><th scope="col">Register</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Why</th><th scope="col">Access</th></tr></thead><tbody><tr><td class="t"><a href="#r-hr-6008">HR 6008</a></td><td class="n">Room RH</td><td class="f">UINT16</td><td>Room RH</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-6012">HR 6012</a></td><td class="n">Room Temperature</td><td class="f">INT16</td><td>Room temperature</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-6028">HR 6028</a></td><td class="n">Power Output</td><td class="f">UINT16</td><td>Power output</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-6073">HR 6073</a></td><td class="n">Room RH Setpoint</td><td class="f">UINT16</td><td>Room RH set point</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-15009">HR 15009</a></td><td class="n">State</td><td class="f">UINT16</td><td>Unit state</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-15010">HR 15010</a></td><td class="n">System Alarm</td><td class="f">UINT16</td><td>System alarm</td><td><span class="acc R">Read</span></td></tr><tr><td class="t"><a href="#r-hr-15016">HR 15016</a></td><td class="n">Control Profile</td><td class="f">UINT16</td><td>Control profile</td><td><span class="acc RW">Read/write</span></td></tr><tr><td class="t"><a href="#r-hr-6112">HR 6112</a></td><td class="n">Control Network Demand</td><td class="f">UINT16</td><td>Network demand</td><td><span class="acc RW">Read/write</span></td></tr></tbody></table></div>
+<div class="ibgrid"><div class="ib"><h3>Enable Modbus control &amp; writes</h3><p>Fit the Modbus communication module, set the address in the device menu (or register 0) and choose the control profile (15016) and sources (15019-15028) if the BAS supplies readings or demand.</p></div><div class="ib"><h3>Communication loss &amp; watchdog</h3><p>A Network Timeout exists but it is printed as a two-register value without word order (6117-6118), so it is not listed; Network Control State (12000) flags a network fault.</p></div></div>
+<h3>Byte order &amp; addressing</h3><ul class="notes"><li>All points, binary ones included, are holding registers (FC03/06/16 only).</li><li>Default framing is no parity with 2 stop bits.</li></ul>
+<h3>Network setup</h3><ul class="notes"><li>RS-485 two-wire, RTU; 9600-57600 baud or auto baud detection.</li><li>Parity/stop bits via register 2 or the Modbus Comport Config menu item.</li></ul>
+<h3>Watch out for</h3><ul class="notes"><li>Control Profile chooses humidification (Hum) or cooling (Cool) logic; network profiles need the matching network registers written.</li></ul>
+</section>
+<h2 id="registers">Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus registers</h2>
+<p class="count">Address = 0-based wire address (the documented number is shown under it when it differs) &middot;
+Order: ABCD = high word first, CDAB = low word first &middot; Scale: engineering value = raw &times; scale.</p>
+<ul class="chips" aria-label="Filter by register table"><li><button type="button" class="chip" data-chip-for="regs" data-type="holding_register" aria-pressed="false" title="Holding register">Holding registers<b>143</b></button></li></ul>
+<div class="tools"><input class="search" type="search" placeholder="Filter registers &mdash; name, units, type&hellip;"
+ aria-label="Filter registers" data-filter="regs"><span class="count" data-count-for="regs">143 of 143 shown</span></div>
+<div class="tablewrap"><table class="pts" id="regs"><caption class="sr-only">Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus register map</caption><thead><tr><th scope="col">Table</th><th scope="col">Address</th><th scope="col">Name</th><th scope="col">Description</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Scale</th><th scope="col">Units</th><th scope="col">Access</th><th scope="col">Values / bits</th></tr></thead><tbody>
+<tr data-row data-type="holding_register" id="r-hr-0"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">0<small>doc 0 / 400001</small></td><td class="n">Modbus Address and Product Type</td><td class="d">High byte = product type (read only); low byte = Modbus address 1-247 (writable).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-1"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">1<small>doc 1 / 400002</small></td><td class="n">Device Baud Rate</td><td class="d">Baud rate / 100 (e.g. 384 = 38400); 0 = auto-detect.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 100</td><td>baud</td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Auto baud rate detection</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2<small>doc 2 / 400003</small></td><td class="n">Modbus Slave Communication Port Configuration</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = No parity, 2 stop bits; 1 = Even parity, 1 stop bit; 2 = Odd parity, 1 stop bit</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-7"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">7<small>doc 7 / 400008</small></td><td class="n">Product Actual Firmware Version (in Integer x100)</td><td class="d">Firmware version x100 (e.g. 100 = 1.00).</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-8"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">8<small>doc 8 / 400009</small></td><td class="n">Product Actual EEPROM Version (in Integer x100)</td><td class="d">EEPROM version x100.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td></td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2000"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2000<small>doc 2000 / 402001</small></td><td class="n">Control Signal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2002"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2002<small>doc 2002 / 402003</small></td><td class="n">Room RH Signal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2003"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2003<small>doc 2003 / 402004</small></td><td class="n">Room Temperature Signal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2004"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2004<small>doc 2004 / 402005</small></td><td class="n">Supply RH Signal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2005"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2005<small>doc 2005 / 402006</small></td><td class="n">Supply Temperature Signal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2006"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2006<small>doc 2006 / 402007</small></td><td class="n">ECM Fan Feedback</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2007"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2007<small>doc 2007 / 402008</small></td><td class="n">ECM Fan Feedback 2</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>Hz</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2008"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2008<small>doc 2008 / 402009</small></td><td class="n">Float Switch Signal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2009"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2009<small>doc 2009 / 402010</small></td><td class="n">Board Temperature Signal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-2010"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">2010<small>doc 2010 / 402011</small></td><td class="n">Main Power Supply</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-4000"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">4000<small>doc 4000 / 404001</small></td><td class="n">Power Output Feedback Signal</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6000"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6000<small>doc 6000 / 406001</small></td><td class="n">Control Input</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6001"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6001<small>doc 6001 / 406002</small></td><td class="n">Control Min</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6002"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6002<small>doc 6002 / 406003</small></td><td class="n">Control Max</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6003"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6003<small>doc 6003 / 406004</small></td><td class="n">Control Bias</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6008"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6008<small>doc 6008 / 406009</small></td><td class="n">Room RH</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6009"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6009<small>doc 6009 / 406010</small></td><td class="n">Room RH Min</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6010"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6010<small>doc 6010 / 406011</small></td><td class="n">Room RH Max</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6012"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6012<small>doc 6012 / 406013</small></td><td class="n">Room Temperature</td><td class="d">Room temperature reading; printed as writable.</td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6013"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6013<small>doc 6013 / 406014</small></td><td class="n">Room Temperature Min</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6014"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6014<small>doc 6014 / 406015</small></td><td class="n">Room Temperature Max</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6015"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6015<small>doc 6015 / 406016</small></td><td class="n">Room Temperature Bias</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6016"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6016<small>doc 6016 / 406017</small></td><td class="n">Supply High Limit RH</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6017"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6017<small>doc 6017 / 406018</small></td><td class="n">Supply High Limit RH Min</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6018"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6018<small>doc 6018 / 406019</small></td><td class="n">Supply High Limit RH Max</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6019"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6019<small>doc 6019 / 406020</small></td><td class="n">Supply High Limit RH Bias</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6020"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6020<small>doc 6020 / 406021</small></td><td class="n">Supply High Limit Temperature</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6021"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6021<small>doc 6021 / 406022</small></td><td class="n">Supply High Limit Temperature Min</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6022"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6022<small>doc 6022 / 406023</small></td><td class="n">Supply High Limit Temperature Max</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6023"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6023<small>doc 6023 / 406024</small></td><td class="n">Supply High Limit Temperature Bias</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6028"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6028<small>doc 6028 / 406029</small></td><td class="n">Power Output</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6045"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6045<small>doc 6045 / 406046</small></td><td class="n">Dead Band</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6046"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6046<small>doc 6046 / 406047</small></td><td class="n">Minimum Production Output</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6047"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6047<small>doc 6047 / 406048</small></td><td class="n">Maximum Production Output</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6048"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6048<small>doc 6048 / 406049</small></td><td class="n">Fan On Delay</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>min</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6049"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6049<small>doc 6049 / 406050</small></td><td class="n">Dry Fan Speed</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6050"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6050<small>doc 6050 / 406051</small></td><td class="n">Service Interval</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6051"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6051<small>doc 6051 / 406052</small></td><td class="n">Dilution Ratio</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6052"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6052<small>doc 6052 / 406053</small></td><td class="n">Drain Interval</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6053"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6053<small>doc 6053 / 406054</small></td><td class="n">Fixed Drain Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6054"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6054<small>doc 6054 / 406055</small></td><td class="n">Line Rinse Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6061"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6061<small>doc 6061 / 406062</small></td><td class="n">Completely Dry Delay</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6062"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6062<small>doc 6062 / 406063</small></td><td class="n">Hour of Day Drying Cycle</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td>h</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6065"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6065<small>doc 6065 / 406066</small></td><td class="n">HRL Temperature</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6066"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6066<small>doc 6066 / 406067</small></td><td class="n">HRL Humidity</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6067"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6067<small>doc 6067 / 406068</small></td><td class="n">Board Temperature</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6068"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6068<small>doc 6068 / 406069</small></td><td class="n">Power Output Feedback Bias</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6069"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6069<small>doc 6069 / 406070</small></td><td class="n">Power Output Feedback Min</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6070"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6070<small>doc 6070 / 406071</small></td><td class="n">Power Output Feedback Max</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.001</td><td>V</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6071"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6071<small>doc 6071 / 406072</small></td><td class="n">Power Output Feedback</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6072"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6072<small>doc 6072 / 406073</small></td><td class="n">Room RH Network Reading</td><td class="d">Room RH written by the BAS when Room RH Source = Network.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6073"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6073<small>doc 6073 / 406074</small></td><td class="n">Room RH Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6074"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6074<small>doc 6074 / 406075</small></td><td class="n">Room RH Unoccupied Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6075"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6075<small>doc 6075 / 406076</small></td><td class="n">Room RH Vacant Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6076"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6076<small>doc 6076 / 406077</small></td><td class="n">Room RH Demand Proportional Gain</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6077"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6077<small>doc 6077 / 406078</small></td><td class="n">Room RH Demand Integral Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6078"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6078<small>doc 6078 / 406079</small></td><td class="n">Room RH Demand Derivative Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6079"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6079<small>doc 6079 / 406080</small></td><td class="n">Room RH Demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6085"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6085<small>doc 6085 / 406086</small></td><td class="n">Room Temperature Unoccupied Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6086"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6086<small>doc 6086 / 406087</small></td><td class="n">Room Temperature Vacant Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6089"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6089<small>doc 6089 / 406090</small></td><td class="n">Room Temperature Demand Integral Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6090"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6090<small>doc 6090 / 406091</small></td><td class="n">Room Temperature Demand Derivative Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6091"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6091<small>doc 6091 / 406092</small></td><td class="n">Room Temperature Demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6092"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6092<small>doc 6092 / 406093</small></td><td class="n">Room Temp Demand Proportional Band</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6093"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6093<small>doc 6093 / 406094</small></td><td class="n">RH Supply High Limit Network Reading</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6094"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6094<small>doc 6094 / 406095</small></td><td class="n">RH Supply High Limit Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6095"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6095<small>doc 6095 / 406096</small></td><td class="n">RH Supply High Limit Unoccupied Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6096"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6096<small>doc 6096 / 406097</small></td><td class="n">RH Supply High Limit Vacant Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6097"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6097<small>doc 6097 / 406098</small></td><td class="n">RH Supply High Limit Proportional Gain</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6098"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6098<small>doc 6098 / 406099</small></td><td class="n">RH Supply High Limit Integral Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6099"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6099<small>doc 6099 / 406100</small></td><td class="n">RH Supply High Limit Derivative Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6100"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6100<small>doc 6100 / 406101</small></td><td class="n">RH Supply High Limit Demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%RH</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6103"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6103<small>doc 6103 / 406104</small></td><td class="n">Temp Supply High Limit Network Reading</td><td class="d"></td><td class="f">INT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6104"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6104<small>doc 6104 / 406105</small></td><td class="n">Temp Supply High Limit Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6105"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6105<small>doc 6105 / 406106</small></td><td class="n">Temp Supply High Limit Unoccupied Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6106"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6106<small>doc 6106 / 406107</small></td><td class="n">Temp Supply High Limit Vacant Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>°C / °F</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6107"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6107<small>doc 6107 / 406108</small></td><td class="n">Temp Supply High Limit Proportional Gain</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td></td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6108"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6108<small>doc 6108 / 406109</small></td><td class="n">Temp Supply High Limit Integral Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6109"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6109<small>doc 6109 / 406110</small></td><td class="n">Temp Supply High Limit Derivative Time</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>s</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6110"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6110<small>doc 6110 / 406111</small></td><td class="n">Temp Supply High Limit Demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6112"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6112<small>doc 6112 / 406113</small></td><td class="n">Control Network Demand</td><td class="d">Demand written by the BAS when Control Demand Source = Network.</td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6113"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6113<small>doc 6113 / 406114</small></td><td class="n">Control Network High Limit</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc RW">Read/write</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6114"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6114<small>doc 6114 / 406115</small></td><td class="n">User Demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.01</td><td>%</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-6119"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">6119<small>doc 6119 / 406120</small></td><td class="n">System Steam Capacity</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f">&times; 0.1</td><td>kg/h / lb/h</td><td><span class="acc R">Read</span></td><td class="s"></td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10000"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10000<small>doc 10000 / 410001</small></td><td class="n">Air Flow</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Closed; 1 = Open</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10001"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10001<small>doc 10001 / 410002</small></td><td class="n">Supply High Limit</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Closed; 1 = Open</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10002"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10002<small>doc 10002 / 410003</small></td><td class="n">Interlock</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Closed; 1 = Open</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10003"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10003<small>doc 10003 / 410004</small></td><td class="n">Binary External Demand</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = 0 %; 1 = 100 %</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10004"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10004<small>doc 10004 / 410005</small></td><td class="n">Water Leak Detection</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Ok; 1 = Leak</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10005"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10005<small>doc 10005 / 410006</small></td><td class="n">RS485 Interface</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10006"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10006<small>doc 10006 / 410007</small></td><td class="n">Ethernet Interface</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10007"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10007<small>doc 10007 / 410008</small></td><td class="n">Relay Fuse</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Normal; 1 = Blown Fuse</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-10008"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">10008<small>doc 10008 / 410009</small></td><td class="n">Control PCB Fuse</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Normal; 1 = Open Fuse</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11000"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11000<small>doc 11000 / 411001</small></td><td class="n">Alarm Warning Relay</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11001"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11001<small>doc 11001 / 411002</small></td><td class="n">Service Warning Relay</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11002"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11002<small>doc 11002 / 411003</small></td><td class="n">Water Supply Valve</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11003"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11003<small>doc 11003 / 411004</small></td><td class="n">Drain Valve</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11004"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11004<small>doc 11004 / 411005</small></td><td class="n">Circulation Pump</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-11007"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">11007<small>doc 11007 / 411008</small></td><td class="n">Buzzer</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12000"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12000<small>doc 12000 / 412001</small></td><td class="n">Network Control State</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Normal; 1 = Fault</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12001"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12001<small>doc 12001 / 412002</small></td><td class="n">Float Switch</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Inactive; 1 = Active</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12002"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12002<small>doc 12002 / 412003</small></td><td class="n">Water Treatment Service Due</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = No; 1 = Yes</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12003"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12003<small>doc 12003 / 412004</small></td><td class="n">Service Due</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Not Allowed; 1 = Allowed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12004"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12004<small>doc 12004 / 412005</small></td><td class="n">Run While Water Service Alarm</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Not Allowed; 1 = Allowed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12005"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12005<small>doc 12005 / 412006</small></td><td class="n">Startup Line Rinse</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12006"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12006<small>doc 12006 / 412007</small></td><td class="n">Run While Service Alarm</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Not Allowed; 1 = Allowed</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12007"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12007<small>doc 12007 / 412008</small></td><td class="n">HRL Lock Setpoint</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Unlock; 1 = Lock</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12008"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12008<small>doc 12008 / 412009</small></td><td class="n">Notify Alarm</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12009"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12009<small>doc 12009 / 412010</small></td><td class="n">Notify Warning</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-12010"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">12010<small>doc 12010 / 412011</small></td><td class="n">Notify App Msg</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15000"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15000<small>doc 15000 / 415001</small></td><td class="n">System Power State</td><td class="d">Cooler on/off state (printed read-only).</td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15001"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15001<small>doc 15001 / 415002</small></td><td class="n">System Log Verbose Level</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = Emergency; 2 = Alert; 3 = Critical; 4 = Error; 5 = Warning; 6 = Notice; 7 = Info; 8 = Debug</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15002"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15002<small>doc 15002 / 415003</small></td><td class="n">Modbus Server Units</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Metric; 1 = Imperial</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15005"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15005<small>doc 15005 / 415006</small></td><td class="n">Room RH Signal Type</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 0-10Vdc; 1 = 2-10Vdc; 2 = 4-20mA; 3 = 0-20mA</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15006"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15006<small>doc 15006 / 415007</small></td><td class="n">Room Temperature Signal Type</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 0-10Vdc; 1 = 2-10Vdc; 2 = 4-20mA; 3 = 0-20mA</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15007"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15007<small>doc 15007 / 415008</small></td><td class="n">Supply RH Signal Type</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 0-10Vdc; 1 = 2-10Vdc; 2 = 4-20mA; 3 = 0-20mA</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15008"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15008<small>doc 15008 / 415009</small></td><td class="n">Supply Temperature Signal Type</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = 0-10Vdc; 1 = 2-10Vdc; 2 = 4-20mA; 3 = 0-20mA</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15009"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15009<small>doc 15009 / 415010</small></td><td class="n">State</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = Idle; 2 = LineRinse; 3 = Filling; 4 = Draining; 5 = Running; 6 = Alarm; 7 = Drying</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15010"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15010<small>doc 15010 / 415011</small></td><td class="n">System Alarm</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Normal; 1 = DrainTimeout; 2 = FillTimeout; 3 = WaterLeak; 4 = FanDefect</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15011"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15011<small>doc 15011 / 415012</small></td><td class="n">Recirculation Request</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = ResetAlarms; 2 = Drain; 3 = ResetServCnt; 4 = ResetWtrServCnt; 5 = Filling</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15012"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15012<small>doc 15012 / 415013</small></td><td class="n">DirectFeed Request</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = ResetAlarms; 3 = ResetServCnt; 4 = ResetWtrServCnt</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15013"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15013<small>doc 15013 / 415014</small></td><td class="n">Fan Request</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = Default; 2 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15014"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15014<small>doc 15014 / 415015</small></td><td class="n">Pump Request</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = Default; 2 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15015"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15015<small>doc 15015 / 415016</small></td><td class="n">Water Supply Request</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Off; 1 = Default; 2 = On</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15016"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15016<small>doc 15016 / 415017</small></td><td class="n">Control Profile</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = ExternAnalog; 1 = ExternNetwork; 2 = InternHumAnalog; 3 = InternHumNetwork; 4 = InternCoolAnalog; 5 = InternCoolNetwork; 6 = HRLHum; 7 = HRLCool; 8 = Custom</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15017"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15017<small>doc 15017 / 415018</small></td><td class="n">Modulating High Limit Profile</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = Disabled; 1 = ExternAnalog; 2 = ExternNetwork; 3 = InternHumAnalog; 4 = InternHumNetwork; 5 = InternCoolAnalog; 6 = InternCoolNetwork; 7 = Custom</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15018"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15018<small>doc 15018 / 415019</small></td><td class="n">Occupancy State</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Occupied; 1 = Unoccupied; 2 = Vacant; 3 = Off</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15019"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15019<small>doc 15019 / 415020</small></td><td class="n">Room RH Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = RoomRH; 2 = Network; 3 = HRL</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15020"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15020<small>doc 15020 / 415021</small></td><td class="n">Room RH Setpoint Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = Internal; 2 = ControlInput</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15021"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15021<small>doc 15021 / 415022</small></td><td class="n">Room Temperature Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = RoomTemp; 2 = Network; 3 = HRL</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15022"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15022<small>doc 15022 / 415023</small></td><td class="n">Room Temperature Setpoint Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = Internal; 2 = ControlInput</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15023"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15023<small>doc 15023 / 415024</small></td><td class="n">RH Supply High Limit Reading Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = SuppyHLRH; 2 = Network</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15024"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15024<small>doc 15024 / 415025</small></td><td class="n">RH Supply High Limit Setpoint Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = Internal; 2 = ControlInput</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15025"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15025<small>doc 15025 / 415026</small></td><td class="n">Temp Supply High Limit Reading Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = SuppyHLTemp; 2 = Network</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15026"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15026<small>doc 15026 / 415027</small></td><td class="n">Temp Supply High Limit Setpoint Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = Internal; 2 = ControlInput</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15027"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15027<small>doc 15027 / 415028</small></td><td class="n">Control Demand Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = ControlInput; 2 = RoomDemand; 3 = Network</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15028"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15028<small>doc 15028 / 415029</small></td><td class="n">Control High Limit Source</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc RW">Read/write</span></td><td class="s">0 = None; 1 = ControlInput; 2 = RHSupplyHLDemand; 3 = Network; 4 = TempSupplyHLDemand</td></tr>
+<tr data-row data-type="holding_register" id="r-hr-15029"><td class="t"><abbr title="Holding register, FC03 read / FC06, FC16 write">HR</abbr></td><td class="i">15029<small>doc 15029 / 415030</small></td><td class="n">Control Cutout State</td><td class="d"></td><td class="f">UINT16</td><td class="f"></td><td class="f"></td><td></td><td><span class="acc R">Read</span></td><td class="s">0 = Off; 1 = Normal; 2 = LowLimit; 3 = HighLimit; 4 = NoAirFlow; 5 = Interlock</td></tr>
+</tbody></table></div>
+<h2>Notes on this map</h2><ul class="notes"><li>Only function codes 03, 06 and 16 are supported, so binary points (inputs, relays, flags) are 16-bit holding registers holding 0 or 1.</li><li>&#x27;Scale N&#x27; with &#x27;Value x N&#x27; means the raw value is the engineering value times N; this map stores the multiplier 1/N.</li><li>Temperature and capacity units follow Modbus Server Units (415001): 0 metric, 1 imperial.</li><li>The guide text calls automatic baud detection the default, while register 1 lists 19200 as its default value; the baud default is left blank here.</li><li>Default unit address is not stated; it is set from the device menu or register 0.</li><li>Left out: product name ASCII registers 3-6; 2001 (a second &#x27;Control Signal&#x27; row) and 15003/15004 (two rows both named &#x27;Control Signal Type&#x27;), where it is unclear which is which; ECM Fan Signal 4001, RH and temperature Supply High Limit Proportional Band 6101/6111 (scale and example disagree); the temperature-control block 6004-6007 (names repeat Control Input/Min/Max/Bias and the example is in %); Room RH Bias 6011 and Room Temperature Network Reading 6082 (typed unsigned with negative ranges); Alarm LED / Power LED 11005/11006 (holding numbers 411004/411005 clash with the protocol column).</li><li>Several values are printed as two- or four-register entries marked (0)...(3) - Demand, run/on/service time counters, Room Temperature Setpoint, Room RH and Room Temperature Demand Proportional Band/Gain, Water Supply Duty Cycle/Period, Water Treatment Service Interval, Keep Alive, Demand Low Dead Band and Network Timeout. No word order is given, so they are left out.</li><li>System Power State (15000) is printed read-only in this guide.</li></ul>
+<div class="callout"><p><strong>Check it against the live device.</strong> A register map tells you what the
+controller <em>can</em> expose; the unit in front of you may differ by firmware or options. Read a few registers
+and compare them with the unit&rsquo;s own display; for a 32-bit value the
+<a href="/modbus-float-decoder">float and byte-order decoder</a> shows all four word orders at once, so a wrong
+word order or scale is obvious. New to this? Read
+<a href="/guides/what-is-a-modbus-register-map">what a register map is</a> and
+<a href="/guides/modbus-address-off-by-one">why addresses are off by one</a>.</p></div>
+<h2>Questions about the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module)</h2><div class="faq"><details open><summary>What Modbus registers does the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) have?</summary><p>This map lists 143 registers: 143 holding registers. 95 of them can be written. Registers vary with firmware, options and configuration, so confirm against the device.</p></details><details><summary>Are the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus addresses 0-based or 1-based?</summary><p>The manufacturer&#x27;s document numbers registers 0-based (the number printed is the address on the wire). Every address on this page is the 0-based wire address you put in the request; the documented number is shown under it where it differs. The guide prints a protocol-base (0-based) address and a six-digit holding register (base 400001) side by side, e.g. 6005 / 406006. The protocol-base number is the wire address.</p></details><details><summary>What are the minimum Modbus registers to integrate the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module)?</summary><p>Start with HR 6008 Room RH (Room RH); HR 6012 Room Temperature (Room temperature); HR 6028 Power Output (Power output); HR 6073 Room RH Setpoint (Room RH set point); HR 15009 State (Unit state); HR 15010 System Alarm (System alarm); HR 15016 Control Profile (Control profile); HR 6112 Control Network Demand (Network demand).</p></details><details><summary>How do I enable Modbus control of the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module)?</summary><p>Fit the Modbus communication module, set the address in the device menu (or register 0) and choose the control profile (15016) and sources (15019-15028) if the BAS supplies readings or demand.</p></details><details><summary>What happens when the Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) loses Modbus communication?</summary><p>A Network Timeout exists but it is printed as a two-register value without word order (6117-6118), so it is not listed; Network Control State (12000) flags a network fault.</p></details><details><summary>Where is the official Neptronic SKVF evaporative cooler / humidifier (Modbus communication module) Modbus documentation?</summary><p>The source is SKVF Evaporative Cooler - Modbus Communication Module User Guide (SKVF-Modbus Guide-211025), revision 2021-10-25, published free by Neptronic at https://www.neptronic.com/humidifiers/pdf/SKVF/20211208/SKVF-Modbus%20Guide-211025.pdf.</p></details></div>
+<h2>More Neptronic Modbus register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/neptronic/arob-universal-room-controller" data-row><span class="k">Thermostat / room controller (temperature, humidity, CO2, VOC)</span><h3>Neptronic AROB series universal room controller (Modbus communication module)</h3><p>Neptronic AROB24T / AROB24TH / AROB24TGH / AROB24TGVH universal room controllers with the Modbus module, ARO Modbus Guide_170824.</p><div class="meta">151 registers &middot; 120 writable &middot; RTU</div><span class="sr-only"> Also known as: AROB, AROB24T, AROB24TH, AROB24TGH, AROB24TGVH, ARO</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/cmu-compact-make-up-air-unit" data-row><span class="k">Air handler (compact make-up air unit)</span><h3>Neptronic CMU compact make-up air unit (Modbus communication module)</h3><p>Neptronic CMU compact make-up air units with the Modbus communication module, guide CMU-Modbus Guide-211125.</p><div class="meta">98 registers &middot; 60 writable &middot; RTU</div><span class="sr-only"> Also known as: Compact Make-up Air Unit, Neptronic CMU, CMU Series</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/efcb-fan-coil-controller" data-row><span class="k">Thermostat / fan coil controller</span><h3>Neptronic EFCB Series networkable fan coil controller (Modbus RTU)</h3><p>Neptronic EFCB Series fan coil controllers (24, 120 and 240 Vac; 2 or 4 relays) with the Modbus communication module, guide EFCB-Modbus Guide-260626.</p><div class="meta">171 registers &middot; 135 writable &middot; RTU</div><span class="sr-only"> Also known as: EFCB10TU2, EFCB10TU4, EFCB11TU2, EFCB11TU4, EFCB12TU2, EFCB12TU4, EFCB fan coil controller</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/efcb-oe1-fan-coil-controller" data-row><span class="k">Thermostat / fan coil controller</span><h3>Neptronic EFCB-OE1 Series networkable fan coil controller (Modbus RTU)</h3><p>Neptronic EFCB-OE1 Series fan coil controllers (24 or 240 Vac; 0, 2 or 4 relays), guide EFCB1x-OE1-Modbus Guide (V2.16)-260626.</p><div class="meta">172 registers &middot; 136 writable &middot; RTU</div><span class="sr-only"> Also known as: EFCB10T-OE1, EFCB12T-OE1, EFCB10TU2-OE1, EFCB10TU4-OE1, EFCB12TU2-OE1, EFCB12TU4-OE1, EFCB1x-OE1</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/evcbm-dual-duct-vav-controller" data-row><span class="k">Air handler terminal (dual-duct VAV controller)</span><h3>Neptronic EVCBM dual-duct VAV controller (Modbus communication module)</h3><p>Neptronic EVCBM dual-duct VAV controllers (master + slave airflow) with the Modbus module, guide EVCBM Dual Duct-V500-Modbus Guide-180927-ESA.</p><div class="meta">106 registers &middot; 78 writable &middot; RTU</div><span class="sr-only"> Also known as: EVCBM Dual Duct, EVCB, Neptronic EVCBM Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/ske4" data-row><span class="k">Air handler humidifier (electric steam)</span><h3>Neptronic SKE4 electric steam humidifier (Modbus communication module)</h3><p>Neptronic SKE4 series electric steam humidifiers with the Modbus communication module, guide SKE4-Modbus Guide-240531 (V2.07).</p><div class="meta">151 registers &middot; 69 writable &middot; RTU</div><span class="sr-only"> Also known as: SKE4-E, SKE4-N, SKE4 Steam Humidifier, Neptronic SKE4 Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/skg4" data-row><span class="k">Air handler humidifier (gas-fired steam)</span><h3>Neptronic SKG4 gas-fired steam humidifier (Modbus communication module)</h3><p>Neptronic SKG4 series gas-fired steam humidifiers (one to four burner modules) with the Modbus communication module, guide SKG4-Modbus Guide-221114 (V2.04).</p><div class="meta">245 registers &middot; 87 writable &middot; RTU</div><span class="sr-only"> Also known as: SKG4-E, SKG4-N, SKG4 Gas Fired Humidifier, Neptronic SKG4 Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/skh4" data-row><span class="k">Air handler humidifier (high-pressure atomizer)</span><h3>Neptronic SKH4 high-pressure atomizer humidifier (Modbus communication module)</h3><p>Neptronic SKH4 high-pressure atomizers with the Modbus communication module, guide SKH4-Modbus Guide-240126 (V.1.00).</p><div class="meta">250 registers &middot; 177 writable &middot; RTU</div><span class="sr-only"> Also known as: SKH4, SKH4 High-Pressure Atomizer, Neptronic SKH4 Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/skro-reverse-osmosis-unit" data-row><span class="k">Pump / water treatment unit (reverse osmosis for humidifiers)</span><h3>Neptronic SKRO reverse osmosis water treatment unit (Modbus communication module)</h3><p>Neptronic SKRO reverse osmosis water treatment units with the Modbus communication module, guide SKRO-Modbus Guide-250913 (V1.0).</p><div class="meta">50 registers &middot; 20 writable &middot; RTU</div><span class="sr-only"> Also known as: SKRO, SKRO Water Treatment Unit, Neptronic SKRO Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/sks4" data-row><span class="k">Air handler humidifier (steam-to-steam)</span><h3>Neptronic SKS4 steam-to-steam humidifier (Modbus communication module)</h3><p>Neptronic SKS4 series steam-to-steam humidifiers with the Modbus communication module, guide SKS4-Modbus Guide-220509 (V2.03).</p><div class="meta">147 registers &middot; 69 writable &middot; RTU</div><span class="sr-only"> Also known as: SKS4-E, SKS4-N, SKS4 Steam to Steam Humidifier, Neptronic SKS4 Modbus</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/tsub-wall-mount-controller" data-row><span class="k">Thermostat / fan coil and unitary controller</span><h3>Neptronic TSUB Series universal wall-mount controller (Modbus RTU)</h3><p>Neptronic TSUB Series universal wall-mount controllers with Modbus, guide TSUB-Modbus Guide-250829 (V1.13).</p><div class="meta">157 registers &middot; 126 writable &middot; RTU</div><span class="sr-only"> Also known as: TSUB Series, TSUB universal wall-mount controller</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/tucb-tuhb-wall-mount-controller" data-row><span class="k">Thermostat / heat pump and unitary controller</span><h3>Neptronic TUCB / TUHB Series universal wall-mount controller (Modbus RTU)</h3><p>Neptronic TUCB24C6X2 (temperature) and TUHB24C6X2 (temperature and humidity) universal wall-mount controllers with 6 binary and 2 analog outputs, guide TUXB-Modbus Guide-190515.</p><div class="meta">133 registers &middot; 109 writable &middot; RTU</div><span class="sr-only"> Also known as: TUCB24C6X2, TUHB24C6X2, TUCB, TUHB, TUXB</span></a></li><li><a class="card" href="/modbus-register-maps/neptronic/tuub-wall-mount-controller" data-row><span class="k">Thermostat / heat pump and unitary controller</span><h3>Neptronic TUUB Series universal wall-mount controller (Modbus RTU)</h3><p>Neptronic TUUB Series universal wall-mount controllers with Modbus, guide TUUB-Modbus Guide-250829 (V1.13).</p><div class="meta">189 registers &middot; 151 writable &middot; RTU</div><span class="sr-only"> Also known as: TUUB Series, TUUB universal wall-mount controller</span></a></li></ul><h2>Other hvac equipment register maps</h2><ul class="grid"><li><a class="card" href="/modbus-register-maps/swegon/conductor-w1" data-row><span class="k">Thermostat / room controller (chilled beam, fan coil water circuits)</span><h3>Swegon CONDUCTOR W1 room controller (waterborne cooling/heating, Modbus RTU)</h3><p>Swegon CONDUCTOR W1 room controller, software 1.38 and later (technical manual updated 2015-06-15).</p><div class="meta">98 registers &middot; 24 writable &middot; RTU</div><span class="sr-only"> Also known as: CONDUCTOR RE W1, Conductor W1, 942334001</span></a></li><li><a class="card" href="/modbus-register-maps/vasco/sab-rvu" data-row><span class="k">Air handler (residential heat recovery ventilation)</span><h3>Vasco SAB RVU ventilation unit controller (D150 Compact, Energy Plus)</h3><p>Vasco SAB RVU controller boards (models 0x52xx residential and 0x53xx Energy Plus) with protocol release 0x0006, manual 90.01.06.53.</p><div class="meta">96 registers &middot; 66 writable &middot; RTU</div><span class="sr-only"> Also known as: D150 Compact, Energy Plus ENY-P1, ENY-P2, ENY-P3, ENY-P4, ESP170V, ESP270, ESP360, ESP460</span></a></li><li><a class="card" href="/modbus-register-maps/apc/inrow-acrd60x-acrc60x" data-row><span class="k">Air handler (in-row data-centre cooling unit)</span><h3>APC (Schneider Electric) InRow ACRD60x / ACRC60x cooling units (Modbus register map 990-5786)</h3><p>APC / Schneider Electric InRow ACRD60x and ACRC60x in-row cooling units, register map part number 990-5786A.</p><div class="meta">216 registers &middot; 53 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: ACRD60x, ACRC60x, InRow ACRD60x, InRow ACRC60x, 990-5786</span></a></li><li><a class="card" href="/modbus-register-maps/condair/vita" data-row><span class="k">Air handler humidifier (high-pressure room system)</span><h3>Condair Vita high-pressure humidification system (Integrated Controller, Modbus RTU/TCP)</h3><p>Condair Vita system with the Integrated Controller, per addendum 2603326-G.</p><div class="meta">159 registers &middot; 50 writable &middot; RTU/TCP</div><span class="sr-only"> Also known as: Condair Vita, Vita System Master</span></a></li><li><a class="card" href="/modbus-register-maps/eubank/eah-egh-wall-mount-ac-control-board" data-row><span class="k">Rooftop unit / packaged wall-mount air conditioner</span><h3>Eubank EAH / EGH wall-mount air conditioner control board (Modbus RTU)</h3><p>Eubank EAH1020A-1060A, EGH1072A, EAH2024A-2060A and EGH2072A wall-mount air conditioners with the electronic control board (I&amp;O manual rev. 7).</p><div class="meta">71 registers &middot; 34 writable &middot; RTU</div><span class="sr-only"> Also known as: EAH1020A, EAH1024A, EAH1030A, EAH1036A, EAH1042A, EAH1048A, EAH1060A, EGH1072A, EAH2024A, EAH2030A, EAH2036A, EAH2042A, EAH2048A, EAH2060A, EGH2072A, Eubank EAH, Eubank EGH</span></a></li><li><a class="card" href="/modbus-register-maps/johnson-controls/tc3224" data-row><span class="k">Thermostat</span><h3>Johnson Controls PENN TC3224N9V refrigeration temperature controller (Modbus RTU)</h3><p>PENN TC3224N9V electronic refrigeration controller with built-in Modbus RTU, per the TC3 Modbus Protocol Reference Guide LIT-12013523 (2020-04-28).</p><div class="meta">124 registers &middot; 115 writable &middot; RTU</div><span class="sr-only"> Also known as: TC3224N9V, TC3, PENN TC3, LIT-12013523, TC3224N9R, TC3224</span></a></li></ul><p><a href="https://easymodbus.com/modbus-register-maps/equipment/hvac/">All hvac equipment Modbus register maps &rarr;</a></p>
+<p class="updated">Source: <a href="https://www.neptronic.com/humidifiers/pdf/SKVF/20211208/SKVF-Modbus%20Guide-211025.pdf" rel="nofollow noopener" target="_blank">SKVF Evaporative Cooler - Modbus Communication Module User Guide &middot; SKVF-Modbus Guide-211025 &middot; rev. 2021-10-25</a>.
+Register numbers, types, scaling and units are reproduced as published; descriptions are our own.</p>
+
+</main>
+<footer><div class="wrap">
+  <p>Register maps are re-typed from each manufacturer&rsquo;s free public documentation, checked against it a
+  second time, and linked to the original. Registers vary by firmware, options and configuration &mdash; always
+  confirm against the live device before you write to it. Brand names identify the equipment only; easymodbus.com is
+  not affiliated with any manufacturer listed. Spotted an error, or want a map removed? Email
+  <a href="mailto:webmaster@easymodbus.com">webmaster@easymodbus.com</a>.</p>
+  <p><a href="/">Home</a> &middot; <a href="/modbus-register-maps/">Register maps</a> &middot;
+  <a href="/#guides">Guides</a> &middot; <a href="/terms">Terms of use</a> &middot; <a href="/privacy">Privacy policy</a></p>
+</div></footer>
+<script>
+(function(){
+  var pick=document.getElementById('mfr-pick');
+  if(pick){pick.addEventListener('change',function(){if(pick.value)location.href=pick.value;});}
+  document.querySelectorAll('[data-filter]').forEach(function(box){
+    var scope=document.getElementById(box.getAttribute('data-filter'));if(!scope)return;
+    var rows=[].slice.call(scope.querySelectorAll('[data-row]'));
+    var chips=[].slice.call(document.querySelectorAll('[data-chip-for="'+scope.id+'"]'));
+    var out=document.querySelector('[data-count-for="'+scope.id+'"]');
+    var type='';
+    function run(){
+      var q=box.value.trim().toLowerCase(),n=0;
+      rows.forEach(function(r){
+        var ok=(!q||r.textContent.toLowerCase().indexOf(q)>=0)&&(!type||r.getAttribute('data-type')===type);
+        r.classList.toggle('hidden',!ok);if(ok)n++;
+      });
+      if(out)out.textContent=n+' of '+rows.length+' shown';
+    }
+    chips.forEach(function(c){c.addEventListener('click',function(){
+      var t=c.getAttribute('data-type');type=(type===t)?'':t;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-type')===type?'true':'false');});run();});});
+    box.addEventListener('input',run);
+  });
+})();
+</script>
+</body>
+</html>

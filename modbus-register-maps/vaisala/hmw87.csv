@@ -1,0 +1,29 @@
+﻿# Vaisala HMW87 / HMW87D wall humidity and temperature transmitters (Modbus RTU) Modbus register map - easymodbus.com - source: https://docs.vaisala.com/r/M211510EN-J/en-US
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Relative humidity,,FLOAT32,2,CDAB,1,0,%RH,Read,
+Holding register,"FC03 read / FC06, FC16 write",2,3,40003,Temperature,,FLOAT32,2,CDAB,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,9,40009,Dew/frost point temperature,,FLOAT32,2,CDAB,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",18,19,40019,Wet-bulb temperature,,FLOAT32,2,CDAB,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",26,27,40027,Enthalpy,,FLOAT32,2,CDAB,1,0,kJ/kg,Read,
+Holding register,"FC03 read / FC06, FC16 write",256,257,40257,Relative humidity (integer),,INT16,1,,0.1,0,%RH,Read,
+Holding register,"FC03 read / FC06, FC16 write",257,258,40258,Temperature (integer),,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",260,261,40261,Dew/frost point (integer),,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",265,266,40266,Wet-bulb temperature (integer),,INT16,1,,0.1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",269,270,40270,Enthalpy (integer),,INT16,1,,0.1,0,kJ/kg,Read,
+Holding register,"FC03 read / FC06, FC16 write",512,513,40513,Error status,,UINT16,1,,1,0,,Read,0 = One or more errors active; 1 = No errors
+Holding register,"FC03 read / FC06, FC16 write",515,516,40516,Status code,Sum of active error codes.,INT32,2,CDAB,1,0,,Read,bit 0 = Temperature measurement error; bit 1 = Humidity measurement error; bit 2 = Humidity sensor failure; bit 3 = Capacitance reference error; bit 4 = Ambient temperature out of range; bit 5 = Firmware checksum mismatch; bit 6 = Device settings corrupted; bit 7 = Additional configuration settings corrupted; bit 8 = Sensor coefficients corrupted; bit 9 = Main configuration settings corrupted; bit 11 = Supply voltage out of range; bit 13 = Non-volatile memory read/write failure
+Holding register,"FC03 read / FC06, FC16 write",517,518,40518,Security hash,Changes when settings change.,INT32,2,CDAB,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",519,520,40520,RH measurement status,0 = OK.,BITMAP16,1,,1,0,,Read,bit 0 = Not available; bit 6 = Calibration expired; bit 7 = Sensor failure
+Holding register,"FC03 read / FC06, FC16 write",520,521,40521,T measurement status,0 = OK.,BITMAP16,1,,1,0,,Read,bit 6 = Calibration expired; bit 7 = Sensor failure
+Holding register,"FC03 read / FC06, FC16 write",784,785,40785,Filtering factor,"0.001 = maximum filtering, 1.000 = none.",FLOAT32,2,CDAB,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1536,1537,41537,Modbus address,"1-247, default 240; 0 = offline.",INT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1537,1538,41538,Bit rate,Takes effect after restart.,UINT16,1,,1,0,,Read/write,5 = 9600; 6 = 19200; 7 = 38400; 8 = 57600
+Holding register,"FC03 read / FC06, FC16 write",1538,1539,41539,"Parity, data, stop bits",Takes effect after restart.,UINT16,1,,1,0,,Read/write,0 = N81; 1 = N82; 2 = E81; 3 = E82; 4 = O81; 5 = O82
+Holding register,"FC03 read / FC06, FC16 write",1539,1540,41540,Response delay,0-1020 ms.,INT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1541,1542,41542,Restart device,Write 1 to restart.,INT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",3072,3073,43073,Display parameter 1,"HMW87D only; address of the shown value (0x0000, 0x0002, 0x0008, 0x0012, 0x001A).",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3073,3074,43074,Display parameter 2,"HMW87D only; as 3073, 0xFFFF disables.",UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",7680,7681,47681,Restore settings,Write 1 to restore factory settings.,INT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",7936,7937,47937,Signed integer test,Always reads -12345.,INT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",7937,7938,47938,Floating point test,Always reads -123.45.,FLOAT32,2,CDAB,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",7939,7940,47940,Text string test,"Reads the text ""-123.45"".",STRING[8],4,,1,0,,Read,

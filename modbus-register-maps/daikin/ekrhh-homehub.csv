@@ -1,0 +1,63 @@
+﻿# Daikin EKRHH Daikin HomeHub (Modbus TCP/RTU for Daikin Altherma and air-to-air heat pumps) Modbus register map - easymodbus.com - source: https://www.daikin.eu/content/dam/document-library/Installer-reference-guide/heat/accessories/ekrhh/EKRHH_Installer%20reference%20guide_4PEN744838-1E_English.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,20,21,30021,Unit abnormality,,INT16,1,,1,0,,Read,0 = No error; 1 = Fault; 2 = Warning
+Input register,FC04 read,21,22,30022,Unit abnormality code,"Two ASCII characters, high byte first (e.g. 0x5538 = 'U8').",STRING[2],1,,1,0,,Read,
+Input register,FC04 read,22,23,30023,Unit abnormality sub code,0-99 on a unit error; 32766 if no error.,INT16,1,,1,0,,Read,
+Input register,FC04 read,29,30,30030,Circulation pump running,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,30,31,30031,Compressor run,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,31,32,30032,Booster heater run,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,32,33,30033,Disinfection operation,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,34,35,30035,Defrost,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,35,36,30036,Hot Start,,INT16,1,,1,0,,Read,0 = Off; 1 = On
+Input register,FC04 read,36,37,30037,3-way valve,,INT16,1,,1,0,,Read,0 = Space heating; 1 = DHW
+Input register,FC04 read,37,38,30038,Operation mode,,INT16,1,,1,0,,Read,1 = Heating; 2 = Cooling
+Input register,FC04 read,39,40,30040,Leaving water temperature PHE,After the plate heat exchanger.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,40,41,30041,Leaving water temperature BUH,After the backup heater.,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,41,42,30042,Return water temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,42,43,30043,Domestic Hot Water temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,43,44,30044,Outside air temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,44,45,30045,Liquid refrigerant temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,48,49,30049,Flow rate,Litres per minute x 100.,INT16,1,,0.01,0,L/min,Read,
+Input register,FC04 read,49,50,30050,Remote controller room temperature Main,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,50,51,30051,Heat pump power consumption,Pow16: kW x 100.,INT16,1,,0.01,0,kW,Read,
+Input register,FC04 read,51,52,30052,DHW normal operation,,INT16,1,,1,0,,Read,0 = Idle/buffering; 1 = Operating
+Input register,FC04 read,52,53,30053,Space heating/cooling normal operation,,INT16,1,,1,0,,Read,0 = Idle/buffering; 1 = Operating
+Input register,FC04 read,53,54,30054,Leaving water Main Heating setpoint Lower limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,54,55,30055,Leaving water Main Heating setpoint Upper limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,55,56,30056,Leaving water Main Cooling setpoint Lower limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,56,57,30057,Leaving water Main Cooling setpoint Upper limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,57,58,30058,Leaving water Add Heating setpoint Lower limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,58,59,30059,Leaving water Add Heating setpoint Upper limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,59,60,30060,Leaving water Add Cooling setpoint Lower limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,60,61,30061,Leaving water Add Cooling setpoint Upper limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,75,76,30076,Domestic Hot Water Upper temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,76,77,30077,Domestic Hot Water Lower temperature,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,83,84,30084,Room Heating setpoint Lower limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,84,85,30085,Room Heating setpoint Upper limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,85,86,30086,Room Cooling setpoint Lower limit,,INT16,1,,0.01,0,°C,Read,
+Input register,FC04 read,86,87,30087,Room Cooling setpoint Upper limit,,INT16,1,,0.01,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Leaving water Main Heating setpoint,Range set by field settings.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Leaving water Main Cooling setpoint,Range set by field settings.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2,3,40003,Operation mode,Reads 32766 on heating-only units.,INT16,1,,1,0,,Read/write,0 = Auto; 1 = Heating; 2 = Cooling
+Holding register,"FC03 read / FC06, FC16 write",3,4,40004,Space heating/cooling ON/OFF,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",5,6,40006,Room thermostat control Heating setpoint Main,12-30 °C.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",6,7,40007,Room thermostat control Cooling setpoint Main,15-35 °C.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",8,9,40009,Quiet mode operation,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",9,10,40010,DHW reheat setpoint,"30-60 °C; applied only with tank on, reheat-only mode and fixed setpoint.",INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",11,12,40012,DHW reheat ON/OFF,,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",12,13,40013,DHW booster mode ON/OFF (Powerful),,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",52,53,40053,Weather dependent mode Main,,INT16,1,,1,0,,Read/write,0 = Fixed; 1 = Weather dependent; 2 = Fixed + scheduled; 3 = Weather dependent + scheduled
+Holding register,"FC03 read / FC06, FC16 write",53,54,40054,Weather dependent mode Main LWT Heating setpoint offset,-10 to 10 °C.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",54,55,40055,Weather dependent mode Main LWT Cooling setpoint offset,-10 to 10 °C.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",55,56,40056,Smart Grid operation mode,,INT16,1,,1,0,,Read/write,0 = Free running; 1 = Forced off; 2 = Recommended on; 3 = Forced on
+Holding register,"FC03 read / FC06, FC16 write",56,57,40057,Power limit during Recommended on / buffering,"Pow16: kW x 100, 0-20 kW.",INT16,1,,0.01,0,kW,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",57,58,40058,General power limit,"Pow16: kW x 100, 0-20 kW.",INT16,1,,0.01,0,kW,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",58,59,40059,Thermostat Main Input A,Valid only with [C-05]=0 when [C-07]=1; not on Micon ID 20002203 units.,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",60,61,40061,Thermostat Add Input A,Valid only with [C-05]=0 when [C-07]=1; not on Micon ID 20002203 units.,INT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",62,63,40063,Leaving water Add Heating setpoint,Range set by field settings.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",63,64,40064,Leaving water Add Cooling setpoint,Range set by field settings.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",64,65,40065,Weather dependent mode Add,,INT16,1,,1,0,,Read/write,0 = Fixed; 1 = Weather dependent; 2 = Fixed + scheduled; 3 = Weather dependent + scheduled
+Holding register,"FC03 read / FC06, FC16 write",65,66,40066,Weather dependent mode Add LWT Heating setpoint offset,-10 to 10 °C.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",66,67,40067,Weather dependent mode Add LWT Cooling setpoint offset,-10 to 10 °C.,INT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1000,1001,41001,Smart Grid operation mode (air-to-air use case),"Use case 4 only; type not printed, same codes as offset 56.",INT16,1,,1,0,,Read/write,0 = Free running; 1 = Forced off; 2 = Recommended on; 3 = Forced on
+Holding register,"FC03 read / FC06, FC16 write",1001,1002,41002,Power limit for Demand Control (air-to-air use case),"Use case 4 only. Pow16: kW x 100, 0-20 kW.",INT16,1,,0.01,0,kW,Read/write,

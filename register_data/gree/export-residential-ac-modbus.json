@@ -1,0 +1,2159 @@
+{
+  "manufacturer": "Gree",
+  "manufacturer_slug": "gree",
+  "model": "Export residential split air conditioners (built-in Modbus on indoor unit / wired controller)",
+  "model_slug": "export-residential-ac-modbus",
+  "short_model": "Gree residential AC Modbus",
+  "aliases": [
+    "Gree residential split Modbus",
+    "Gree wall split Modbus",
+    "Gree wired controller Modbus"
+  ],
+  "equipment_type": "Split AC unit (VRF / split AC gateway built in)",
+  "applies_to": "Gree export residential air conditioners whose indoor-unit controller or wired controller has the integrated Modbus RTU interface; protocol PDF dated 2023-05.",
+  "summary": "On these Gree residential units the Modbus RTU slave lives in the indoor-unit controller or wired controller, so no extra module is needed. Holding registers carry on/off, mode, fan speed, setpoint, louvres, sleep and energy-saving limits plus indoor, return-air and outdoor temperatures; coils carry feature flags, locks and a long list of indoor, outdoor and inverter-drive fault bits. Up to 255 units can share one BMS line.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": 9600,
+    "parity": "None",
+    "data_bits": 8,
+    "stop_bits": 1,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "0-based",
+    "note": "Registers are words numbered from 0 and coils are bits numbered from 0 (Bit0 = Byte0.0). Word n is wire address n and Bit n is coil n. The example frames agree: reading ten bits from coil 5 sends start address 00 05, and reading two words from address 1 sends 00 01."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Modbus Protocol for export residential air conditioners",
+    "doc_number": null,
+    "revision_date": "2023-05",
+    "url": "https://kesko-onninen-pim-resources-production.s3-eu-west-1.amazonaws.com/pimdocuments/26148852.pdf",
+    "pages": "p. 7 serial settings, pp. 8-12 coil/word layout and example frames, pp. 13-14 precautions, pp. 14-19 words, pp. 20-27 bits",
+    "unofficial": true
+  },
+  "notes": [
+    "Gree does not host this protocol publicly; the link is the unaltered Gree PDF in the product-document store of the Finnish wholesaler Onninen (Kesko). No document number is printed; the date is the PDF creation date.",
+    "Registers are read with function 03 and written with 16; coils are read with 01 and written with 15. Points marked R in the table are read-only.",
+    "Only named points are listed; reserved words and bits are left out. Bits 237-239 have no name in the table and are left out.",
+    "Mode and swing values are printed in binary in the source (for example 001 = cooling, 1011 = swing positions 1-3); they are given here as decimal.",
+    "Left/right swing value 1100 (12) is printed only as '15 position'; the manual does not explain it, so the label is kept as printed.",
+    "The outdoor-ambient range is printed as -100 to 155 in whole degrees and is listed as a signed 16-bit value as the table states.",
+    "Several fault and status bits apply only to units that have that function (fresh-air valve, gate control, card switch, DRED)."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "Word2",
+      "name": "Unit On/Off",
+      "description": "Write 0xAA (170) to switch on, 0x55 (85) to switch off.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "170": "On",
+        "85": "Off"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "Word4",
+      "name": "Ambient temperature",
+      "description": "Indoor ambient temperature in tenths of a degree.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 5,
+      "documented": "Word5",
+      "name": "IDU address",
+      "description": "Modbus address of this indoor unit, 1-255.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 17,
+      "documented": "Word17",
+      "name": "Set mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "1": "Cooling",
+        "2": "Heating",
+        "3": "Drying",
+        "4": "Fan only",
+        "5": "Auto"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 19,
+      "documented": "Word19",
+      "name": "Set fan speed",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Auto",
+        "1": "Speed 1",
+        "2": "Speed 2",
+        "3": "Speed 3",
+        "4": "Speed 4",
+        "5": "Speed 5",
+        "6": "Turbo"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 20,
+      "documented": "Word20",
+      "name": "Set temperature",
+      "description": "Range 16-30.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 22,
+      "documented": "Word22",
+      "name": "Up and down swing",
+      "description": "Vertical louvre: off, fixed position or swing between two positions.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "Swing positions 1-5",
+        "2": "Position 1",
+        "3": "Position 2",
+        "4": "Position 3",
+        "5": "Position 4",
+        "6": "Position 5",
+        "7": "Swing positions 3-5",
+        "8": "Swing positions 2-5",
+        "9": "Swing positions 2-4",
+        "10": "Swing positions 1-4",
+        "11": "Swing positions 1-3"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 23,
+      "documented": "Word23",
+      "name": "Left and right swing",
+      "description": "Horizontal louvre; off is the default after power-up.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "Swing in same direction",
+        "2": "Position 1",
+        "3": "Position 2",
+        "4": "Position 3",
+        "5": "Position 4",
+        "6": "Position 5",
+        "12": "Printed as \"15 position\" (meaning not explained)",
+        "13": "Swing in opposite direction"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 24,
+      "documented": "Word24",
+      "name": "Fresh air valve",
+      "description": "Fresh-air valve mode 0-10.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 25,
+      "documented": "Word25",
+      "name": "Sleep mode",
+      "description": "Ignored in fan and auto modes.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "No sleep",
+        "1": "Sleep mode 1",
+        "2": "Sleep mode 2",
+        "3": "Sleep mode 3"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 35,
+      "documented": "Word35",
+      "name": "Cooling energy-saving lower limit",
+      "description": "Lowest setpoint allowed in cooling while energy saving is active, 16-30.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 36,
+      "documented": "Word36",
+      "name": "Heating energy-saving upper limit",
+      "description": "Highest setpoint allowed in heating while energy saving is active, 16-30.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 39,
+      "documented": "Word39",
+      "name": "Ambient sensor selection",
+      "description": "Which sensor gives room temperature in each mode.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "1": "Return-air sensor always",
+        "2": "Wired-controller sensor always",
+        "3": "Return air in cool/dry/fan, wired controller in heat/auto",
+        "4": "Wired controller in cool/dry/fan, return air in heat/auto"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 49,
+      "documented": "Word49",
+      "name": "Outdoor ambient temperature",
+      "description": "Whole degrees.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 77,
+      "documented": "Word77",
+      "name": "DRED function",
+      "description": "Demand-response mode.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No DRED",
+        "1": "DRED 1",
+        "2": "DRED 2",
+        "3": "DRED 3"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 82,
+      "documented": "Word82",
+      "name": "Return-air temperature",
+      "description": "Temperature at the indoor-unit air return, tenths of a degree.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 17,
+      "documented": "Bit17",
+      "name": "Remote lock",
+      "description": "Unit locked by remote monitoring or a hotel charging system.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Unlocked",
+        "1": "Locked"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 18,
+      "documented": "Bit18",
+      "name": "Remote temperature shield",
+      "description": "Blocks setpoint changes at the unit.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Not shielded",
+        "1": "Shielded"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 19,
+      "documented": "Bit19",
+      "name": "Remote mode shield",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Not shielded",
+        "1": "Shielded"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 20,
+      "documented": "Bit20",
+      "name": "Remote On/Off shield",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Not shielded",
+        "1": "Shielded"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 21,
+      "documented": "Bit21",
+      "name": "Remote energy-saving shield",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Not shielded",
+        "1": "Shielded"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 24,
+      "documented": "Bit24",
+      "name": "Absence mode (8 °C heating)",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 25,
+      "documented": "Bit25",
+      "name": "Healthy function",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 26,
+      "documented": "Bit26",
+      "name": "I-Demand / energy-saving comfort",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 27,
+      "documented": "Bit27",
+      "name": "Turbo",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 28,
+      "documented": "Bit28",
+      "name": "Electric heater permission",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Electric heater allowed",
+        "1": "Electric heater not allowed"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 29,
+      "documented": "Bit29",
+      "name": "X-fan",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 30,
+      "documented": "Bit30",
+      "name": "Silent",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 32,
+      "documented": "Bit32",
+      "name": "Energy saving in cooling active",
+      "description": "Write together with bit 33.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 33,
+      "documented": "Bit33",
+      "name": "Energy saving in heating active",
+      "description": "Write together with bit 32.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 34,
+      "documented": "Bit34",
+      "name": "Button lock (child lock)",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 35,
+      "documented": "Bit35",
+      "name": "On/Off memory",
+      "description": "Whether the unit restores its on/off state after power loss.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Memorize",
+        "1": "Do not memorize"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 36,
+      "documented": "Bit36",
+      "name": "°C/°F flag",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "°C",
+        "1": "°F"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 37,
+      "documented": "Bit37",
+      "name": "1 °F flag",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 38,
+      "documented": "Bit38",
+      "name": "1 °F flag, cooling energy-saving limit",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 39,
+      "documented": "Bit39",
+      "name": "1 °F flag, heating energy-saving limit",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 40,
+      "documented": "Bit40",
+      "name": "Timer status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No timer",
+        "1": "Timer set"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 46,
+      "documented": "Bit46",
+      "name": "Gate control system fitted",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 49,
+      "documented": "Bit49",
+      "name": "Timer On flag",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not active",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 50,
+      "documented": "Bit50",
+      "name": "Timer Off flag",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Not active",
+        "1": "Active"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 51,
+      "documented": "Bit51",
+      "name": "Room temperature source in current mode",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Return-air sensor",
+        "1": "Wired-controller sensor"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 65,
+      "documented": "Bit65",
+      "name": "Wired controller temperature sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 74,
+      "documented": "Bit74",
+      "name": "Up and down swing mode",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Mode 1, simple swing",
+        "1": "Mode 2, fixed angle and small-area swing"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 75,
+      "documented": "Bit75",
+      "name": "Setpoint adjustable in auto mode",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 97,
+      "documented": "Bit97",
+      "name": "Indoor evaporator temperature sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 98,
+      "documented": "Bit98",
+      "name": "Indoor return-air temperature sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 101,
+      "documented": "Bit101",
+      "name": "Water overflow protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 104,
+      "documented": "Bit104",
+      "name": "Jumper cap error (indoor)",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 105,
+      "documented": "Bit105",
+      "name": "Indoor fan error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 112,
+      "documented": "Bit112",
+      "name": "Card in/out status",
+      "description": "Hotel key-card switch.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Card out",
+        "1": "Card in"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 120,
+      "documented": "Bit120",
+      "name": "Communication failure with master wired controller",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 122,
+      "documented": "Bit122",
+      "name": "Communication failure with outdoor unit",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 147,
+      "documented": "Bit147",
+      "name": "Outdoor fan status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 150,
+      "documented": "Bit150",
+      "name": "4-way valve status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 151,
+      "documented": "Bit151",
+      "name": "Compressor status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 152,
+      "documented": "Bit152",
+      "name": "Compressor discharge temperature protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 153,
+      "documented": "Bit153",
+      "name": "Refrigerant shortage protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 154,
+      "documented": "Bit154",
+      "name": "DC fan motor protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 155,
+      "documented": "Bit155",
+      "name": "4-way valve reversing error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 156,
+      "documented": "Bit156",
+      "name": "Overpower protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 157,
+      "documented": "Bit157",
+      "name": "Overload protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 158,
+      "documented": "Bit158",
+      "name": "Low pressure protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 159,
+      "documented": "Bit159",
+      "name": "High pressure protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 160,
+      "documented": "Bit160",
+      "name": "Evaporator anti-freeze protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 161,
+      "documented": "Bit161",
+      "name": "Outdoor ambient temperature sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 162,
+      "documented": "Bit162",
+      "name": "Discharge temperature sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 163,
+      "documented": "Bit163",
+      "name": "Condenser temperature sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 165,
+      "documented": "Bit165",
+      "name": "Jumper cap error (outdoor)",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 166,
+      "documented": "Bit166",
+      "name": "Outdoor unit memory chip error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 173,
+      "documented": "Bit173",
+      "name": "Indoor and outdoor units mismatched",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 174,
+      "documented": "Bit174",
+      "name": "Drive communication failure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 177,
+      "documented": "Bit177",
+      "name": "Cooling-only flag",
+      "description": "Heating commands have no effect on cooling-only units.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Cooling and heating",
+        "1": "Cooling only"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 179,
+      "documented": "Bit179",
+      "name": "System defrosting",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "No",
+        "1": "Yes"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 184,
+      "documented": "Bit184",
+      "name": "Drive DC bus undervoltage or voltage-drop error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 185,
+      "documented": "Bit185",
+      "name": "Drive DC bus overvoltage protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 186,
+      "documented": "Bit186",
+      "name": "Drive AC input current protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 187,
+      "documented": "Bit187",
+      "name": "Drive IPM protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 188,
+      "documented": "Bit188",
+      "name": "Drive PFC protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 189,
+      "documented": "Bit189",
+      "name": "Inverter compressor start-up failure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 190,
+      "documented": "Bit190",
+      "name": "Inverter compressor phase-loss protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 191,
+      "documented": "Bit191",
+      "name": "Drive module reset",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 192,
+      "documented": "Bit192",
+      "name": "Inverter compressor overcurrent protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 193,
+      "documented": "Bit193",
+      "name": "Inverter compressor power protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 194,
+      "documented": "Bit194",
+      "name": "Drive current-detection circuit failure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 195,
+      "documented": "Bit195",
+      "name": "Inverter compressor out-of-step protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 196,
+      "documented": "Bit196",
+      "name": "Compressor stalling",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 198,
+      "documented": "Bit198",
+      "name": "Drive module high-temperature protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 199,
+      "documented": "Bit199",
+      "name": "Drive module temperature sensor failure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 210,
+      "documented": "Bit210",
+      "name": "Drive charging circuit failure",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 211,
+      "documented": "Bit211",
+      "name": "Drive AC input voltage abnormal",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 214,
+      "documented": "Bit214",
+      "name": "Temperature drift protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 215,
+      "documented": "Bit215",
+      "name": "Current sensor connection protection",
+      "description": "Current sensor not on the matching U or V phase.",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 216,
+      "documented": "Bit216",
+      "name": "Indoor outlet pipe (gas side) sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 217,
+      "documented": "Bit217",
+      "name": "Indoor inlet pipe (liquid side) sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 218,
+      "documented": "Bit218",
+      "name": "Drive board ambient sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 219,
+      "documented": "Bit219",
+      "name": "Condenser inlet pipe sensor open/short",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 220,
+      "documented": "Bit220",
+      "name": "Condenser outlet pipe sensor open/short",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 221,
+      "documented": "Bit221",
+      "name": "Wiring error or expansion valve error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 222,
+      "documented": "Bit222",
+      "name": "Mode conflict protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 223,
+      "documented": "Bit223",
+      "name": "Compressor demagnetization protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 224,
+      "documented": "Bit224",
+      "name": "Whole-unit current detection error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 225,
+      "documented": "Bit225",
+      "name": "AC contactor protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 226,
+      "documented": "Bit226",
+      "name": "Overspeed",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 227,
+      "documented": "Bit227",
+      "name": "Outdoor fan 2 error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 228,
+      "documented": "Bit228",
+      "name": "PG motor zero-crossing protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 229,
+      "documented": "Bit229",
+      "name": "Compressor suction temperature sensor error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 230,
+      "documented": "Bit230",
+      "name": "Indoor fan tripping error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 231,
+      "documented": "Bit231",
+      "name": "Communication error between indoor unit and grid",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 232,
+      "documented": "Bit232",
+      "name": "Communication error between outdoor unit and grid",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 233,
+      "documented": "Bit233",
+      "name": "Main error at grid side",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 234,
+      "documented": "Bit234",
+      "name": "Indoor network address error",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 235,
+      "documented": "Bit235",
+      "name": "IP address allocation overflow",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "coil",
+      "address": 236,
+      "documented": "Bit236",
+      "name": "Other error or protection",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Poll words 2-25 for on/off, mode, fan, setpoint and louvres and words 4, 49 and 82 for temperatures; read coils 17-236 for status and fault bits. Write word 2 (0xAA on / 0x55 off), 17, 19 and 20 to control the unit.",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "On/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 17,
+        "why": "Mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 19,
+        "why": "Fan speed"
+      },
+      {
+        "table": "holding_register",
+        "address": 20,
+        "why": "Setpoint"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Room temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 49,
+        "why": "Outdoor temperature"
+      },
+      {
+        "table": "coil",
+        "address": 151,
+        "why": "Compressor running"
+      },
+      {
+        "table": "coil",
+        "address": 122,
+        "why": "Outdoor-unit communication fault"
+      }
+    ],
+    "enable": "The Modbus interface is built into the indoor-unit controller or wired controller; each unit needs its own address (1-255) set before connecting the BMS. Power-cycle the unit after connecting the controller.",
+    "watchdog": null,
+    "quirks": [
+      "On/off uses 0xAA and 0x55, not 1 and 0.",
+      "The two energy-saving flags (bits 32 and 33) must be set or cleared together.",
+      "A setpoint outside the active energy-saving limit is silently ignored; check by reading back.",
+      "Exception code 03 is returned for an out-of-range read (for example 128 words; the maximum is 127 per request)."
+    ],
+    "setup": [
+      "RS485, 9600 baud, 8 data bits, no parity, 1 stop bit.",
+      "Use twisted pair kept at least 15 cm from power cables; repeaters may be needed on long lines.",
+      "Match A to A and B to B; a constantly lit TX lamp on the converter points to swapped A/B."
+    ],
+    "gotchas": [
+      "Sleep is ignored in fan and auto modes.",
+      "The remote temperature shield is ignored in auto mode unless the unit allows setpoint adjustment in auto (bit 75).",
+      "Heating commands to cooling-only units (bit 177 = 1) do nothing."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

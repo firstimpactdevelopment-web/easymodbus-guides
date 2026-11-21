@@ -1,0 +1,30 @@
+﻿# Lovato Electric DCRL3 / DCRL5 / DCRL8 power factor controllers Modbus register map - easymodbus.com - source: https://datasheet.lovatoelectric.com/DOWNLOAD/Technical/TechInstructions/30.%20REGOLATORI%20DI%20RIFASAMENTO%20E%20MODULI%20A%20TIRISTORI/I427IGB05_20.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Input register,FC04 read,3,04h,30004,Voltage,,UINT32,2,ABCD,1,0,V,Read,
+Input register,FC04 read,5,06h,30006,Current,,UINT32,2,ABCD,0.001,0,A,Read,
+Input register,FC04 read,9,0Ah,30010,Weekly average power factor,,UINT32,2,ABCD,0.01,0,,Read,
+Input register,FC04 read,17,12h,30018,Phase angle offset,Printed unit °/4.,UINT32,2,ABCD,0.25,0,°,Read,
+Input register,FC04 read,19,14h,30020,Actual power factor,Printed as /5000.,INT32,2,ABCD,0.0002,0,,Read,
+Input register,FC04 read,21,16h,30022,Error bits,,UINT32,2,ABCD,1,0,,Read,bit 0 = A01 Under compensation; bit 1 = A02 Over compensation; bit 2 = A03 Low current; bit 3 = A04 High current; bit 4 = A05 Low voltage; bit 5 = A06 High voltage; bit 6 = A07 Capacitor overload; bit 7 = A08 Overtemperature; bit 8 = A09 No-voltage release; bit 9 = A10 Voltage THD too high; bit 10 = A11 Current THD too high
+Input register,FC04 read,23,18h,30024,Max voltage,,UINT32,2,ABCD,1,0,V,Read,
+Input register,FC04 read,25,1Ah,30026,Max current,,UINT32,2,ABCD,0.01,0,A,Read,
+Input register,FC04 read,27,1Ch,30028,Max capacitor overload,,UINT32,2,ABCD,1,0,%,Read,
+Input register,FC04 read,49,32h,30050,Active power,,INT32,2,ABCD,1,0,W,Read,
+Input register,FC04 read,51,34h,30052,Reactive power,,INT32,2,ABCD,1,0,var,Read,
+Input register,FC04 read,53,36h,30054,Apparent power,,UINT32,2,ABCD,1,0,VA,Read,
+Input register,FC04 read,511,200h,30512,Step 1 insertion time,Steps 2-14 follow every 2 registers up to 21Ah.,UINT32,2,ABCD,1,0,min,Read,
+Input register,FC04 read,537,21Ah,30538,Step 14 insertion time,,UINT32,2,ABCD,1,0,min,Read,
+Input register,FC04 read,8196,2005h,38197,Capacitor current overload,,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,8198,2007h,38199,Hours to maintenance,,INT16,1,,1,0,h,Read,
+Input register,FC04 read,8200,2009h,38201,THDI,,UINT16,1,,0.1,0,%,Read,
+Input register,FC04 read,8223,2020h,38224,Step 1 insertion count,Steps 2-14 at 2021h-202Dh.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,8236,202Dh,38237,Step 14 insertion count,,UINT16,1,,1,0,,Read,
+Input register,FC04 read,8255,2040h,38256,Step 1 residual power,Steps 2-14 at 2041h-204Dh.,UINT16,1,,1,0,%,Read,
+Input register,FC04 read,8319,2080h,38320,2nd voltage harmonic,Up to the 15th at 208Dh.,UINT16,1,,0.1,0,%,Read,
+Input register,FC04 read,8351,20A0h,38352,2nd current harmonic,Up to the 15th at 20ADh.,UINT16,1,,0.1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",12034,2F03h,412035,Save setup to EEPROM,Write 5 after changing parameters.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",12287,3000h,412288,Operating mode change,,UINT16,1,,1,0,,Write,0 = Toggle AUT/MAN; 1 = MAN mode; 2 = AUT mode
+Holding register,"FC03 read / FC06, FC16 write",12288,3001h,412289,Device reset (warm boot),Write 1.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",12292,3005h,412293,Step activation,Write the step number to switch in.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",12293,3006h,412294,Step de-activation,Write the step number to switch out.,UINT16,1,,1,0,,Write,
+Holding register,"FC03 read / FC06, FC16 write",12294,3007h,412295,Keyboard lock,,UINT16,1,,1,0,,Write,0 = Unlocked; 1 = Locked

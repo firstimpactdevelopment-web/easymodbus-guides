@@ -1,0 +1,414 @@
+{
+ "manufacturer": "Swegon",
+ "manufacturer_slug": "swegon",
+ "model": "REACT damper / VAV actuator (Modbus RTU, 2018 sheet)",
+ "model_slug": "react-modbus-actuator",
+ "short_model": "REACT",
+ "aliases": [
+  "REACT A",
+  "REACT Modbus",
+  "Swegon REACT damper",
+  "309C-024-150-MB/SL8/ST15/SWE",
+  "227VM-024-MB/SWE"
+ ],
+ "equipment_type": "Actuator / valve (ventilation damper and VAV actuator)",
+ "applies_to": "Swegon REACT demand-controlled-ventilation dampers with the Modbus actuators named in the sheet (309C-024-150-MB/SL8/ST15/SWE, 227VM-024-**-MB/SWE), sheet dated 2018-11-08.",
+ "summary": "Swegon's REACT dampers for demand-controlled ventilation can be fitted with a Modbus RTU actuator. All points are holding registers read with function 03 and written one at a time with 06: set point, override and command, actuator type, relative and absolute position and flow, an optional analog output, flow limits, bus-failure action, set point source mode, Modbus address and flow unit.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": 8,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The sheet prints a decimal 'Address' starting at 0 (Set point). Use the printed number as the wire address."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "REACT Modbus",
+  "doc_number": null,
+  "revision_date": "2018-11-08",
+  "url": "https://www.swegon.com/siteassets/_products-documents-archive/flow-control/demand-controlled-ventilation/_en/reacta_modbus-m.pdf",
+  "pages": "p. 1 (protocol, functions), p. 2 (customer holding registers), p. 3 (service values), p. 4 (customer values, communication setting table)"
+ },
+ "notes": [
+  "This is the REACT sheet for the actuators named above; the REACT Parasol Zenith with Belimo actuator has its own map in the library.",
+  "Factory communication setting differs by actuator: page 1 and footnote 4 give setting 14 (19200 baud, 8 data bits, even parity, 1 stop bit) for the 227VM-024-**-MB/SWE, while footnote 1 marks setting 24 (38400 baud, no parity, 1 stop bit) as the default for the 309C-024-150-MB/SL8/ST15/SWE. Settings 1-24 are listed in the sheet. Default slave address is not stated.",
+  "Only function codes 03 and 06 are implemented. The sheet notes settings 1-3 and 19 limit a read to 8 registers.",
+  "Command values 0, 2 and 3 and Device ID 0 are printed as '- - -' (unused).",
+  "All values are 16-bit WORD; the protocol line mentions floats but none are listed."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0",
+   "name": "Set point",
+   "description": "Damper / flow set point, 0-10000 = 0-100 %. Read-only when register 122 = 0.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1",
+   "name": "Override control",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Override control not available",
+    "1": "Open",
+    "2": "Close",
+    "3": "Min",
+    "4": "Max"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "Command",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "1": "Adaption",
+    "4": "Controller reset"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "Device ID",
+   "description": "Actuator type.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Standard actuator",
+    "2": "VAV",
+    "3": "Fire damper"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4",
+   "name": "Relative position",
+   "description": "0-10000 = 0-100 %; 65535 = not supported.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "5",
+   "name": "Absolute position",
+   "description": "0-65000 = 0-650.00 degrees; 65535 = not supported.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "°",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "6",
+   "name": "Relative flow",
+   "description": "VAV flow, 0-10000 = 0-100 %.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "7",
+   "name": "Absolute flow",
+   "description": "VAV flow in m³/h or l/s (unit per register 201).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "m³/h / l/s",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "10",
+   "name": "Analog output",
+   "description": "Optional analog output, 0-10000 mV; see register 122.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "mV",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 103,
+   "documented": "103",
+   "name": "Software version",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 105,
+   "documented": "105",
+   "name": "Min value relative",
+   "description": "Minimum flow, % of nominal (0-10000 = 0-100 %).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 106,
+   "documented": "106",
+   "name": "Max value relative",
+   "description": "Maximum flow, % of nominal (0-10000 = 0-100 %).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "%",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 108,
+   "documented": "108",
+   "name": "Bus fail position",
+   "description": "Action on loss of bus (120 s timeout).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No bus monitoring",
+    "1": "Close at timeout",
+    "2": "Open at timeout"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 120,
+   "documented": "120",
+   "name": "Min value absolute",
+   "description": "Minimum flow in m³/h or l/s.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "m³/h / l/s",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 121,
+   "documented": "121",
+   "name": "Max value absolute",
+   "description": "Maximum flow in m³/h or l/s.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "m³/h / l/s",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 122,
+   "documented": "122",
+   "name": "Mode signal set point analog output",
+   "description": "Where the set point comes from and what the analog output shows.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Set point from analog in 1; output = absolute position",
+    "1": "Set point via Modbus register 0; output = absolute position",
+    "2": "Register 0 scaled min-max flow; output = register 10",
+    "3": "Set point from analog in 1; output = register 10"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 130,
+   "documented": "130",
+   "name": "Modbus address",
+   "description": "Slave address 1-247.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 201,
+   "documented": "201",
+   "name": "Vnom unit/function",
+   "description": "Unit for absolute flow values.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "l/s",
+    "1": "m³/h"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Set register 122 to 1 (or 2) so the set point comes from Modbus, then write the set point to register 0 and read relative position (4) and flow (6/7).",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Set point"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Relative position"
+   },
+   {
+    "table": "holding_register",
+    "address": 6,
+    "why": "Relative flow"
+   },
+   {
+    "table": "holding_register",
+    "address": 7,
+    "why": "Absolute flow"
+   },
+   {
+    "table": "holding_register",
+    "address": 122,
+    "why": "Set point source mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 108,
+    "why": "Bus fail position"
+   }
+  ],
+  "enable": "Register 122 Mode: 1 = set point via Modbus register 0 (0 = analog input, then register 0 is read-only).",
+  "watchdog": "Bus fail position (108): 1 closes, 2 opens the damper when no bus traffic for 120 s; 0 disables monitoring.",
+  "quirks": [
+   "Set point, relative position and relative flow use 0-10000 for 0-100 %.",
+   "65535 in position registers means the function is not supported."
+  ],
+  "setup": [
+   "Default serial setting depends on the actuator (19200 8E1 for 227VM, 38400 8N1 for 309C); 120 ohm termination is external.",
+   "A response delay can be set in 3 ms steps for slow masters."
+  ],
+  "gotchas": [
+   "Flow units (l/s or m³/h) follow register 201."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/swegon/react-modbus-actuator",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

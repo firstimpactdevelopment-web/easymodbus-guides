@@ -1,0 +1,39 @@
+﻿# Eaton C440 electronic overload relay (via C441 Ethernet module) Modbus register map - easymodbus.com - source: https://www.precision-elec.com/wp-content/uploads/2021/01/C441-Ethernet-Module-User-Manual-C441R-C441T-C441U-C441V.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,1,40001,Field inputs,Adapter input points.,BITMAP16,1,,1,0,,Read,bit 0 = Input 1; bit 1 = Input 2; bit 2 = Input 3; bit 3 = Input 4
+Holding register,"FC03 read / FC06, FC16 write",1,2,40002,Control voltage,Adapter supply voltage.,UINT16,1,,1,0,mV,Read,
+Holding register,"FC03 read / FC06, FC16 write",4,5,40005,DIP switch value,Present DIP switch state.,BITMAP16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",100,101,40101,Field relay outputs,Adapter output relays.,BITMAP16,1,,1,0,,Read/write,bit 0 = Output 1; bit 1 = Output 2
+Holding register,"FC03 read / FC06, FC16 write",109,110,40110,Modbus TCP com timeout,0 = disabled.,UINT16,1,,1,0,ms,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",110,111,40111,Field relay fault action,"Per relay: 0 = apply fault value, 1 = no change.",BITMAP16,1,,1,0,,Read/write,bit 0 = Relay / output 1; bit 1 = Relay / output 2
+Holding register,"FC03 read / FC06, FC16 write",111,112,40112,Field relay fault state,"Per relay value on comm fault: 0 off, 1 on.",BITMAP16,1,,1,0,,Read/write,bit 0 = Relay / output 1; bit 1 = Relay / output 2
+Holding register,"FC03 read / FC06, FC16 write",112,113,40113,Field relay idle action,"Per relay: 0 = apply idle value, 1 = no change.",BITMAP16,1,,1,0,,Read/write,bit 0 = Relay / output 1; bit 1 = Relay / output 2
+Holding register,"FC03 read / FC06, FC16 write",113,114,40114,Field relay idle state,"Per relay value on comm idle: 0 off, 1 on.",BITMAP16,1,,1,0,,Read/write,bit 0 = Relay / output 1; bit 1 = Relay / output 2
+Holding register,"FC03 read / FC06, FC16 write",142,143,40143,IP allocation method,,UINT16,1,,1,0,,Read,"0 = DHCP; 1 = Upper 3 octets from NV, last octet from DIP switches; 2 = Full address from NV memory; 3 = Restore 192.168.1.254"
+Holding register,"FC03 read / FC06, FC16 write",200,201,40201,Intercom status,Link between adapter and host device.,BITMAP16,1,,1,0,,Read,"bit 0 = Connected fully, no errors; bit 1 = Message fault occurred; bit 2 = Devices married, target identified; bit 3 = Basic connection established"
+Holding register,"FC03 read / FC06, FC16 write",250,251,40251,Motor ctrl idle loss act disable,1 = keep motor state on comm idle; 0 = apply idle value (252).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",251,252,40252,Motor ctrl com idle action value,,UINT16,1,,1,0,,Read/write,0 = Ignore (no change); 1 = Stop
+Holding register,"FC03 read / FC06, FC16 write",252,253,40253,Motor ctrl com loss act disable,1 = keep motor state on comm loss; 0 = apply loss value (254).,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",253,254,40254,Motor ctrl com loss action value,,UINT16,1,,1,0,,Read/write,0 = Ignore (no change); 1 = Stop
+Holding register,"FC03 read / FC06, FC16 write",299,300,40300,Motor control state,,UINT16,1,,1,0,,Read,0 = Stopped; 1 = Running; 2 = Tripped; 3 = Tripped; 4 = Resetting
+Holding register,"FC03 read / FC06, FC16 write",300,301,40301,Phase A RMS current,Scaled by register 398.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",301,302,40302,Phase B RMS current,Scaled by register 398.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",302,303,40303,Phase C RMS current,Scaled by register 398.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",303,304,40304,Average current,Scaled by register 398.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",304,305,40305,Thermal memory,100% = trip.,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",305,306,40306,Latched faults,Cleared by network reset or when current flows.,BITMAP16,1,,1,0,,Read,bit 0 = Overload fault; bit 1 = Phase imbalance; bit 2 = Phase loss fault; bit 3 = Ground fault; bit 4 = Network trip command; bit 5 = NV memory failure
+Holding register,"FC03 read / FC06, FC16 write",306,307,40307,Current as percent of FLA,,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",307,308,40308,Phase imbalance,,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",308,309,40309,Ground fault percent,GF% = ground current / (0.5 x FLA).,UINT16,1,,1,0,%,Read,
+Holding register,"FC03 read / FC06, FC16 write",309,310,40310,Ground current,Scaled by register 398.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",310,311,40311,FLA setting,From the potentiometer; scaled by 398.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",311,312,40312,Overload class,Device dependent.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",312,313,40313,Line frequency,,UINT16,1,,0.1,0,Hz,Read,
+Holding register,"FC03 read / FC06, FC16 write",313,314,40314,Feature states,"Bits 0-1 trip class: 00=10, 01=15, 10=20, 11=30.",BITMAP16,1,,1,0,,Read,bit 2 = Phase loss/imbalance enabled; bit 3 = Ground fault enabled; bit 4 = Auto reset enabled; bit 5 = Remote reset active; bit 6 = DIP switch position 0; bit 7 = DIP switch position 1; bit 8 = DIP switch position 2; bit 9 = DIP switch position 3
+Holding register,"FC03 read / FC06, FC16 write",314,315,40315,Device temperature,Accuracy about 10%.,UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",331,332,40332,Trip/reset control,Auto-clearing command bits.,BITMAP16,1,,1,0,,Read/write,bit 0 = Cause a trip (overrides reset); bit 1 = Cause a reset
+Holding register,"FC03 read / FC06, FC16 write",395,396,40396,Min FLA,Lowest FLA setting; scaled by 398.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",396,397,40397,Max FLA,Highest FLA setting; scaled by 398.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",397,398,40398,Current scale value,Multiplier for currents: 10 means values are in 0.1 A.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",398,399,40399,Product code,Odd number = ground-fault capable.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",428,429,40429,Firmware build,,UINT16,1,,1,0,,Read,

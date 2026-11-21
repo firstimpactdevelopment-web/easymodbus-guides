@@ -1,0 +1,23 @@
+﻿# Intesis (HMS Networks) INMBSACA004I000 / 008I000 / 032I000 XYE-bus air conditioner to Modbus RTU interface (4 to 32 units) Modbus register map - easymodbus.com - source: https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-inmbsacaxxxi000.pdf
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Holding register,"FC03 read / FC06, FC16 write",0,0,40001,All units on/off,,UINT16,1,,1,0,,Write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",1,1,40002,All units mode,,UINT16,1,,1,0,,Write,0 = Auto; 1 = Heat; 2 = Dry; 3 = Fan; 4 = Cool
+Holding register,"FC03 read / FC06, FC16 write",2,2,40003,All units fan speed,,UINT16,1,,1,0,,Write,0 = Auto; 1 = SP1; 2 = SP2; 3 = SP3
+Holding register,"FC03 read / FC06, FC16 write",3,3,40004,All units vane position,,UINT16,1,,1,0,,Write,0 = Auto/Stop; 10 = Swing
+Holding register,"FC03 read / FC06, FC16 write",4,4,40005,All units temperature setpoint,"17..30 °C (63..86 °F). SW4 x1 °C assumed (x10: 0.1, or °F).",UINT16,1,,1,0,°C,Write,
+Holding register,"FC03 read / FC06, FC16 write",8,8,40009,All units remote lock,Blocks wired remotes on the MD-RC bus. Non-volatile.,UINT16,1,,1,0,,Write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",1000,(1000 + 20*n + 0),41001,AC unit on/off,Index n = 0 shown; see notes.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",1001,(1000 + 20*n + 1),41002,AC unit mode,Available modes depend on the unit.,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = Heat; 2 = Dry; 3 = Fan; 4 = Cool
+Holding register,"FC03 read / FC06, FC16 write",1002,(1000 + 20*n + 2),41003,AC unit fan speed,,UINT16,1,,1,0,,Read/write,0 = Auto; 1 = SP1; 2 = SP2; 3 = SP3
+Holding register,"FC03 read / FC06, FC16 write",1003,(1000 + 20*n + 3),41004,AC unit up/down vane position,,UINT16,1,,1,0,,Read/write,0 = Off; 10 = Swing
+Holding register,"FC03 read / FC06, FC16 write",1004,(1000 + 20*n + 4),41005,AC unit temperature setpoint,"17..30 °C (63..86 °F). SW4 x1 °C assumed (x10: 0.1, or °F).",UINT16,1,,1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",1005,(1000 + 20*n + 5),41006,AC unit temperature reference,"SW4 x1 °C assumed (x10: 0.1, or °F).",UINT16,1,,1,0,°C,Read,
+Holding register,"FC03 read / FC06, FC16 write",1006,(1000 + 20*n + 6),41007,AC alarm status,,UINT16,1,,1,0,,Read,0 = No alarm; 1 = Alarm
+Holding register,"FC03 read / FC06, FC16 write",1007,(1000 + 20*n + 7),41008,AC error code,"0 = no error, 65535 = interface-to-unit communication error, other = unit code.",UINT16,1,,1,0,,Read,0 = No error active; 65535 = Interface to AC unit communication error
+Holding register,"FC03 read / FC06, FC16 write",1008,(1000 + 20*n + 8),41009,Remote lock,Non-volatile.,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",1009,(1000 + 20*n + 9),41010,Indoor unit address assignment,AC system address (0..63) of the unit handled by index n.,UINT16,1,,1,0,,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",2000,2000,42001,Device ID,Reads 0x2200.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2031,2031,42032,Capacity,Max indoor units of this model.,UINT16,1,,1,0,,Read,4 = 4 indoor units; 8 = 8 indoor units; 32 = 32 indoor units
+Holding register,"FC03 read / FC06, FC16 write",2041,2041,42042,Modbus slave address,1..63.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2050,2050,42051,Software version,,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",2099,2099,42100,Reset / reboot device,,UINT16,1,,1,0,,Write,1 = Reset

@@ -1,0 +1,580 @@
+{
+  "manufacturer": "LG",
+  "manufacturer_slug": "lg",
+  "model": "PAHCMS000 AHU Communication Kit, discharge-air control (Multi V DX kit, Modbus to DDC)",
+  "model_slug": "pahcms000-ahu-comm-kit",
+  "short_model": "PAHCMS000",
+  "aliases": [
+    "PAHCMS000",
+    "LG AHU Communication Kit discharge air",
+    "LG AHU comm kit PAHCMS000 Modbus"
+  ],
+  "equipment_type": "Air handler DX kit (VRF / split AC gateway built in)",
+  "applies_to": "LG PAHCMS000 AHU Communication Kit for discharge (supply) air control with up to four LG outdoor units, installation manual IM_AHU_Comm_Kit_PAHCMS000_11_23.",
+  "summary": "The PAHCMS000 kit connects a third-party air handler to LG Multi V or single-split outdoor units and controls discharge air temperature; a DDC can drive it over Modbus RTU on RS485 CH4. A coil switches the unit, holding registers set mode, capacity request and the cooling and heating discharge targets, and discrete inputs and input registers report unit and per-outdoor-unit (up to 4) run, compressor, defrost and error status, the error code and return/supply air temperatures.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": null,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "Modicon",
+    "note": "Points are printed as 00001/10001/30001/40001-style registers, with a function-code table per block (01/05 coils 00001-00008, 02 inputs 10001-10030, 04 input registers 30001-30016, 03/06 holding registers 40001-40010). The wire address is the printed number minus the block base: 30011 is input register 10."
+  },
+  "default_word_order": null,
+  "firmware": null,
+  "source": {
+    "title": "Installation Manual for LG Air Handler Unit (AHU) Communications Kit - PAHCMS000",
+    "doc_number": "IM_AHU_Comm_Kit_PAHCMS000_11_23",
+    "revision_date": "2023-11",
+    "url": "https://media.us.lg.com/m/11adf83da67f6527/original/IM_AHU_Comm_Kit_PAHCMS000-pdf.pdf",
+    "pages": "pp. 55-56 function codes and memory map; DIP switch SW1 table in the installation section"
+  },
+  "notes": [
+    "Access follows the function-code dots in the memory map: coil 00001 takes 01 and 05, discrete inputs 02 only, input registers 04 only, holding registers 03 and 06.",
+    "Reserved points are left out.",
+    "The manual does not print the RS485 serial settings for the DDC port; set them to match the kit (the R32 sister kit PAHCMR000 states 9600 bps, no parity, 1 stop bit, but that is a different manual).",
+    "Temperatures are sent multiplied by 10; the return/supply air range includes negative values, so they are listed as signed 16-bit.",
+    "For the capacity ratio behind register 40002 see the UI7 (0-10 V) capacity table in the manual.",
+    "An older revision of this manual (IM_AHU_Comm_Kit_PAHCMS000_5_18) is also hosted by LG."
+  ],
+  "registers": [
+    {
+      "table": "coil",
+      "address": 0,
+      "documented": "00001",
+      "name": "Operating On/Off",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 0,
+      "documented": "10001",
+      "name": "Error status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 1,
+      "documented": "10002",
+      "name": "Operation status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 2,
+      "documented": "10003",
+      "name": "Defrost status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Defrost"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 10,
+      "documented": "10011",
+      "name": "ODU#1 operation status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 11,
+      "documented": "10012",
+      "name": "ODU#1 compressor status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 12,
+      "documented": "10013",
+      "name": "ODU#1 defrost status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Defrost"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 13,
+      "documented": "10014",
+      "name": "ODU#1 error status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 14,
+      "documented": "10015",
+      "name": "ODU#2 operation status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 15,
+      "documented": "10016",
+      "name": "ODU#2 compressor status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 16,
+      "documented": "10017",
+      "name": "ODU#2 defrost status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Defrost"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 17,
+      "documented": "10018",
+      "name": "ODU#2 error status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 18,
+      "documented": "10019",
+      "name": "ODU#3 operation status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 19,
+      "documented": "10020",
+      "name": "ODU#3 compressor status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 20,
+      "documented": "10021",
+      "name": "ODU#3 defrost status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Defrost"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 21,
+      "documented": "10022",
+      "name": "ODU#3 error status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 22,
+      "documented": "10023",
+      "name": "ODU#4 operation status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 23,
+      "documented": "10024",
+      "name": "ODU#4 compressor status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Off",
+        "1": "On"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 24,
+      "documented": "10025",
+      "name": "ODU#4 defrost status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Defrost"
+      },
+      "bits": null
+    },
+    {
+      "table": "discrete_input",
+      "address": 25,
+      "documented": "10026",
+      "name": "ODU#4 error status",
+      "description": "",
+      "data_type": "BIT",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": {
+        "0": "Normal",
+        "1": "Error"
+      },
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 0,
+      "documented": "30001",
+      "name": "Error code",
+      "description": "Format 1xxxx: second digit = module number, last three digits = error code.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 10,
+      "documented": "30011",
+      "name": "Return air temperature",
+      "description": "Range -50 to 100 °C, sent x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "input_register",
+      "address": 12,
+      "documented": "30013",
+      "name": "Supply air temperature",
+      "description": "Range -50 to 100 °C, sent x10.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "40001",
+      "name": "Operation mode",
+      "description": "",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "RW",
+      "values": {
+        "0": "Cooling",
+        "2": "Fan",
+        "4": "Heating"
+      },
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 1,
+      "documented": "40002",
+      "name": "Capacity",
+      "description": "Capacity request as a UI7 0-10 V equivalent: 0 or 2.0-10 V, x10, 0.5 V steps.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "V",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "40003",
+      "name": "Cooling target temperature",
+      "description": "15.6-30 °C, sent x10, 1.0 °C steps.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 3,
+      "documented": "40004",
+      "name": "Heating target temperature",
+      "description": "15.6-30 °C, sent x10, 1.0 °C steps.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "RW",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "With DIP SW1-1 ON (communication), write coil 00001 for on/off and holding registers 40001, 40003 and 40004 for mode and discharge targets; read 30011/30013 for air temperatures and 10001-10026 for unit and outdoor-unit status.",
+    "minimum_registers": [
+      {
+        "table": "coil",
+        "address": 0,
+        "why": "On/off"
+      },
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "Operation mode"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Cooling discharge target"
+      },
+      {
+        "table": "holding_register",
+        "address": 3,
+        "why": "Heating discharge target"
+      },
+      {
+        "table": "input_register",
+        "address": 12,
+        "why": "Supply air temperature"
+      },
+      {
+        "table": "input_register",
+        "address": 0,
+        "why": "Error code"
+      },
+      {
+        "table": "discrete_input",
+        "address": 0,
+        "why": "Error status"
+      },
+      {
+        "table": "discrete_input",
+        "address": 2,
+        "why": "Defrost status"
+      }
+    ],
+    "enable": "DIP SW1-1 ON = controlled by DDC through Modbus or an LG central controller (OFF = contact signal, where Modbus control functions are unavailable). SW1-4 ON selects LG central communication over Modbus.",
+    "watchdog": null,
+    "quirks": [
+      "Operation mode uses 0 = cooling, 2 = fan, 4 = heating.",
+      "The error code is a decimal number whose second digit is the module number."
+    ],
+    "setup": [
+      "DDC central communication on RS485 CH4, 2-core 18-16 AWG, up to 1640 ft.",
+      "The main module address (1-247, needed with an LG central controller) is set with the Set/ESC buttons and the 7-segment display; the manual does not say whether it is also the Modbus slave ID for a DDC."
+    ],
+    "gotchas": [
+      "Control functions are not available when contact-signal control is selected (SW1-1 OFF)."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

@@ -1,0 +1,22 @@
+﻿# Mitsubishi Electric PAC-IF013B-E / PAC-SIF013B-E air handling unit interface (Modbus RTU) Modbus register map - easymodbus.com - source: https://library.mitsubishielectric.co.uk/pdf/download_full/3004
+Table,Function codes,Wire address (0-based),Documented address,Modicon,Name,Description,Data type,Registers,Word order,Scale,Offset,Units,Access,Values / bits
+Coil,"FC01 read / FC05, FC15 write",0,00001,00001,Drive ON/OFF,Run command; auto step mode systems (5 and 7 column) only.,BIT,1,,1,0,,Read/write,0 = Off; 1 = On
+Input register,FC04 read,0,30001,30001,TH11 heat exchanger inlet air temperature,"Range -39 to 88.5 °C. Open 0xFC19, short 0x03E7.",INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,1,30002,30002,TH1 target air temperature,"Range -39 to 88.5 °C. Open 0xFC19, short 0x03E7.",INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,2,30003,30003,TH5 two-phase temperature,"Range -39 to 88.5 °C. Open 0xFC19, short 0x03E7.",INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,3,30004,30004,TH2 refrigerant liquid temperature,"Range -39 to 88.5 °C. Open 0xFC19, short 0x03E7.",INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,4,30005,30005,TH7 outdoor temperature,Range -15 to 46 °C.,INT16,1,,0.1,0,°C,Read,
+Input register,FC04 read,6,30007,30007,Error code (hex),0x8000 = no error; otherwise the error code.,UINT16,1,,1,0,,Read,32768 = No error
+Input register,FC04 read,7,30008,30008,Error code (decimal),8000 = no error; otherwise the error code (see notes).,UINT16,1,,1,0,,Read,8000 = No error
+Input register,FC04 read,8,30009,30009,External outputs,Mirror of the eight output signals.,BITMAP16,1,,1,0,,Read,bit 0 = OUT1 on/off; bit 1 = OUT2 error; bit 2 = OUT3 compressor; bit 3 = OUT4 defrost; bit 4 = OUT5 cooling mode; bit 5 = OUT6 heating mode; bit 6 = OUT7 self protection; bit 7 = OUT8 pre-defrost
+Input register,FC04 read,9,30010,30010,Refrigerant address,Outdoor unit refrigerant address 0-15.,UINT16,1,,1,0,,Read,
+Input register,FC04 read,10,30011,30011,Modbus comms counter,Counts valid Modbus commands; wraps after 65535.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",0,40001,40001,Capacity request,"Manual step mode only. 0 = off, other = on; read only in auto step mode.",UINT16,1,,1,0,,Read/write,0 = Off; 1 = Step 1 (min); 2 = Step 2; 3 = Step 3; 4 = Step 4; 5 = Step 5; 6 = Step 6; 7 = Step 7; 8 = Step 8; 9 = Step 9; 10 = Step 10; 11 = Step 11 (max); 12 = Auto step mode
+Holding register,"FC03 read / FC06, FC16 write",1,40002,40002,Drive mode,,UINT16,1,,1,0,,Read/write,1 = Heating; 3 = Cooling; 7 = Fan; 8 = Auto changeover
+Holding register,"FC03 read / FC06, FC16 write",2,40003,40003,Temperature setpoint,"Auto step mode only. Cooling 12-30 °C, heating / auto 17-28 °C, 1 °C steps.",UINT16,1,,0.1,0,°C,Read/write,
+Holding register,"FC03 read / FC06, FC16 write",3,40004,40004,Drive ON/OFF,Auto step mode only (5 and 7 column).,UINT16,1,,1,0,,Read/write,0 = Off; 1 = On
+Holding register,"FC03 read / FC06, FC16 write",4,40005,40005,Error code (hex),0x8000 = no error.,UINT16,1,,1,0,,Read,32768 = No error
+Holding register,"FC03 read / FC06, FC16 write",5,40006,40006,Error code (decimal),8000 = no error.,UINT16,1,,1,0,,Read,8000 = No error
+Holding register,"FC03 read / FC06, FC16 write",6,40007,40007,Step status,Capacity step actually running; per unit with multiple outdoor unit control.,UINT16,1,,1,0,,Read,0 = Off; 1 = Step 1 (min); 2 = Step 2; 3 = Step 3; 4 = Step 4; 5 = Step 5; 6 = Step 6; 7 = Step 7; 8 = Step 8; 9 = Step 9; 10 = Step 10; 11 = Step 11 (max); 12 = Auto step mode
+Holding register,"FC03 read / FC06, FC16 write",7,40008,40008,Refrigerant address,0-15.,UINT16,1,,1,0,,Read,
+Holding register,"FC03 read / FC06, FC16 write",8,40009,40009,Modbus comms counter,Counts valid Modbus commands; wraps after 65535.,UINT16,1,,1,0,,Read,

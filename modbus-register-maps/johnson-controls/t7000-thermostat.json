@@ -1,0 +1,947 @@
+{
+ "manufacturer": "Johnson Controls",
+ "manufacturer_slug": "johnson-controls",
+ "model": "T7000 series fan coil thermostat (Modbus RTU)",
+ "model_slug": "t7000-thermostat",
+ "short_model": "T7000",
+ "aliases": [
+  "T7600-TF21-9JS0",
+  "T7601-TF20-9JS0",
+  "T7600-TF20-9JS0",
+  "T7603-T000-9JF0",
+  "T7600-TF21-1JS0",
+  "T7601-TF20-1JS0",
+  "T7600-TF20-1JS0",
+  "T7603-T000-1JF0",
+  "T7600-TB21-9JA0",
+  "T7600",
+  "T7601",
+  "T7603"
+ ],
+ "equipment_type": "Thermostat (fan coil)",
+ "applies_to": "Johnson Controls T7000 series Modbus thermostats listed in the data table: T7600-TF21, T7601-TF20 (ECM fan), T7600-TF20 (relay), T7603-T000 (single-stage heating) and T7600-TB21 (with AI); data table revision 2.4 (2019-12-23).",
+ "summary": "The T7000 is a Johnson Controls room thermostat family for 2- and 4-pipe fan coil units (plus floor-heating, TiO2/ESP and single-stage heating variants) with a Modbus RTU port. Relays read as coils, live values as input registers, and power, mode, setpoint, fan speed and all settings as holding registers. Temperatures are stored as tenths of a degree.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 1,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "1-based",
+  "note": "The table numbers points from 1. The demo frames settle it: reading room temperature (address 2) sends start address 00 01, and powering on (address 5) writes to 00 04, so wire address = listed address - 1."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "T7000 Thermostat Modbus Data Table",
+  "doc_number": "Revision 2.4",
+  "revision_date": "2019-12-23",
+  "url": "https://docs.johnsoncontrols.com/bas/api/khub/documents/hw6JWFAKzTKFpujvU7eW7g/content",
+  "pages": "p. 2 (interface, coils), pp. 3-7 (input and holding registers, notes and demo frames), pp. 8-9 (model and output mapping)"
+ },
+ "notes": [
+  "Supported functions 01, 03, 04, 06 and 16. Holding registers 1-4 repeat input registers 1-4.",
+  "All temperatures are x10 (26.5 °C is stored as 265).",
+  "Left out: sample time, P and I (registers 34-36) and AO2/AI (45), whose footnote says they are x10 values while their printed ranges read like plain integers; the sensor offset (22), because its -5 to 5 °C range needs a signed encoding the table never states; register 27 was deleted in revision 2.2.",
+  "Many registers apply only to some models (marked in descriptions). Relay roles per model/application are in the output mapping table of the source.",
+  "Address range 1-64; baud 9600 or 4800 (the table does not say which is the default); 8 data bits, no parity, 1 stop bit."
+ ],
+ "registers": [
+  {
+   "table": "coil",
+   "address": 0,
+   "documented": "1",
+   "name": "Relay 4",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 1,
+   "documented": "2",
+   "name": "Relay 5",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 2,
+   "documented": "3",
+   "name": "Relay 1",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 3,
+   "documented": "4",
+   "name": "Relay 2",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "coil",
+   "address": 4,
+   "documented": "5",
+   "name": "Relay 3",
+   "description": "",
+   "data_type": "BIT",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 0,
+   "documented": "1",
+   "name": "Model + application",
+   "description": "High byte = model number, low byte = application.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 1,
+   "documented": "2",
+   "name": "Room temperature",
+   "description": "Temperature x10 (26.5 °C = 265).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 2,
+   "documented": "3",
+   "name": "Occupancy status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Unoccupied",
+    "1": "Occupied"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "input_register",
+   "address": 3,
+   "documented": "4",
+   "name": "Error",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Internal sensor shorted",
+    "2": "Internal sensor open",
+    "3": "High temperature (room above 55 °C)",
+    "4": "Low temperature (room below 0 °C)",
+    "5": "Remote sensor shorted",
+    "6": "Remote sensor open",
+    "7": "Dew risk"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "1",
+   "name": "Model + application",
+   "description": "High byte = model number, low byte = application.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "2",
+   "name": "Room temperature",
+   "description": "Temperature x10 (26.5 °C = 265).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "3",
+   "name": "Occupancy status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Unoccupied",
+    "1": "Occupied"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "4",
+   "name": "Error",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "1": "Internal sensor shorted",
+    "2": "Internal sensor open",
+    "3": "High temperature (room above 55 °C)",
+    "4": "Low temperature (room below 0 °C)",
+    "5": "Remote sensor shorted",
+    "6": "Remote sensor open",
+    "7": "Dew risk"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "5",
+   "name": "Power",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "6",
+   "name": "Mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Cooling",
+    "1": "Heating",
+    "2": "Ventilation"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "7",
+   "name": "Setpoint",
+   "description": "Range 0-40 °C, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "8",
+   "name": "Fan speed",
+   "description": "Not on T7600-TB21-..JA0.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Low",
+    "1": "Medium",
+    "2": "High",
+    "3": "Auto"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "9",
+   "name": "Upper setpoint limit",
+   "description": "Range 2-40 °C, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "10",
+   "name": "Lower setpoint limit",
+   "description": "Range 0-38 °C, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "11",
+   "name": "Unoccupied cooling setpoint",
+   "description": "Range 22-32 °C, x10. Not on T7603.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "12",
+   "name": "Unoccupied heating setpoint",
+   "description": "Range 10-21 °C, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "13",
+   "name": "Frost protection",
+   "description": "Note the inverted coding: 0 = on.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "On",
+    "1": "Off"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "14",
+   "name": "Frost protection setpoint",
+   "description": "Range 0-20 °C, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "15",
+   "name": "Fan in deadband",
+   "description": "Not on T7603.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "Low"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "16",
+   "name": "Unoccupied fan speed",
+   "description": "Not on T7603.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Low",
+    "1": "Set speed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "17",
+   "name": "Power recovery after restart",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Keep last status",
+    "1": "On",
+    "2": "Off"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 17,
+   "documented": "18",
+   "name": "Key lock",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No lock",
+    "1": "Lock all keys",
+    "2": "Lock all but fan speed and temperature keys",
+    "3": "Lock the ON/OFF and clock keys",
+    "4": "Lock all but the ON/OFF key"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 18,
+   "documented": "19",
+   "name": "Screen display",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Room temperature",
+    "1": "Setpoint"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 19,
+   "documented": "20",
+   "name": "BI function",
+   "description": "Meaning of the binary input contact.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Key card, open = occupied",
+    "1": "Key card, closed = occupied",
+    "2": "Dew point risk when closed",
+    "3": "Dew point risk when open",
+    "4": "Open = occupied; closed = unoccupied, fan and valve off",
+    "5": "Filter alarm when closed",
+    "6": "Filter alarm when open"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 20,
+   "documented": "21",
+   "name": "Temperature unit",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Celsius",
+    "1": "Fahrenheit"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "23",
+   "name": "Fan speed limit",
+   "description": "Not on T7603.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "3 speed",
+    "1": "2 speed",
+    "2": "1 speed",
+    "3": "No fan"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "24",
+   "name": "Language",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Chinese",
+    "1": "English"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 24,
+   "documented": "25",
+   "name": "Mode selection",
+   "description": "Not on T7603.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Cooling/heating/ventilation",
+    "1": "Cooling only",
+    "2": "Heating only"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 25,
+   "documented": "26",
+   "name": "LCD backlight time",
+   "description": "Backlight turns off after this many idle seconds (5-60).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "s",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 27,
+   "documented": "28",
+   "name": "Remote sensor type",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "China market 10K NTC",
+    "1": "JCI type II 10K NTC"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 28,
+   "documented": "29",
+   "name": "Deadband",
+   "description": "Range 0-10 °C, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 29,
+   "documented": "30",
+   "name": "Auto changeover",
+   "description": "Not on T7603.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable",
+    "1": "Enable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 30,
+   "documented": "31",
+   "name": "ECM fan minimum voltage",
+   "description": "T7601-TF20 only. 0-10 V in 0.5 V steps, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 31,
+   "documented": "32",
+   "name": "ECM fan maximum voltage",
+   "description": "T7601-TF20 only. 0-10 V, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "V",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 32,
+   "documented": "33",
+   "name": "ECM relay",
+   "description": "T7601-TF20 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable",
+    "1": "Enable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 36,
+   "documented": "37",
+   "name": "Floor heater inter-stage difference",
+   "description": "T7600-TF20 / T7601-TF20 only. 0-10 °C, x10.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 37,
+   "documented": "38",
+   "name": "Floor heater heating stages",
+   "description": "T7600-TF20 / T7601-TF20 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Two stage",
+    "1": "One stage"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 38,
+   "documented": "39",
+   "name": "TiO2/ESP control",
+   "description": "T7600-TF20 / T7601-TF20 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Controlled separately",
+    "1": "Runs with the FCU"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 42,
+   "documented": "43",
+   "name": "TiO2/ESP relay",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 43,
+   "documented": "44",
+   "name": "AO1 output",
+   "description": "PWM duty 0-100 %. T7600-TF21, T7601-TF20, T7600-TB21 only.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Poll input register 2 (room temperature x10) and holding registers 5-8 for power, mode, setpoint and fan speed; write those holding registers with function 06 to control the fan coil.",
+  "minimum_registers": [
+   {
+    "table": "input_register",
+    "address": 1,
+    "why": "Room temperature x10"
+   },
+   {
+    "table": "holding_register",
+    "address": 4,
+    "why": "Power on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 6,
+    "why": "Setpoint x10"
+   },
+   {
+    "table": "holding_register",
+    "address": 7,
+    "why": "Fan speed"
+   },
+   {
+    "table": "input_register",
+    "address": 3,
+    "why": "Error code"
+   },
+   {
+    "table": "coil",
+    "address": 2,
+    "why": "Relay 1 (fan low on most applications)"
+   }
+  ],
+  "enable": "Set the Modbus address (1-64) and baud rate on the thermostat; no separate enable is described.",
+  "watchdog": null,
+  "quirks": [
+   "Listed address minus 1 = wire address, confirmed by the demo frames.",
+   "Frost protection uses 0 = on, 1 = off.",
+   "Coils 1-2 are relays 4-5 and coils 3-5 are relays 1-3."
+  ],
+  "setup": [
+   "RS-485 half duplex, A(+) and B(-).",
+   "8 data bits, no parity, 1 stop bit; 9600 or 4800 baud."
+  ],
+  "gotchas": [
+   "The application and model set which relays drive fan, valve, floor heater or TiO2/ESP; check the output mapping table.",
+   "Fahrenheit mode (register 21) changes the display unit; the table only documents Celsius scaling."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/johnson-controls/t7000-thermostat",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

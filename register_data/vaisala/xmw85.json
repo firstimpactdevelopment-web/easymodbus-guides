@@ -1,0 +1,379 @@
+{
+  "manufacturer": "Vaisala",
+  "manufacturer_slug": "vaisala",
+  "model": "XMW85 CO2, humidity and temperature wall transmitter (Modbus RTU)",
+  "model_slug": "xmw85",
+  "short_model": "XMW85",
+  "aliases": [
+    "XMW85"
+  ],
+  "equipment_type": "Sensor (CO2/humidity wall transmitter)",
+  "applies_to": "XMW85 wall transmitter, Modbus RTU interface (user guide M213257EN-B).",
+  "summary": "The XMW85 is a Vaisala wall transmitter that measures CO2, humidity and temperature for building automation over Modbus RTU. Address, bit rate and parity are set with DIP switches. This map covers the metric and imperial measurement blocks in float and integer form, status registers and integer and float test registers.",
+  "transport": [
+    "RTU"
+  ],
+  "defaults": {
+    "unit_id": null,
+    "baud": null,
+    "parity": null,
+    "data_bits": 8,
+    "stop_bits": null,
+    "tcp_port": null
+  },
+  "addressing": {
+    "convention": "1-based",
+    "note": "The guide numbers registers in decimal starting at 1 and also prints the 0-based hex address used in the request; register number 1 is address 0x0000 on the wire."
+  },
+  "default_word_order": "CDAB",
+  "firmware": null,
+  "source": {
+    "title": "XMW85 User Guide",
+    "doc_number": "M213257EN-B",
+    "revision_date": "2026-02",
+    "url": "https://docs.vaisala.com/r/M213257EN-B/en-US",
+    "pages": "Chapter 4 Modbus communication pp. 20-22; Appendix A Modbus reference pp. 35-39 (Tables 14-19)"
+  },
+  "notes": [
+    "Registers are read with function 03 (holding). Function 04 (input registers) is also accepted and returns the same registers. The guide lists no write function.",
+    "32-bit floats put the least significant word at the listed register (CDAB). The guide states this and its worked read example (607.6 ppm) confirms it.",
+    "Unavailable data reads as quiet NaN (float) or 0x8000 (16-bit integer) rather than an exception.",
+    "The 6401-6659 block repeats the readings with temperature in °F.",
+    "Left out: error code register 514, a 32-bit integer meant for Vaisala support; the guide states the word order only for 32-bit floats.",
+    "DIP-switch address 0 puts the device offline (Modbus disabled).",
+    "Left out: text string test register 7940, because the guide does not give its length in registers."
+  ],
+  "registers": [
+    {
+      "table": "holding_register",
+      "address": 0,
+      "documented": "1",
+      "name": "Measured CO2",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 2,
+      "documented": "3",
+      "name": "Measured humidity",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 4,
+      "documented": "5",
+      "name": "Measured temperature",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 256,
+      "documented": "257",
+      "name": "Measured CO2 (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 257,
+      "documented": "258",
+      "name": "Measured humidity (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 258,
+      "documented": "259",
+      "name": "Measured temperature (integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°C",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6400,
+      "documented": "6401",
+      "name": "Measured CO2 (imperial block)",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6402,
+      "documented": "6403",
+      "name": "Measured humidity (imperial block)",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6404,
+      "documented": "6405",
+      "name": "Measured temperature (imperial block)",
+      "description": "",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6656,
+      "documented": "6657",
+      "name": "Measured CO2 (imperial block, integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "ppm",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6657,
+      "documented": "6658",
+      "name": "Measured humidity (imperial block, integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "%RH",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 6658,
+      "documented": "6659",
+      "name": "Measured temperature (imperial block, integer)",
+      "description": "",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 0.1,
+      "units": "°F",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 512,
+      "documented": "513",
+      "name": "Device status",
+      "description": "0 = OK; other values are listed in troubleshooting.",
+      "data_type": "UINT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 517,
+      "documented": "518",
+      "name": "Humidity measurement status",
+      "description": "0 = OK.",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Measurement not supported",
+        "2": "Under range",
+        "3": "Over range",
+        "7": "Sensor failure",
+        "8": "Measurement not ready (CO2 only)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 518,
+      "documented": "519",
+      "name": "Temperature measurement status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Measurement not supported",
+        "2": "Under range",
+        "3": "Over range",
+        "7": "Sensor failure",
+        "8": "Measurement not ready (CO2 only)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 519,
+      "documented": "520",
+      "name": "CO2 measurement status",
+      "description": "",
+      "data_type": "BITMAP16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": {
+        "0": "Measurement not supported",
+        "2": "Under range",
+        "3": "Over range",
+        "7": "Sensor failure",
+        "8": "Measurement not ready (CO2 only)"
+      }
+    },
+    {
+      "table": "holding_register",
+      "address": 7936,
+      "documented": "7937",
+      "name": "Signed integer test",
+      "description": "Always reads -12345.",
+      "data_type": "INT16",
+      "length": 1,
+      "word_order": null,
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    },
+    {
+      "table": "holding_register",
+      "address": 7937,
+      "documented": "7938",
+      "name": "Floating point test",
+      "description": "Always reads -123.45.",
+      "data_type": "FLOAT32",
+      "length": 2,
+      "word_order": "CDAB",
+      "scale": 1,
+      "units": "",
+      "access": "R",
+      "values": null,
+      "bits": null
+    }
+  ],
+  "integration": {
+    "summary": "Read holding registers 1-6 in one request for CO2, RH and temperature (CDAB floats), or 257-259 as integers (RH and T x10).",
+    "minimum_registers": [
+      {
+        "table": "holding_register",
+        "address": 0,
+        "why": "CO2 ppm"
+      },
+      {
+        "table": "holding_register",
+        "address": 2,
+        "why": "Relative humidity"
+      },
+      {
+        "table": "holding_register",
+        "address": 4,
+        "why": "Temperature"
+      },
+      {
+        "table": "holding_register",
+        "address": 512,
+        "why": "Device status"
+      }
+    ],
+    "enable": "Set the Modbus address, bit rate and parity with the DIP switches before power-up.",
+    "watchdog": null,
+    "quirks": [
+      "Floats are low word first (CDAB); pick \"word-swapped\" float in masters that default to high word first.",
+      "Read each 32-bit value in one transaction."
+    ],
+    "setup": [
+      "Address (1-247), bit rate (4800, 9600, 19200, 38400 or 57600; 76800 and 115200 are not supported) and parity (None or Even) are set with DIP switches; the guide gives no factory default.",
+      "1 and 2 stop bits are both accepted automatically.",
+      "Up to 8 transmitters per RS-485 line; turn on the 120 ohm termination DIP switch only on the last device if the bus has no other terminator."
+    ],
+    "gotchas": [
+      "Use test registers 7937 (reads -12345) and 7938 (reads -123.45) to confirm float format and addressing before trusting readings."
+    ]
+  },
+  "verified": {
+    "date": "2026-11-19",
+    "method": "independent re-check of every register against the source PDF"
+  }
+}

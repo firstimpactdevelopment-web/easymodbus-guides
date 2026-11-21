@@ -1,0 +1,417 @@
+{
+ "manufacturer": "Eaton",
+ "manufacturer_slug": "eaton",
+ "model": "PowerXL DE1 variable speed starter (Modbus RTU)",
+ "model_slug": "powerxl-de1",
+ "short_model": "PowerXL DE1",
+ "aliases": [
+  "DE1",
+  "DE11",
+  "PowerXL DE1",
+  "PowerXL DE11",
+  "DE1-12",
+  "DE1-34",
+  "DE11-12",
+  "DE11-34"
+ ],
+ "equipment_type": "Variable frequency drive (variable speed starter)",
+ "applies_to": "Eaton PowerXL DE1 per the Modbus RTU communication manual MN040018EN, edition 12/22.",
+ "summary": "The PowerXL DE1 talks Modbus RTU on its RJ45 RS-485 socket. Eaton numbers every value by an ID: a small process-data block (command, speed reference, status/fault word, speed, current) plus parameter IDs. Every value is a single 16-bit register with an implied decimal point. This map covers the process data and the communication settings.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 115200,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "1-based",
+  "note": "The manual numbers registers from ID 1. Its frame examples read status ID 6 with start address 0005h and write command ID 1 to address 0000h, so ID n is wire address n-1."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "PowerXL Modbus RTU Communication manual for Variable Frequency Drives / Variable Speed Starters DA1, DB1, DC1, DE1",
+  "doc_number": "MN040018EN",
+  "revision_date": "2022-12",
+  "url": "https://es-assets.eaton.com/DOCUMENTATION/AWB_MANUALS/MN040018_EN.pdf",
+  "pages": "Enable and data format p. 9; DE1 comms parameters pp. 16-17; register mapping p. 27; process data pp. 28-39; frame examples pp. 40-41; DE1 parameter table pp. 62-64"
+ },
+ "notes": [
+  "Every value is one 16-bit register; the decimal point is implied (a displayed 0.3 A is sent as 3).",
+  "The manual does not state signedness for the process data; they are typed UINT16 because their ranges are non-negative (direction is a status bit).",
+  "The power (ID 13) and voltage range (ID 14) words are left out because their meaning depends on the drive's kW/HP setting.",
+  "Fault numbers in the high byte of ID 6 for the DE1 (decimal, as printed in table 11): 0 no-Flt (no fault), 1 OI-b brake overcurrent, 2 OL-br brake resistor overload, 3 O-I output overcurrent, 4 I.t-trP motor overload, 5 PS-trp hardware overcurrent, 6 O.Volt DC overvoltage, 7 U.Volt DC undervoltage, 8 O-t heatsink overtemperature, 9 U-t undertemperature, 10 P-dEf defaults loaded, 11 E-trip external fault, 12 SC-ObS keypad/PC comms error, 13 FlT-dc DC ripple too high, 14 P-LOss input phase loss, 15 h O-I output overcurrent, 16 Th-flt heatsink thermistor fault, 17 dAtA-F memory error, 18 4-20 F analog input out of range. The 'Stop' display (enable signal missing) is listed without a number and is not a fault.",
+  "Stop bits: section 2.3.2 says the default is 1 stop bit, but the DE1 table prints default 1 for P-48 (= no parity, 2 stop bits), so stop_bits is left null.",
+  "DE1 has no torque (ID 9), output power (ID 10) or ramp-time (ID 4) process data, and no serial number over Modbus.",
+  "Left out: heatsink temperature (24), whose range starts at -10 °C but whose data-format cell is blank, so signedness is not stated; and the run-hour words 25/26 (hours plus a separate min/sec word with no data format).",
+  "The DE1 baud table prints option 0 as '960 Bit/s'; it is read here as 9.6 kbit/s, matching the other drives."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "ID 1",
+   "name": "Fieldbus command",
+   "description": "Control word: run, direction, reset, coast, quick stop.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": {
+    "0": "0 = stop, 1 = run (operational)",
+    "1": "0 = forward (clockwise), 1 = reverse",
+    "2": "1 = reset fault",
+    "3": "1 = coast to stop",
+    "5": "1 = quick stop (ramp 2)",
+    "6": "1 = run at fixed frequency FF1",
+    "7": "1 = force the setpoint to 0"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "ID 2",
+   "name": "Fieldbus speed reference",
+   "description": "Setpoint frequency, limited to the min/max frequency parameters.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "Hz",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "ID 6",
+   "name": "Status and fault word",
+   "description": "Low byte = status bits, high byte = fault number.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "1 = ready (READY)",
+    "1": "1 = running (RUN)",
+    "2": "0 = forward, 1 = reverse",
+    "3": "1 = fault (FAULT)",
+    "4": "1 = actual frequency equals setpoint (0 = ramping)",
+    "5": "1 = zero speed",
+    "6": "1 = speed control active",
+    "7": "Hardware enable: 0 = no, 1 = yes",
+    "8-15": "Fault word: the fault number (see notes), 0 = no fault"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "ID 7",
+   "name": "Actual speed",
+   "description": "Output frequency.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "Hz",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "ID 8",
+   "name": "Motor current",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "A",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "ID 11",
+   "name": "Digital inputs",
+   "description": "Input states; the lowest bit is DI1.",
+   "data_type": "BITMAP16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": {
+    "0": "DI1",
+    "1": "DI2"
+   },
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "ID 12",
+   "name": "Drive type code",
+   "description": "Part-number code: frame size, voltage class, phases and power index as hex digits.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "ID 15",
+   "name": "Control section software version",
+   "description": "Two implied decimals.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "ID 16",
+   "name": "Power section software version",
+   "description": "Two implied decimals.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.01,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "ID 17",
+   "name": "Drive recognition",
+   "description": "Fixed family code; DE1 reads 8 (DE11: 9).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "23 (P0-08)",
+   "name": "DC-link voltage",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "V",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 139,
+   "documented": "140 (P-12)",
+   "name": "Local process data source",
+   "description": "Selects where run commands and the speed reference come from.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Terminal control",
+    "1": "Keypad, forward only",
+    "2": "Keypad, forward and reverse",
+    "3": "Modbus RTU control",
+    "4": "CANopen",
+    "9": "SmartWire-DT control and speed reference",
+    "10": "SmartWire-DT control, terminal speed reference",
+    "11": "Terminal control, SmartWire-DT speed reference",
+    "13": "SmartWire-DT control and reference, digital input enables"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 162,
+   "documented": "163 (P-35)",
+   "name": "RS-485 baud rate",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "9.6 kbit/s",
+    "1": "19.2 kbit/s",
+    "2": "38.4 kbit/s",
+    "3": "57.6 kbit/s",
+    "4": "115.2 kbit/s"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 163,
+   "documented": "164 (P-36)",
+   "name": "Modbus comms timeout",
+   "description": "Action and delay after loss of Modbus telegrams.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No action",
+    "1": "Trip after 30 ms",
+    "2": "Trip after 100 ms",
+    "3": "Trip after 1000 ms",
+    "4": "Trip after 3000 ms",
+    "5": "Ramp to stop after 30 ms",
+    "6": "Ramp to stop after 100 ms",
+    "7": "Ramp to stop after 1000 ms",
+    "8": "Ramp to stop after 3000 ms"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 174,
+   "documented": "175 (P-47)",
+   "name": "Modbus address",
+   "description": "1-255; set to 1 when a SmartWire-DT module is used.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 175,
+   "documented": "176 (P-48)",
+   "name": "Modbus data format",
+   "description": "8 data bits; parity and stop bits.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "No parity, 1 stop bit",
+    "1": "No parity, 2 stop bits",
+    "2": "Odd parity, 1 stop bit",
+    "3": "Even parity, 1 stop bit"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Write the speed reference to ID 2 and the command word to ID 1 (bit 0 = run), then read IDs 6-8 for status, speed and current. The control-source parameter must select Modbus first.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Run/stop/reset command word"
+   },
+   {
+    "table": "holding_register",
+    "address": 1,
+    "why": "Speed reference (0.1 Hz)"
+   },
+   {
+    "table": "holding_register",
+    "address": 5,
+    "why": "Status bits and fault number"
+   },
+   {
+    "table": "holding_register",
+    "address": 6,
+    "why": "Actual frequency"
+   },
+   {
+    "table": "holding_register",
+    "address": 7,
+    "why": "Motor current"
+   },
+   {
+    "table": "holding_register",
+    "address": 139,
+    "why": "Control source must select Modbus"
+   }
+  ],
+  "enable": "Set P-12 = 3 (Modbus control). DI1 must be held high (enable) when running from Modbus. Address is P-47, baud P-35, data format P-48, timeout P-36.",
+  "watchdog": "P-36: 0 = no action (default), 1-4 = trip after 30 ms / 100 ms / 1 s / 3 s, 5-8 = ramp to stop after 30 ms / 100 ms / 1 s / 3 s.",
+  "quirks": [
+   "Register = ID - 1 on the wire; tools with a +1 offset take the ID directly.",
+   "Function codes 03, 06, 16 and 23 only; at most 11 registers per read.",
+   "The high byte of ID 6 is a fault number, not flags."
+  ],
+  "setup": [
+   "P-47 = Modbus address (1-255, default 1); P-35 = baud (default 4 = 115.2 kbit/s); P-48 = data format.",
+   "The RS-485 link is on the RJ45 socket."
+  ],
+  "gotchas": [
+   "Without the DI1/STO enable the drive reports 'Stop' and will not run from Modbus.",
+   "Set bit 2 of the command word to reset a fault."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/eaton/powerxl-de1",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

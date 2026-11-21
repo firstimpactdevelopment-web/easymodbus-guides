@@ -1,0 +1,1222 @@
+{
+ "manufacturer": "Intesis (HMS Networks)",
+ "manufacturer_slug": "intesis",
+ "model": "IN770AIR***O000 700 Series Air Gateway, Mitsubishi Electric City Multi application (Modbus)",
+ "model_slug": "in770air-mitsubishi-city-multi",
+ "short_model": "IN770AIR Mitsubishi Electric City Multi",
+ "aliases": [
+  "IN770AIR00MO000",
+  "IN770AIR00SO000",
+  "IN770AIRXXSO000"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "Intesis 700 Series Air Gateway IN770AIR***O000 with the Mitsubishi Electric City Multi application (M-NET centralised controllers (AE-200, EW-50, G-50 and others)), Modbus RTU / TCP server, user manual version 1.0.19 (2026-03-16).",
+ "summary": "Intesis 700 Series gateway that reads Mitsubishi Electric City Multi groups through one or two centralised controllers and serves them as Modbus RTU / TCP. Each group gets a 100-register block with on/off, mode, fan, vane, setpoint (x10), room temperature, run hours, errors, panel permissions and setback / dual setpoints.",
+ "transport": [
+  "RTU",
+  "TCP"
+ ],
+ "defaults": {
+  "unit_id": null,
+  "baud": null,
+  "parity": null,
+  "data_bits": null,
+  "stop_bits": null,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "The manual works examples: the first controller signal of controller 1 is address 0 and of controller 2 is 30; on/off of group 1 on controller 1 is 100 and of group 6 on controller 2 is 5600. Printed addresses are wire addresses. This file lists controller 1 (0..29) and its group 1 (100..137)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "700 Series Air Gateway - IN770AIR***O000, Mitsubishi Electric City Multi to Modbus, KNX, BACnet, MQTT and Home Automation - User Manual",
+  "doc_number": "User Manual Version 1.0.19",
+  "revision_date": "2026-03-16",
+  "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-in770mitxxxo000.pdf",
+  "pages": "pp. 28-32 (Modbus registers)"
+ },
+ "notes": [
+  "Group g on controller c: add ((c-1) x 50 + g - 1) x 100 to the listed group addresses. Controller 2 signals: add 30.",
+  "Setpoint-restriction registers (+21..+26) and outdoor temperature (+35) are left out: their ranges are printed without the x10 marker the other temperatures carry.",
+  "Mode, fan and setpoint registers change meaning for Lossnay and ATW / HWHP groups. Lossnay mode: 0 LC Auto, 1 Heat Recovery, 2 Bypass. ATW mode: 0 Hot water, 1 Heating, 2 Heating eco, 3 Anti-freeze, 4 Cooling.",
+  "Per-unit alarm code registers (controller x 1000 + 20000 + M-NET address) are off by default and enabled per controller in MAPS; not listed.",
+  "Available registers depend on the gateway configuration and unit type.",
+  "One manual covers the three licence sizes of the same hardware: IN770AIRXXSO000 (up to 15 groups, 1 centralised controller), IN770AIR00SO000 (50 groups, 1 controller) and IN770AIR00MO000 (100 groups, 2 controllers). The brand application is chosen in Intesis MAPS.",
+  "The manual gives no data type for the registers; values whose printed range goes below zero are listed as INT16, the rest as UINT16.",
+  "The consumption registers (yesterday / today / total, also per heat and cool) are left out: each takes two addresses, but the manual gives neither the word order nor a fixed unit (Wh or kWh is chosen in MAPS).",
+  "Reads use FC03 or FC04; writes use FC06 only. 'T' (trigger) registers act when 1 is written."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "((CC# - 1) × 30) + 0",
+   "name": "CC communication error",
+   "description": "Centralised controller 1 shown; see notes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "OK",
+    "1": "Communication error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "((CC# - 1) × 30) + 1",
+   "name": "Reset errors (all groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Reset errors"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "((CC# - 1) × 30) + 2",
+   "name": "On (all groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Set groups on"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "((CC# - 1) × 30) + 3",
+   "name": "Off (all groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Set groups off"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "((CC# - 1) × 30) + 4",
+   "name": "Mode Auto (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 5,
+   "documented": "((CC# - 1) × 30) + 5",
+   "name": "Mode Heat (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 6,
+   "documented": "((CC# - 1) × 30) + 6",
+   "name": "Mode Dry (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 7,
+   "documented": "((CC# - 1) × 30) + 7",
+   "name": "Mode Fan (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "((CC# - 1) × 30) + 8",
+   "name": "Mode Cool (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 9,
+   "documented": "((CC# - 1) × 30) + 9",
+   "name": "Mode Setback (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 10,
+   "documented": "((CC# - 1) × 30) + 10",
+   "name": "Mode LC Auto (all Lossnay groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 11,
+   "documented": "((CC# - 1) × 30) + 11",
+   "name": "Mode Heat Recovery (all Lossnay groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 12,
+   "documented": "((CC# - 1) × 30) + 12",
+   "name": "Mode Bypass (all Lossnay groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 13,
+   "documented": "((CC# - 1) × 30) + 13",
+   "name": "Fan Auto (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 14,
+   "documented": "((CC# - 1) × 30) + 14",
+   "name": "Fan Low (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 15,
+   "documented": "((CC# - 1) × 30) + 15",
+   "name": "Fan Mid-1 (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 16,
+   "documented": "((CC# - 1) × 30) + 16",
+   "name": "Fan Mid-2 (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 17,
+   "documented": "((CC# - 1) × 30) + 17",
+   "name": "Fan High (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 18,
+   "documented": "((CC# - 1) × 30) + 18",
+   "name": "Fan Low (all Lossnay groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 19,
+   "documented": "((CC# - 1) × 30) + 19",
+   "name": "Fan High (all Lossnay groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 20,
+   "documented": "((CC# - 1) × 30) + 20",
+   "name": "Vanes Auto (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 21,
+   "documented": "((CC# - 1) × 30) + 21",
+   "name": "Vanes Horizontal (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 22,
+   "documented": "((CC# - 1) × 30) + 22",
+   "name": "Vanes Position-2 (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 23,
+   "documented": "((CC# - 1) × 30) + 23",
+   "name": "Vanes Position-3 (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 24,
+   "documented": "((CC# - 1) × 30) + 24",
+   "name": "Vanes Position-4 (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 25,
+   "documented": "((CC# - 1) × 30) + 25",
+   "name": "Vanes Vertical (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 26,
+   "documented": "((CC# - 1) × 30) + 26",
+   "name": "Vanes Swing (all IC groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 27,
+   "documented": "((CC# - 1) × 30) + 27",
+   "name": "Setpoint (all groups)",
+   "description": "Tenths of °C, 5..90.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "W",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 28,
+   "documented": "((CC# - 1) × 30) + 28",
+   "name": "Fan Mid-1 (all Lossnay groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 29,
+   "documented": "((CC# - 1) × 30) + 29",
+   "name": "Fan Mid-2 (all Lossnay groups)",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Execute"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 100,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 0",
+   "name": "Group on/off",
+   "description": "Controller 1, group 1 shown; see notes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 101,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 1",
+   "name": "Group operation mode",
+   "description": "IC codes shown; Lossnay and ATW groups use other codes (see notes).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Dry",
+    "3": "Fan",
+    "4": "Cool",
+    "5": "Auto Heat",
+    "6": "Auto Cool",
+    "7": "Setback",
+    "8": "Setback Heat",
+    "9": "Setback Cool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 102,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 2",
+   "name": "Group fan speed",
+   "description": "IC codes shown; Lossnay: 1 Low, 2 Middle 2, 3 Middle 1, 4 High.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Low",
+    "2": "Middle 2",
+    "3": "Middle 1",
+    "4": "High"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 103,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 3",
+   "name": "Group vane position",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Horizontal",
+    "2": "Position 2",
+    "3": "Position 3",
+    "4": "Position 4",
+    "5": "Vertical",
+    "6": "Swing"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 104,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 4",
+   "name": "Group temperature setpoint",
+   "description": "Tenths of °C. IC: cool/dry 19..30, heat/auto 17..28; ATW 5..90.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 105,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 5",
+   "name": "Group ambient temperature",
+   "description": "Tenths of °C. 0.0..99.9.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 106,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 6",
+   "name": "Lossnay / OA operational status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "Low",
+    "2": "High"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 107,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 7",
+   "name": "Group operation time, hundreds of hours",
+   "description": "Run hours = this x 100 + next register.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 100,
+   "units": "h",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 108,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 8",
+   "name": "Group operation time, hours remainder",
+   "description": "Run hours modulo 100.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "h",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 109,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 9",
+   "name": "Group error status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error",
+    "1": "Group error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 110,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 10",
+   "name": "Group error code",
+   "description": "Mitsubishi Electric 4-digit error code.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 111,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 11",
+   "name": "Group error reset",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Reset the error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 112,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 12",
+   "name": "Group model",
+   "description": "Model of units connected to the group.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 113,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 13",
+   "name": "Allow on/off from local panel",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allowed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 114,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 14",
+   "name": "Allow mode from local panel",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allowed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 115,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 15",
+   "name": "Allow setpoint from local panel",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allowed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 116,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 16",
+   "name": "Allow filter reset from local panel",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allowed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 117,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 17",
+   "name": "Allow air direction from local panel",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allowed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 118,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 18",
+   "name": "Allow fan speed from local panel",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allowed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 119,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 19",
+   "name": "Allow timer from local panel",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Allow",
+    "1": "Not allowed"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 120,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 20",
+   "name": "Setback control",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Disable",
+    "1": "Enable"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 127,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 27",
+   "name": "Cool/dry/auto upper dual setpoint (ATW: heating setpoint)",
+   "description": "Tenths of °C. 4.5..90.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 128,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 28",
+   "name": "Heat/auto lower dual setpoint (ATW: heating eco setpoint)",
+   "description": "Tenths of °C. 4.5..90.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 129,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 29",
+   "name": "Auto single setpoint (ATW: hot water setpoint)",
+   "description": "Tenths of °C. 4.5..90.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 130,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 30",
+   "name": "Setback upper setpoint (ATW: anti-freeze setpoint)",
+   "description": "Tenths of °C. 4.5..90.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 131,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 31",
+   "name": "Setback lower setpoint (ATW: cooling setpoint)",
+   "description": "Tenths of °C. 4.5..90.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 0.1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 132,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 32",
+   "name": "Room humidity",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "%",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 133,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 33",
+   "name": "Brightness status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Dark",
+    "1": "Bright"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 134,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 34",
+   "name": "Occupancy",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "Absence",
+    "1": "Occupancy"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 136,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 36",
+   "name": "Filter status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "OK",
+    "1": "Dirty"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 137,
+   "documented": "(((CC# - 1) × 50) + Group#) × 100 + 37",
+   "name": "Dirty filter indication reset",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Reset the filter"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Pick the Mitsubishi Electric City Multi application and the Modbus interface in Intesis MAPS, discover or add the units, send the project, then read and write each unit's block.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 0,
+    "why": "Controller communication error"
+   },
+   {
+    "table": "holding_register",
+    "address": 100,
+    "why": "Group on/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 101,
+    "why": "Group mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 102,
+    "why": "Group fan speed"
+   },
+   {
+    "table": "holding_register",
+    "address": 104,
+    "why": "Group setpoint (x10)"
+   },
+   {
+    "table": "holding_register",
+    "address": 105,
+    "why": "Group room temperature (x10)"
+   },
+   {
+    "table": "holding_register",
+    "address": 109,
+    "why": "Group error status"
+   },
+   {
+    "table": "holding_register",
+    "address": 110,
+    "why": "Group error code"
+   }
+  ],
+  "enable": "The gateway must be configured with Intesis MAPS (City Multi project, Modbus selected) and the project sent to it; the manual points to the Signals tab of the MAPS configuration guide for the address formulas.",
+  "watchdog": null,
+  "quirks": [
+   "Writes accept FC06 (single register) only.",
+   "Trigger (T) registers act when 1 is written and are not meant to be read."
+  ],
+  "setup": [
+   "All Modbus settings (RTU or TCP, slave address, baud, parity) are made with the Intesis MAPS tool; the manual gives no factory serial settings.",
+   "On first power-up DHCP is tried for 30 seconds, then the gateway falls back to 192.168.100.246.",
+   "Modbus RTU uses the EIA-485 port (A+, B-); bias and 120 ohm termination are on DIP switch block SW A."
+  ],
+  "gotchas": [
+   "Most centralised controllers need the PC-Monitoring (SW-Mon) software licence from Mitsubishi Electric before their XML interface, which the gateway uses, is active."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/intesis/in770air-mitsubishi-city-multi",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}

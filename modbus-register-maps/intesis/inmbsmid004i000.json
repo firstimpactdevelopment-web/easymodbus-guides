@@ -1,0 +1,499 @@
+{
+ "manufacturer": "Intesis (HMS Networks)",
+ "manufacturer_slug": "intesis",
+ "model": "INMBSMID004I000 / 008I000 / 032I000 Midea AC to Modbus RTU interface (4 to 32 units)",
+ "model_slug": "inmbsmid004i000",
+ "short_model": "INMBSMID004I000",
+ "aliases": [
+  "INMBSMID004I000",
+  "INMBSMID008I000",
+  "INMBSMID032I000",
+  "MD-AC-MBS-4",
+  "MD-AC-MBS-8",
+  "MD-AC-MBS-32"
+ ],
+ "equipment_type": "VRF / split AC gateway",
+ "applies_to": "INMBSMID004I000 / INMBSMID008I000 / INMBSMID032I000 / MD-AC-MBS-4 / MD-AC-MBS-8 / MD-AC-MBS-32, user manual v1.7 EN; up to 4, 8 or 32 indoor units on one XYE bus.",
+ "summary": "Modbus RTU slave on the XYE bus of Midea commercial and VRF indoor units. Each of up to 4, 8 or 32 index slots maps to an indoor unit address and has a 20-register block for on/off, mode, fan, vane, setpoint, room temperature, alarm, error and remote lock; registers 0..8 send commands to all units.",
+ "transport": [
+  "RTU"
+ ],
+ "defaults": {
+  "unit_id": 1,
+  "baud": 9600,
+  "parity": "None",
+  "data_bits": 8,
+  "stop_bits": 2,
+  "tcp_port": null
+ },
+ "addressing": {
+  "convention": "0-based",
+  "note": "Tables give a 'protocol address' and a 'PLC address' (protocol + 1); the protocol address is the wire address. Index n (0..31) uses protocol address 1000 + 20 x n + offset. This file lists n = 0 (1000..1009)."
+ },
+ "default_word_order": null,
+ "firmware": null,
+ "source": {
+  "title": "Intesis INMBSMID***I000 Modbus RTU (EIA-485) Interface for Midea air conditioners - User's Manual",
+  "doc_number": "User Manual v1.7 EN",
+  "revision_date": "2024-08",
+  "url": "https://www.hms-networks.com/docs/default-source/products/intesis/manuals-and-guides---manuals/user-manual-inmbsmidxxxi000.pdf",
+  "pages": "pp. 9-11 (registers), pp. 12-14 (DIP switches)"
+ },
+ "notes": [
+  "Every register is a 16-bit unsigned holding register per the manual. Temperature rows print an initialisation value of -32678 (some rows -32768, which is raw 0x8000 = 32768); -32678 looks like a typo for -32768 but the manual does not confirm it, so no marker value is given for those rows.",
+  "Temperatures follow DIP switch SW4: whole °C, decidegrees (x10) or °F. The register footnotes call x10 the default, but the SW4 table marks Celsius degrees as the factory setting, so scale 1 / °C is used here; with x10 selected use 0.1.",
+  "The baud-rate registers are left out: the manual lists the available rates but not the number that stands for each one.",
+  "Only index n = 0 is listed. For index n add 20 x n (n = 1 on/off = 1020).",
+  "The index n is not the unit's address in the AC system: write the unit's address (0..63) into 1000 + 20 x n + 9 first.",
+  "Error code list not reproduced; see the manual's error-code section."
+ ],
+ "registers": [
+  {
+   "table": "holding_register",
+   "address": 0,
+   "documented": "0",
+   "name": "All units on/off",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1,
+   "documented": "1",
+   "name": "All units mode",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Dry",
+    "3": "Fan",
+    "4": "Cool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2,
+   "documented": "2",
+   "name": "All units fan speed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Auto",
+    "1": "SP1",
+    "2": "SP2",
+    "3": "SP3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 3,
+   "documented": "3",
+   "name": "All units vane position",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Auto/Stop",
+    "10": "Swing"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 4,
+   "documented": "4",
+   "name": "All units temperature setpoint",
+   "description": "17..30 °C (63..86 °F). SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "W",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 8,
+   "documented": "8",
+   "name": "All units remote lock",
+   "description": "Blocks wired remotes on the MD-RC bus. Non-volatile.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1000,
+   "documented": "(1000 + 20*n + 0)",
+   "name": "AC unit on/off",
+   "description": "Index n = 0 shown; see notes.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1001,
+   "documented": "(1000 + 20*n + 1)",
+   "name": "AC unit mode",
+   "description": "Available modes depend on the unit.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "Heat",
+    "2": "Dry",
+    "3": "Fan",
+    "4": "Cool"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1002,
+   "documented": "(1000 + 20*n + 2)",
+   "name": "AC unit fan speed",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Auto",
+    "1": "SP1",
+    "2": "SP2",
+    "3": "SP3"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1003,
+   "documented": "(1000 + 20*n + 3)",
+   "name": "AC unit up/down vane position",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "10": "Swing"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1004,
+   "documented": "(1000 + 20*n + 4)",
+   "name": "AC unit temperature setpoint",
+   "description": "17..30 °C (63..86 °F). SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1005,
+   "documented": "(1000 + 20*n + 5)",
+   "name": "AC unit temperature reference",
+   "description": "SW4 x1 °C assumed (x10: 0.1, or °F).",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "°C",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1006,
+   "documented": "(1000 + 20*n + 6)",
+   "name": "AC alarm status",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No alarm",
+    "1": "Alarm"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1007,
+   "documented": "(1000 + 20*n + 7)",
+   "name": "AC error code",
+   "description": "0 = no error, 65535 = interface-to-unit communication error, other = unit code.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "0": "No error active",
+    "65535": "Interface to AC unit communication error"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1008,
+   "documented": "(1000 + 20*n + 8)",
+   "name": "Remote lock",
+   "description": "Non-volatile.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": {
+    "0": "Off",
+    "1": "On"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 1009,
+   "documented": "(1000 + 20*n + 9)",
+   "name": "Indoor unit address assignment",
+   "description": "Midea address (0..63) of the unit handled by index n.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "RW",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2000,
+   "documented": "2000",
+   "name": "Device ID",
+   "description": "Reads 0x2200.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2031,
+   "documented": "2031",
+   "name": "Capacity",
+   "description": "Max indoor units of this model.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": {
+    "4": "4 indoor units",
+    "8": "8 indoor units",
+    "32": "32 indoor units"
+   },
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2041,
+   "documented": "2041",
+   "name": "Modbus slave address",
+   "description": "1..63.",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2050,
+   "documented": "2050",
+   "name": "Software version",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "R",
+   "values": null,
+   "bits": null,
+   "offset": 0
+  },
+  {
+   "table": "holding_register",
+   "address": 2099,
+   "documented": "2099",
+   "name": "Reset / reboot device",
+   "description": "",
+   "data_type": "UINT16",
+   "length": 1,
+   "word_order": null,
+   "scale": 1,
+   "units": "",
+   "access": "W",
+   "values": {
+    "1": "Reset"
+   },
+   "bits": null,
+   "offset": 0
+  }
+ ],
+ "integration": {
+  "summary": "Address the indoor units 0..63 in the AC system, write each unit's address into its slot (1000 + 20n + 9), then read and write the 20-register slot blocks.",
+  "minimum_registers": [
+   {
+    "table": "holding_register",
+    "address": 1009,
+    "why": "Map slot 0 to an indoor unit address"
+   },
+   {
+    "table": "holding_register",
+    "address": 1000,
+    "why": "On/off"
+   },
+   {
+    "table": "holding_register",
+    "address": 1001,
+    "why": "Mode"
+   },
+   {
+    "table": "holding_register",
+    "address": 1002,
+    "why": "Fan speed"
+   },
+   {
+    "table": "holding_register",
+    "address": 1004,
+    "why": "Setpoint"
+   },
+   {
+    "table": "holding_register",
+    "address": 1005,
+    "why": "Room temperature"
+   },
+   {
+    "table": "holding_register",
+    "address": 1007,
+    "why": "Error / communication error"
+   }
+  ],
+  "enable": "Write the AC-system address of each indoor unit into its slot's assignment register (1000 + 20n + 9); the slot index n is not the unit's address.",
+  "watchdog": null,
+  "quirks": [
+   "All registers are unsigned 16-bit holding registers.",
+   "Error code 65535 (-1 signed) means the interface cannot reach that unit."
+  ],
+  "setup": [
+   "Slave address and baud rate are set on DIP switches SW3/SW4 (factory: address 1, 9600 bps) and can be read back over Modbus.",
+   "The interface detects 8N2 or 8N1 framing by itself.",
+   "Changes to DIP switches need a power cycle.",
+   "Connect X / Y of the indoor unit's XYE bus to the interface (E is not used); the bus may be up to 1200 m.",
+   "SW1 (unit features) is not used on the multi-unit models; leave it at default."
+  ],
+  "gotchas": [
+   "Registers 0..8 are write-only broadcasts to every unit."
+  ]
+ },
+ "page": "https://easymodbus.com/modbus-register-maps/intesis/inmbsmid004i000",
+ "address_note": "address = 0-based Modbus wire (PDU) address; documented = as printed in the source.",
+ "note": "Re-typed from the manufacturer's public documentation (see source) and verified against it. Registers vary by firmware and options; verify against the live device before writing."
+}
